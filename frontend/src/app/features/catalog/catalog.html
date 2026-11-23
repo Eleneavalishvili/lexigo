@@ -1,0 +1,122 @@
+<div class="catalog-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a>
+    <nav aria-label="Course navigation">
+      <a routerLink="/help">Help ↗</a>
+      <a routerLink="/account">My little world ↗</a>
+    </nav>
+  </header>
+  <main>
+    <p class="eyebrow">A WORLD OF LITTLE BEGINNINGS</p>
+    <h1>Where will your<br /><em>words take you?</em></h1>
+    <p class="intro">Find a language, meet its first words, and make room for something new.</p>
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+      <button type="button" class="button button-outline" (click)="retry()">Try again ↗</button>
+    }
+    @if (loading()) {
+      <p role="status">Opening your little world…</p>
+    }
+    <section class="course-grid" aria-label="Published courses">
+      @for (course of courses(); track course.id) {
+        <button
+          type="button"
+          class="course-card"
+          [attr.aria-pressed]="selectedCourse()?.id === course.id"
+          (click)="chooseCourse(course)"
+        >
+          <span class="eyebrow">EN → {{ course.languageCode.toUpperCase() }}</span>
+          <h2>{{ course.title }}</h2>
+          <p>{{ course.description }}</p>
+          <span>{{ course.lessonCount }} lessons ↗</span>
+        </button>
+      } @empty {
+        @if (!loading() && !error()) {
+          <div class="empty">
+            <p class="eyebrow">GOOD THINGS ARE TAKING SHAPE</p>
+            <h2>Your next <em>hello is on its way.</em></h2>
+            <p>
+              Spanish, Italian, German and Russian lessons are being prepared. Come back when the
+              first courses are ready.
+            </p>
+            <a routerLink="/" class="button button-ink">Explore the languages ↗</a>
+          </div>
+        }
+      }
+    </section>
+    @if (selectedCourse(); as course) {
+      <section class="course-detail" aria-labelledby="course-title">
+        <p class="eyebrow">YOUR NEXT CHAPTER</p>
+        <h2 id="course-title">{{ course.title }}</h2>
+        @if (course.languageCode === 'ru') {
+          <p><a routerLink="/alphabet/russian">Meet all 33 Russian letters ↗</a></p>
+        }
+        @if (course.lessonCount > 0) {
+          <a class="button button-red" [routerLink]="['/learn', course.id]">Start your journey ↗</a>
+          <a class="button button-outline" [routerLink]="['/try', course.id]"
+            >Try a lesson without signing up ↗</a
+          >
+        }
+        <div class="content-grid">
+          <nav aria-label="Course units">
+            @for (unit of units(); track unit.id) {
+              <button
+                type="button"
+                [attr.aria-pressed]="selectedUnit()?.id === unit.id"
+                (click)="chooseUnit(unit)"
+              >
+                <small>CHAPTER {{ unit.orderNumber }} · {{ unit.difficulty }}</small
+                ><strong>{{ unit.title }}</strong
+                ><span>{{ unit.description }}</span>
+              </button>
+            } @empty {
+              @if (!loading() && !error()) {
+                <p role="status">
+                  No chapters are published for this course yet. Choose another language.
+                </p>
+              }
+            }
+          </nav>
+          <div>
+            @if (selectedUnit(); as unit) {
+              <h3>{{ unit.title }}</h3>
+              <ul class="lesson-list">
+                @for (lesson of lessons(); track lesson.id) {
+                  <li>
+                    <button
+                      type="button"
+                      (click)="selectedLesson.set(lesson)"
+                      [attr.aria-expanded]="selectedLesson()?.id === lesson.id"
+                    >
+                      <strong>{{ lesson.title }}</strong
+                      ><span>{{ lesson.objective }}</span
+                      ><small>{{ lesson.exerciseCount }} exercises · Read lesson ↗</small>
+                    </button>
+                  </li>
+                } @empty {
+                  @if (!loading() && !error()) {
+                    <li role="status">
+                      No lessons are published in this chapter yet. Choose another chapter.
+                    </li>
+                  }
+                }
+              </ul>
+            } @else if (units().length) {
+              <p>Pick a chapter to discover its lessons.</p>
+            }
+            @if (selectedLesson(); as lesson) {
+              <article class="lesson-note" aria-live="polite">
+                <p class="eyebrow">A LITTLE BEFORE YOU BEGIN</p>
+                <h2>{{ lesson.title }}</h2>
+                <p>{{ lesson.objective }}</p>
+                <div class="explanation">{{ lesson.explanation }}</div>
+                <p class="help">Join this course to practise its lessons and save your progress.</p>
+              </article>
+            }
+          </div>
+        </div>
+      </section>
+    }
+  </main>
+  <footer>A LITTLE LANGUAGE. A BIGGER WORLD. ✦</footer>
+</div>

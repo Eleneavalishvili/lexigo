@@ -1,0 +1,98 @@
+.achievements-wrap {
+  max-width: 1100px;
+  margin: auto;
+  padding: 2rem;
+}
+header,
+.collection-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+main {
+  padding-block: 3rem;
+}
+h1 {
+  font-size: clamp(2.6rem, 6vw, 4.5rem);
+  line-height: 1.08;
+  margin-block: 1rem;
+}
+h1 em {
+  color: var(--terracotta, #b45138);
+}
+.intro {
+  max-width: 36rem;
+  font-size: 1.1rem;
+}
+.badge-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  padding: 0;
+  list-style: none;
+  margin-block: 2rem;
+}
+.badge-card {
+  border: 1px solid #d9d1be;
+  border-radius: 1.25rem;
+  padding: 1.75rem;
+  background: #fffdf7;
+  overflow-wrap: anywhere;
+}
+.badge-card.earned {
+  background: #f8edcc;
+  border-color: #b48a32;
+}
+.badge-card.ready {
+  border: 2px dashed #a95a3f;
+}
+.medallion {
+  display: grid;
+  place-items: center;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  border: 3px double currentColor;
+  color: #666c76;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+.earned .medallion {
+  color: #806019;
+  background: #f2d788;
+}
+.ready .medallion {
+  color: #a95a3f;
+}
+h2 {
+  font-size: 1.5rem;
+}
+progress {
+  display: block;
+  width: 100%;
+  height: 0.8rem;
+  accent-color: #ad5b40;
+  margin-top: 0.5rem;
+}
+.announcement:not(:empty) {
+  border-left: 4px solid #b48a32;
+  padding: 1rem;
+  background: #f8edcc;
+}
+.footnote {
+  max-width: 45rem;
+  font-size: 0.9rem;
+}
+@media (max-width: 600px) {
+  .achievements-wrap {
+    padding: 1.25rem;
+  }
+  .badge-grid {
+    grid-template-columns: 1fr;
+  }
+  main {
+    padding-top: 2rem;
+  }
+}

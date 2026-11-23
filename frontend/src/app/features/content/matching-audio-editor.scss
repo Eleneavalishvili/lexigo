@@ -1,0 +1,36 @@
+.matching-audio-editor {
+  border: 1px solid var(--line);
+  padding: 1rem;
+  margin-block: 1rem;
+}
+p {
+  font-size: 0.8rem;
+  line-height: 1.8;
+}
+.audio-row {
+  border-top: 1px solid var(--line);
+  padding-block: 0.8rem;
+  overflow-wrap: anywhere;
+}
+strong,
+span {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+span {
+  color: var(--muted);
+}
+button {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  min-height: 44px;
+  padding: 0.6rem;
+  margin: 0.4rem 0.4rem 0.4rem 0;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,0 +1,311 @@
+<div class="journey-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/account">My little world ↗</a>
+  </header>
+  <app-learning-shell [courseId]="store.progress()?.isEnrolled ? store.progress()!.courseId : null">
+    <main>
+      <p class="eyebrow">A LANGUAGE, ONE LITTLE STEP AT A TIME</p>
+      <h1>Your next <em>chapter.</em></h1>
+      @if (store.error()) {
+        <div role="alert" class="error">
+          <p>{{ store.error() }}</p>
+          <button
+            class="button button-outline"
+            type="button"
+            (click)="store.load()"
+            [disabled]="store.loading() || store.busy()"
+          >
+            Try again ↗
+          </button>
+        </div>
+      }
+      @if (store.loading()) {
+        <p role="status">Opening your journey…</p>
+      }
+      @if (store.progress(); as course) {
+        <a routerLink="/learn">← All your languages</a>
+        <h2>{{ course.title }}</h2>
+        @if (course.courseId === '10000000-0000-0000-0000-000000000004') {
+          <p><a routerLink="/alphabet/russian">Meet all 33 Russian letters ↗</a></p>
+        }
+        @if (course.isEnrolled) {
+          <p>
+            <a [routerLink]="['/learn', course.courseId, 'dialogues']">Practise conversations ↗</a>
+          </p>
+        }
+        <p>
+          <a [routerLink]="['/learn/start', course.courseId]"
+            >Choose my goal and starting point ↗</a
+          >
+        </p>
+        <details class="course-tools">
+          <summary>Practice and placement tools</summary>
+          @if (course.isEnrolled) {
+            <app-skill-map [courseId]="course.courseId" />
+            <app-mistake-practice [courseId]="course.courseId" />
+          }
+          <section class="starting-level" aria-labelledby="placement-title">
+            <h3 id="placement-title">Already know some of this language?</h3>
+            <p>
+              Check your starting point with five questions per assessed unit. No hearts or XP are
+              used. This recommends a unit, not a certified language level.
+            </p>
+            <button
+              class="button button-outline"
+              type="button"
+              (click)="store.checkStartingPoint()"
+              [disabled]="store.busy()"
+            >
+              Find my starting point ↗
+            </button>
+          </section>
+        </details>
+        @if (!course.isEnrolled || course.startingLevel === null) {
+          <section class="starting-level" aria-labelledby="starting-level-title">
+            <p class="eyebrow">LET’S FIND YOUR START</p>
+            <h3 id="starting-level-title">How much {{ course.title }} do you know?</h3>
+            <label for="starting-level">Choose your current experience</label>
+            <select id="starting-level" #level (change)="store.selectedLevel.set(level.value)">
+              <option value="">Choose a starting level</option>
+              <option value="A1">A1 · I’m new to the language</option>
+              <option value="A2">A2 · I know everyday basics</option>
+              <option value="B1">B1 · I can manage familiar conversations</option>
+              <option value="B2">B2 · I can discuss a range of topics</option>
+              <option value="C1">C1 · I use the language fluently</option>
+              <option value="C2">C2 · I use the language with precision</option>
+            </select>
+            <p>
+              Your selection records your experience. The currently published lessons cover
+              introductory topics.
+            </p>
+            @if (course.isEnrolled) {
+              <button
+                class="button button-red"
+                type="button"
+                (click)="store.join()"
+                [disabled]="store.busy() || !store.selectedLevel()"
+              >
+                Save my starting point ↗
+              </button>
+            }
+          </section>
+        }
+        @if (course.startingLevel) {
+          <p class="small">Your chosen starting level: {{ course.startingLevel }}</p>
+        }
+        @if (!course.isEnrolled) {
+          <section class="invitation">
+            <p>
+              Make a little room for this language. Your lessons and progress will stay saved here.
+            </p>
+            <button
+              class="button button-red"
+              type="button"
+              (click)="store.join()"
+              [disabled]="store.busy() || !store.selectedLevel()"
+            >
+              Join this course ↗
+            </button>
+          </section>
+        } @else {
+          <p>
+            {{ store.completedCount() }} of {{ course.lessons.length }} learning steps completed ·
+            Reach 80% on graded questions and complete every practice step.
+          </p>
+          <progress
+            class="course-progress"
+            aria-label="Completed course learning steps"
+            [value]="store.completedCount()"
+            [max]="course.lessons.length || 1"
+          ></progress>
+          @if (store.nextLesson(); as next) {
+            <section class="next-lesson" aria-labelledby="next-lesson-title">
+              <div>
+                <p class="eyebrow">YOUR NEXT STEP</p>
+                <h2 id="next-lesson-title">{{ next.title }}</h2>
+                <p>{{ next.objective }}</p>
+              </div>
+              <button
+                type="button"
+                class="button button-red"
+                (click)="store.start(next)"
+                [disabled]="store.busy()"
+              >
+                {{ next.activeSessionId ? 'Continue' : 'Start next step' }} ↗
+              </button>
+            </section>
+          }
+        }
+        @if (course.openSessions.length) {
+          <details class="open-lessons">
+            <summary>Saved sessions ({{ course.openSessions.length }})</summary>
+            @for (session of course.openSessions; track session.id) {
+              <a [routerLink]="['/learn/session', session.id]"
+                >{{ session.title }} ·
+                {{ session.mode === 'Practice' ? 'Practice' : 'Lesson' }} ↗</a
+              >
+            }
+          </details>
+        }
+        @for (unit of course.units; track unit.id) {
+          <section class="chapter" [attr.aria-labelledby]="'unit-' + unit.id">
+            <div class="chapter-heading">
+              <span class="chapter-number" aria-hidden="true">{{
+                unit.orderNumber.toString().padStart(2, '0')
+              }}</span>
+              <div>
+                <p class="eyebrow">CHAPTER {{ unit.orderNumber }}</p>
+                <h2 [id]="'unit-' + unit.id">{{ unit.title }}</h2>
+                <p>{{ unit.description }}</p>
+                @if (store.unitCompleted(unit.id)) {
+                  <a routerLink="/completion-cards" [queryParams]="{ unitId: unit.id }"
+                    >Your unit completion card ↗</a
+                  >
+                }
+              </div>
+            </div>
+            <ol class="lesson-path">
+              @for (lesson of store.lessons(unit.id); track lesson.id) {
+                <li
+                  [class.completed]="lesson.status === 'Completed'"
+                  [class.current]="lesson.id === store.nextLesson()?.id"
+                  [class.locked]="!lesson.isUnlocked"
+                >
+                  <div class="node-wrap">
+                    @if (lesson.id === store.nextLesson()?.id) {
+                      <span class="start-tip">START</span>
+                    }
+                    <button
+                      class="lesson-mark"
+                      type="button"
+                      (click)="store.start(lesson)"
+                      [attr.aria-label]="
+                        (lesson.status === 'Completed' ? 'Review ' : 'Start ') + lesson.title
+                      "
+                      [attr.aria-current]="lesson.id === store.nextLesson()?.id ? 'step' : null"
+                      [disabled]="
+                        store.busy() ||
+                        !course.isEnrolled ||
+                        !lesson.isUnlocked ||
+                        course.startingLevel === null
+                      "
+                    >
+                      <span aria-hidden="true">{{
+                        lesson.status === 'Completed' ? '✓' : lesson.isUnlocked ? '✦' : '⊘'
+                      }}</span>
+                    </button>
+                  </div>
+                  <details
+                    class="lesson-copy"
+                    [id]="'lesson-' + lesson.id"
+                    [attr.open]="lesson.id === store.nextLesson()?.id ? '' : null"
+                  >
+                    <summary>{{ lesson.title }}</summary>
+                    <p>{{ lesson.objective }}</p>
+                    @if (lesson.status === 'Completed') {
+                      <p class="small">
+                        @if (lesson.hasGradedScore === false) {
+                          Practice completed · ungraded
+                        } @else {
+                          Completed · Best graded score {{ lesson.bestScore }}%
+                        }
+                      </p>
+                    } @else if (course.isEnrolled && !lesson.isUnlocked) {
+                      <p class="small">First complete:</p>
+                      <ul class="small">
+                        @for (id of lesson.missingPrerequisites; track id) {
+                          <li>
+                            @if (store.lessonTitle(id); as title) {
+                              <a
+                                [attr.href]="'#lesson-' + id"
+                                (click)="showPrerequisite($event, id)"
+                                >{{ title }}</a
+                              >
+                            } @else {
+                              An earlier lesson
+                            }
+                          </li>
+                        }
+                      </ul>
+                    }
+                    @if (course.isEnrolled) {
+                      <div class="lesson-actions">
+                        <button
+                          class="button button-ink"
+                          type="button"
+                          (click)="store.start(lesson)"
+                          [disabled]="
+                            store.busy() || !lesson.isUnlocked || course.startingLevel === null
+                          "
+                        >
+                          {{
+                            lesson.activeSessionId
+                              ? 'Continue lesson'
+                              : lesson.status === 'Completed'
+                                ? 'Try again'
+                                : 'Start lesson'
+                          }}
+                          ↗</button
+                        ><button
+                          class="text-button"
+                          type="button"
+                          (click)="store.start(lesson, true)"
+                          [disabled]="
+                            store.busy() || !lesson.isUnlocked || course.startingLevel === null
+                          "
+                        >
+                          Free practice ↗
+                        </button>
+                      </div>
+                    }
+                  </details>
+                </li>
+              }
+            </ol>
+          </section>
+        } @empty {
+          <p>No published lessons are available here at the moment. Your saved progress is kept.</p>
+        }
+      } @else if (store.enrollments(); as list) {
+        <p class="intro">
+          Come back to a familiar hello, or discover a new one. Each language keeps its own story.
+        </p>
+        <div class="language-grid">
+          @for (item of list.items; track item.courseId) {
+            <a class="language-card" [routerLink]="['/learn', item.courseId]"
+              ><p class="eyebrow">YOUR LANGUAGE JOURNEY</p>
+              <h2>{{ item.title }}</h2>
+              <p>{{ item.isPublished ? 'Open your chapters' : 'View saved progress' }} ↗</p></a
+            >
+          } @empty {
+            <section class="invitation">
+              <h2>A little beginning <em>awaits.</em></h2>
+              <p>Find a language in the catalog and join its course to start your journey.</p>
+            </section>
+          }
+        </div>
+        @if (list.totalCount > list.pageSize) {
+          <nav class="pagination" aria-label="Your courses">
+            <button
+              type="button"
+              (click)="store.changePage(-1)"
+              [disabled]="store.page() === 1 || store.loading()"
+            >
+              Previous</button
+            ><span>Page {{ store.page() }}</span
+            ><button
+              type="button"
+              (click)="store.changePage(1)"
+              [disabled]="store.page() * list.pageSize >= list.totalCount || store.loading()"
+            >
+              Next
+            </button>
+          </nav>
+        }
+        <a routerLink="/courses" class="button button-red">Explore the courses ↗</a>
+      }
+    </main>
+  </app-learning-shell>
+  <footer>A LITTLE LANGUAGE. A BIGGER WORLD. ✦</footer>
+</div>

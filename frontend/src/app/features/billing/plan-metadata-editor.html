@@ -1,0 +1,88 @@
+<details>
+  <summary>{{ plan() ? 'Rename plan' : 'Create a draft plan' }}</summary>
+  @if (!plan()) {
+    <p>Draft plans stay out of public pricing and checkout.</p>
+  }
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <fieldset [disabled]="busy() || !!pending()">
+      <legend>{{ plan() ? 'Plan name' : 'Draft details' }}</legend>
+      @if (!plan()) {
+        <label>Code <input formControlName="code" maxlength="24" /></label>
+      }
+      <label>
+        {{ plan() ? 'New name' : 'Name' }}
+        <input formControlName="name" maxlength="80" />
+      </label>
+      <label>Reason <textarea formControlName="reason" maxlength="500"></textarea></label>
+      @if (plan(); as current) {
+        @if (current.code === 'PREMIUM') {
+          <label>
+            <input
+              #availability
+              type="checkbox"
+              [checked]="changeAvailability()"
+              (change)="setAvailability(availability.checked)"
+            />
+            {{ current.isActive ? 'Retire Premium from new sales' : 'Reopen Premium sales' }}
+          </label>
+          @if (current.isActive && changeAvailability()) {
+            <p>
+              Current paid access and saved quotes keep their terms. Automatic renewal stops at
+              period end while the plan is retired.
+            </p>
+          }
+        }
+        @if (
+          !current.isActive &&
+          !current.prices.length &&
+          current.code !== 'FREE' &&
+          current.code !== 'PREMIUM'
+        ) {
+          @if (featureOptions(); as options) {
+            <fieldset>
+              <legend>Included features</legend>
+              @for (feature of options; track feature.featureId) {
+                <label>
+                  <input
+                    #included
+                    type="checkbox"
+                    [checked]="featureSelected(feature.featureId)"
+                    (change)="selectFeature(feature.featureId, included.checked)"
+                  />
+                  {{ feature.description }}{{ feature.available ? '' : ' · Planned' }}
+                </label>
+                @if (featureSelected(feature.featureId)) {
+                  <label>
+                    Limit for {{ feature.description }}
+                    <input
+                      #limit
+                      type="number"
+                      min="1"
+                      step="1"
+                      [value]="selectedFeatures()[feature.featureId] ?? ''"
+                      (input)="setLimit(feature.featureId, limit)"
+                    />
+                  </label>
+                }
+              }
+            </fieldset>
+          } @else {
+            <button type="button" class="button button-outline" (click)="openFeatures()">
+              Edit included features
+            </button>
+          }
+        }
+      }
+    </fieldset>
+    <label>
+      Current password
+      <input type="password" formControlName="currentPassword" autocomplete="current-password" />
+    </label>
+    @if (message()) {
+      <p role="alert">{{ message() }}</p>
+    }
+    <button class="button button-outline" type="submit" [disabled]="busy() || form.invalid">
+      {{ pending() && !busy() ? 'Retry plan change' : 'Save plan' }}
+    </button>
+  </form>
+</details>

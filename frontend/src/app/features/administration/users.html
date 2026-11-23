@@ -1,0 +1,219 @@
+<div class="admin-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/account">↖ My account</a>
+  </header>
+  <main>
+    <p class="eyebrow">BEHIND THE LITTLE BIG WORLD</p>
+    <h1>People &amp; <em>permissions.</em></h1>
+    <p class="intro">Care for the community. Keep access deliberate.</p>
+    <p class="help">
+      Changes require your current password and a two-factor sign-in within the last five minutes.
+      Every change needs a reason.
+    </p>
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+    @if (notice()) {
+      <p class="notice" role="status">{{ notice() }}</p>
+    }
+    <form class="filters" [formGroup]="filters" (ngSubmit)="load()">
+      <div>
+        <label for="user-search">Name or email</label
+        ><input id="user-search" formControlName="search" maxlength="80" />
+      </div>
+      <div>
+        <label for="role-filter">Role</label
+        ><select id="role-filter" formControlName="role">
+          <option value="">All roles</option>
+          @for (role of roles; track role) {
+            <option [value]="role">{{ role }}</option>
+          }
+        </select>
+      </div>
+      <div>
+        <label for="status-filter">Status</label
+        ><select id="status-filter" formControlName="status">
+          <option value="">All statuses</option>
+          <option>Active</option>
+          <option>Blocked</option>
+        </select>
+      </div>
+      <button class="button button-ink" type="submit" [disabled]="loading()">
+        Find accounts ↗
+      </button>
+    </form>
+    @if (loading()) {
+      <p role="status">Finding accounts…</p>
+    }
+    <div class="admin-grid">
+      <section aria-label="Accounts">
+        @if (results(); as result) {
+          <p class="help">{{ result.total }} accounts · Page {{ result.page }}</p>
+          <ul class="user-list">
+            @for (user of result.items; track user.id) {
+              <li>
+                <button
+                  type="button"
+                  (click)="select(user)"
+                  [disabled]="busy()"
+                  [attr.aria-pressed]="selected()?.id === user.id"
+                >
+                  <strong>{{ user.displayName }}</strong
+                  ><span>{{ user.email }}</span
+                  ><small>{{ user.status }} · {{ user.roles.join(', ') }}</small>
+                </button>
+              </li>
+            } @empty {
+              <li>No accounts match your search.</li>
+            }
+          </ul>
+          <nav aria-label="Account pages">
+            <button
+              type="button"
+              (click)="load(result.page - 1)"
+              [disabled]="result.page === 1 || loading()"
+            >
+              ← Previous</button
+            ><button
+              type="button"
+              (click)="load(result.page + 1)"
+              [disabled]="result.page * 20 >= result.total || loading()"
+            >
+              Next →
+            </button>
+          </nav>
+        }
+      </section>
+      <section class="details" aria-label="Account details">
+        @if (selected(); as user) {
+          <p class="eyebrow">A LITTLE RESPONSIBILITY</p>
+          <h2>{{ user.displayName }}</h2>
+          <p class="help">
+            {{ user.email }} · Email {{ user.emailConfirmed ? 'confirmed' : 'unconfirmed' }} ·
+            Two-factor {{ user.twoFactorEnabled ? 'enabled' : 'not enrolled' }}
+          </p>
+          @if (superAdmin) {
+            <app-billing-permission-editor [userId]="user.id" />
+            <fieldset>
+              <legend>Roles</legend>
+              <div class="checks">
+                @for (role of roles; track role) {
+                  <label
+                    ><input
+                      type="checkbox"
+                      [checked]="selectedRoles().includes(role)"
+                      [disabled]="role === 'Learner' || busy()"
+                      (change)="toggleRole(role)"
+                    />{{ role }}</label
+                  >
+                }
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Language access</legend>
+              <div class="checks">
+                @for (language of languages(); track language.id) {
+                  <label
+                    ><input
+                      type="checkbox"
+                      [checked]="selectedLanguages().includes(language.id)"
+                      (change)="toggleLanguage(language.id)"
+                      [disabled]="busy()"
+                    />{{ language.englishName }}</label
+                  >
+                }
+              </div>
+            </fieldset>
+            <p class="help">
+              Language access supplements roles. A language selection alone grants no
+              content-management permission.
+            </p>
+          }
+          <form
+            class="account-proof"
+            aria-label="Account access changes"
+            [formGroup]="proof"
+            (ngSubmit)="save(superAdmin)"
+            novalidate
+          >
+            <label for="change-reason">Reason for this change</label
+            ><textarea
+              id="change-reason"
+              formControlName="reason"
+              rows="3"
+              maxlength="500"
+            ></textarea
+            ><label for="admin-password">Your current password</label>
+            <div class="password-field">
+              <input
+                id="admin-password"
+                formControlName="currentPassword"
+                [type]="showPassword() ? 'text' : 'password'"
+                autocomplete="current-password"
+                maxlength="128"
+              /><app-password-toggle inputId="admin-password" [(visible)]="showPassword" />
+            </div>
+            @if (proof.touched && proof.invalid) {
+              <p class="error">Enter a reason of 3–500 characters and your current password.</p>
+            }
+            <div class="actions">
+              @if (superAdmin) {
+                <button class="button button-ink" type="submit" [disabled]="busy()">
+                  Save roles &amp; languages ↗
+                </button>
+              }
+              <button
+                class="button button-outline"
+                type="button"
+                (click)="save(false)"
+                [disabled]="busy()"
+              >
+                {{ user.status === 'Active' ? 'Block account' : 'Restore account' }} ↗
+              </button>
+            </div>
+          </form>
+          <button class="history-link" type="button" (click)="loadHistory()">
+            View administrative history ↗
+          </button>
+          @if (history(); as audit) {
+            <p class="help">{{ audit.total }} visible entries · Page {{ audit.page }}</p>
+            <ul class="history">
+              @for (entry of audit.items; track entry.id) {
+                <li>
+                  <strong>{{ entry.action }}</strong>
+                  <p>{{ entry.reason }}</p>
+                  <small
+                    >{{ entry.occurredAt | date: 'medium' }} · Actor
+                    {{ entry.actorId || 'Removed account' }}</small
+                  >
+                </li>
+              } @empty {
+                <li>No visible history yet.</li>
+              }
+            </ul>
+            <nav aria-label="Audit pages">
+              <button
+                type="button"
+                [disabled]="audit.page === 1"
+                (click)="loadHistory(audit.page - 1)"
+              >
+                ← Previous</button
+              ><button
+                type="button"
+                [disabled]="audit.page * 20 >= audit.total"
+                (click)="loadHistory(audit.page + 1)"
+              >
+                Next →
+              </button>
+            </nav>
+          }
+        } @else {
+          <p class="eyebrow">ONE ACCOUNT AT A TIME</p>
+          <h2>A considered <em>change.</em></h2>
+          <p>Select an account to review its access and history.</p>
+        }
+      </section>
+    </div>
+  </main>
+</div>

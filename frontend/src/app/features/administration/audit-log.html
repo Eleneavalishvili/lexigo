@@ -1,0 +1,67 @@
+@if (canView()) {
+  <main class="audit">
+    <a routerLink="/admin/users">← Back to account administration</a>
+    <h1>Administrative audit log</h1>
+    <button
+      class="button button-outline"
+      type="button"
+      [disabled]="busy()"
+      (click)="load(result()?.page ?? 1)"
+    >
+      Refresh page
+    </button>
+    @if (busy()) {
+      <p role="status">Loading audit history…</p>
+    }
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+    }
+    @if (result(); as entries) {
+      <p>{{ entries.total }} entries · Page {{ entries.page }}</p>
+      <ul class="entries">
+        @for (entry of entries.items; track entry.id) {
+          <li>
+            <h2>{{ entry.action }}</h2>
+            <p>
+              <time [attr.datetime]="entry.occurredAt">{{
+                entry.occurredAt | date: 'medium'
+              }}</time>
+            </p>
+            <dl>
+              <dt>Actor</dt>
+              <dd>{{ entry.actorId ?? 'System' }}</dd>
+              <dt>Entity</dt>
+              <dd>{{ entry.entityType }} {{ entry.entityId }}</dd>
+              @if (entry.reason) {
+                <dt>Reason</dt>
+                <dd class="reason">{{ entry.reason }}</dd>
+              }
+              <dt>Request trace</dt>
+              <dd>{{ entry.traceId }}</dd>
+            </dl>
+          </li>
+        } @empty {
+          <li>No audit entries on this page.</li>
+        }
+      </ul>
+      <nav aria-label="Audit log pages">
+        <button
+          class="button button-outline"
+          type="button"
+          [disabled]="busy() || entries.page === 1"
+          (click)="load(entries.page - 1)"
+        >
+          Previous
+        </button>
+        <button
+          class="button button-outline"
+          type="button"
+          [disabled]="busy() || entries.page * entries.pageSize >= entries.total"
+          (click)="load(entries.page + 1)"
+        >
+          Next
+        </button>
+      </nav>
+    }
+  </main>
+}

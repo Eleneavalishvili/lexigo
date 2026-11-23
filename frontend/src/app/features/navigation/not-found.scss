@@ -1,0 +1,30 @@
+.not-found-wrap {
+  max-width: 1100px;
+  margin-inline: auto;
+  padding: clamp(1.2rem, 5vw, 3rem);
+}
+main {
+  max-width: 750px;
+  margin-block: clamp(3rem, 8vw, 7rem);
+}
+h1 {
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  line-height: 1.15;
+}
+p {
+  line-height: 1.8;
+  max-width: 38rem;
+}
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+@media (max-width: 520px) {
+  .button {
+    width: 100%;
+    justify-content: center;
+  }
+}

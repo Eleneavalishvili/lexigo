@@ -1,0 +1,92 @@
+<div class="subscription-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/billing/subscription">↖ Your subscription</a>
+  </header>
+  <main>
+    <p class="eyebrow">A LITTLE RECORD TO KEEP</p>
+    <h1>Your test<br /><em>receipt.</em></h1>
+    <p class="simulation">
+      Simulated payment only. No real funds moved. This is not a tax invoice.
+    </p>
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+      @if (canRetry()) {
+        <button
+          class="button button-outline"
+          type="button"
+          (click)="reload()"
+          [disabled]="loading()"
+        >
+          Try loading again
+        </button>
+      }
+    }
+    @if (payment(); as payment) {
+      <section class="panel">
+        <h2>{{ payment.status }}</h2>
+        <p class="reference">{{ payment.receiptNumber }}</p>
+        <p>{{ payment.amount | currency: payment.currency : 'code' }} simulated funds</p>
+        <p>{{ payment.completedAt | date: 'medium' }}</p>
+        <dl>
+          <dt>Payment reference</dt>
+          <dd class="reference">{{ payment.id }}</dd>
+          <dt>Order reference</dt>
+          <dd class="reference">{{ payment.orderId }}</dd>
+          <dt>Requested</dt>
+          <dd>{{ payment.createdAt | date: 'medium' }}</dd>
+        </dl>
+        @if (loadingOrder()) {
+          <p role="status">Opening the saved order details…</p>
+        }
+        @if (order(); as quote) {
+          <dl>
+            <dt>Purchased period</dt>
+            <dd>{{ quote.period }}</dd>
+            <dt>Quoted total</dt>
+            <dd>{{ quote.amount | currency: quote.currency : 'code' }} simulated funds</dd>
+          </dl>
+        }
+        @if (orderError()) {
+          <p role="status">{{ orderError() }}</p>
+          <button
+            class="button button-outline"
+            type="button"
+            (click)="reload()"
+            [disabled]="busy() || loadingOrder()"
+          >
+            Retry order details
+          </button>
+        }
+        @if (payment.status === 'Failed') {
+          <p>
+            This payment was declined. No simulated funds moved. Review your test card before making
+            a new attempt.
+          </p>
+          <a routerLink="/billing/cards">Open test cards ↗</a>
+        } @else if (payment.status === 'Pending') {
+          <p role="status">
+            The result is pending. Refresh this payment before making another attempt.
+          </p>
+          <button
+            class="button button-outline"
+            type="button"
+            (click)="reload()"
+            [disabled]="loadingOrder() || busy()"
+          >
+            Refresh payment status
+          </button>
+        }
+        @if (payment.status === 'Succeeded' && payment.receiptNumber) {
+          <button class="button button-ink" type="button" (click)="download()" [disabled]="busy()">
+            Download test receipt (.txt) ↗
+          </button>
+        }
+      </section>
+    } @else {
+      @if (loading()) {
+        <p role="status">Opening your receipt…</p>
+      }
+    }
+  </main>
+</div>

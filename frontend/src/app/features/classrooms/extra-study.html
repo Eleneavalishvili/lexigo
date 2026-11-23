@@ -1,0 +1,177 @@
+<div class="classes-wrap">
+  <header><a routerLink="/classes">↖ Your classes</a></header>
+  <main>
+    <p class="eyebrow">PREMIUM LEARNING</p>
+    <h1>Extra study</h1>
+    <p>Browse teachers who have opted in for a course.</p>
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+    }
+    @if (notice()) {
+      <p role="status">{{ notice() }}</p>
+    }
+    <section class="panel" aria-labelledby="directory-title">
+      <h2 id="directory-title">Find a teacher</h2>
+      <label for="extra-study-course">Course</label>
+      <select
+        id="extra-study-course"
+        #course
+        [value]="courseId()"
+        (change)="showTeachers(course.value)"
+      >
+        <option value="">Choose a course</option>
+        @for (item of courses(); track item.id) {
+          <option [value]="item.id">{{ item.title }}</option>
+        }
+      </select>
+      @switch (directoryState()) {
+        @case ('loading') {
+          <p role="status">Looking for teachers…</p>
+        }
+        @case ('denied') {
+          <p>Teacher listings are available to learners with active Premium.</p>
+          <a routerLink="/pricing">View plans ↗</a>
+        }
+        @case ('error') {
+          <p role="alert">The teacher list could not load.</p>
+          <button type="button" class="button" (click)="showTeachers(courseId())">Try again</button>
+        }
+        @case ('ready') {
+          <ul class="class-list">
+            @for (teacher of teachers(); track teacher.id) {
+              <li>
+                <p>{{ teacher.displayName }}</p>
+                <button
+                  type="button"
+                  class="button button-outline"
+                  [disabled]="saving() || requestedOffers().has(teacher.id)"
+                  (click)="requestTeacher(teacher.id)"
+                >
+                  {{
+                    requestedOffers().has(teacher.id) ? 'Request recorded' : 'Request extra study'
+                  }}
+                </button>
+              </li>
+            } @empty {
+              <li>No teachers are listed for this course yet.</li>
+            }
+          </ul>
+          @if (cursor(); as next) {
+            <button type="button" class="button" (click)="showTeachers(courseId(), next)">
+              More teachers
+            </button>
+          }
+        }
+      }
+    </section>
+    <section class="panel" aria-labelledby="requests-title">
+      <h2 id="requests-title">Study requests</h2>
+      <button
+        type="button"
+        class="text-button"
+        [disabled]="requestsLoading()"
+        (click)="loadRequests()"
+      >
+        Refresh requests
+      </button>
+      @if (requestLoadError()) {
+        <p role="alert">Study requests could not load.</p>
+      }
+      <ul class="class-list">
+        @for (request of requests(); track request.id) {
+          <li>
+            <p>
+              <strong>{{ request.courseTitle }}</strong> · {{ request.status }}
+            </p>
+            <p>{{ request.incoming ? 'From' : 'To' }} {{ request.displayName }}</p>
+            @if (request.status === 'Accepted') {
+              <a [routerLink]="['/classes/extra-study', request.id]">Open study space ↗</a>
+            }
+            @if (request.incoming && request.status === 'Pending') {
+              <div class="actions">
+                <button
+                  type="button"
+                  class="button button-ink"
+                  [disabled]="saving()"
+                  (click)="decide(request.id, true)"
+                >
+                  Accept
+                </button>
+                <button
+                  type="button"
+                  class="button button-outline"
+                  [disabled]="saving()"
+                  (click)="decide(request.id, false)"
+                >
+                  Decline
+                </button>
+              </div>
+            }
+            @if (closing() === request.id) {
+              <p>
+                Closing ends this request and removes access to its study space for both people.
+              </p>
+              <button
+                type="button"
+                class="button button-danger"
+                [disabled]="saving()"
+                (click)="closeRequest(request.id)"
+              >
+                Confirm close
+              </button>
+              <button type="button" class="text-button" (click)="closing.set(undefined)">
+                Keep request
+              </button>
+            } @else if (
+              request.status === 'Accepted' || (!request.incoming && request.status === 'Pending')
+            ) {
+              <button
+                type="button"
+                class="text-button"
+                [disabled]="saving()"
+                (click)="closing.set(request.id)"
+              >
+                {{ request.status === 'Pending' ? 'Withdraw request' : 'Close study space' }}
+              </button>
+            }
+          </li>
+        } @empty {
+          @if (!requestsLoading() && !requestLoadError()) {
+            <li>No study requests yet.</li>
+          }
+        }
+      </ul>
+      @if (requestCursor(); as next) {
+        <button
+          type="button"
+          class="button"
+          [disabled]="requestsLoading()"
+          (click)="loadRequests(next)"
+        >
+          More requests
+        </button>
+      }
+    </section>
+    @if (canTeach()) {
+      <section class="panel" aria-labelledby="availability-title">
+        <h2 id="availability-title">Your teaching availability</h2>
+        <p>Opt in to show your display name to Premium learners looking for a teacher.</p>
+        <ul class="class-list">
+          @for (item of courses(); track item.id) {
+            <li>
+              <button
+                type="button"
+                class="button button-outline"
+                [disabled]="!teacherSettingsReady() || saving()"
+                [attr.aria-pressed]="enabled().has(item.id)"
+                (click)="toggleAvailability(item.id)"
+              >
+                {{ item.title }} · {{ enabled().has(item.id) ? 'Listed' : 'Hidden' }}
+              </button>
+            </li>
+          }
+        </ul>
+      </section>
+    }
+  </main>
+</div>

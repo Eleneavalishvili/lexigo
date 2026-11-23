@@ -1,0 +1,154 @@
+<svg
+  viewBox="0 0 240 280"
+  role="img"
+  [attr.aria-label]="description()"
+  [attr.data-mood]="effectiveMood()"
+  [attr.data-character]="character()"
+  [style.--skin]="profile().skin"
+  [style.--hair]="profile().hair"
+  [style.--clothes]="profile().clothes"
+  [style.--accent]="profile().accent"
+>
+  <ellipse cx="120" cy="266" rx="66" ry="7" fill="#263e60" opacity=".1" />
+  <g class="companion">
+    <!-- Chunky shoes and short, rounded bodies keep the cast readable in a lesson bubble. -->
+    <path d="M86 207 82 246 105 249 118 214M126 214 133 248 156 244 150 204" fill="var(--skin)" />
+    <path d="M81 241Q66 248 68 260H108L107 244Z" fill="var(--accent)" />
+    <path d="M133 244 133 260H174Q173 247 153 240Z" fill="var(--accent)" />
+    <path d="M69 259H108M133 259H173" stroke="#f6f0e1" stroke-width="5" stroke-linecap="round" />
+    <path d="M81 141Q119 124 158 141L166 196Q122 222 74 197Z" fill="var(--clothes)" />
+    @if (character() === 'mira') {
+      <path d="M87 138 98 132 104 165H136L143 132 155 140 150 209H89Z" fill="#b24d36" />
+      <path
+        d="M92 136 97 158M146 136 141 158"
+        stroke="#e5ad36"
+        stroke-width="7"
+        stroke-linecap="round"
+      />
+      <path d="M104 166H137V186Q120 197 104 186Z" fill="#943f2e" />
+      <path d="M88 202 114 207 110 225H83ZM126 208 153 200 157 222H131Z" fill="#943f2e" />
+    } @else if (character() === 'nico') {
+      <path d="M100 135 119 151 140 135 134 187H105Z" fill="#f6f0e1" />
+      <path d="M119 151V200" stroke="#315e64" stroke-width="5" />
+      <path d="M78 199H162L158 232H132L120 213 110 232H80Z" fill="#e5ad36" />
+      <path d="M83 223 109 225M133 225 158 223" stroke="#f6d07c" stroke-width="7" />
+    } @else {
+      <path d="M78 193Q120 207 163 192L161 219H132L120 207 110 219H80Z" fill="#263e60" />
+      <path d="m101 137 19 12 20-12" fill="none" stroke="#c18b22" stroke-width="5" />
+    }
+    <g class="left-arm">
+      <path
+        d="M82 149Q57 166 73 186L88 178"
+        fill="none"
+        stroke="var(--clothes)"
+        stroke-width="23"
+        stroke-linecap="round"
+      />
+      <ellipse cx="86" cy="179" rx="12" ry="10" fill="var(--skin)" transform="rotate(-25 86 179)" />
+    </g>
+    <g class="right-arm">
+      <path
+        d="M157 149Q181 167 184 132"
+        fill="none"
+        stroke="var(--clothes)"
+        stroke-width="22"
+        stroke-linecap="round"
+      />
+      <path
+        d="M178 137 175 120Q175 114 179 116L185 124 186 108Q188 103 191 109L192 122 199 111Q204 108 203 114L198 128 208 121Q213 122 209 127L196 143Z"
+        fill="var(--skin)"
+      />
+    </g>
+    @if (character() === 'nico') {
+      <g class="notebook" transform="rotate(-12 91 178)">
+        <rect x="72" y="161" width="32" height="37" rx="3" fill="#b24d36" />
+        <path d="M79 164V195M84 171H97M84 178H95" stroke="#f6f0e1" stroke-width="2" />
+      </g>
+    }
+    <g class="head">
+      @if (character() === 'mira') {
+        <path
+          d="M64 99Q38 91 48 70Q35 50 58 42Q57 19 84 23Q104 6 122 23Q147 7 162 29Q188 25 188 50Q208 65 192 85Q203 104 181 115L64 115Z"
+          fill="var(--hair)"
+        />
+      } @else if (character() === 'nico') {
+        <path
+          d="M66 87Q47 58 69 40Q82 14 121 30Q153-3 173 19Q197 45 171 57L180 90Z"
+          fill="var(--hair)"
+        />
+      } @else {
+        <circle cx="145" cy="30" r="28" fill="var(--hair)" />
+        <circle cx="165" cy="47" r="22" fill="var(--hair)" />
+        <path d="M62 86Q53 37 112 39Q168 30 181 82L178 109H67Z" fill="var(--hair)" />
+      }
+      <ellipse cx="65" cy="92" rx="13" ry="17" fill="var(--skin)" />
+      <ellipse cx="176" cy="92" rx="13" ry="17" fill="var(--skin)" />
+      <path
+        d="M67 70Q70 43 120 44Q169 43 175 72L174 106Q169 139 121 143Q76 140 67 109Z"
+        fill="var(--skin)"
+      />
+      @if (character() === 'mira') {
+        <path
+          d="M65 75Q61 43 88 42Q86 18 112 28Q125 12 143 33Q172 24 178 65L169 78 154 56Q143 74 126 57Q111 78 94 57Q90 77 65 75Z"
+          fill="var(--hair)"
+        />
+      } @else if (character() === 'nico') {
+        <path
+          d="M65 75 68 45Q86 19 113 37Q146 8 173 33Q178 60 145 54L126 43Q103 66 78 56L76 78Z"
+          fill="var(--hair)"
+        />
+      } @else {
+        <path
+          d="M65 76Q61 44 115 45Q163 35 177 69L163 67Q149 47 129 55Q101 76 65 76Z"
+          fill="var(--hair)"
+        />
+        <circle cx="64" cy="112" r="11" fill="none" stroke="#467b7b" stroke-width="7" />
+        <circle cx="178" cy="112" r="11" fill="none" stroke="#467b7b" stroke-width="7" />
+      }
+      <g class="eyebrows" fill="none" stroke="var(--hair)" stroke-width="5" stroke-linecap="round">
+        <path d="M83 75Q93 69 102 74M139 74Q149 69 158 75" />
+      </g>
+      <g class="eyes">
+        <ellipse cx="94" cy="92" rx="13" ry="17" fill="#fffaf0" />
+        <ellipse cx="148" cy="92" rx="13" ry="17" fill="#fffaf0" />
+        <ellipse cx="98" cy="94" rx="7" ry="11" fill="#302936" />
+        <ellipse cx="151" cy="94" rx="7" ry="11" fill="#302936" />
+        <circle cx="100" cy="89" r="2.5" fill="#fffaf0" />
+        <circle cx="153" cy="89" r="2.5" fill="#fffaf0" />
+      </g>
+      @if (character() === 'mira') {
+        <g fill="none" stroke="#e5ad36" stroke-width="5">
+          <circle cx="94" cy="93" r="23" />
+          <circle cx="148" cy="93" r="23" />
+          <path d="M117 90H125M70 86 62 82M171 86 180 82" />
+        </g>
+      }
+      <path d="M119 91 111 108Q119 115 127 108Z" fill="#9e5038" opacity=".5" />
+      @if (effectiveMood() === 'speaking') {
+        <g class="talking-mouth">
+          <ellipse cx="122" cy="123" rx="12" ry="10" fill="#542f30" />
+          <ellipse cx="122" cy="128" rx="8" ry="3" fill="#de887d" />
+        </g>
+      } @else if (effectiveMood() === 'checking' || effectiveMood() === 'listening') {
+        <path
+          d="M113 122Q122 126 132 121"
+          fill="none"
+          stroke="#542f30"
+          stroke-width="3"
+          stroke-linecap="round"
+        />
+      } @else {
+        <path d="M105 118Q122 129 139 117Q136 139 122 137Q110 137 105 118Z" fill="#542f30" />
+        <path d="M109 120Q122 127 135 120L132 126Q122 132 112 125Z" fill="#fffaf0" />
+      }
+    </g>
+  </g>
+  @if (effectiveMood() === 'correct' || effectiveMood() === 'celebration') {
+    <g class="sparkles" fill="#e5ad36">
+      <path d="m29 79 4-12 4 12 12 4-12 4-4 12-4-12-12-4ZM205 55l3-9 3 9 9 3-9 3-3 9-3-9-9-3Z" />
+    </g>
+  }
+</svg>
+<button type="button" class="motion-toggle" (click)="toggleMotion()" [attr.aria-pressed]="paused()">
+  {{ paused() ? 'Resume movement' : 'Pause movement' }}
+</button>

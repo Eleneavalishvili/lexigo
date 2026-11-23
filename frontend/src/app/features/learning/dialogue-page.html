@@ -1,0 +1,180 @@
+<main class="dialogue-page">
+  @if (sessionId()) {
+    <a [routerLink]="['/learn', courseId(), 'dialogues']">← All conversations</a>
+  } @else {
+    <a [routerLink]="['/learn', courseId()]">← Course journey</a>
+  }
+
+  <p class="eyebrow">REAL-LIFE PRACTICE</p>
+  <h1>{{ session()?.title ?? 'Conversations' }}</h1>
+
+  @if (loading()) {
+    <p role="status">Opening conversations…</p>
+  }
+  @if (error()) {
+    <div role="alert">
+      <p>{{ error() }}</p>
+      <button type="button" class="button button-outline" (click)="reload()">Reload</button>
+    </div>
+  }
+
+  @if (session(); as conversation) {
+    @if (audio.message(); as playbackMessage) {
+      <p role="status">{{ playbackMessage }}</p>
+    }
+    <section class="turn" aria-label="Conversation turn">
+      @if (feedback(); as note) {
+        <div>
+          <h2 #turnHeading tabindex="-1" aria-describedby="dialogue-feedback">
+            {{ note.isCorrect ? 'Good response' : 'Try this next time' }}
+          </h2>
+          <p>
+            <strong [attr.lang]="conversation.languageCode">{{ note.response }}</strong>
+          </p>
+          <app-pronunciation-button
+            [text]="note.response"
+            [courseId]="courseId()"
+            [language]="conversation.languageCode"
+          />
+          <p id="dialogue-feedback">{{ note.feedback }}</p>
+        </div>
+        <button type="button" class="button button-ink" (click)="continue()">
+          {{ conversation.completedAt ? 'See conversation summary' : 'Continue' }}
+        </button>
+      } @else {
+        <p class="eyebrow">{{ conversation.completedAt ? 'CONVERSATION COMPLETE' : 'THEY SAY' }}</p>
+        <h2 #turnHeading tabindex="-1" [attr.lang]="conversation.languageCode">
+          {{ conversation.current.text }}
+        </h2>
+        <app-pronunciation-button
+          [text]="conversation.current.text"
+          [courseId]="courseId()"
+          [language]="conversation.languageCode"
+        />
+        @if (!conversation.completedAt) {
+          <p>Choose how to respond.</p>
+          <div class="choices">
+            @for (choice of conversation.current.choices; track choice.id) {
+              <button
+                type="button"
+                class="button button-outline"
+                [disabled]="busy() || (pending() !== null && pending()?.choiceId !== choice.id)"
+                (click)="choose(choice.id)"
+              >
+                <span [attr.lang]="conversation.languageCode">{{ choice.text }}</span>
+                {{ pending()?.choiceId === choice.id && !busy() ? ' · Retry' : '' }}
+              </button>
+            }
+          </div>
+          @if (busy()) {
+            <p role="status">Saving your response…</p>
+          }
+        }
+      }
+    </section>
+
+    @if (conversation.completedAt && !feedback()) {
+      <section class="turn" aria-labelledby="dialogue-reward">
+        <h2 id="dialogue-reward">Your conversation reward</h2>
+        @if (conversation.awardedXp) {
+          <p role="status">+{{ conversation.awardedXp }} XP · Added to your daily goal</p>
+        } @else {
+          <p>Practice complete · 0 XP for this attempt</p>
+        }
+        @if (conversation.rewardXp !== 0) {
+          <p>
+            Earn {{ conversation.rewardXp ?? 10 }} XP once per scenario by choosing at least 80% of
+            the responses correctly.
+          </p>
+        } @else {
+          <p>Conversation XP rewards are currently paused. Your practice stays saved.</p>
+        }
+      </section>
+      @if (conversation.reviewPhrases?.length) {
+        <section class="turn" aria-labelledby="dialogue-review">
+          <h2 id="dialogue-review">Phrases to practise</h2>
+          <p>Try saying these responses aloud before your next conversation.</p>
+          <ul>
+            @for (phrase of conversation.reviewPhrases; track phrase.text) {
+              <li>
+                <strong [attr.lang]="conversation.languageCode">{{ phrase.text }}</strong>
+                <app-pronunciation-button
+                  [text]="phrase.text"
+                  [courseId]="courseId()"
+                  [language]="conversation.languageCode"
+                />
+                <p>{{ phrase.tip }}</p>
+              </li>
+            }
+          </ul>
+        </section>
+      }
+      <section class="turn" aria-labelledby="dialogue-summary">
+        <h2 id="dialogue-summary">The path you took</h2>
+        <ol>
+          @for (step of conversation.path; track $index) {
+            <li>
+              <p [attr.lang]="conversation.languageCode">{{ step.prompt }}</p>
+              <p>
+                <strong [attr.lang]="conversation.languageCode">{{ step.response }}</strong>
+              </p>
+              <p>{{ step.feedback }}</p>
+            </li>
+          }
+        </ol>
+        <button
+          type="button"
+          class="button button-ink"
+          [disabled]="busy()"
+          (click)="start(conversation.dialogueId)"
+        >
+          {{ busy() ? 'Opening conversation…' : 'Try another path' }}
+        </button>
+      </section>
+    }
+  } @else if (!sessionId() && !loading()) {
+    @if (catalog().length) {
+      <p>{{ finishedCount() }} of {{ catalog().length }} conversations finished</p>
+      <ul class="catalog">
+        @for (dialogue of catalog(); track dialogue.id) {
+          <li class="turn">
+            <h2>{{ dialogue.title }}</h2>
+            @if (dialogue.requiresPremium) {
+              <p>Premium conversation</p>
+            }
+            @if (dialogue.hasCompleted) {
+              <p>Finished before</p>
+            } @else if (dialogue.resumeSessionId) {
+              <p>In progress</p>
+            }
+            @if (dialogue.locked) {
+              <a class="button button-ink" routerLink="/pricing">See Premium plans ↗</a>
+            } @else if (dialogue.resumeSessionId; as saved) {
+              <a
+                class="button button-ink"
+                [routerLink]="['/learn', courseId(), 'dialogues', saved]"
+                [attr.aria-label]="'Resume conversation: ' + dialogue.title"
+                >Resume conversation ↗</a
+              >
+            } @else {
+              <button
+                type="button"
+                class="button button-ink"
+                [disabled]="busy()"
+                [attr.aria-label]="
+                  (dialogue.hasCompleted ? 'Replay conversation: ' : 'Open conversation: ') +
+                  dialogue.title
+                "
+                (click)="start(dialogue.id)"
+              >
+                {{ dialogue.hasCompleted ? 'Replay conversation' : 'Open conversation' }} ↗
+              </button>
+            }
+          </li>
+        }
+      </ul>
+    } @else if (!error()) {
+      <p>No conversations are available for this course yet.</p>
+    }
+  }
+</main>

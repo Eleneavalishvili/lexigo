@@ -1,0 +1,166 @@
+<div class="speaking-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/learn">Your journey ↗</a>
+  </header>
+  <main>
+    <p class="eyebrow">A LITTLE COURAGE, OUT LOUD</p>
+    <h1>Find <em>your voice.</em></h1>
+    <p class="intro">
+      Choose a short phrase from your lesson. Say it, listen back, and notice what you’d like to try
+      differently.
+    </p>
+    <section class="recording-card" aria-labelledby="guided-practice-title">
+      <h2 id="guided-practice-title">Guided listening and speaking</h2>
+      <p>Listen to a word, choose its meaning, then say it and play your recording below.</p>
+      @if (signedIn()) {
+        <label for="voice-language">Practice language</label>
+        <select
+          id="voice-language"
+          #languageChoice
+          [value]="language()"
+          (change)="open(languageChoice.value)"
+        >
+          <option value="es">Spanish</option>
+          <option value="it">Italian</option>
+          <option value="de">German</option>
+          <option value="ru">Russian</option>
+        </select>
+        <button
+          type="button"
+          class="button button-ink"
+          [disabled]="busy()"
+          (click)="open(languageChoice.value)"
+        >
+          Start guided practice
+        </button>
+        @if (locked()) {
+          <p>Guided practice is included in Premium. <a routerLink="/pricing">See plans</a></p>
+        }
+        @if (error()) {
+          <p role="alert">{{ error() }}</p>
+        }
+        @if (items()[index()]; as item) {
+          <p>Word {{ index() + 1 }} of {{ items().length }}</p>
+          <div class="recording-actions">
+            <button
+              type="button"
+              class="button button-outline"
+              (click)="voice.play(item.phrase, language())"
+            >
+              Listen
+            </button>
+            <button
+              type="button"
+              class="button button-outline"
+              (click)="voice.play(item.phrase, language(), false, true)"
+            >
+              Listen slowly
+            </button>
+          </div>
+          @if (voice.message()) {
+            <p role="status">{{ voice.message() }}</p>
+          }
+          @if (feedback(); as result) {
+            <p role="status">
+              {{ result.correct ? 'Correct!' : 'Try this meaning:' }}
+              <strong [attr.lang]="language()">{{ item.phrase }}</strong> means
+              <strong>{{ result.meaning }}</strong
+              >.
+            </p>
+            <p>Say the word aloud. You can use the recorder below to compare.</p>
+            <button type="button" class="button button-ink" (click)="next()">Continue</button>
+          } @else {
+            <div class="recording-actions">
+              @for (choice of item.choices; track choice) {
+                <button
+                  type="button"
+                  class="button button-outline"
+                  [disabled]="busy()"
+                  (click)="answer(item, choice)"
+                >
+                  {{ choice }}
+                </button>
+              }
+            </div>
+          }
+        } @else if (items().length) {
+          <p role="status">Guided practice complete.</p>
+        }
+      } @else {
+        <a routerLink="/login">Sign in to open guided practice</a>
+      }
+    </section>
+    <section class="recording-card" aria-labelledby="recording-title">
+      <p class="eyebrow">YOUR OWN LITTLE RECORDING STUDIO</p>
+      <h2 id="recording-title">Record. Listen. Try again.</h2>
+      <p>
+        Your microphone is used only after you press Record and allow access. Clips stay in this
+        browser and are never uploaded by this tool.
+      </p>
+      <p class="recording-status" role="status">
+        {{
+          recorder.state() === 'requesting'
+            ? 'Waiting for microphone permission…'
+            : recorder.state() === 'recording'
+              ? 'Recording · ' + recorder.seconds() + ' / 30 seconds'
+              : recorder.state() === 'processing'
+                ? 'Finishing your clip…'
+                : recorder.state() === 'ready'
+                  ? 'Your clip is ready to hear.'
+                  : 'Ready when you are.'
+        }}
+      </p>
+      @if (recorder.error()) {
+        <p class="error" role="alert">{{ recorder.error() }}</p>
+      }
+      <div class="recording-actions">
+        @if (recorder.state() === 'recording') {
+          <button class="button button-red" type="button" (click)="recorder.stop()">
+            Stop recording ■
+          </button>
+        } @else {
+          <button
+            class="button button-ink"
+            type="button"
+            (click)="recorder.start()"
+            [disabled]="recorder.state() === 'requesting' || recorder.state() === 'processing'"
+          >
+            {{ recorder.clip() ? 'Record another try ↗' : 'Record your voice ↗' }}
+          </button>
+        }
+        <button
+          type="button"
+          class="text-button"
+          (click)="recorder.clear()"
+          [disabled]="recorder.state() === 'idle'"
+        >
+          {{ recorder.state() === 'requesting' ? 'Cancel' : 'Discard clip' }}
+        </button>
+      </div>
+      @if (recorder.clip(); as clip) {
+        <audio
+          #clipPlayer
+          controls
+          [src]="clip"
+          aria-label="Your recorded voice"
+          (ended)="recorder.clear()"
+          (error)="recorder.playbackError()"
+        ></audio>
+      }
+      <p class="privacy-note">
+        Up to 30 seconds / 5 MB. Your clip is discarded after playback, when this page is hidden or
+        left, when you change accounts, or when you discard it. Starting another recording replaces
+        it.
+      </p>
+    </section>
+    <section class="reflection">
+      <h2>A little listening goes a long way.</h2>
+      <p>
+        Listen for sounds, rhythm and pauses. This is self-assessment: recording does not produce a
+        pronunciation score, XP or an AI conversation.
+      </p>
+    </section>
+  </main>
+  <footer>A LITTLE LANGUAGE. A BIGGER WORLD. ✦</footer>
+</div>

@@ -1,0 +1,218 @@
+<div class="checkout-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a [routerLink]="returnTo">↖ Back to learning</a>
+  </header>
+  <main>
+    <p class="eyebrow">A LITTLE MORE HEART</p>
+    <h1>Ready for<br /><em>another little step?</em></h1>
+    <p class="intro">
+      Restore all five hearts with a one-time test purchase, or let your free recovery finish.
+    </p>
+    <aside class="simulation">
+      <strong>SIMULATED CHECKOUT ONLY</strong> This uses your test-card balance. No real money or
+      bank card is involved.
+    </aside>
+    @if (store.error()) {
+      <p class="error" role="alert">{{ store.error() }}</p>
+    }
+    <button
+      type="button"
+      class="text-button"
+      (click)="store.load()"
+      [disabled]="store.busy() || store.loading()"
+    >
+      Reload checkout ↻
+    </button>
+    @if (store.loading()) {
+      <p role="status">Opening your saved hearts and test wallet…</p>
+    }
+    @if (store.pending()) {
+      <section class="recovery" aria-labelledby="pending-title">
+        <h2 id="pending-title">Let’s check before trying again.</h2>
+        <p>Your purchase request is saved. Check its result before sending it again.</p>
+        @if (!store.recoverySaved()) {
+          <p role="status">
+            Keep this page open until the result is known. This browser could not save a recovery
+            reference for a page reload.
+          </p>
+        }
+        <button
+          class="button button-outline"
+          type="button"
+          (click)="store.recover()"
+          [disabled]="store.busy() || store.loading()"
+        >
+          {{ store.checking() ? 'Checking purchase…' : 'Check purchase status ↗' }}
+        </button>
+        @if (store.canRetry()) {
+          <button
+            class="button button-ink"
+            type="button"
+            (click)="store.retry()"
+            [disabled]="store.busy() || store.loading()"
+          >
+            Retry the same purchase ↗
+          </button>
+        }
+      </section>
+    }
+    @if (store.result(); as result) {
+      <section class="purchase-result" aria-labelledby="purchase-result-title" role="status">
+        <app-character-cue
+          [character]="'mira'"
+          [mood]="result.status === 'Succeeded' ? 'celebration' : 'encouragement'"
+        />
+        <div>
+          <p class="eyebrow">
+            {{ result.status === 'Succeeded' ? 'A LITTLE BOOST, SAVED' : 'NO FUNDS MOVED' }}
+          </p>
+          <h2 id="purchase-result-title">
+            {{
+              result.status === 'Succeeded'
+                ? 'Your refill is saved.'
+                : 'This one didn’t go through.'
+            }}
+          </h2>
+          @if (result.status === 'Failed') {
+            <p>{{ reason(result.failureCode) }}</p>
+          }
+          <p>
+            Charged:
+            <strong>{{ result.chargedAmount | currency: result.currency : 'code' }}</strong>
+            simulated funds.
+          </p>
+          <p class="reference">{{ result.reference }}</p>
+          <p>{{ result.createdAt | date: 'medium' }}</p>
+          <a [routerLink]="returnTo" class="text-link">Return to your saved learning ↗</a>
+        </div>
+      </section>
+    }
+    @if (store.offer(); as offer) {
+      <div class="checkout-grid">
+        <section class="refill-card" aria-labelledby="refill-title">
+          <div class="heart-stamp" aria-hidden="true">♥</div>
+          <p class="eyebrow">ONE LITTLE REFILL</p>
+          <h2 id="refill-title">Five hearts.<br /><em>A fresh start.</em></h2>
+          <p class="current-hearts">
+            You currently have
+            <strong>{{ offer.hearts.count }} / {{ offer.maximumHearts }}</strong> hearts.
+          </p>
+          <p class="price">
+            {{ offer.amount | currency: offer.currency : 'code' }}
+            <small>simulated funds · one-time refill</small>
+          </p>
+          <p>
+            The same price restores your balance to five. It adds no XP and starts no subscription.
+          </p>
+        </section>
+        <section class="payment-panel" aria-labelledby="payment-title">
+          <p class="eyebrow">YOUR CHOICE, YOUR PACE</p>
+          <h2 id="payment-title">Choose a test card.</h2>
+          @if (offer.hearts.count >= offer.maximumHearts) {
+            <p class="notice" role="status">Your hearts are full. No purchase is needed.</p>
+          }
+          @if (offer.hearts.unlimited) {
+            <p>Premium has unlimited hearts. You can keep learning without a refill.</p>
+          }
+          <label for="heart-card">Test card · {{ offer.currency }} only</label>
+          <select
+            id="heart-card"
+            [value]="selected()"
+            (change)="choose($event)"
+            [disabled]="store.busy() || store.loading() || !!store.pending()"
+          >
+            <option value="">Choose your test card</option>
+            @for (card of store.cards(); track card.id) {
+              <option
+                [value]="card.id"
+                [disabled]="card.status !== 'Active' || card.currency !== offer.currency"
+              >
+                {{ card.nickname }} · {{ card.balance | currency: card.currency : 'code' }} ·
+                {{ card.status }}
+              </option>
+            }
+          </select>
+          <p><a routerLink="/billing/cards">Create a card or add simulated funds ↗</a></p>
+          <p>
+            Confirming spends {{ offer.amount | currency: offer.currency : 'code' }} from this test
+            card if the refill succeeds. A declined purchase costs nothing.
+          </p>
+          <button
+            type="button"
+            class="button button-red"
+            (click)="store.pay(selected())"
+            [disabled]="
+              !selected() ||
+              store.busy() ||
+              store.loading() ||
+              !!store.pending() ||
+              offer.hearts.count >= offer.maximumHearts
+            "
+          >
+            {{ store.busy() ? 'Processing…' : 'Confirm test purchase ↗' }}
+          </button>
+        </section>
+      </div>
+      @if (offer.hearts.count === 0) {
+        <app-heart-recovery [count]="offer.hearts.count" (recovered)="store.load()" />
+      }
+      <p class="free-option">
+        Prefer to wait? All five hearts return free one hour after exhaustion. Free practice remains
+        available while you wait.
+      </p>
+    }
+    @if (store.history(); as history) {
+      <section class="history" aria-labelledby="purchase-history-title">
+        <p class="eyebrow">EVERY TRY, ACCOUNTED FOR</p>
+        <h2 id="purchase-history-title">Your refill history.</h2>
+        <ul>
+          @for (purchase of history.items; track purchase.id) {
+            <li>
+              <div>
+                <strong>{{
+                  purchase.status === 'Succeeded' ? 'Heart refill' : 'Refill declined'
+                }}</strong>
+                <p>{{ purchase.createdAt | date: 'medium' }}</p>
+                <small class="reference">{{ purchase.reference }}</small>
+                @if (purchase.status === 'Failed') {
+                  <p>{{ reason(purchase.failureCode) }}</p>
+                }
+              </div>
+              <strong
+                >{{ purchase.chargedAmount | currency: purchase.currency : 'code'
+                }}<small>simulated charge</small></strong
+              >
+            </li>
+          } @empty {
+            <li>No heart purchases yet.</li>
+          }
+        </ul>
+        <nav aria-label="Refill history pages">
+          <button
+            class="text-button"
+            type="button"
+            (click)="store.load(history.page - 1)"
+            [disabled]="history.page === 1 || store.busy() || store.loading() || !!store.pending()"
+          >
+            ← Previous</button
+          ><span>Page {{ history.page }}</span
+          ><button
+            class="text-button"
+            type="button"
+            (click)="store.load(history.page + 1)"
+            [disabled]="
+              history.page * history.pageSize >= history.totalCount ||
+              store.busy() ||
+              store.loading() ||
+              !!store.pending()
+            "
+          >
+            Next →
+          </button>
+        </nav>
+      </section>
+    }
+  </main>
+  <footer>A LITTLE LANGUAGE. A BIGGER WORLD. ✦</footer>
+</div>

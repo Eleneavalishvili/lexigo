@@ -1,0 +1,24 @@
+<div class="account-page">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/" class="back-link">↖ Back to the little big world</a>
+  </header>
+  <main class="account-layout">
+    <aside class="account-poster" aria-label="Welcome to LexiGo">
+      <p class="eyebrow">A NEW CHAPTER, JUST FOR YOU</p>
+      <h2>Your next<br />adventure<br /><em>starts here.</em></h2>
+      <img
+        src="brand/hello-world.svg"
+        width="620"
+        height="600"
+        alt="A globe with greetings in four languages."
+      />
+      <p>One curious you. A whole world of possibilities.</p>
+    </aside>
+    <section class="account-card"><ng-content /></section>
+  </main>
+  <footer>
+    A LITTLE LANGUAGE. A BIGGER WORLD. <span aria-hidden="true">✦</span>
+    <a routerLink="/contact">Contact us</a>
+  </footer>
+</div>

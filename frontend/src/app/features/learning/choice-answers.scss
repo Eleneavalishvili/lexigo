@@ -1,0 +1,90 @@
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.options {
+  display: grid;
+  gap: 0.8rem;
+}
+.option {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem;
+  border: 2px solid var(--line);
+  border-radius: 1rem;
+  box-shadow: 0 3px 0 var(--line);
+  transition:
+    border-color 120ms,
+    background 120ms;
+  cursor: pointer;
+}
+.option:has(input:checked) {
+  border: 2px solid var(--ink);
+  background: color-mix(in srgb, var(--gold) 18%, var(--surface));
+}
+.option:active {
+  translate: 0 2px;
+  box-shadow: 0 1px 0 var(--line);
+}
+input[type='radio'] {
+  width: 1.2rem;
+  height: 1.2rem;
+  accent-color: var(--ink);
+}
+.picture-options {
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+}
+.picture-options .option {
+  position: relative;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  padding: 1rem;
+  min-height: 210px;
+}
+.picture-options img {
+  width: min(100%, 170px);
+  height: 150px;
+  object-fit: contain;
+}
+.picture-options input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.picture-options .option:focus-within {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .picture-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .picture-options img {
+    height: 85px;
+  }
+  .picture-options .option {
+    min-height: 135px;
+    padding: 0.6rem;
+  }
+}
+.options .option.choice-correct {
+  border-color: #416944;
+  background: color-mix(in srgb, var(--sage) 24%, var(--surface));
+}
+.options .option.choice-wrong {
+  border-color: var(--red);
+  background: color-mix(in srgb, var(--red) 10%, var(--surface));
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}

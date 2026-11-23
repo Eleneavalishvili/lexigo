@@ -1,0 +1,224 @@
+<details>
+  <summary>{{ editing() ? 'Edit draft exercise' : 'Add a draft exercise' }}</summary>
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <label for="exercise-type">Exercise type</label
+    ><select id="exercise-type" formControlName="type">
+      <option value="MultipleChoice">Multiple choice</option>
+      <option value="Speaking">Speaking self-assessment</option>
+      <option value="SpeakingCheck">Spoken word check</option>
+      <option value="Listening">Listening: choose or type</option>
+      <option value="Translation">Translation</option>
+      <option value="FillBlank">Fill in the blank</option>
+      <option value="SentenceBuilder">Sentence builder</option>
+      <option value="Matching">Match words or phrases</option>
+      <option value="Reading">Reading comprehension</option>
+      <option value="DialogueChoice">Dialogue response</option>
+      <option value="Alphabet">Russian letter recognition</option>
+    </select>
+    @if (
+      form.controls.type.value === 'Translation' ||
+      form.controls.type.value === 'FillBlank' ||
+      form.controls.type.value === 'Listening'
+    ) {
+      <label
+        ><input type="checkbox" formControlName="ignoreCase" /> Accept uppercase/lowercase
+        differences</label
+      >
+      <label
+        ><input type="checkbox" formControlName="ignoreTerminalPunctuation" /> Ignore final . ! ? …
+        punctuation</label
+      >
+      <p class="help">
+        Accents, letter distinctions and punctuation inside words are always preserved.
+      </p>
+    }
+    @if (form.controls.type.value === 'Alphabet') {
+      <label
+        ><input type="checkbox" formControlName="alphabetSound" /> Listen to a reviewed sound and
+        choose the Russian letter</label
+      >
+      <p class="help">
+        Without a recording, this is visual letter recognition. Sound choices must be different
+        letters; А and а cannot be competing sound answers.
+      </p>
+    }
+    @if (
+      languageId() > 0 &&
+      form.controls.type.value !== 'Matching' &&
+      (['Listening', 'Speaking', 'SpeakingCheck'].includes(form.controls.type.value) ||
+        (form.controls.type.value === 'Alphabet' && form.controls.alphabetSound.value) ||
+        (form.controls.type.value !== 'Alphabet' && form.controls.audioMediaId.value))
+    ) {
+      <app-reviewed-audio-picker
+        [languageId]="languageId()"
+        [maximumDurationMs]="
+          ['Speaking', 'SpeakingCheck', 'Alphabet'].includes(form.controls.type.value)
+            ? 30000
+            : undefined
+        "
+        [selectedId]="form.controls.audioMediaId.value"
+        [disabled]="busy()"
+        (chosen)="form.controls.audioMediaId.setValue($event ?? '')"
+      />
+    }
+    @if (form.controls.type.value === 'Listening') {
+      <p class="help">
+        Leave options blank for a typed answer, or add 2–8 choices. Accepted answers stay private.
+        Choose audio without putting its transcript in the prompt.
+      </p>
+    }
+    @if (form.controls.type.value === 'Reading' || form.controls.type.value === 'DialogueChoice') {
+      <label for="exercise-context">{{
+        form.controls.type.value === 'Reading' ? 'Reading passage' : 'Situation and conversation'
+      }}</label>
+      <textarea
+        id="exercise-context"
+        formControlName="contextText"
+        rows="5"
+        maxlength="4000"
+      ></textarea>
+      <p class="help">
+        {{
+          form.controls.type.value === 'Reading'
+            ? 'Add the short passage in the target language, then ask a question below. Add another exercise for another question.'
+            : 'Describe the situation and include the preceding conversation. The options below are possible replies. Branching dialogue journeys are managed separately.'
+        }}
+      </p>
+    }
+    @if (form.controls.type.value === 'Alphabet') {
+      <p class="help">
+        Use this in the Russian course. Options and accepted answers must be individual Cyrillic
+        letters, including Ё/ё when needed. This exercise tests visual recognition; audio practice
+        is separate.
+      </p>
+    }
+    <label for="exercise-prompt">English instruction or question</label
+    ><textarea id="exercise-prompt" formControlName="prompt" rows="2" maxlength="5000"></textarea
+    ><label for="exercise-explanation">Feedback explanation in English</label
+    ><textarea
+      id="exercise-explanation"
+      formControlName="explanation"
+      rows="2"
+      maxlength="5000"
+    ></textarea
+    ><label for="exercise-position">Position</label
+    ><input id="exercise-position" type="number" formControlName="orderNumber" min="1" />
+    @if (
+      [
+        'MultipleChoice',
+        'SentenceBuilder',
+        'Reading',
+        'DialogueChoice',
+        'Alphabet',
+        'Listening',
+      ].includes(form.controls.type.value)
+    ) {
+      <label for="exercise-options">{{
+        form.controls.type.value === 'SentenceBuilder'
+          ? 'Word tiles, one per line (numbered from 1)'
+          : 'Options, one per line'
+      }}</label
+      ><textarea id="exercise-options" formControlName="options" rows="3"></textarea>
+    }
+    @if (form.controls.type.value === 'Matching') {
+      <label for="exercise-matching-left">Left items, one per line</label>
+      <textarea
+        id="exercise-matching-left"
+        formControlName="matchingLeft"
+        rows="4"
+        maxlength="4000"
+        placeholder="Hola&#10;Adiós"
+      ></textarea>
+      <label for="exercise-matching-right">Their matches, in the same order</label>
+      <textarea
+        id="exercise-matching-right"
+        formControlName="matchingRight"
+        rows="4"
+        maxlength="4000"
+        placeholder="Hello&#10;Goodbye"
+      ></textarea>
+      <p class="help">
+        Add 2–10 pairs. Use distinct labels on each side; add context if two words share a
+        translation. Learners see shuffled choices, without these pair keys.
+      </p>
+      @if (languageId() > 0 && matchingLabels().length) {
+        <app-matching-audio-editor
+          [labels]="matchingLabels()"
+          [languageId]="languageId()"
+          [(ids)]="matchingAudioIds"
+          [disabled]="busy()"
+        />
+      }
+    } @else if (form.controls.type.value === 'SentenceBuilder') {
+      <label for="exercise-token-orders">Accepted tile orders, one per line</label>
+      <textarea
+        id="exercise-token-orders"
+        formControlName="tokenOrders"
+        rows="3"
+        placeholder="2 1 3"
+      ></textarea>
+      <p class="help">
+        For tiles “café”, “Quiero”, “por favor”, the order 2 1 3 builds “Quiero café por favor”.
+        Repeated words are separate tiles. Omit distractor tiles from the accepted order.
+      </p>
+    } @else if (form.controls.type.value !== 'Speaking') {
+      <label for="exercise-answers">Accepted answers, one per line</label>
+      <textarea
+        id="exercise-answers"
+        formControlName="answers"
+        rows="3"
+        maxlength="20000"
+      ></textarea>
+    }
+    @if (form.controls.type.value === 'Speaking') {
+      <p class="help">
+        Choose a reference up to 30 seconds. Put the phrase to practise in the prompt. Completion is
+        ungraded; no pronunciation accuracy or accepted-answer key is used.
+      </p>
+    }
+    @if (form.controls.type.value === 'SpeakingCheck') {
+      <p class="help">
+        Choose a reviewed reference up to 30 seconds and put the phrase to say in the prompt. Add
+        accepted spoken phrases, including reviewed word variants. Case and punctuation are ignored;
+        letters and accents remain significant. This checks recognized words, not pronunciation
+        quality.
+      </p>
+    }
+    @if (form.controls.type.value === 'FillBlank') {
+      <p class="help">
+        Use one ____ in the prompt, for example “Complete: Yo ____ café.” Accepted answers contain
+        only the missing word or phrase.
+      </p>
+    }
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+    <p class="help">
+      Answer keys stay in this authorized staff area and are not included in the public catalog.
+    </p>
+    @if (skills().length) {
+      <fieldset class="exercise-skills">
+        <legend>Skills practised</legend>
+        <p>Leave all unchecked to use the default for this exercise type.</p>
+        @for (skill of skills(); track skill.id) {
+          <label>
+            <input
+              type="checkbox"
+              #choice
+              [checked]="skillIds().includes(skill.id)"
+              [disabled]="skill.isArchived && !skillIds().includes(skill.id)"
+              (change)="toggleSkill(skill.id, choice.checked)"
+            />
+            {{ skill.name }}{{ skill.isArchived ? ' · archived' : '' }}
+          </label>
+        }
+      </fieldset>
+    }
+    @if (form.touched && form.invalid) {
+      <p class="error">Complete the prompt, explanation, position and accepted answers.</p>
+    }
+    <button class="button button-ink" type="submit" [disabled]="busy()">
+      {{ editing() ? 'Save exercise' : 'Add to draft' }} ↗
+    </button>
+  </form>
+</details>

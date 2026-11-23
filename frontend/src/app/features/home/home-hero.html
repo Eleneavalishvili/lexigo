@@ -1,0 +1,77 @@
+<section class="hero wrap" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    <p class="eyebrow">
+      <span class="little-globe" aria-hidden="true">◎</span> FOR THE CURIOUS AT HEART
+    </p>
+    <h1 id="hero-title">A little<br />language.<br /><em>A bigger world.</em></h1>
+    <p class="hero-description">
+      For the coffee you haven’t ordered.<br class="desktop-break" />
+      The people you haven’t met. The places still to come.
+    </p>
+    <div class="hero-actions">
+      @if (auth.user()) {
+        <a class="button button-red" routerLink="/learn"
+          >Continue learning <span aria-hidden="true">↗</span></a
+        >
+        <a class="button button-secondary" routerLink="/account">My account</a>
+      } @else {
+        <a class="button button-red" href="#languages"
+          >Get started <span aria-hidden="true">↗</span></a
+        >
+        <a class="button button-secondary" routerLink="/login">I already have an account</a>
+      }
+      <span class="handwritten"
+        >Every adventure<br />starts with hello.<svg viewBox="0 0 65 30" aria-hidden="true">
+          <path d="M60 3Q34 37 5 15m0 0 15-1M5 15l7 12" /></svg
+      ></span>
+    </div>
+    <p class="hero-footnote">
+      <span aria-hidden="true">✦</span> Four languages. One curious you. All through English.
+    </p>
+  </div>
+  <div class="hero-art" [class.has-depth]="depth()" [class.has-motion]="motion()">
+    <div
+      #stage
+      class="art-stage"
+      [style.--tilt-x.deg]="tiltX()"
+      [style.--tilt-y.deg]="tiltY()"
+      (pointermove)="tilt($event, stage)"
+      (pointerleave)="resetTilt()"
+    >
+      <div class="art-plane">
+        <div class="art-halo" aria-hidden="true"></div>
+        <span class="art-spark" aria-hidden="true">✦</span>
+        <img
+          src="brand/hello-world.svg"
+          width="620"
+          height="600"
+          alt="An illustrated globe surrounded by vintage postcards saying hola, ciao, hallo and привет."
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+    <div class="art-caption">
+      <span>THE LEXIGO GLOBE</span>
+      <div class="art-controls" role="group" aria-label="Globe effects">
+        <label>
+          <input
+            #depthSwitch
+            type="checkbox"
+            [checked]="depth()"
+            (change)="depth.set(depthSwitch.checked); resetTilt()"
+          />
+          3D depth
+        </label>
+        <label>
+          <input
+            #motionSwitch
+            type="checkbox"
+            [checked]="motion()"
+            (change)="motion.set(motionSwitch.checked); resetTilt()"
+          />
+          Motion
+        </label>
+      </div>
+    </div>
+  </div>
+</section>

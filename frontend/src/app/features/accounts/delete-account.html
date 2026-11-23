@@ -1,0 +1,73 @@
+<app-account-shell>
+  @if (done()) {
+    <h1>Your account has been deleted.</h1>
+    <p>Your private learning data and profile details have been erased.</p>
+    <a routerLink="/" class="button button-ink">Back to LexiGo</a>
+  } @else {
+    <h1>Delete your account</h1>
+    <p>This permanently erases your profile and private learning data and signs out all devices.</p>
+    <p>
+      Billing history and published content retain an anonymized account reference. Staff must close
+      or transfer active teaching and unfinished content responsibilities first.
+    </p>
+    <p>
+      Personal wording in refund notes is erased. Refund amounts and payment references are
+      retained.
+    </p>
+    <p>Public-name reports keep their dates and outcome after identifying comments are erased.</p>
+    <p>
+      Staff review comments, report resolutions, feedback messages and audit notes you wrote are
+      erased. Their decisions, dates and published-content authorship remain in the history.
+    </p>
+    <p>
+      Archived classes you still own keep generic class and assignment titles. Their participants,
+      submitted work and scores remain available in the retained history.
+    </p>
+    <p><a routerLink="/account/profile">Download your data or return to Privacy ↗</a></p>
+    <app-deletion-responsibilities />
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <label for="delete-password">Current password</label>
+      <div class="password-field">
+        <input
+          id="delete-password"
+          [type]="showPassword() ? 'text' : 'password'"
+          formControlName="currentPassword"
+          autocomplete="current-password"
+          maxlength="128"
+        />
+        <app-password-toggle inputId="delete-password" [(visible)]="showPassword" />
+      </div>
+      <p>
+        If you use two-factor authentication, enter your current code or one unused recovery code.
+      </p>
+      <label for="delete-authenticator">Authentication code</label>
+      <input
+        id="delete-authenticator"
+        formControlName="authenticatorCode"
+        inputmode="numeric"
+        autocomplete="one-time-code"
+        maxlength="32"
+      />
+      <label for="delete-recovery">Recovery code</label>
+      <input
+        id="delete-recovery"
+        formControlName="recoveryCode"
+        autocomplete="off"
+        maxlength="32"
+      />
+      <label for="delete-confirmation">Type DELETE to confirm permanent deletion</label>
+      <input
+        id="delete-confirmation"
+        formControlName="confirmation"
+        autocomplete="off"
+        maxlength="6"
+      />
+      @if (error()) {
+        <p role="alert">{{ error() }}</p>
+      }
+      <button class="button button-danger" type="submit" [disabled]="working() || form.invalid">
+        {{ working() ? 'Deleting account…' : 'Permanently delete my account' }}
+      </button>
+    </form>
+  }
+</app-account-shell>

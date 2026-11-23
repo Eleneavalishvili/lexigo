@@ -1,0 +1,81 @@
+<div class="companions-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/courses">Find a new language ↗</a>
+  </header>
+  <main>
+    <p class="eyebrow">A LITTLE COMPANY ALONG THE WAY</p>
+    <h1>Small steps.<br /><em>Good company.</em></h1>
+    <p class="intro">
+      Meet Mira, Nico and Zara. Here for your first hello, your next little breakthrough, and all
+      the tries in between.
+    </p>
+    <div class="companion-cards">
+      <article class="mira-card">
+        <div class="character-stage">
+          <app-character-cue character="mira" audioLanguage="es" [mood]="mood()" />
+        </div>
+        <div class="character-copy">
+          <p class="eyebrow">A HELLO FROM EVERYWHERE</p>
+          <h2>Mira.</h2>
+          <app-pronunciation-button text="Hola" courseId="10000000-0000-0000-0000-000000000001" />
+          <p>
+            Curious, confident and always ready to say hello. Mira helps you take that first step,
+            one new word at a time.
+          </p>
+          <p class="character-quote">“You don’t need all the words. Let’s start with one.”</p>
+        </div>
+      </article>
+      <article class="nico-card">
+        <div class="character-stage">
+          <app-character-cue character="nico" audioLanguage="it" [mood]="mood()" />
+        </div>
+        <div class="character-copy">
+          <p class="eyebrow">CURIOUS IN EVERY DIRECTION</p>
+          <h2>Nico.</h2>
+          <app-pronunciation-button text="Ciao" courseId="10000000-0000-0000-0000-000000000002" />
+          <p>
+            A thoughtful explorer with a well-loved phrasebook. Nico takes his time, listens closely
+            and always makes room for another try.
+          </p>
+          <p class="character-quote">“Another try? That’s how adventures happen.”</p>
+        </div>
+      </article>
+      <article class="zara-card">
+        <div class="character-stage">
+          <app-character-cue character="zara" audioLanguage="ru" [mood]="mood()" />
+        </div>
+        <div class="character-copy">
+          <p class="eyebrow">A WORD WORTH CELEBRATING</p>
+          <h2>Zara.</h2>
+          <app-pronunciation-button text="Привет" courseId="10000000-0000-0000-0000-000000000004" />
+          <p>
+            Warm, spirited and quick to cheer you on. Zara brings a little energy to the words
+            you’re learning.
+          </p>
+          <p class="character-quote">“One more word. One more possibility.”</p>
+        </div>
+      </article>
+    </div>
+    <section class="hello-controls" aria-label="Meet their personalities">
+      <p class="eyebrow">A LITTLE HELLO GOES A LONG WAY</p>
+      <div class="reaction-buttons">
+        @for (reaction of reactions; track reaction.mood) {
+          <button
+            type="button"
+            [attr.aria-pressed]="mood() === reaction.mood"
+            (click)="mood.set(reaction.mood)"
+          >
+            {{ reaction.label }}
+          </button>
+        }
+      </div>
+      <p class="motion-note">
+        Prefer a quieter journey? Your device’s reduced-motion setting and LexiGo’s motion
+        preference keep our companions still.
+      </p>
+    </section>
+    <a routerLink="/courses" class="button button-red">Your next chapter awaits ↗</a>
+  </main>
+  <footer>A LITTLE LANGUAGE. A BIGGER WORLD. ✦</footer>
+</div>

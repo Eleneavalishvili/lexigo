@@ -1,0 +1,63 @@
+<div class="sentence-area">
+  <p class="tile-heading">
+    Your answer <span>{{ selected().length }} word(s) chosen</span>
+  </p>
+  <ol class="selected-tiles" aria-label="Your sentence in order">
+    @for (tile of selected(); track tile.id; let index = $index) {
+      <li>
+        <button
+          class="word-tile"
+          type="button"
+          [disabled]="disabled()"
+          (click)="remove(tile.id)"
+          [attr.aria-label]="'Remove ' + tile.text + ' from position ' + (index + 1)"
+        >
+          {{ tile.text }} <span aria-hidden="true">×</span>
+        </button>
+        <div class="tile-controls">
+          <button
+            type="button"
+            [disabled]="disabled() || index === 0"
+            (click)="move(index, -1)"
+            [attr.aria-label]="'Move word at position ' + (index + 1) + ' earlier'"
+          >
+            ←</button
+          ><button
+            type="button"
+            [disabled]="disabled() || index === selected().length - 1"
+            (click)="move(index, 1)"
+            [attr.aria-label]="'Move word at position ' + (index + 1) + ' later'"
+          >
+            →
+          </button>
+        </div>
+      </li>
+    } @empty {
+      <li class="empty-sentence">Tap words to build your answer. You may not need every word.</li>
+    }
+  </ol>
+  <p class="sentence-readout" aria-live="polite">
+    {{ sentence() ? 'Your sentence: ' + sentence() : 'No words selected yet.' }}
+  </p>
+  <div class="word-bank" role="group" aria-label="Available word tiles">
+    @for (tile of options(); track tile.id; let index = $index) {
+      <button
+        type="button"
+        class="word-tile"
+        [disabled]="disabled() || order().includes(tile.id)"
+        [attr.aria-label]="'Add ' + tile.text + ', tile ' + (index + 1)"
+        (click)="add(tile.id)"
+      >
+        {{ tile.text }}
+      </button>
+    }
+  </div>
+  <button
+    class="clear-tiles"
+    type="button"
+    [disabled]="disabled() || !order().length"
+    (click)="clear()"
+  >
+    Clear sentence ↺
+  </button>
+</div>

@@ -1,0 +1,329 @@
+<div class="subscription-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/account">↖ Your account</a
+    ><a routerLink="/admin/users">Account administration ↗</a
+    ><a routerLink="/admin/plans">Plan catalogue ↗</a>
+  </header>
+  <main>
+    <p class="eyebrow">CARE WITH EVERY LITTLE NUMBER</p>
+    <h1>The billing<br /><em>desk.</em></h1>
+    <p class="simulation">
+      SIMULATION ONLY · No real money or payment provider. Financial access requires Super Admin or
+      explicitly delegated Admin, with two-factor authentication.
+    </p>
+    <nav class="admin-tabs" aria-label="Billing sections">
+      <button
+        class="button button-outline"
+        type="button"
+        (click)="switchTab('payments')"
+        [attr.aria-pressed]="store.tab() === 'payments'"
+      >
+        Payments
+      </button>
+      <button
+        class="button button-outline"
+        type="button"
+        (click)="switchTab('subscriptions')"
+        [attr.aria-pressed]="store.tab() === 'subscriptions'"
+      >
+        Subscriptions
+      </button>
+      <button
+        class="button button-outline"
+        type="button"
+        (click)="switchTab('audit')"
+        [attr.aria-pressed]="store.tab() === 'audit'"
+      >
+        Billing audit
+      </button>
+    </nav>
+    <form [formGroup]="filters" (ngSubmit)="filter()" class="panel filter-grid">
+      @if (store.tab() !== 'audit') {
+        <label for="billing-customer">Customer UUID</label
+        ><input id="billing-customer" formControlName="userId" placeholder="All customers" />
+        <label for="billing-status">Status</label
+        ><select id="billing-status" formControlName="status">
+          <option value="">All statuses</option>
+          @if (store.tab() === 'payments') {
+            <option value="Succeeded">Succeeded</option>
+            <option value="Failed">Failed</option>
+            <option value="Pending">Pending</option>
+          } @else {
+            <option value="Active">Active</option>
+            <option value="Expired">Expired</option>
+            <option value="Refunded">Refunded</option>
+          }
+        </select>
+      }
+      @if (store.tab() !== 'subscriptions') {
+        <label for="billing-from">From date</label
+        ><input id="billing-from" type="date" formControlName="from" /><label for="billing-to"
+          >Through date</label
+        ><input id="billing-to" type="date" formControlName="to" />
+      }
+      <button class="button button-ink" type="submit" [disabled]="store.loading()">
+        Apply filters ↗
+      </button>
+    </form>
+    @if (formError()) {
+      <p class="error" role="alert">{{ formError() }}</p>
+    }
+    @if (store.error()) {
+      <p class="error" role="alert">{{ store.error() }}</p>
+    }
+    @if (store.loading()) {
+      <p role="status">Opening billing records…</p>
+    }
+    @if (refunds.error()) {
+      <p class="error" role="alert">{{ refunds.error() }}</p>
+    }
+    @if (refunds.notice()) {
+      <p class="notice" role="status">{{ refunds.notice() }}</p>
+    }
+    @if (refunds.pending(); as pending) {
+      <aside class="simulation">
+        <p>
+          A refund request is pending verification. No new request can replace it. Reloading keeps
+          only its payment/request IDs, never your password or reason.
+        </p>
+        <p class="reference">Payment {{ pending.paymentId }}</p>
+        @if (!refunds.persisted()) {
+          <p>
+            Browser recovery storage is unavailable. Keep this page open until this request is
+            resolved.
+          </p>
+        }
+        <button
+          class="button button-outline"
+          type="button"
+          (click)="recover()"
+          [disabled]="refunds.busy()"
+        >
+          Check saved result ↻
+        </button>
+      </aside>
+    }
+    @if (refunds.result(); as result) {
+      <p class="notice">
+        Refund {{ result.amount | currency: result.currency : 'code' }} recorded.
+        {{
+          result.revokedPremium
+            ? 'The current Premium period ended.'
+            : 'Current paid access was not shortened.'
+        }}
+      </p>
+    }
+    @if (store.selected(); as payment) {
+      <section class="panel" aria-labelledby="refund-title">
+        <p class="eyebrow">A REASON, A RECORD, A RETURN</p>
+        <h2 id="refund-title">Refund this test payment.</h2>
+        <p>
+          {{ payment.customer }} ·
+          {{ payment.amount | currency: payment.currency : 'code' }} originally paid ·
+          {{ payment.refundedAmount | currency: payment.currency : 'code' }} already refunded.
+        </p>
+        <p>
+          Credit returns to the original test card, including when blocked. Partial refunds keep
+          paid access. A full current-period refund stops Premium and renewal; an earlier period's
+          refund does not end a newer paid period.
+        </p>
+        @if (
+          payment.status === 'Succeeded' &&
+          remaining(payment) > 0 &&
+          payment.userId !== auth.user()?.id
+        ) {
+          <form [formGroup]="refundForm" (ngSubmit)="submitRefund()">
+            <fieldset
+              [disabled]="
+                refunds.busy() || (!!refunds.pending() && refunds.phase() !== 'retryReady')
+              "
+            >
+              <label for="refund-amount">Amount ({{ payment.currency }})</label
+              ><input
+                id="refund-amount"
+                type="number"
+                step="0.01"
+                min="0.01"
+                [max]="remaining(payment)"
+                formControlName="amount"
+              />
+              <label for="refund-reason">Reason for the audit record</label
+              ><textarea
+                id="refund-reason"
+                formControlName="reason"
+                minlength="3"
+                maxlength="500"
+              ></textarea>
+              <label for="refund-password">Your current password</label>
+              <div class="password-row">
+                <input
+                  id="refund-password"
+                  [type]="showPassword() ? 'text' : 'password'"
+                  formControlName="currentPassword"
+                  autocomplete="current-password"
+                  maxlength="128"
+                /><app-password-toggle inputId="refund-password" [(visible)]="showPassword" />
+              </div>
+              <p>
+                Requires a two-factor sign-in within the last five minutes. Your password is not
+                saved.
+              </p>
+              <label
+                ><input type="checkbox" formControlName="confirm" />I confirm this reasoned
+                simulated refund.</label
+              >
+              @if (refundForm.touched && refundForm.invalid) {
+                <p class="error" role="alert">
+                  Check the remaining amount, reason, password and confirmation.
+                </p>
+              }
+              <button class="button button-ink" type="submit">
+                {{
+                  refunds.pending()
+                    ? 'Retry with the same request key ↗'
+                    : 'Confirm simulated refund ↗'
+                }}
+              </button>
+            </fieldset>
+          </form>
+        } @else {
+          <p>
+            This payment cannot be refunded here. Failed, fully refunded and self-approved payments
+            are excluded.
+          </p>
+        }
+      </section>
+    }
+    @if (store.payments(); as page) {
+      <ul class="admin-records">
+        @for (item of page.items; track item.id) {
+          <li class="panel">
+            <h2>{{ item.customer }}</h2>
+            <p>
+              {{ item.status }} · {{ item.amount | currency: item.currency : 'code' }} · Refunded
+              {{ item.refundedAmount | currency: item.currency : 'code' }}
+            </p>
+            <p>{{ item.createdAt | date: 'medium' }} · Card {{ item.cardStatus }}</p>
+            <p class="reference">
+              Payment {{ item.id }} · Order {{ item.orderId }} · Customer {{ item.userId }}
+            </p>
+            <button
+              class="button button-outline"
+              type="button"
+              (click)="select(item)"
+              [disabled]="
+                !!refunds.pending() ||
+                refunds.busy() ||
+                item.status !== 'Succeeded' ||
+                remaining(item) <= 0 ||
+                item.userId === auth.user()?.id
+              "
+            >
+              Review refund ↗
+            </button>
+          </li>
+        } @empty {
+          <li>No payments match these filters.</li>
+        }
+      </ul>
+      <nav class="admin-pages" aria-label="Payment pages">
+        <button
+          type="button"
+          class="text-button"
+          (click)="store.load('payments', page.page - 1)"
+          [disabled]="store.loading() || page.page === 1"
+        >
+          ← Previous</button
+        ><span>Page {{ page.page }} · {{ page.total }} payments</span
+        ><button
+          type="button"
+          class="text-button"
+          (click)="store.load('payments', page.page + 1)"
+          [disabled]="store.loading() || page.page * page.pageSize >= page.total"
+        >
+          Next →
+        </button>
+      </nav>
+    }
+    @if (store.subscriptions(); as page) {
+      <ul class="admin-records">
+        @for (item of page.items; track item.id) {
+          <li class="panel">
+            <h2>{{ item.customer }}</h2>
+            <p>{{ item.planCode }} · {{ item.period }} · {{ item.status }}</p>
+            <p>
+              {{ item.currentPeriodStart | date: 'medium' }} –
+              {{ item.currentPeriodEnd | date: 'medium' }}
+            </p>
+            <p class="reference">Subscription {{ item.id }} · Customer {{ item.userId }}</p>
+            <p>
+              {{
+                item.cancelAtPeriodEnd
+                  ? 'Period-end cancellation saved'
+                  : 'No period-end cancellation'
+              }}
+            </p>
+          </li>
+        } @empty {
+          <li>No subscriptions match these filters.</li>
+        }
+      </ul>
+      <nav class="admin-pages" aria-label="Subscription pages">
+        <button
+          type="button"
+          class="text-button"
+          (click)="store.load('subscriptions', page.page - 1)"
+          [disabled]="store.loading() || page.page === 1"
+        >
+          ← Previous</button
+        ><span>Page {{ page.page }} · {{ page.total }} subscriptions</span
+        ><button
+          type="button"
+          class="text-button"
+          (click)="store.load('subscriptions', page.page + 1)"
+          [disabled]="store.loading() || page.page * page.pageSize >= page.total"
+        >
+          Next →
+        </button>
+      </nav>
+    }
+    @if (store.audit(); as page) {
+      <ul class="admin-records">
+        @for (item of page.items; track item.id) {
+          <li class="panel">
+            <h2>{{ item.action }}</h2>
+            <p>
+              {{ item.occurredAt | date: 'medium' }} ·
+              {{ item.actorId ? 'Authorized account action' : 'System action' }}
+            </p>
+            <p>{{ item.reason }}</p>
+            <p class="reference">
+              {{ item.entityType }} {{ item.entityId }} · Trace {{ item.traceId }}
+            </p>
+          </li>
+        } @empty {
+          <li>No billing audit records match these dates.</li>
+        }
+      </ul>
+      <nav class="admin-pages" aria-label="Billing audit pages">
+        <button
+          type="button"
+          class="text-button"
+          (click)="store.load('audit', page.page - 1)"
+          [disabled]="store.loading() || page.page === 1"
+        >
+          ← Previous</button
+        ><span>Page {{ page.page }} · {{ page.total }} records</span
+        ><button
+          type="button"
+          class="text-button"
+          (click)="store.load('audit', page.page + 1)"
+          [disabled]="store.loading() || page.page * page.pageSize >= page.total"
+        >
+          Next →
+        </button>
+      </nav>
+    }
+  </main>
+</div>

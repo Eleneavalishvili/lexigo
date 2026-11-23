@@ -1,0 +1,50 @@
+<section class="avatar" aria-labelledby="avatar-heading">
+  <div class="portrait">
+    @if (preview() ?? photo(); as src) {
+      <img [src]="src" alt="Profile photo" width="128" height="128" referrerpolicy="no-referrer" />
+    } @else {
+      <span aria-hidden="true">✦</span>
+    }
+  </div>
+  <div>
+    <h3 id="avatar-heading">Profile photo</h3>
+    <p>Choose a PNG, JPEG, or WebP up to 5 MB. We crop it to a square around the centre.</p>
+    <label for="profile-photo">Choose photo</label>
+    <input
+      id="profile-photo"
+      type="file"
+      accept="image/png,image/jpeg,image/webp"
+      [disabled]="busy()"
+      #file
+      (change)="pick(file)"
+    />
+    <div class="actions">
+      @if (preview()) {
+        <button type="button" class="button button-ink" [disabled]="busy()" (click)="save()">
+          Save photo
+        </button>
+        <button
+          type="button"
+          class="button button-outline"
+          [disabled]="busy()"
+          (click)="clearPreview()"
+        >
+          Cancel preview
+        </button>
+      } @else if (photo()) {
+        <button type="button" class="button button-outline" [disabled]="busy()" (click)="remove()">
+          Remove photo
+        </button>
+      }
+    </div>
+    @if (busy()) {
+      <p role="status">Working on your photo…</p>
+    }
+    @if (notice()) {
+      <p role="status">{{ notice() }}</p>
+    }
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+    }
+  </div>
+</section>

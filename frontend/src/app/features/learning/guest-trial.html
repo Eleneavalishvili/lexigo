@@ -1,0 +1,88 @@
+<div class="trial-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a>
+    <a routerLink="/courses">Exit trial ×</a>
+  </header>
+  <main>
+    <p class="eyebrow">A LITTLE TASTE · NO ACCOUNT NEEDED</p>
+    @if (loading()) {
+      <p role="status">Opening your first words…</p>
+    }
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+      @if (!trial()) {
+        <button class="button button-outline" (click)="load()">Try again</button>
+      }
+    }
+    @if (audio.message()) {
+      <p role="status">{{ audio.message() }}</p>
+    }
+    @if (trial(); as lesson) {
+      <h1>{{ lesson.title }}</h1>
+      @if (complete()) {
+        <section class="complete" aria-labelledby="trial-complete">
+          <app-character-cue [character]="companion()" />
+          <h2 id="trial-complete">Your first words, unlocked.</h2>
+          <p>
+            {{ correct() }} of {{ lesson.questions.length }} correct. Every new word is a beginning.
+          </p>
+          <p>This trial awards no XP. Create an account to save your learning progress.</p>
+          <a class="button button-red" [routerLink]="['/learn', lesson.courseId]"
+            >Continue with the full course ↗</a
+          >
+          <button class="button button-outline" (click)="load()">Try again</button>
+        </section>
+      } @else if (!started()) {
+        <p>Learn the words first, then try {{ lesson.questions.length }} picture questions.</p>
+        <app-lesson-intro
+          [courseId]="lesson.courseId"
+          [explanation]="lesson.explanation"
+          (ready)="started.set(true)"
+        />
+      } @else if (question(); as exercise) {
+        <label for="trial-progress"
+          >Question {{ position() + 1 }} of {{ lesson.questions.length }}</label
+        >
+        <progress
+          id="trial-progress"
+          [value]="position() + (feedback() ? 1 : 0)"
+          [max]="lesson.questions.length"
+        ></progress>
+        <h2>{{ exercise.prompt }}</h2>
+        <app-choice-answers
+          [options]="exercise.options"
+          [questionId]="exercise.id"
+          [control]="answer"
+          [pictures]="true"
+          [disabled]="checking() || !!feedback()"
+          [feedback]="feedback()"
+          (spoken)="speak($event)"
+        />
+        @if (feedback(); as result) {
+          <section class="feedback" [class.incorrect]="!result.isCorrect" role="status">
+            <h3>{{ result.isCorrect ? 'Nicely done!' : 'Keep going — here’s the answer.' }}</h3>
+            <p>{{ result.correctAnswer }}</p>
+            <p>{{ result.explanation }}</p>
+            <app-pronunciation-button [text]="result.correctAnswer" [courseId]="lesson.courseId" />
+            <button class="button button-red" (click)="next()">Continue →</button>
+          </section>
+        } @else {
+          <button
+            class="button button-red check"
+            [disabled]="!answer.value || checking()"
+            (click)="check()"
+          >
+            {{ checking() ? 'Checking…' : 'Check answer' }}
+          </button>
+          @if (error()) {
+            <button class="button button-outline" (click)="load()">Restart trial</button>
+          }
+        }
+      }
+      <p class="trial-note">
+        Trial progress resets when you leave. <a routerLink="/register">Create an account</a> to
+        save full lessons.
+      </p>
+    }
+  </main>
+</div>

@@ -1,0 +1,21 @@
+section {
+  padding: 1rem;
+  border: 1px solid currentColor;
+  border-radius: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.passage {
+  white-space: pre-wrap;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+button {
+  min-block-size: 44px;
+  font: inherit;
+}

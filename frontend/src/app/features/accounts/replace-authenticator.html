@@ -1,0 +1,106 @@
+<app-account-shell>
+  <p class="eyebrow">A FRESH KEY TO YOUR LITTLE WORLD</p>
+  <h1>A new <em>authenticator.</em></h1>
+  @if (loading()) {
+    <p class="form-description" role="status">Finding your security settings…</p>
+  } @else if (enabled() === null) {
+    <p class="form-error" role="alert">{{ error() }}</p>
+    <button class="button button-ink" type="button" (click)="load()">Try again ↗</button>
+  } @else if (!enabled()) {
+    <p class="form-description">
+      Your account doesn’t have an active authenticator yet. Set up your first one before you need
+      to replace it.
+    </p>
+    <a class="button button-ink" routerLink="/account/security"
+      >Set up two-factor authentication ↗</a
+    >
+  } @else if (recoveryCodes().length) {
+    <p class="form-description" role="status">
+      Your authenticator is replaced. Two-factor authentication is still on. All devices are signed
+      out; the old app and previous recovery codes no longer work.
+    </p>
+    <h2 class="recovery-heading">Keep these somewhere safe.</h2>
+    <p class="field-help">
+      Each recovery code works once with your password. Save these now; they won’t be shown again.
+    </p>
+    <ul class="recovery-codes">
+      @for (code of recoveryCodes(); track code) {
+        <li>
+          <code>{{ code }}</code>
+        </li>
+      }
+    </ul>
+    <p class="field-help">Use a fresh code from the new authenticator when signing in.</p>
+    <a class="button button-red" routerLink="/login">I saved my codes. Sign in ↗</a>
+  } @else {
+    <p class="form-description">
+      Lost or changed your phone? Sign in using your password and an authenticator or unused
+      recovery code, then start here within five minutes. Your current protection stays on until the
+      new app is verified.
+    </p>
+    <p class="field-help">
+      A recovery code used for that sign-in is enough—even if it was your last one. You don’t need
+      another old code here.
+    </p>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="field">
+        <label for="replacement-password">Your current password</label>
+        <div class="password-field">
+          <input
+            id="replacement-password"
+            formControlName="currentPassword"
+            [type]="showPassword() ? 'text' : 'password'"
+            autocomplete="current-password"
+            maxlength="128"
+          /><app-password-toggle inputId="replacement-password" [(visible)]="showPassword" />
+        </div>
+      </div>
+      @if (setup(); as pending) {
+        <div class="setup-note">
+          <p>
+            Add a time-based account named LexiGo to your new authenticator app, using this private
+            setup key:
+          </p>
+          <code class="shared-key">{{ pending.sharedKey }}</code>
+          <p>
+            Finish by {{ pending.expiresAt | date: 'shortTime' }}. Your old authenticator stays
+            active until confirmation.
+          </p>
+        </div>
+        <div class="field">
+          <label for="replacement-code">Code from the new authenticator</label
+          ><input
+            id="replacement-code"
+            formControlName="code"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            maxlength="6"
+          />
+        </div>
+      }
+      @if (form.touched && form.invalid) {
+        <p class="field-error">
+          Enter your current password and, when requested, the new app’s six-digit code.
+        </p>
+      }
+      @if (error()) {
+        <p class="form-error" role="alert">{{ error() }}</p>
+      }
+      <button class="button button-red submit-button" [disabled]="working()" type="submit">
+        {{
+          working()
+            ? 'Keeping things safe…'
+            : setup()
+              ? 'Verify and replace authenticator'
+              : 'Set up a replacement'
+        }}
+        ↗
+      </button>
+    </form>
+    <p class="small-print"><a routerLink="/account/security">↖ Keep my current authenticator</a></p>
+    <p class="field-help">
+      If you have neither a working authenticator nor any recovery codes, this page cannot bypass
+      sign-in. Contact support for the recovery process.
+    </p>
+  }
+</app-account-shell>

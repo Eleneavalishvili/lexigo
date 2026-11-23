@@ -1,0 +1,36 @@
+.reports {
+  max-width: 52rem;
+  margin: 2rem auto;
+  padding: 0 1rem 2rem;
+  overflow-wrap: anywhere;
+}
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-block: 1rem;
+}
+form {
+  display: grid;
+  gap: 0.6rem;
+}
+select,
+textarea {
+  width: 100%;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 0.4rem;
+  padding: 0.6rem;
+  font: inherit;
+}
+textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}

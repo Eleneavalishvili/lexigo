@@ -1,0 +1,42 @@
+.settings {
+  max-width: 48rem;
+  margin: 2rem auto;
+  padding: 0 1rem 2rem;
+}
+form,
+fieldset {
+  display: grid;
+  gap: 0.8rem;
+}
+form {
+  margin-top: 1rem;
+}
+fieldset {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 0.7rem;
+  padding: 0.85rem;
+}
+label {
+  display: grid;
+  gap: 0.25rem;
+}
+.days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+.days label {
+  display: inline-flex;
+  align-items: center;
+}
+input:not([type='checkbox']),
+textarea {
+  min-width: 0;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 0.4rem;
+  padding: 0.5rem;
+  font: inherit;
+}

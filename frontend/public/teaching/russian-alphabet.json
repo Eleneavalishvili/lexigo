@@ -1,0 +1,299 @@
+[
+  {
+    "upper": "А",
+    "lower": "а",
+    "name": "а",
+    "audioText": "Это буква а.",
+    "example": "арбуз",
+    "meaning": "watermelon",
+    "note": ""
+  },
+  {
+    "upper": "Б",
+    "lower": "б",
+    "name": "бэ",
+    "audioText": "Это буква бэ.",
+    "example": "банк",
+    "meaning": "bank",
+    "note": ""
+  },
+  {
+    "upper": "В",
+    "lower": "в",
+    "name": "вэ",
+    "audioText": "Это буква вэ.",
+    "example": "вода",
+    "meaning": "water",
+    "note": ""
+  },
+  {
+    "upper": "Г",
+    "lower": "г",
+    "name": "гэ",
+    "audioText": "Это буква гэ.",
+    "example": "город",
+    "meaning": "city",
+    "note": ""
+  },
+  {
+    "upper": "Д",
+    "lower": "д",
+    "name": "дэ",
+    "audioText": "Это буква дэ.",
+    "example": "дом",
+    "meaning": "house",
+    "note": ""
+  },
+  {
+    "upper": "Е",
+    "lower": "е",
+    "name": "е",
+    "audioText": "Это буква е.",
+    "example": "ель",
+    "meaning": "spruce tree",
+    "note": "Е and Ё are different letters. Listen to each name and compare their examples."
+  },
+  {
+    "upper": "Ё",
+    "lower": "ё",
+    "name": "ё",
+    "audioText": "Это буква ё.",
+    "example": "ёлка",
+    "meaning": "Christmas tree",
+    "note": "Keep both dots: Ё is a separate letter from Е, including in typed answers."
+  },
+  {
+    "upper": "Ж",
+    "lower": "ж",
+    "name": "жэ",
+    "audioText": "Это буква жэ.",
+    "example": "жук",
+    "meaning": "beetle",
+    "note": ""
+  },
+  {
+    "upper": "З",
+    "lower": "з",
+    "name": "зэ",
+    "audioText": "Это буква зэ.",
+    "example": "зима",
+    "meaning": "winter",
+    "note": ""
+  },
+  {
+    "upper": "И",
+    "lower": "и",
+    "name": "и",
+    "audioText": "Это буква и.",
+    "example": "игра",
+    "meaning": "game",
+    "note": ""
+  },
+  {
+    "upper": "Й",
+    "lower": "й",
+    "name": "и краткое",
+    "audioText": "Это буква и краткое.",
+    "example": "йогурт",
+    "meaning": "yogurt",
+    "note": "Й and И are different letters. The short mark belongs to Й."
+  },
+  {
+    "upper": "К",
+    "lower": "к",
+    "name": "ка",
+    "audioText": "Это буква ка.",
+    "example": "кот",
+    "meaning": "cat",
+    "note": ""
+  },
+  {
+    "upper": "Л",
+    "lower": "л",
+    "name": "эль",
+    "audioText": "Это буква эль.",
+    "example": "лампа",
+    "meaning": "lamp",
+    "note": ""
+  },
+  {
+    "upper": "М",
+    "lower": "м",
+    "name": "эм",
+    "audioText": "Это буква эм.",
+    "example": "мама",
+    "meaning": "mother",
+    "note": ""
+  },
+  {
+    "upper": "Н",
+    "lower": "н",
+    "name": "эн",
+    "audioText": "Это буква эн.",
+    "example": "нос",
+    "meaning": "nose",
+    "note": ""
+  },
+  {
+    "upper": "О",
+    "lower": "о",
+    "name": "о",
+    "audioText": "Это буква о.",
+    "example": "окно",
+    "meaning": "window",
+    "note": ""
+  },
+  {
+    "upper": "П",
+    "lower": "п",
+    "name": "пэ",
+    "audioText": "Это буква пэ.",
+    "example": "парк",
+    "meaning": "park",
+    "note": ""
+  },
+  {
+    "upper": "Р",
+    "lower": "р",
+    "name": "эр",
+    "audioText": "Это буква эр.",
+    "example": "рыба",
+    "meaning": "fish",
+    "note": ""
+  },
+  {
+    "upper": "С",
+    "lower": "с",
+    "name": "эс",
+    "audioText": "Это буква эс.",
+    "example": "суп",
+    "meaning": "soup",
+    "note": ""
+  },
+  {
+    "upper": "Т",
+    "lower": "т",
+    "name": "тэ",
+    "audioText": "Это буква тэ.",
+    "example": "три",
+    "meaning": "three",
+    "note": ""
+  },
+  {
+    "upper": "У",
+    "lower": "у",
+    "name": "у",
+    "audioText": "Это буква у.",
+    "example": "утка",
+    "meaning": "duck",
+    "note": ""
+  },
+  {
+    "upper": "Ф",
+    "lower": "ф",
+    "name": "эф",
+    "audioText": "Это буква эф.",
+    "example": "фото",
+    "meaning": "photo",
+    "note": ""
+  },
+  {
+    "upper": "Х",
+    "lower": "х",
+    "name": "ха",
+    "audioText": "Это буква ха.",
+    "example": "хлеб",
+    "meaning": "bread",
+    "note": ""
+  },
+  {
+    "upper": "Ц",
+    "lower": "ц",
+    "name": "цэ",
+    "audioText": "Это буква цэ.",
+    "example": "цветок",
+    "meaning": "flower",
+    "note": ""
+  },
+  {
+    "upper": "Ч",
+    "lower": "ч",
+    "name": "че",
+    "audioText": "Это буква че.",
+    "example": "чай",
+    "meaning": "tea",
+    "note": ""
+  },
+  {
+    "upper": "Ш",
+    "lower": "ш",
+    "name": "ша",
+    "audioText": "Это буква ша.",
+    "example": "школа",
+    "meaning": "school",
+    "note": ""
+  },
+  {
+    "upper": "Щ",
+    "lower": "щ",
+    "name": "ща",
+    "audioText": "Это буква ща.",
+    "example": "щётка",
+    "meaning": "brush",
+    "note": "Щ is different from Ш. Compare their names and example words."
+  },
+  {
+    "upper": "Ъ",
+    "lower": "ъ",
+    "name": "твёрдый знак",
+    "audioText": "Это твёрдый знак.",
+    "example": "подъезд",
+    "meaning": "building entrance",
+    "note": "The hard sign has no independent sound. It separates a consonant from a following vowel in words such as подъезд."
+  },
+  {
+    "upper": "Ы",
+    "lower": "ы",
+    "name": "ы",
+    "audioText": "Это буква ы.",
+    "example": "сыр",
+    "meaning": "cheese",
+    "note": "Ы is a vowel distinct from И. Compare their names and examples."
+  },
+  {
+    "upper": "Ь",
+    "lower": "ь",
+    "name": "мягкий знак",
+    "audioText": "Это мягкий знак.",
+    "example": "день",
+    "meaning": "day",
+    "note": "The soft sign has no independent sound. It often marks the preceding consonant as soft."
+  },
+  {
+    "upper": "Э",
+    "lower": "э",
+    "name": "э",
+    "audioText": "Это буква э.",
+    "example": "это",
+    "meaning": "this",
+    "note": ""
+  },
+  {
+    "upper": "Ю",
+    "lower": "ю",
+    "name": "ю",
+    "audioText": "Это буква ю.",
+    "example": "юг",
+    "meaning": "south",
+    "note": ""
+  },
+  {
+    "upper": "Я",
+    "lower": "я",
+    "name": "я",
+    "audioText": "Это буква я.",
+    "example": "яблоко",
+    "meaning": "apple",
+    "note": ""
+  }
+]

@@ -1,0 +1,89 @@
+<form [formGroup]="form" (ngSubmit)="save()">
+  <fieldset [disabled]="saving()">
+    <legend>{{ existing() ? 'Edit assignment' : 'Create an assignment' }}</legend>
+    <label for="assignment-name">Title</label>
+    <input id="assignment-name" formControlName="title" maxlength="120" required />
+    <label for="assignment-deadline">Deadline (your local time)</label>
+    <input id="assignment-deadline" type="datetime-local" formControlName="dueAt" required />
+    <label for="assignment-score">Minimum score (%)</label>
+    <input
+      id="assignment-score"
+      type="number"
+      min="0"
+      max="100"
+      step="1"
+      formControlName="minimumScore"
+      required
+    />
+
+    <label for="assignment-unit">Find published lessons by unit</label>
+    <select
+      id="assignment-unit"
+      #unitPicker
+      [value]="unit()"
+      [disabled]="catalogLoading()"
+      (change)="loadLessons(unitPicker.value)"
+    >
+      <option value="">Choose a unit</option>
+      @for (item of units(); track item.id) {
+        <option [value]="item.id">{{ item.title }}</option>
+      }
+    </select>
+    @if (catalogLoading()) {
+      <p role="status">Loading the course catalog…</p>
+    }
+    @if (catalogError()) {
+      <p role="alert">{{ catalogError() }}</p>
+      <button
+        class="text-button"
+        type="button"
+        (click)="unit() ? loadLessons(unit()) : loadUnits()"
+      >
+        Retry catalog
+      </button>
+    }
+    @if (unit() && !catalogLoading() && !catalogError()) {
+      @for (lesson of lessons(); track lesson.id) {
+        <label class="lesson-option">
+          <input
+            type="checkbox"
+            [checked]="contains(lesson.id)"
+            [disabled]="selected().length >= 20 && !contains(lesson.id)"
+            (change)="toggle(lesson)"
+          />
+          {{ lesson.title }}
+        </label>
+      } @empty {
+        <p>No published lessons in this unit.</p>
+      }
+    }
+    <p aria-live="polite">{{ selected().length }} of 20 lessons selected</p>
+    @if (selected().length) {
+      <ul class="class-list">
+        @for (lesson of selected(); track lesson.id) {
+          <li>
+            {{ lesson.title }}
+            <button
+              class="text-button"
+              type="button"
+              (click)="toggle(lesson)"
+              [attr.aria-label]="'Remove ' + lesson.title"
+            >
+              Remove
+            </button>
+          </li>
+        }
+      </ul>
+    }
+
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+    }
+    <div class="actions">
+      <button class="button button-outline" type="button" (click)="cancelled.emit()">Cancel</button>
+      <button class="button button-red" type="submit">
+        {{ saving() ? 'Saving…' : existing() ? 'Save changes' : 'Create assignment' }}
+      </button>
+    </div>
+  </fieldset>
+</form>

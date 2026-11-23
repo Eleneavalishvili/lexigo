@@ -1,0 +1,150 @@
+.catalog-wrap {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem 2.5rem;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+header > a:last-child {
+  font-size: 0.8rem;
+}
+header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.8rem;
+}
+main {
+  margin-block: 5rem;
+}
+h1 {
+  font-size: clamp(2.7rem, 6vw, 5.3rem);
+  line-height: 1.1;
+}
+h2 {
+  font-size: 2.2rem;
+}
+.intro {
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 570px;
+}
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.4rem;
+  margin-block: 3rem;
+}
+.course-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  text-align: left;
+  padding: 2rem;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.course-card[aria-pressed='true'] {
+  border: 2px solid var(--ink);
+}
+.course-card p {
+  line-height: 1.8;
+  color: var(--muted);
+}
+.course-card > span:last-child {
+  font-size: 0.8rem;
+}
+.empty {
+  grid-column: 1/-1;
+  max-width: 720px;
+  border-top: 1px solid var(--ink);
+  padding-top: 2rem;
+}
+.empty p {
+  line-height: 1.9;
+}
+.course-detail {
+  border-top: 2px solid var(--ink);
+  padding-top: 2rem;
+}
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(230px, 1fr) minmax(0, 2fr);
+  gap: 2rem;
+}
+nav button,
+.lesson-list button {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  padding: 1rem;
+  cursor: pointer;
+  margin-bottom: 0.7rem;
+}
+nav button[aria-pressed='true'],
+.lesson-list button[aria-expanded='true'] {
+  border: 2px solid var(--ink);
+}
+nav strong,
+nav span,
+.lesson-list span,
+.lesson-list small {
+  display: block;
+  margin-top: 0.5rem;
+}
+nav span,
+.lesson-list span {
+  font-size: 0.8rem;
+  line-height: 1.7;
+}
+small,
+.help {
+  font-size: 0.7rem;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.lesson-list {
+  list-style: none;
+  padding: 0;
+}
+.lesson-note {
+  border-top: 1px solid var(--line);
+  margin-top: 2rem;
+  padding-top: 2rem;
+}
+.explanation {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.9;
+  margin-block: 1.5rem;
+}
+.error {
+  color: var(--red);
+  line-height: 1.8;
+}
+footer {
+  border-top: 1px solid var(--line);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  padding-block: 2rem;
+}
+@media (max-width: 700px) {
+  .catalog-wrap {
+    padding: 1.5rem;
+  }
+  .course-grid,
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+  main {
+    margin-block: 3rem;
+  }
+}

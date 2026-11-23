@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="LanguageLearning.Api/LanguageLearning.Api.csproj" />
+  <Project Path="LanguageLearning.Core/LanguageLearning.Core.csproj" />
+  <Project Path="LanguageLearning.Infrastructure/LanguageLearning.Infrastructure.csproj" />
+  <Project Path="LanguageLearning.Tests/LanguageLearning.Tests.csproj" />
+</Solution>

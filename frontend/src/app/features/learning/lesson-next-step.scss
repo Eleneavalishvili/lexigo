@@ -1,0 +1,31 @@
+section {
+  margin-block: 1.6rem;
+  padding-block: 1.2rem;
+  border-block: 1px solid var(--line);
+}
+h3 {
+  font-size: 1.4rem;
+}
+p {
+  line-height: 1.7;
+}
+.repeat-actions {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.small {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+@media (max-width: 540px) {
+  .button {
+    width: 100%;
+    justify-content: center;
+  }
+}

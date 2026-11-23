@@ -1,0 +1,95 @@
+<main class="setup" [attr.aria-busy]="busy()">
+  <header>
+    <a routerLink="/learn" aria-label="Back to your languages"><app-brand-logo /></a>
+  </header>
+  <progress [value]="step() + 1" max="2" aria-label="Learning setup progress"></progress>
+  <div class="guide">
+    <app-character-cue [character]="companion()" />
+    <h1>{{ step() === 0 ? 'What’s your daily learning goal?' : 'Let’s find your first step.' }}</h1>
+  </div>
+  <p class="course-title">{{ title() }}</p>
+  @if (busy() && !courseReady()) {
+    <p role="status">Opening your course…</p>
+  }
+  @if (error()) {
+    <p role="alert">{{ error() }}</p>
+    @if (!courseReady()) {
+      <button
+        class="button button-outline"
+        type="button"
+        (click)="retryCourse()"
+        [disabled]="busy()"
+      >
+        Try loading course again
+      </button>
+    }
+  }
+  @if (step() === 0) {
+    <div class="choices" role="group" aria-label="Daily learning goal">
+      @for (option of goals; track option.xp) {
+        <button
+          type="button"
+          [class.selected]="goal() === option.xp"
+          [attr.aria-pressed]="goal() === option.xp"
+          (click)="goal.set(option.xp)"
+          [disabled]="busy() || !courseReady()"
+        >
+          <strong>{{ option.xp }} XP / day</strong>
+          <span>{{ option.label }}</span>
+        </button>
+      }
+    </div>
+    <p class="note">
+      Your goal combines XP from all your languages. Each lesson ends when you finish its exercises.
+    </p>
+    <footer>
+      <button
+        type="button"
+        class="button button-red"
+        (click)="step.set(1)"
+        [disabled]="busy() || !courseReady() || goal() === null"
+      >
+        Continue →
+      </button>
+    </footer>
+  } @else {
+    <div class="choices" role="group" aria-label="Where to start">
+      <button
+        type="button"
+        [class.selected]="start() === 'scratch'"
+        [attr.aria-pressed]="start() === 'scratch'"
+        (click)="start.set('scratch')"
+        [disabled]="busy() || !courseReady()"
+      >
+        <strong>Start from scratch</strong
+        ><span>Begin with pictures and your first words. No previous knowledge needed.</span>
+      </button>
+      <button
+        type="button"
+        [class.selected]="start() === 'placement'"
+        [attr.aria-pressed]="start() === 'placement'"
+        (click)="start.set('placement')"
+        [disabled]="busy() || !courseReady()"
+      >
+        <strong>Find my level</strong
+        ><span>Take the course check and review a recommended starting unit.</span>
+      </button>
+    </div>
+    <p class="note">
+      Your existing lessons and progress stay saved. The course check uses no hearts or XP.
+    </p>
+    <footer>
+      <button type="button" class="button button-outline" (click)="step.set(0)" [disabled]="busy()">
+        ← Back
+      </button>
+      <button
+        type="button"
+        class="button button-red"
+        (click)="begin()"
+        [disabled]="busy() || !courseReady()"
+      >
+        {{ busy() ? 'Opening your first step…' : 'Let’s begin →' }}
+      </button>
+    </footer>
+  }
+</main>

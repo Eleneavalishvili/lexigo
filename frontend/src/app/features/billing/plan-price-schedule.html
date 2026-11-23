@@ -1,0 +1,28 @@
+<details>
+  <summary>Schedule a simulated price</summary>
+  <p>
+    Existing orders keep their quoted amount. Renewal at a retired price stops for manual retry.
+  </p>
+  <form [formGroup]="form" (ngSubmit)="schedule()">
+    <fieldset [disabled]="busy() || !!pending()">
+      <legend>New price</legend>
+      <label
+        >Amount <input type="number" formControlName="amount" min="0.01" max="10000" step="0.01"
+      /></label>
+      <label
+        >Effective time (your local time) <input type="datetime-local" formControlName="startsAt"
+      /></label>
+      <label>Reason <textarea formControlName="reason" maxlength="500"></textarea></label>
+    </fieldset>
+    <label
+      >Current password
+      <input type="password" formControlName="currentPassword" autocomplete="current-password"
+    /></label>
+    @if (message()) {
+      <p role="alert">{{ message() }}</p>
+    }
+    <button class="button button-outline" type="submit" [disabled]="busy() || form.invalid">
+      {{ pending() && !busy() ? 'Retry price change' : 'Schedule price change' }}
+    </button>
+  </form>
+</details>

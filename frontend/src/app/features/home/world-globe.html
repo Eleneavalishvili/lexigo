@@ -1,0 +1,135 @@
+<section class="wrap" aria-labelledby="globe-title">
+  <div class="globe-panel">
+    <div class="details">
+      <p class="eyebrow">THE LANGUAGE ATLAS</p>
+      <h2 id="globe-title">A world of <em>words.</em></h2>
+      <p>Spin the Earth, drag to turn it, or choose a place to see its listed languages.</p>
+      @if (status() !== 'ready') {
+        <button
+          class="button button-ink"
+          type="button"
+          (click)="open()"
+          [disabled]="status() === 'loading'"
+        >
+          {{ status() === 'loading' ? 'Opening the atlas…' : 'Open the globe' }}
+        </button>
+      }
+      @if (status() === 'error') {
+        <p role="alert">The atlas couldn’t load. Try opening it again.</p>
+      }
+      @if (status() === 'ready') {
+        <label for="globe-search">Search by country or language</label>
+        <input
+          id="globe-search"
+          #searchInput
+          type="search"
+          autocomplete="off"
+          placeholder="Try Georgia or Spanish"
+          (input)="search.set(searchInput.value)"
+        />
+        @if (search().trim()) {
+          <p class="search-result" role="status">
+            @if (!matchingPlaces().length) {
+              No matching places. Try another country or language.
+            } @else {
+              {{ matchingPlaces().length }}
+              {{ matchingPlaces().length === 1 ? 'match' : 'matches' }}
+            }
+          </p>
+          @if (matchingPlaces().length) {
+            <ul class="search-matches" aria-label="Search results">
+              @for (place of matchingPlaces(); track place.id) {
+                <li>
+                  <button
+                    type="button"
+                    [attr.aria-pressed]="selected()?.id === place.id"
+                    (click)="choose(place.id)"
+                  >
+                    <strong>{{ place.name }}</strong>
+                    @if (place.languages.length) {
+                      <span>{{ place.languages.join(', ') }}</span>
+                    }
+                  </button>
+                </li>
+              }
+            </ul>
+          }
+        } @else {
+          <label for="globe-country">Choose a country or territory</label>
+          <select
+            id="globe-country"
+            #country
+            [value]="selected()?.id ?? ''"
+            (change)="choose(country.value)"
+          >
+            <option value="">Choose a place</option>
+            @for (place of matchingPlaces(); track place.id) {
+              <option [value]="place.id" [selected]="place.id === selected()?.id">
+                {{ place.name }}
+              </option>
+            }
+          </select>
+        }
+        <p class="source-note">
+          Language lists are a starting point. Many places speak more languages than shown.
+        </p>
+        <p class="source-note">
+          Map by <a href="https://www.naturalearthdata.com/">Natural Earth</a>. Country and language
+          data from <a href="https://github.com/mledoze/countries">World Countries</a> under
+          <a href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL 1.0</a>.
+          <a href="world-languages.json" download>Download atlas data</a>.
+        </p>
+      }
+    </div>
+    <div class="stage">
+      @if (status() === 'ready') {
+        <div class="country-note" aria-live="polite" aria-atomic="true">
+          @if (selected(); as place) {
+            <h3>{{ place.name }}</h3>
+            @if (place.languages.length) {
+              <p class="language-label">Languages</p>
+              <ul aria-label="Listed languages">
+                @for (language of place.languages; track $index) {
+                  <li>{{ language }}</li>
+                }
+              </ul>
+            } @else {
+              <p>No languages are listed for this territory.</p>
+            }
+          } @else {
+            <p>Tap a country on the globe to see its languages.</p>
+          }
+        </div>
+      }
+      <canvas
+        #map
+        width="1000"
+        height="1000"
+        [hidden]="status() !== 'ready'"
+        aria-hidden="true"
+        (pointerdown)="grab($event, map)"
+        (pointermove)="move($event, map)"
+        (pointerup)="release($event, map)"
+        (lostpointercapture)="release($event, map)"
+      ></canvas>
+      @if (status() === 'ready') {
+        <div class="controls" role="group" aria-label="Globe rotation">
+          <button type="button" class="button" (click)="turn(20)" aria-label="Turn globe left">
+            ←
+          </button>
+          <button type="button" class="button button-ink" (click)="toggleSpin()">
+            {{ spinning() ? 'Pause' : 'Spin' }}
+          </button>
+          <button type="button" class="button" (click)="turn(-20)" aria-label="Turn globe right">
+            →
+          </button>
+          <button type="button" class="button" (click)="direction.set(-direction())">
+            Reverse direction
+          </button>
+        </div>
+      } @else {
+        <div class="globe-placeholder" aria-hidden="true">◎</div>
+      }
+    </div>
+  </div>
+</section>

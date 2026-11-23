@@ -1,0 +1,80 @@
+name: LexiGo checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lexigo-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6.1.0
+        with:
+          global-json-file: global.json
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: "22.21.0"
+          package-manager-cache: false
+      - name: Scan source for secrets
+        shell: pwsh
+        run: ./scripts/Verify-Secrets.ps1
+      - name: Restore backend packages
+        run: dotnet restore backend/LexiGo.slnx --locked-mode
+      - name: Build backend
+        run: dotnet build backend/LexiGo.slnx --configuration Release --no-restore
+      - name: Check database model against migrations
+        run: |
+          dotnet tool restore
+          dotnet ef migrations has-pending-model-changes --no-build --configuration Release --project backend/LanguageLearning.Infrastructure --startup-project backend/LanguageLearning.Api
+      - name: Test backend
+        run: dotnet test backend/LanguageLearning.Tests --configuration Release --no-build --no-restore
+      - name: Verify database recovery
+        shell: pwsh
+        run: ./scripts/Verify-DatabaseRestore.ps1
+      - name: Install locked frontend dependencies
+        working-directory: frontend
+        run: |
+          npm install --global npm@11.6.2
+          npm ci
+      - name: Check frontend formatting
+        working-directory: frontend
+        run: npm run format:check
+      - name: Lint frontend
+        working-directory: frontend
+        run: npm run lint
+      - name: Test frontend
+        working-directory: frontend
+        run: npm test -- --watch=false
+      - name: Build frontend
+        working-directory: frontend
+        run: npm run build
+      - name: Verify the Nginx HTTPS configuration
+        shell: pwsh
+        run: ./scripts/Verify-NginxEdge.ps1
+      - name: Build the production API image
+        run: docker build --file backend/LanguageLearning.Api/Dockerfile --tag lexigo-api:ci .
+      - name: Verify the production API through HTTPS
+        shell: pwsh
+        run: ./scripts/Verify-NginxEdge.ps1 -ApiImage lexigo-api:ci
+      - name: Install Chromium for browser tests
+        working-directory: frontend
+        run: npx playwright install --with-deps chromium
+      - name: Test learner and staff browser workflows
+        shell: pwsh
+        run: ./scripts/Verify-LearnerBrowser.ps1
+      - name: Audit dependencies
+        shell: pwsh
+        run: ./scripts/Verify-Dependencies.ps1

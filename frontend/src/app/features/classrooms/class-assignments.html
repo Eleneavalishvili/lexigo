@@ -1,0 +1,179 @@
+<section class="panel" aria-labelledby="assignments-title">
+  <div class="actions">
+    <h2 id="assignments-title">Assignments</h2>
+    <button
+      class="text-button"
+      type="button"
+      (click)="load(page()?.page ?? 1)"
+      [disabled]="busy() || formMode() !== null"
+    >
+      Refresh assignments
+    </button>
+  </div>
+
+  @if (notice()) {
+    <p role="status">{{ notice() }}</p>
+  }
+  @if (loading() || opening()) {
+    <p role="status">Loading assignments…</p>
+  }
+  @if (error()) {
+    <p role="alert">{{ error() }}</p>
+  }
+
+  @if (canManage()) {
+    @if (formMode()) {
+      <app-assignment-form
+        [classroom]="classroom()"
+        [existing]="formMode() === 'edit' ? assignment() : null"
+        (saved)="saved($event)"
+        (cancelled)="formMode.set(null)"
+      />
+    } @else {
+      <button
+        class="button button-red"
+        type="button"
+        (click)="formMode.set('create')"
+        [disabled]="loading() || opening()"
+      >
+        New assignment
+      </button>
+      @if (assignment()) {
+        <button class="button button-outline" type="button" (click)="formMode.set('edit')">
+          Edit assignment
+        </button>
+      }
+    }
+  }
+
+  @if (page(); as result) {
+    <ul class="class-list">
+      @for (item of result.items; track item.id) {
+        <li>
+          <button
+            class="text-button"
+            type="button"
+            [disabled]="busy() || formMode() !== null"
+            (click)="open(item.id)"
+          >
+            {{ item.title }}
+          </button>
+          <span
+            >Due {{ item.dueAt | date: 'medium' }} · Minimum score {{ item.minimumScore }}%</span
+          >
+        </li>
+      } @empty {
+        <li>No assignments on this page.</li>
+      }
+    </ul>
+    @if (result.totalCount > result.pageSize || result.page > 1) {
+      <div class="actions">
+        <button
+          class="button button-outline"
+          type="button"
+          [disabled]="result.page <= 1 || busy() || formMode() !== null"
+          (click)="load(result.page - 1)"
+        >
+          Previous
+        </button>
+        <span>Page {{ result.page }}</span>
+        <button
+          class="button button-outline"
+          type="button"
+          [disabled]="
+            result.page * result.pageSize >= result.totalCount || busy() || formMode() !== null
+          "
+          (click)="load(result.page + 1)"
+        >
+          Next
+        </button>
+      </div>
+    }
+  }
+
+  @if (assignment(); as detail) {
+    <section class="assignment-detail">
+      <h3>{{ detail.title }}</h3>
+      <p>Due {{ detail.dueAt | date: 'medium' }} · Minimum score {{ detail.minimumScore }}%</p>
+      @if (classroom().isTeacher) {
+        <button
+          class="button button-outline"
+          type="button"
+          [attr.aria-expanded]="showResults()"
+          (click)="showResults.set(!showResults())"
+        >
+          {{ showResults() ? 'Hide class results' : 'View class results' }}
+        </button>
+        @if (showResults()) {
+          <app-assignment-results [assignmentId]="detail.id" />
+        }
+      }
+      <ul class="class-list">
+        @for (lesson of detail.lessons; track lesson.id) {
+          <li class="actions">
+            <span>{{ lesson.title }}</span>
+            @if (!lesson.isPublished) {
+              <span>Unavailable</span>
+            } @else if (!classroom().isTeacher) {
+              <button
+                class="button button-outline"
+                type="button"
+                [disabled]="busy()"
+                (click)="start(lesson)"
+                [attr.aria-label]="'Open lesson: ' + lesson.title"
+              >
+                Open lesson
+              </button>
+            }
+            @for (attempt of detail.learnerWork?.submitted ?? []; track attempt.lessonId) {
+              @if (attempt.lessonId === lesson.id) {
+                <p>
+                  Latest submission: {{ attempt.score }}% ·
+                  {{ attempt.submittedAt | date: 'medium' }}
+                  @if (attempt.isLate) {
+                    <strong> · Late</strong>
+                  }
+                </p>
+              }
+            }
+            @for (attempt of detail.learnerWork?.available ?? []; track attempt.sessionId) {
+              @if (attempt.lessonId === lesson.id) {
+                <p>Completed {{ attempt.completedAt | date: 'medium' }} · {{ attempt.score }}%</p>
+                <button
+                  class="button button-red"
+                  type="button"
+                  (click)="submit(attempt)"
+                  [disabled]="busy()"
+                  [attr.aria-label]="'Submit attempt for ' + lesson.title"
+                >
+                  Submit attempt
+                </button>
+              }
+            }
+          </li>
+        }
+      </ul>
+      @if (!classroom().isTeacher && !classroom().isArchived) {
+        <p>Return here after completing an assigned lesson to submit your score to your teacher.</p>
+      }
+      @if (detail.learnerWork?.feedback?.length) {
+        <h4>Recent teacher feedback</h4>
+        <ul class="class-list">
+          @for (note of detail.learnerWork?.feedback; track $index) {
+            <li>
+              <strong>
+                @for (lesson of detail.lessons; track lesson.id) {
+                  @if (lesson.id === note.lessonId) {
+                    {{ lesson.title }} ·
+                  }
+                }
+                {{ note.score }}% · {{ note.createdAt | date: 'medium' }}
+              </strong>
+              <p class="feedback-message">{{ note.message }}</p>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+  }
+</section>

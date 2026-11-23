@@ -1,0 +1,92 @@
+<section class="spoken-card" aria-label="Spoken word check">
+  <p class="eyebrow">LISTEN. SAY IT. LET’S TRY.</p>
+  <p>
+    Listen to the phrase, then say it yourself. We check the words we recognize, without assigning a
+    pronunciation score.
+  </p>
+  @if (audio(); as referenceAudio) {
+    <app-lesson-audio
+      [sessionId]="sessionId()"
+      [exerciseId]="exerciseId()"
+      [audio]="referenceAudio"
+      (starting)="beforeReference()"
+    />
+  }
+  <p class="retry-rule">
+    {{
+      preview()
+        ? 'Preview checks do not use hearts or save learner progress.'
+        : practice()
+          ? 'Free practice: retries never use hearts.'
+          : unlimited()
+            ? 'Premium: retries do not use hearts.'
+            : misses() === 0
+              ? 'Your first unsuccessful check is free. Further unsuccessful checks use one heart each.'
+              : 'Your free check has been used. Each further unsuccessful check uses one heart.'
+    }}
+  </p>
+  <p role="status">
+    {{
+      checking()
+        ? 'Checking your words…'
+        : recorder.state() === 'recording'
+          ? 'Listening · ' + recorder.seconds() + ' / 30 seconds'
+          : recorder.state() === 'requesting'
+            ? 'Waiting for microphone permission…'
+            : 'Ready when you are.'
+    }}
+  </p>
+  <div class="actions">
+    @if (recorder.state() === 'recording') {
+      <button type="button" class="button button-red" (click)="recorder.stop()">
+        Stop recording ■
+      </button>
+    } @else {
+      <button
+        type="button"
+        class="button button-outline"
+        (click)="record()"
+        [disabled]="
+          disabled() ||
+          checking() ||
+          recorder.state() === 'requesting' ||
+          recorder.state() === 'processing'
+        "
+      >
+        Record my answer ●
+      </button>
+    }
+    @if (recorder.clip()) {
+      <button
+        type="button"
+        class="button button-ink"
+        (click)="check()"
+        [disabled]="disabled() || checking()"
+      >
+        {{ checking() ? 'Checking…' : 'Check my words ↗' }}
+      </button>
+    }
+    @if (recorder.clip() || checking() || recorder.state() === 'requesting') {
+      <button type="button" class="text-button" (click)="discard()">Discard recording</button>
+    }
+  </div>
+  @if (result(); as value) {
+    <p class="notice" role="status">{{ value.message }}</p>
+  }
+  @if (recorder.error()) {
+    <p class="error" role="alert">{{ recorder.error() }}</p>
+  }
+  @if (error()) {
+    <p class="error" role="alert">{{ error() }}</p>
+    @if (!preview()) {
+      <button type="button" class="text-button" (click)="reopen.emit()" [disabled]="checking()">
+        Reopen saved lesson ↗
+      </button>
+    }
+  }
+  <p class="privacy">
+    Only “Check my words” sends this short recording to LexiGo for local processing. No external
+    speech service is used. The recording is not saved and is cleared after a completed check or
+    when you leave.
+  </p>
+</section>

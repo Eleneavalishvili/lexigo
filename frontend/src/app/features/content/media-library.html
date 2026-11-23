@@ -1,0 +1,225 @@
+<div class="audio-library">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a>
+    <nav aria-label="Staff navigation">
+      <a routerLink="/manage/lessons">Lesson workshop ↗</a><a routerLink="/account">My account ↗</a>
+    </nav>
+  </header>
+  <main>
+    <p class="eyebrow">SOUNDS WORTH SHARING</p>
+    <h1>The listening <em>library.</em></h1>
+    <p class="intro">A clear voice. A little context. A second pair of ears.</p>
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+    @if (notice()) {
+      <p class="notice" role="status">{{ notice() }}</p>
+    }
+    @if (busy()) {
+      <p role="status">Working on your audio…</p>
+    }
+    @if (uploadCourses().length) {
+      <section class="upload-card" aria-labelledby="upload-heading">
+        <h2 id="upload-heading">Add a recording.</h2>
+        <p>
+          Upload audio you own or have permission to use. Choose a PCM WAV file, 0.1–120 seconds, up
+          to 10 MiB. Mono or stereo, 8/16-bit, 8–48 kHz.
+        </p>
+        <form [formGroup]="form" (ngSubmit)="upload()">
+          <label
+            >Language<select formControlName="languageId">
+              @for (course of uploadCourses(); track course.id) {
+                <option [ngValue]="course.targetLanguageId">{{ course.title }}</option>
+              }
+            </select></label
+          >
+          <label
+            >Audio file<input
+              #fileInput
+              type="file"
+              accept=".wav,audio/wav"
+              (change)="chooseFile($event)"
+              [disabled]="busy()"
+          /></label>
+          <label
+            >Source<textarea
+              formControlName="source"
+              maxlength="2000"
+              rows="2"
+              placeholder="Who recorded this? Where did it come from?"
+            ></textarea>
+          </label>
+          <label
+            >License or permission<textarea
+              formControlName="license"
+              maxlength="1000"
+              rows="2"
+              placeholder="Explain the permission that allows this audio to be used."
+            ></textarea>
+          </label>
+          @if (form.touched && form.invalid) {
+            <p class="error">Choose a language and complete the source and permission details.</p>
+          }
+          <button class="button button-primary" type="submit" [disabled]="busy() || !file()">
+            Upload for independent review ↗
+          </button>
+        </form>
+      </section>
+    }
+    <section aria-labelledby="library-heading">
+      <div class="section-heading">
+        <h2 id="library-heading">Your audio shelf.</h2>
+        <button type="button" class="button button-outline" (click)="load()" [disabled]="busy()">
+          Refresh ↻
+        </button>
+      </div>
+      <div class="audio-grid">
+        @for (item of media(); track item.id) {
+          <article class="audio-card">
+            <p class="eyebrow">{{ language(item.languageId) }}</p>
+            <h3>
+              {{
+                item.isVerified
+                  ? 'Reviewed & ready'
+                  : item.storageState === 'Ready'
+                    ? 'Awaiting a second listen'
+                    : item.storageState === 'Deleting'
+                      ? 'Deletion requested'
+                      : 'Upload interrupted'
+              }}
+            </h3>
+            <p class="audio-facts">
+              {{ item.mimeType }} · {{ item.byteSize }} bytes
+              @if (item.durationMilliseconds !== null) {
+                · {{ item.durationMilliseconds / 1000 }} seconds
+              }
+            </p>
+            <dl>
+              <dt>Source</dt>
+              <dd>{{ item.source }}</dd>
+              <dt>Permission</dt>
+              <dd>{{ item.license }}</dd>
+            </dl>
+            @if (item.reviewComment) {
+              <p class="review-note"><strong>Last review:</strong> {{ item.reviewComment }}</p>
+            }
+            @if (item.storageState === 'Ready') {
+              <button
+                type="button"
+                class="button button-outline"
+                (click)="preview(item)"
+                [disabled]="busy()"
+              >
+                Listen to recording ▷
+              </button>
+            }
+            @if (playback(); as clip) {
+              @if (clip.id === item.id) {
+                <audio
+                  #audioPreview
+                  [src]="clip.url"
+                  controls
+                  preload="none"
+                  (error)="playbackError()"
+                  (ended)="stopPlayback()"
+                >
+                  Your browser does not support audio playback.
+                </audio>
+                <button type="button" (click)="stopPlayback()">Close player</button>
+              }
+            }
+            @if (canReview(item) && reviewing() !== item.id) {
+              <button
+                type="button"
+                class="button button-outline"
+                (click)="openReview(item)"
+                [disabled]="busy()"
+              >
+                Review recording
+              </button>
+            }
+            @if (canReview(item) && reviewing() === item.id) {
+              <div class="review-controls">
+                <label
+                  >Review notes<textarea
+                    [formControl]="reviewComment"
+                    maxlength="2000"
+                    rows="3"
+                    placeholder="Check the pronunciation, recording quality, source and usage permission."
+                  ></textarea>
+                </label>
+                <div class="actions">
+                  <button
+                    type="button"
+                    class="button button-primary"
+                    (click)="review(item, 'approve')"
+                    [disabled]="busy() || reviewComment.invalid"
+                  >
+                    Approve audio</button
+                  ><button
+                    type="button"
+                    class="button button-outline"
+                    (click)="review(item, 'reject')"
+                    [disabled]="busy() || reviewComment.invalid"
+                  >
+                    Request replacement
+                  </button>
+                </div>
+              </div>
+            }
+            @if (canDelete(item)) {
+              @if (deleting() === item.id) {
+                <p>
+                  Remove this unused recording? Audio used by a saved lesson version will be kept.
+                </p>
+                <div class="actions">
+                  <button type="button" (click)="remove(item)" [disabled]="busy()">
+                    Yes, request deletion</button
+                  ><button type="button" (click)="deleting.set(null)" [disabled]="busy()">
+                    Keep audio
+                  </button>
+                </div>
+              } @else {
+                <button
+                  type="button"
+                  class="delete-link"
+                  (click)="deleting.set(item.id)"
+                  [disabled]="busy()"
+                >
+                  Remove unused audio
+                </button>
+              }
+            }
+            @if (item.storageState === 'Deleting' && canManage(item)) {
+              <p>Removal is pending. You can finish it now or refresh to check progress.</p>
+              <button
+                type="button"
+                class="button button-outline"
+                [disabled]="busy()"
+                (click)="finishDeletion(item)"
+              >
+                Finish deletion
+              </button>
+            }
+          </article>
+        } @empty {
+          @if (!busy()) {
+            <p>No recordings on this shelf yet.</p>
+          }
+        }
+      </div>
+      <nav class="pages" aria-label="Audio library pages">
+        <button type="button" (click)="load(page() - 1)" [disabled]="busy() || page() === 1">
+          ← Previous</button
+        ><span>Page {{ page() }}</span
+        ><button
+          type="button"
+          (click)="load(page() + 1)"
+          [disabled]="busy() || media().length < 25"
+        >
+          Next →
+        </button>
+      </nav>
+    </section>
+  </main>
+</div>

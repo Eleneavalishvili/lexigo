@@ -1,0 +1,172 @@
+<div class="profile-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/account">↖ Your account</a>
+  </header>
+  <main>
+    <p class="eyebrow">MADE TO FIT YOUR LITTLE WORLD</p>
+    <h1>Profile &amp; <em>settings.</em></h1>
+    <p class="intro">A few little choices. A learning routine that feels like you.</p>
+    @if (notice()) {
+      <p class="notice" role="status">✦ {{ notice() }}</p>
+    }
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+    <section class="name-card" aria-labelledby="name-title">
+      <div>
+        <p class="eyebrow">01 / YOUR CALLING CARD</p>
+        <h2 id="name-title">Hello, <em>you.</em></h2>
+      </div>
+      <form [formGroup]="nameForm" (ngSubmit)="saveName()">
+        <label for="display-name">Display name</label>
+        <input id="display-name" [formControl]="name" autocomplete="nickname" maxlength="80" />
+        @if (name.touched && name.invalid) {
+          <p class="error">Use 2–80 characters.</p>
+        }
+        <button class="button button-outline" [disabled]="working()" type="submit">
+          Save name ↗
+        </button>
+      </form>
+    </section>
+    <app-profile-avatar />
+    @if (loading()) {
+      <p role="status">Finding your little details…</p>
+    } @else if (!loaded()) {
+      <button class="button button-ink" type="button" (click)="load()">Try again ↗</button>
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="savePreferences()" class="settings-form">
+        <section aria-labelledby="routine-title">
+          <p class="eyebrow">02 / A LITTLE EVERY DAY</p>
+          <h2 id="routine-title">Find your <em>rhythm.</em></h2>
+          <div class="fields">
+            <div>
+              <label for="active-course">Your active language</label
+              ><select id="active-course" formControlName="activeCourseId">
+                <option value="">Choose later</option>
+                @for (course of courses(); track course.id) {
+                  <option [value]="course.id">{{ course.title }}</option>
+                }
+              </select>
+            </div>
+            <div>
+              <label for="daily-goal">Daily XP goal</label
+              ><input
+                id="daily-goal"
+                type="number"
+                formControlName="dailyGoalXp"
+                min="1"
+                max="1000"
+              />
+              <p class="help">Choose 1–1,000 XP. You can change your pace anytime.</p>
+            </div>
+            <div>
+              <label for="time-zone">Time zone</label
+              ><input
+                id="time-zone"
+                list="time-zones"
+                formControlName="timeZone"
+                autocomplete="off"
+                maxlength="100"
+              /><datalist id="time-zones">
+                <option value="UTC"></option>
+                @for (zone of zones; track zone) {
+                  <option [value]="zone"></option>
+                }
+              </datalist>
+            </div>
+            <div>
+              <label for="reminder-time">Reminder time</label
+              ><input id="reminder-time" type="time" formControlName="reminderTime" />
+            </div>
+          </div>
+          <fieldset>
+            <legend>Your study days</legend>
+            <div class="days">
+              @for (day of days; track day; let i = $index) {
+                <button type="button" [attr.aria-pressed]="selectedDay(i)" (click)="toggleDay(i)">
+                  {{ day }}
+                </button>
+              }
+            </div>
+          </fieldset>
+          @if (form.controls.studyDays.touched && form.controls.studyDays.invalid) {
+            <p class="error">Choose at least one study day.</p>
+          }
+          <label class="check"
+            ><input type="checkbox" formControlName="emailRemindersEnabled" /><span
+              >Email me study reminders</span
+            ></label
+          >
+          <p class="help">
+            When email delivery is available, LexiGo can send one reminder on each selected study
+            day at your chosen local time. Turn this off at any time.
+          </p>
+        </section>
+        <section aria-labelledby="comfort-title">
+          <p class="eyebrow">03 / THE WAY YOU LIKE IT</p>
+          <h2 id="comfort-title">Make yourself <em>at home.</em></h2>
+          <label for="theme">Appearance</label
+          ><select id="theme" formControlName="theme">
+            <option value="system">Default daylight</option>
+            <option value="light">Daylight paper</option>
+            <option value="dark">Midnight ink</option>
+          </select>
+          <label class="check"
+            ><input type="checkbox" formControlName="reduceMotion" /><span
+              >Reduce animations</span
+            ></label
+          >
+          <label class="check"
+            ><input type="checkbox" formControlName="soundEnabled" /><span
+              >Enable learning sound effects</span
+            ></label
+          >
+        </section>
+        <section aria-labelledby="privacy-title">
+          <h2 id="privacy-title">Privacy</h2>
+          <p><a routerLink="/account/delete">Delete my account ↗</a></p>
+          <label class="check"
+            ><input type="checkbox" formControlName="leaderboardOptIn" /><span
+              >Show me on the leaderboard</span
+            ></label
+          >
+          <p class="help">
+            Leaderboard participation shares your display name and weekly XP in your courses.
+          </p>
+          <p class="help">
+            Download your profile, preferences, lesson and exercise history, daily activity,
+            rewards, vocabulary, classroom activity, notifications, sign-in history and simulated
+            billing as a JSON file.
+          </p>
+          <button
+            type="button"
+            class="button button-ink"
+            [disabled]="exporting()"
+            (click)="downloadLearningData()"
+          >
+            {{ exporting() ? 'Preparing your file…' : 'Download my learning data' }}
+          </button>
+          <button
+            type="button"
+            class="button button-outline"
+            [disabled]="exporting()"
+            (click)="downloadLearningData(true)"
+          >
+            Download my vocabulary
+          </button>
+        </section>
+        @if (form.touched && form.invalid) {
+          <p class="error">
+            Check your goal, time zone, reminder time and study days before saving.
+          </p>
+        }
+        <button class="button button-ink" type="submit" [disabled]="working()">
+          {{ working() ? 'Saving…' : 'Save my little preferences' }}
+          <span aria-hidden="true">↗</span>
+        </button>
+      </form>
+    }
+  </main>
+  <footer>A LITTLE LANGUAGE. A BIGGER WORLD. ✦</footer>
+</div>

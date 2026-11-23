@@ -1,0 +1,136 @@
+.workbench {
+  max-width: 1240px;
+  margin: auto;
+  padding: 2rem;
+}
+header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+}
+header a:nth-child(2) {
+  margin-left: auto;
+}
+header a:not(:first-child) {
+  font-size: 0.8rem;
+}
+main {
+  margin-block: 4rem;
+}
+h1 {
+  font-size: clamp(2.7rem, 5vw, 4.7rem);
+}
+h2 {
+  font-size: 2.2rem;
+  overflow-wrap: anywhere;
+}
+.intro {
+  line-height: 1.9;
+  color: var(--muted);
+}
+.course-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-block: 2rem;
+}
+.course-tabs button {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  min-height: 44px;
+  padding: 0.8rem 1.1rem;
+  cursor: pointer;
+}
+.course-tabs button[aria-pressed='true'] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+.workshop-grid {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(0, 2fr);
+  gap: 2.5rem;
+}
+.editor {
+  border-top: 2px solid var(--ink);
+  padding-top: 1.5rem;
+}
+.lesson-list {
+  list-style: none;
+  padding: 0;
+}
+.lesson-list button {
+  width: 100%;
+  padding: 1rem;
+  text-align: left;
+  font: inherit;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  cursor: pointer;
+  margin-bottom: 0.7rem;
+}
+.lesson-list span {
+  display: block;
+  font-size: 0.7rem;
+  margin-top: 0.5rem;
+  color: var(--muted);
+}
+.pages,
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  justify-content: space-between;
+}
+.pages button {
+  background: transparent;
+  border: 0;
+  min-height: 44px;
+  color: var(--ink);
+  text-decoration: underline;
+}
+.explanation {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.9;
+}
+.exercise-list {
+  padding-left: 1.5rem;
+}
+.exercise-list li {
+  border-top: 1px solid var(--line);
+  padding-block: 1.2rem;
+  line-height: 1.8;
+}
+.answer-key {
+  font-size: 0.75rem;
+  border-left: 2px solid var(--red);
+  padding-left: 0.8rem;
+}
+.workflow-action {
+  margin-top: 1.5rem;
+}
+.notice {
+  border: 1px solid var(--ink);
+  padding: 1rem;
+  line-height: 1.8;
+}
+.actions {
+  margin-top: 1rem;
+}
+@media (max-width: 800px) {
+  .workshop-grid {
+    grid-template-columns: 1fr;
+  }
+  .workbench {
+    padding: 1.5rem;
+  }
+}
+@media (max-width: 450px) {
+  header a:nth-child(2) {
+    margin-left: 0;
+  }
+}

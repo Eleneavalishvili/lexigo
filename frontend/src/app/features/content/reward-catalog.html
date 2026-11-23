@@ -1,0 +1,166 @@
+<div class="catalog-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/manage/lessons">↖ Lesson workshop</a>
+  </header>
+  <main>
+    <p class="eyebrow">THE MOTIVATION DESK</p>
+    <h1>Give progress<br /><em>a little purpose.</em></h1>
+    <p>
+      Global rewards are managed by verified administrators. Every change records your reason in the
+      audit trail.
+    </p>
+    <div class="actions" aria-label="Reward catalogs">
+      <button
+        class="button button-outline"
+        type="button"
+        (click)="choose('achievements')"
+        [disabled]="working()"
+        [attr.aria-pressed]="resource() === 'achievements'"
+      >
+        Badges
+      </button>
+      <button
+        class="button button-outline"
+        type="button"
+        (click)="choose('challenges')"
+        [disabled]="working()"
+        [attr.aria-pressed]="resource() === 'challenges'"
+      >
+        Challenges
+      </button>
+      <button
+        class="text-button"
+        type="button"
+        (click)="load()"
+        [disabled]="working() || loading()"
+      >
+        Refresh catalog ↻
+      </button>
+    </div>
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+    }
+    @if (notice()) {
+      <p role="status">{{ notice() }}</p>
+    }
+    @if (loading()) {
+      <p role="status">Opening the catalog…</p>
+    }
+    @if (canManage()) {
+      <form class="catalog-filters" (submit)="filter($event)">
+        <label
+          >Search
+          {{ resource() === 'achievements' ? 'badges by title or code' : 'challenges by title' }}
+          <input #query [value]="search()" (input)="search.set(query.value)" maxlength="100" />
+        </label>
+        <label
+          >Records per page
+          <select
+            #size
+            [value]="pageSize()"
+            (change)="changeSize(size.value)"
+            [disabled]="working() || loading()"
+          >
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </label>
+        <button
+          class="button button-outline"
+          type="submit"
+          [disabled]="working() || loading() || search().length > 100"
+        >
+          Search catalog
+        </button>
+      </form>
+      @if (!loading() && !error()) {
+        <p>
+          {{ totalCount() }} {{ totalCount() === 1 ? 'record' : 'records' }} · Page {{ page() }}
+        </p>
+      }
+      <div class="workspace">
+        <section aria-label="Catalog records">
+          <button
+            class="button button-ink"
+            type="button"
+            (click)="create()"
+            [disabled]="working() || loading()"
+          >
+            Create {{ resource() === 'achievements' ? 'badge' : 'challenge' }}
+          </button>
+          <ul class="records">
+            @for (item of records(); track item.id) {
+              <li>
+                <button
+                  class="record"
+                  type="button"
+                  (click)="edit(item)"
+                  [disabled]="working()"
+                  [attr.aria-pressed]="selected()?.id === item.id"
+                >
+                  <strong>{{ item.title }}</strong
+                  ><span>{{ summary(item) }}</span
+                  ><span
+                    >{{ item.isArchived ? 'Archived' : item.canEdit ? 'Editable' : 'Protected' }} ·
+                    revision {{ item.revision }}</span
+                  >
+                </button>
+              </li>
+            } @empty {
+              @if (!loading() && !error()) {
+                <li>No records on this page.</li>
+              }
+            }
+          </ul>
+          <div class="actions" aria-label="Catalog pagination">
+            <button
+              type="button"
+              class="button button-outline"
+              (click)="changePage(-1)"
+              [disabled]="page() === 1 || working() || loading()"
+            >
+              Previous</button
+            ><span>Page {{ page() }}</span>
+            <button
+              type="button"
+              class="button button-outline"
+              (click)="changePage(1)"
+              [disabled]="!more() || working() || loading()"
+            >
+              Next
+            </button>
+          </div>
+        </section>
+        <section aria-label="Reward editor">
+          @if (creating() || selected()) {
+            @if (resource() === 'achievements') {
+              <app-achievement-editor
+                [value]="achievement()"
+                [busy]="working()"
+                (save)="saveAchievement($event)"
+                (archive)="archive($event)"
+              />
+            } @else {
+              <app-challenge-editor
+                [value]="challenge()"
+                [busy]="working()"
+                (save)="saveChallenge($event)"
+                (archive)="archive($event)"
+              />
+            }
+          } @else {
+            <p>
+              Choose a record to view its rules, or create a new one. Earned badges cannot be
+              rewritten. Started challenges cannot be edited or cancelled.
+            </p>
+          }
+        </section>
+      </div>
+    } @else {
+      <p>Administrator access is required to manage global rewards.</p>
+    }
+  </main>
+</div>

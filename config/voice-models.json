@@ -1,0 +1,46 @@
+{
+  "revision": "b4e358ffcb232591bf73a540e70f7de528e4174a",
+  "generator": "piper-tts==1.8.0",
+  "voices": {
+    "en": {
+      "directory": "en/en_US/ljspeech/medium",
+      "name": "en_US-ljspeech-medium",
+      "license": "Public domain",
+      "sha256": "6f52a751e2349abe7a76735eb09dc1875298c77ea2342ffd2fef79ff81b87f22",
+      "configSha256": "141d612cc0a95ed7efc1ca936b845c2364967f2e9217c5dbfcf69fc4d6c65860",
+      "source": "https://huggingface.co/rhasspy/piper-voices/tree/b4e358ffcb232591bf73a540e70f7de528e4174a/en/en_US/ljspeech/medium"
+    },
+    "es": {
+      "directory": "es/es_ES/davefx/medium",
+      "name": "es_ES-davefx-medium",
+      "license": "CC0",
+      "sha256": "6658b03b1a6c316ee4c265a9896abc1393353c2d9e1bca7d66c2c442e222a917",
+      "configSha256": "0e0dda87c732f6f38771ff274a6380d9252f327dca77aa2963d5fbdf9ec54842",
+      "source": "https://huggingface.co/rhasspy/piper-voices/tree/b4e358ffcb232591bf73a540e70f7de528e4174a/es/es_ES/davefx/medium"
+    },
+    "it": {
+      "directory": "it/it_IT/paola/medium",
+      "name": "it_IT-paola-medium",
+      "license": "CC0",
+      "sha256": "6fc918b5a0ea6137382833dddfa567bffbe6a5060c02043c87192ee59c04210c",
+      "configSha256": "aea19c0a7fce29fbc359b93f10e7902854401e4c95ae2ea328ae516b15d296cf",
+      "source": "https://huggingface.co/rhasspy/piper-voices/tree/b4e358ffcb232591bf73a540e70f7de528e4174a/it/it_IT/paola/medium"
+    },
+    "de": {
+      "directory": "de/de_DE/thorsten/medium",
+      "name": "de_DE-thorsten-medium",
+      "license": "CC0",
+      "sha256": "7e64762d8e5118bb578f2eea6207e1a35a8e0c30595010b666f983fc87bb7819",
+      "configSha256": "974adee790533adb273a1ac88f49027d2a1b8f0f2cf4905954a4791e79264e85",
+      "source": "https://huggingface.co/rhasspy/piper-voices/tree/b4e358ffcb232591bf73a540e70f7de528e4174a/de/de_DE/thorsten/medium"
+    },
+    "ru": {
+      "directory": "ru/ru_RU/denis/medium",
+      "name": "ru_RU-denis-medium",
+      "license": "CC0",
+      "sha256": "15fab56e11a097858ee115545d0f697fc2a316c41a291a5362349fb870411b0a",
+      "configSha256": "831c860dac0b5073eaa81610a0a638ec23d90a6cf8e5f871b4485c2cec3767c8",
+      "source": "https://huggingface.co/rhasspy/piper-voices/tree/b4e358ffcb232591bf73a540e70f7de528e4174a/ru/ru_RU/denis/medium"
+    }
+  }
+}

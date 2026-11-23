@@ -1,0 +1,9 @@
+{
+  "file": "source/LexiGo_Dokumentacia_KA.pdf",
+  "sha256": "51e3a54f4d6ae9c0c26b1694816dc90e97420d770d402a544b3ec3fb2a889a18",
+  "pages": 25,
+  "model_count": 70,
+  "documented_method_route_entries": 122,
+  "captured_on": "2026-10-27",
+  "api_note": "Expand {resource}, optional [/{id}], query parameters and permissions into concrete OpenAPI operations before implementing; register is not yet an executable contract."
+}

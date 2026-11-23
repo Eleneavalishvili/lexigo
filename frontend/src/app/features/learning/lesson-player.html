@@ -1,0 +1,427 @@
+<div class="learning-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/learn" class="lesson-close" aria-label="Save and leave lesson"
+      ><span aria-hidden="true">×</span></a
+    >
+  </header>
+  <main>
+    @if (store.error()) {
+      <div class="error" role="alert">
+        <p>{{ store.error() }}</p>
+        @if (store.canRetryAnswer()) {
+          <button
+            type="button"
+            class="button button-outline"
+            (click)="submit()"
+            [disabled]="store.busy()"
+          >
+            Retry this answer ↗
+          </button>
+        }
+        <button
+          type="button"
+          class="button button-outline"
+          (click)="store.reload()"
+          [disabled]="store.busy()"
+        >
+          Reopen saved lesson ↗
+        </button>
+      </div>
+    }
+    @if (store.session(); as session) {
+      @if (pronunciation.message()) {
+        <p role="status">{{ pronunciation.message() }}</p>
+      }
+      @if (pronunciation.speaking()) {
+        <p [attr.lang]="pronunciation.language()" aria-live="polite">{{ pronunciation.text() }}</p>
+        <button type="button" class="text-button" (click)="pronunciation.stop()">
+          Stop pronunciation ■
+        </button>
+      }
+      <div class="lesson-meta">
+        <span class="eyebrow">{{
+          session.isPlacement
+            ? 'PLACEMENT CHECK · NO XP'
+            : session.mode === 'Practice'
+              ? 'FREE PRACTICE · NO XP'
+              : 'ONE LITTLE STEP'
+        }}</span
+        ><span aria-live="polite">{{
+          session.mode === 'Practice'
+            ? session.isPlacement
+              ? 'Check without losing hearts'
+              : 'Practice without losing hearts'
+            : session.unlimitedHearts
+              ? '♥ Unlimited hearts'
+              : '♥ ' + session.hearts + ' / 5 hearts'
+        }}</span>
+        @for (loss of [store.heartLoss()]; track loss) {
+          @if (loss !== null) {
+            <app-lesson-heart-loss class="heart-loss" />
+          }
+        }
+      </div>
+      <div class="lesson-intro">
+        <h1>{{ session.title }}</h1>
+        @if (session.completedAt) {
+          <app-character-cue
+            [character]="companionForCourse(session.courseId)"
+            [mood]="characterMood()"
+          />
+        }
+      </div>
+      <label for="lesson-progress"
+        >{{ session.answeredCount }} of {{ session.totalCount }} answers saved</label
+      >
+      <progress
+        id="lesson-progress"
+        [value]="session.answeredCount"
+        [max]="session.totalCount"
+      ></progress>
+      @if (
+        !pendingWord() ||
+        session.answeredCount > 0 ||
+        session.mode === 'Practice' ||
+        session.completedAt ||
+        !hasTeachingWords(session.explanation)
+      ) {
+        <details
+          class="grammar"
+          [attr.open]="
+            session.answeredCount === 0 && !hasTeachingWords(session.explanation) ? '' : null
+          "
+        >
+          <summary>Your words &amp; lesson notes</summary>
+          <app-lesson-notes [text]="session.explanation" [courseId]="session.courseId" />
+        </details>
+      }
+
+      @if (!session.completedAt && session.mode !== 'Practice') {
+        <app-heart-recovery [count]="session.hearts" (recovered)="store.reload()" />
+        @if (session.hearts < 5) {
+          <p>
+            <a routerLink="/billing/hearts" [queryParams]="{ lesson: session.id }"
+              >Explore a simulated heart refill ↗</a
+            >
+          </p>
+        }
+      }
+      @if (!session.completedAt && !session.isPlacement && pendingWord()) {
+        <app-lesson-intro
+          [explanation]="pendingWord()!.target + ' — ' + pendingWord()!.meaning"
+          [courseId]="session.courseId"
+          (ready)="acknowledgeWord()"
+        />
+      } @else if (session.completedAt) {
+        <section class="result" aria-labelledby="result-title">
+          @if (session.passed && session.awardedXp > 0) {
+            <app-lesson-celebration />
+          }
+          <p class="eyebrow">A PAGE IN YOUR STORY</p>
+          <h2 id="result-title">
+            {{
+              session.isPlacement
+                ? 'Your starting point is ready.'
+                : gradedTotal() === 0
+                  ? 'You made time to practise.'
+                  : session.passed
+                    ? 'Look how far you’ve come.'
+                    : 'Every try teaches something.'
+            }}
+          </h2>
+          <app-lesson-result-stats
+            [session]="session"
+            [gradedTotal]="gradedTotal()"
+            [elapsed]="elapsed()"
+          />
+          @if (gradedTotal() === 0) {
+            <p>
+              Self-assessment saved. Speaking practice has no pronunciation accuracy score and earns
+              no XP.
+            </p>
+          } @else if (session.isPlacement) {
+            <p>
+              Your answers are saved. Review your recommended starting unit before applying it. No
+              XP was awarded.
+            </p>
+            <a class="button button-red" [routerLink]="['/learn/placement', session.id]"
+              >See my recommended start ↗</a
+            >
+          } @else if (session.mode === 'Practice') {
+            <p>Practice builds confidence. It doesn’t award XP or unlock lessons.</p>
+          } @else if (!session.passed) {
+            <p>
+              Complete every exercise and reach {{ session.passScore }}% to pass. Free practice is
+              always available.
+            </p>
+          } @else if (session.awardedXp === 0) {
+            <p>You’ve completed this lesson before. Your best score stays saved.</p>
+          }
+          @if (session.mode === 'Lesson' && session.awardedXp > 0) {
+            <p>
+              Any weekly bonus is awarded separately.
+              <a routerLink="/challenges">See your challenge progress ↗</a>
+            </p>
+          }
+          @if ((session.selfAssessmentCount ?? 0) > 0) {
+            <p>
+              {{ session.selfAssessmentCount }} self-assessment step(s) saved; these are excluded
+              from accuracy.
+            </p>
+          }
+          @if (gradedTotal() === 0 && session.mode === 'Practice') {
+            <p>Practice does not unlock lessons.</p>
+          }
+          <details>
+            <summary>Your answers & explanations</summary>
+            <p>
+              @if (gradedTotal() > 0) {
+                Graded score: {{ session.score }}%
+              } @else {
+                Self-assessment complete
+              }
+              · {{ session.answeredCount }} of {{ session.totalCount }} questions answered.
+            </p>
+            @for (item of session.results; track $index) {
+              <article>
+                <strong>{{
+                  item.isGraded === false
+                    ? '✓ Self-assessment saved · ungraded'
+                    : item.isCorrect
+                      ? '✓ Correct'
+                      : '↻ Keep practising'
+                }}</strong>
+                @if (item.contextText) {
+                  <div class="result-context">{{ item.contextText }}</div>
+                }
+                <p>{{ item.prompt }}</p>
+                @if (item.audio && item.id) {
+                  <app-lesson-audio
+                    [sessionId]="session.id"
+                    [exerciseId]="item.id"
+                    [audio]="item.audio"
+                  />
+                }
+                @if (item.options?.length && item.id) {
+                  <button
+                    type="button"
+                    class="button button-outline"
+                    (click)="
+                      expandedMatchingResult.set(
+                        expandedMatchingResult() === item.id ? null : item.id
+                      )
+                    "
+                  >
+                    Review matching items
+                  </button>
+                  @if (expandedMatchingResult() === item.id) {
+                    <app-matching-board
+                      [options]="item.options ?? []"
+                      [reviewOnly]="true"
+                      [sessionId]="session.id"
+                      [exerciseId]="item.id"
+                      [disabled]="true"
+                    />
+                  }
+                }
+                @if (!item.isCorrect && item.correctAnswer) {
+                  <p class="answer-correction">
+                    <strong>Correct answer: {{ item.correctAnswer }}</strong>
+                  </p>
+                }
+                <p>{{ item.feedback }}</p>
+              </article>
+            }
+          </details>
+          @if (!session.isPlacement) {
+            <app-lesson-next-step [session]="session" />
+          }
+          <a class="button button-outline" [routerLink]="['/learn', session.courseId]"
+            >Back to your journey ↗</a
+          >
+        </section>
+      } @else if (store.feedback() && !displayExercise()) {
+        <app-answer-feedback-panel
+          [feedback]="store.feedback()!"
+          [courseId]="session.courseId"
+          [busy]="store.busy()"
+          (continued)="next()"
+        />
+      } @else if (displayExercise(); as exercise) {
+        <section class="exercise" aria-labelledby="exercise-title">
+          <p class="eyebrow">
+            {{
+              isLetterListening(exercise)
+                ? 'LISTEN FOR THE LETTER'
+                : hasPictures(exercise)
+                  ? 'LOOK & LISTEN'
+                  : exerciseLabels[exercise.type]
+            }}
+          </p>
+          <a
+            class="text-button"
+            routerLink="/reports"
+            [queryParams]="{ exercise: exercise.id, session: session.id }"
+          >
+            Report an issue
+          </a>
+          @if (exercise.contextText) {
+            <app-exercise-context [text]="exercise.contextText" [kind]="exercise.type" />
+            @if (exercise.type === 'Reading') {
+              <app-pronunciation-button
+                [text]="exercise.contextText"
+                [courseId]="session.courseId"
+              />
+            }
+          }
+          <div class="character-prompt">
+            <app-character-cue
+              [character]="companionForCourse(session.courseId)"
+              [mood]="characterMood()"
+            />
+            <div class="prompt-bubble">
+              <app-translation-prompt
+                [prompt]="exercise.prompt"
+                [courseId]="session.courseId"
+                [explanation]="session.explanation"
+                [hintsEnabled]="!session.isPlacement && !session.title.startsWith('Unit check')"
+              />
+            </div>
+          </div>
+          @if (
+            exercise.audio && exercise.type !== 'Speaking' && exercise.type !== 'SpeakingCheck'
+          ) {
+            <app-lesson-audio
+              [sessionId]="session.id"
+              [exerciseId]="exercise.id"
+              [audio]="exercise.audio"
+            />
+          }
+          @if (exercise.type === 'Speaking' && exercise.audio) {
+            <app-speaking-exercise
+              [sessionId]="session.id"
+              [exerciseId]="exercise.id"
+              [audio]="exercise.audio"
+              [disabled]="store.busy() || store.canRetryAnswer()"
+              (completed)="finishSpeaking()"
+            />
+          } @else if (exercise.type === 'SpeakingCheck' && exercise.audio) {
+            <app-spoken-check
+              [sessionId]="session.id"
+              [exerciseId]="exercise.id"
+              [audio]="exercise.audio"
+              [disabled]="store.busy() || !!store.error()"
+              [unlimited]="session.unlimitedHearts ?? false"
+              [misses]="session.speakingMissCount ?? 0"
+              [practice]="session.mode === 'Practice'"
+              (activity)="speechMood.set($event)"
+              (checked)="acceptSpeechResult($event)"
+              (reopen)="store.reload()"
+            />
+          } @else {
+            <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+              <fieldset [disabled]="store.busy() || store.canRetryAnswer() || !!store.feedback()">
+                <legend class="sr-only">Your answer</legend>
+                @if (isChoice(exercise)) {
+                  <app-choice-answers
+                    [options]="exercise.options"
+                    [questionId]="exercise.id"
+                    [control]="form.controls.option"
+                    [pictures]="hasPictures(exercise)"
+                    [feedback]="store.feedback()"
+                    [disabled]="store.busy() || store.canRetryAnswer() || !!store.feedback()"
+                    (spoken)="playChoicePronunciation(exercise, $event, session.courseId)"
+                  />
+                } @else if (exercise.type === 'Matching') {
+                  <app-matching-board
+                    [sessionId]="session.id"
+                    [exerciseId]="exercise.id"
+                    [options]="exercise.options"
+                    [(pairs)]="matchedPairs"
+                    [disabled]="store.busy() || store.canRetryAnswer() || !!store.feedback()"
+                  />
+                } @else if (exercise.type === 'SentenceBuilder') {
+                  <app-sentence-builder
+                    [options]="exercise.options"
+                    [(order)]="tokenOrder"
+                    (spoken)="pronunciation.play($event, answerLanguage(exercise), true)"
+                    [disabled]="store.busy() || store.canRetryAnswer() || !!store.feedback()"
+                  />
+                } @else {
+                  <label for="translation">{{
+                    exercise.type === 'FillBlank'
+                      ? 'Missing word or phrase'
+                      : exercise.type === 'Listening'
+                        ? 'What did you hear?'
+                        : 'Your translation'
+                  }}</label
+                  ><textarea
+                    #answerInput
+                    id="translation"
+                    formControlName="text"
+                    rows="3"
+                    maxlength="1000"
+                    autocomplete="off"
+                    spellcheck="false"
+                  ></textarea>
+                  <app-answer-letters
+                    [courseId]="session.courseId"
+                    [field]="answerInput"
+                    [value]="form.controls.text.value"
+                    (valueChange)="form.controls.text.setValue($event)"
+                    [disabled]="store.busy()"
+                  />
+                }
+              </fieldset>
+              @if (!store.feedback() && form.touched && !hasAnswer()) {
+                <p class="error">Add your answer before checking.</p>
+              }
+              @if (!store.feedback()) {
+                <button
+                  type="submit"
+                  class="button button-red check-button"
+                  [disabled]="store.busy() || store.canRetryAnswer() || !hasAnswer()"
+                >
+                  Check
+                </button>
+              }
+            </form>
+          }
+          @if (store.feedback(); as feedback) {
+            <app-answer-feedback-panel
+              [feedback]="feedback"
+              [courseId]="session.courseId"
+              [busy]="store.busy()"
+              (continued)="next()"
+            />
+          }
+        </section>
+      } @else {
+        <section class="feedback">
+          <h2>
+            {{ session.hearts === 0 ? 'Time for a little practice.' : 'That’s your lesson.' }}
+          </h2>
+          <p>
+            {{
+              session.hearts === 0
+                ? 'Your answers are saved. Finish to see your results and start free practice there.'
+                : 'Finish to save your result and see how you did.'
+            }}
+          </p>
+          <button
+            type="button"
+            class="button button-ink"
+            (click)="store.complete()"
+            [disabled]="store.busy()"
+          >
+            Finish & see results ↗
+          </button>
+        </section>
+      }
+    } @else if (store.busy()) {
+      <p role="status">Opening your saved lesson…</p>
+    }
+  </main>
+  <footer>A LITTLE LANGUAGE. A BIGGER WORLD. ✦</footer>
+</div>

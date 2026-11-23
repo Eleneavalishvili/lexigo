@@ -1,0 +1,152 @@
+@if (allowed()) {
+  <main>
+    <a routerLink="/manage/lessons">← Back to lesson workshop</a>
+    <h1>Course skills</h1>
+    <p>
+      Organize the skills authors can attach to exercises. Archived skills retain their history.
+    </p>
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+    }
+    @if (notice()) {
+      <p role="status">{{ notice() }}</p>
+    }
+    @if (loading()) {
+      <p role="status">Loading skills…</p>
+    }
+    <section aria-label="Skill filters">
+      <label
+        >Course
+        <select #course (change)="chooseCourse(course.value)" [disabled]="busy() || loading()">
+          @for (item of courses(); track item.id) {
+            <option [value]="item.id">{{ item.title }}</option>
+          }
+        </select>
+      </label>
+      <form (submit)="searchPage($event)">
+        <label>Search by name or category <input [formControl]="search" maxlength="100" /></label>
+        <button
+          class="button button-outline"
+          type="submit"
+          [disabled]="busy() || loading() || search.invalid"
+        >
+          Search
+        </button>
+      </form>
+      <label
+        ><input
+          type="checkbox"
+          #include
+          (change)="filterArchived(include.checked)"
+          [disabled]="busy() || loading()"
+        />
+        Include archived skills</label
+      >
+      <label
+        >Skills per page
+        <select
+          #size
+          (change)="changeSize(size.value)"
+          [value]="pageSize()"
+          [disabled]="busy() || loading()"
+        >
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select></label
+      >
+      <button
+        class="button button-outline"
+        type="button"
+        (click)="reload()"
+        [disabled]="busy() || loading()"
+      >
+        Reload skills
+      </button>
+    </section>
+    @if (result(); as page) {
+      <p>
+        {{ page.totalCount }} {{ page.totalCount === 1 ? 'skill' : 'skills' }} · Page
+        {{ page.page }}
+      </p>
+      <ul>
+        @for (skill of page.items; track skill.id) {
+          <li>
+            <strong>{{ skill.name }}</strong> · {{ skill.category
+            }}{{ skill.isArchived ? ' · Archived' : '' }}
+            <button
+              class="button button-outline"
+              type="button"
+              (click)="edit(skill)"
+              [disabled]="busy()"
+            >
+              Edit {{ skill.name }}
+            </button>
+          </li>
+        } @empty {
+          <li>No skills match these filters.</li>
+        }
+      </ul>
+      <nav aria-label="Skill pages">
+        <button
+          type="button"
+          class="button button-outline"
+          (click)="load(page.page - 1)"
+          [disabled]="busy() || loading() || page.page === 1"
+        >
+          Previous
+        </button>
+        <button
+          type="button"
+          class="button button-outline"
+          (click)="load(page.page + 1)"
+          [disabled]="busy() || loading() || page.page * page.pageSize >= page.totalCount"
+        >
+          Next
+        </button>
+      </nav>
+    }
+    <section aria-labelledby="skill-editor">
+      <h2 id="skill-editor">{{ editing() ? 'Edit skill' : 'New skill' }}</h2>
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <fieldset [disabled]="busy() || loading()">
+          <legend>Skill details</legend>
+          <label>Skill name <input formControlName="name" maxlength="100" required /></label>
+          <label>Category <input formControlName="category" maxlength="40" required /></label>
+          @if (editing()) {
+            <label
+              >Reason for change
+              <textarea formControlName="reason" minlength="3" maxlength="500" required></textarea>
+            </label>
+          }
+          <button
+            type="submit"
+            class="button button-red"
+            [disabled]="
+              !courseId() ||
+              form.controls.name.invalid ||
+              form.controls.category.invalid ||
+              (!!editing() && form.controls.reason.invalid)
+            "
+          >
+            {{ busy() ? 'Saving…' : 'Save skill' }}
+          </button>
+          @if (editing(); as skill) {
+            <button
+              type="button"
+              class="button button-outline"
+              (click)="save(true)"
+              [disabled]="form.controls.reason.invalid"
+            >
+              {{ skill.isArchived ? 'Restore skill' : 'Archive skill' }}
+            </button>
+            <button type="button" class="button button-outline" (click)="newSkill()">
+              Create another skill
+            </button>
+          }
+        </fieldset>
+      </form>
+    </section>
+  </main>
+}

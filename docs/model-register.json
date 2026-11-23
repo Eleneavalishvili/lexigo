@@ -1,0 +1,953 @@
+[
+  {
+    "name": "User",
+    "page": 14,
+    "fields": "id: uuid, email: string, normalizedEmail: string, passwordHash: string, displayName: string, avatarMediaId: uuid?, emailConfirmed: bool, status: string, createdAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-16: DocumentedUniqueKeysTests verified the documented uniqueness rule in PostgreSQL. documented-database-keys.trx.",
+      "2026-10-27: Identity/account/catalog entities, EF configuration and InitialAccountsAndCourses migration; RegistrationTests",
+      "2026-10-30: full381backend/204frontend55files, production build,102billing/admin/inbox cases, local22migrations/noEFdrift; REFUND_ADMINISTRATION.md; refund-full.trx. No real funds, grants, emails or public deployment.",
+      "2026-11-06: AccountDeletionTests and LearningDataExportTests verify Deleted account credential/profile erasure, session revocation and last-administrator protection.",
+      "2026-11-06: Shared deletion responsibilities and private checklist verified with synthetic teacher class archive/Extra Study closure followed by account deletion. No new persistent model or schema change.",
+      "2026-11-16: DocumentedModelSchemaTests verified migrated PostgreSQL columns, nullability and validated keys. checklist-models.trx.",
+      "2026-11-20: staff-deletion-regression.trx passed 112 publishing, classroom, profile, refund, staff-note and completion-card checks. Authenticated deletion erases archived teaching labels, copied notifications and departed-author refund notes while preserving submissions, other contributions and immutable monetary fields. Note-only PostgreSQL protection and guarded migration rollback passed; the migration is applied locally."
+    ],
+    "notes": "Registration, avatar ownership and admin access tests passed. Identity credentials may be null for system and erased accounts."
+  },
+  {
+    "name": "Role",
+    "page": 14,
+    "fields": "id: uuid, name: string",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: Identity/account/catalog entities, EF configuration and InitialAccountsAndCourses migration; RegistrationTests",
+      "2026-10-30: full381backend/204frontend55files, production build,102billing/admin/inbox cases, local22migrations/noEFdrift; REFUND_ADMINISTRATION.md; refund-full.trx. No real funds, grants, emails or public deployment.",
+      "2026-11-16: DocumentedModelSchemaTests verified migrated PostgreSQL columns, nullability and validated keys. checklist-models.trx."
+    ],
+    "notes": "Identity role storage and administrator permission checks passed. Role names are supplied by the seed."
+  },
+  {
+    "name": "UserRole",
+    "page": 14,
+    "fields": "userId: uuid -> User, roleId: uuid -> Role",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-16: DocumentedUniqueKeysTests verified the documented uniqueness rule in PostgreSQL. documented-database-keys.trx.",
+      "2026-10-27: Identity/account/catalog entities, EF configuration and InitialAccountsAndCourses migration; RegistrationTests",
+      "2026-10-30: full381backend/204frontend55files, production build,102billing/admin/inbox cases, local22migrations/noEFdrift; REFUND_ADMINISTRATION.md; refund-full.trx. No real funds, grants, emails or public deployment.",
+      "2026-11-16: DocumentedModelSchemaTests verified migrated PostgreSQL columns, nullability and validated keys. checklist-models.trx."
+    ],
+    "notes": "The composite key and both foreign keys were validated. Administration tests cover scoped assignment and the last Super Admin safeguard."
+  },
+  {
+    "name": "UserPreference",
+    "page": 14,
+    "fields": "userId: uuid -> User, timeZone: string, dailyGoalXp: int, theme: string, reduceMotion: bool, soundEnabled: bool, leaderboardOptIn: bool",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: Identity/account/catalog entities, EF configuration and InitialAccountsAndCourses migration; RegistrationTests",
+      "2026-10-27: AddStudyPreferences migration and ProfileTests; saved settings UI/store tested; PROFILE_SETTINGS.md",
+      "2026-11-02: PICTURE_FIRST_LESSONS.md; picture-first.trx 117 focused backend cases pass (learning, profile and sentence publishing), 246 frontend tests/66 files pass. Twelve original picture-first teaching lessons plus four unit checks installed. Known unique word-bank subsets with distractors graded on server; private keys remain private; answered public exercise retained for feedback. Goal-only ownership/validation/preferences preservation tested.",
+      "2026-11-03: LEARNING_OVERVIEW.md; dashboard.trx five isolated PostgreSQL cases pass for anonymous/invalid/unenrolled denial, own ledger and course totals, cross-user isolation, historical daily goals, gap/future exclusion and saved-timezone rollover. Backend build zero warnings/errors. 251 frontend tests/67 files pass including stale-account/course-response isolation and server-offset heart countdown. Actual authenticated browser displays persisted stats.",
+      "2026-11-03: WEEKLY_RANKING.md; ranking-progress.trx20 focused backend cases pass including three ranking cases for UTC week/course filtering, attained-time ties, opt-in/default/opt-out/privacy/overposting, preference isolation, archived owned history and26participant pagination/ownrank.259frontend tests/69files and production build pass; live enrolled-course read and week/course switching verified without joining. Migration20261103093949 index-only applied with unchanged1XP/8sessions/27answers;25local migrations/noEFdrift.",
+      "2026-11-16: DocumentedModelSchemaTests verified migrated PostgreSQL columns, nullability and validated keys. checklist-models.trx."
+    ],
+    "notes": "Profile tests verified owned settings, validation and field preservation. The additive SharedLeaderboardAvatarId field is private, nullable by default, and linked to MediaAsset. PostgreSQL migration and consent lifecycle passed leaderboard-photo-consent.trx on 2026-11-17. Delivery and device behavior remain separate requirements."
+  },
+  {
+    "name": "RefreshSession",
+    "page": 14,
+    "fields": "id: uuid, userId: uuid -> User, tokenHash: string, expiresAt: datetime, revokedAt: datetime?, replacedById: uuid?",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: RefreshSession, EF configuration and AddAccountSessionsAndRecovery migration; SessionTests hash/rotation/reuse/concurrency/ownership/revocation cases."
+    ],
+    "notes": "Adds FamilyId, SecurityStamp, friendly DeviceLabel, MfaVerified, CreatedAt and RevocationReason. One active token per family; owned device-session API uses FamilyId so revocation survives rotation."
+  },
+  {
+    "name": "Language",
+    "page": 14,
+    "fields": "id: int, code: string, englishName: string, nativeName: string, writingDirection: string",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-16: DocumentedUniqueKeysTests verified the documented uniqueness rule in PostgreSQL. documented-database-keys.trx.",
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. Course language codes, names and writing direction are persisted as separate catalog fields. learning-model-verification.trx.",
+      "2026-10-27: Identity/account/catalog entities, EF configuration and InitialAccountsAndCourses migration; RegistrationTests"
+    ],
+    "notes": "Foundation present; full profile/media links, role management, catalog and other dependent behaviors are still tracked separately."
+  },
+  {
+    "name": "UserLanguageScope",
+    "page": 14,
+    "fields": "userId: uuid -> User, languageId: int -> Language",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. The composite key binds a staff user to one language. Publication tests cover language-scoped access. learning-model-verification.trx.",
+      "2026-10-28: UserLanguageScope/configuration/AddUserLanguageScopes; AdministrationTests persistence, PostgreSQL key/FK constraints and role-gated scope assignment."
+    ],
+    "notes": "Original fields mapped. Future content/review/class policies must consume scopes with role/ownership checks; those modules remain pending."
+  },
+  {
+    "name": "Course",
+    "page": 14,
+    "fields": "id: uuid, sourceLanguageId: int -> Language, targetLanguageId: int -> Language, title: string, description: text, isPublished: bool, orderNumber: int",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-16: DocumentedUniqueKeysTests verified the documented uniqueness rule in PostgreSQL. documented-database-keys.trx.",
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. Source and target languages have separate foreign keys. Learning and placement tests cover course isolation. learning-model-verification.trx.",
+      "2026-10-27: Identity/account/catalog entities, EF configuration and InitialAccountsAndCourses migration; RegistrationTests",
+      "2026-11-06: GuestTrialTests verified bounded published-only four-course previews, server grading and no account/enrollment/progress/XP writes. No model or schema change; GUEST_TRIAL.md.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete."
+    ],
+    "notes": "Foundation present; full profile/media links, role management, catalog and other dependent behaviors are still tracked separately."
+  },
+  {
+    "name": "Unit",
+    "page": 14,
+    "fields": "id: uuid, courseId: uuid -> Course, title: string, description: text, orderNumber: int, difficulty: string",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-16: DocumentedUniqueKeysTests verified the documented uniqueness rule in PostgreSQL. documented-database-keys.trx.",
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. Course ownership, difficulty and order are stored. Placement tests verify the recommended unit belongs to its course. learning-model-verification.trx.",
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: UNIT_CHECKS.md; 24 unit assessments added alongside 108 teaching lessons. unit-checks.trx seven passing integration cases cover all132steps/1800answers, early denial/all-unit prerequisites, no teaching hints, progress/XP, old-session preservation and idempotence. Frontend219/buildpass; actual localSQL confirms132steps/24checks/1800currentquestions. All-format assessment and placement remain partial.",
+      "2026-11-02: PLACEMENT.md; four-language diagnostic/start/recommend/apply verified in placement-learning.trx (98learning cases), frontend224/62files, production/backendbuild/noEFdrift/secret-scanpass. Owned/private snapshots, zeroXP/hearts/progress grants, explicit idempotent application, first-gap recommendation, current-unit locks and SQL course/XP denial. Local migration20261102123435 applied.",
+      "2026-11-23: BaselineTopicTests verified PostgreSQL-safe unit insertion, stable identifiers/metadata and repeat installation; StarterRevisionTests preserved an active old-version session. Whole-course grading passed all four packs; five final installation/natural-English-alternative cases passed. No schema/field changes. BASELINE_TOPICS.md."
+    ],
+    "notes": "Hierarchy, order and difficulty are persisted. The AddUnitArchive migration adds a nullable archive timestamp. PostgreSQL verified that archive and restore preserve unit ownership and existing sessions while enforcing cross-unit prerequisites."
+  },
+  {
+    "name": "Lesson",
+    "page": 14,
+    "fields": "id: uuid, unitId: uuid -> Unit, title: string, objective: text, orderNumber: int, status: string, currentVersionId: uuid? -> LessonVersion",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-16: DocumentedUniqueKeysTests verified the documented uniqueness rule in PostgreSQL. documented-database-keys.trx.",
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. The current version is constrained to the same lesson. Publishing and learning tests cover version selection. learning-model-verification.trx.",
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: UNIT_CHECKS.md; 24 unit assessments added alongside 108 teaching lessons. unit-checks.trx seven passing integration cases cover all132steps/1800answers, early denial/all-unit prerequisites, no teaching hints, progress/XP, old-session preservation and idempotence. Frontend219/buildpass; actual localSQL confirms132steps/24checks/1800currentquestions. All-format assessment and placement remain partial.",
+      "2026-11-18: PrivateDraftErasureTests verifies MFA administrator-only owner handover, eligible language-scoped recipients, stale-owner conflict, no changes to published history, retry-safe audit and successful departing-owner deletion preserving remaining contributions. Desktop/phone Edge verified the workbench form.",
+      "2026-11-23: BaselineTopicTests verified PostgreSQL-safe unit insertion, stable identifiers/metadata and repeat installation; StarterRevisionTests preserved an active old-version session. Whole-course grading passed all four packs; five final installation/natural-English-alternative cases passed. No schema/field changes. BASELINE_TOPICS.md."
+    ],
+    "notes": "OwnerId supports guarded handover of never-published lessons. The current-version composite foreign key prevents cross-lesson snapshots. Publication, prerequisites and learner-session preservation are verified; full curriculum remains separate."
+  },
+  {
+    "name": "LessonPrerequisite",
+    "page": 14,
+    "fields": "lessonId: uuid -> Lesson, prerequisiteLessonId: uuid -> Lesson",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. Both sides reference lessons. Learning tests cover server-side prerequisite denial and unlocking. learning-model-verification.trx.",
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: UNIT_CHECKS.md; 24 unit assessments added alongside 108 teaching lessons. unit-checks.trx seven passing integration cases cover all132steps/1800answers, early denial/all-unit prerequisites, no teaching hints, progress/XP, old-session preservation and idempotence. Frontend219/buildpass; actual localSQL confirms132steps/24checks/1800currentquestions. All-format assessment and placement remain partial.",
+      "2026-11-02: PLACEMENT.md; four-language diagnostic/start/recommend/apply verified in placement-learning.trx (98learning cases), frontend224/62files, production/backendbuild/noEFdrift/secret-scanpass. Owned/private snapshots, zeroXP/hearts/progress grants, explicit idempotent application, first-gap recommendation, current-unit locks and SQL course/XP denial. Local migration20261102123435 applied.",
+      "2026-11-23: BaselineTopicTests verified PostgreSQL-safe unit insertion, stable identifiers/metadata and repeat installation; StarterRevisionTests preserved an active old-version session. Whole-course grading passed all four packs; five final installation/natural-English-alternative cases passed. No schema/field changes. BASELINE_TOPICS.md."
+    ],
+    "notes": "Same-course bounded cycle checks serialized by course lock; learner unlocking pending."
+  },
+  {
+    "name": "LessonVersion",
+    "page": 14,
+    "fields": "id: uuid, lessonId: uuid -> Lesson, versionNumber: int, explanation: text, createdBy: uuid -> User, status: string, publishedAt: datetime?",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. Lesson and author references, publication state and publish time are stored. Publishing and learning tests cover version preservation. learning-model-verification.trx.",
+      "2026-11-06: TrackPrivateDraftErasure and PrivateDraftErasureTests verify private text erasure, published/used version protection, concurrent publication and copying from the last published version.",
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: UNIT_CHECKS.md; 24 unit assessments added alongside 108 teaching lessons. unit-checks.trx seven passing integration cases cover all132steps/1800answers, early denial/all-unit prerequisites, no teaching hints, progress/XP, old-session preservation and idempotence. Frontend219/buildpass; actual localSQL confirms132steps/24checks/1800currentquestions. All-format assessment and placement remain partial.",
+      "2026-11-23: BaselineTopicTests verified PostgreSQL-safe unit insertion, stable identifiers/metadata and repeat installation; StarterRevisionTests preserved an active old-version session. Whole-course grading passed all four packs; five final installation/natural-English-alternative cases passed. No schema/field changes. BASELINE_TOPICS.md."
+    ],
+    "notes": "PrivateTextErasedAt records erasure of a never-published archived version. Eight-format copying preserves keys and context; after private erasure, a new revision copies the last published version. Wider content workflows remain required."
+  },
+  {
+    "name": "ContentReview",
+    "page": 14,
+    "fields": "id: uuid, lessonVersionId: uuid -> LessonVersion, reviewerId: uuid -> User, decision: string, comment: text, reviewedAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. Review records reference a concrete version and reviewer. Publishing tests cover independent approval. learning-model-verification.trx.",
+      "2026-11-11: Desktop Playwright verified independent approval with three separate MFA accounts and public visibility only after administrator publication. See CONTENT_PUBLISHING.md.",
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-11-20: StaffTextDeletionTests verifies password-gated note erasure, other-contributor preservation, retained decisions, published authorship and learner score/submission history. Full account erasure remains separately tracked."
+    ],
+    "notes": "Independent scoped decisions/comments persisted; other exercise/media formats pending."
+  },
+  {
+    "name": "Skill",
+    "page": 14,
+    "fields": "id: int, courseId: uuid -> Course, name: string, category: string",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. Skills are bound to a course. Mistake practice tests cover valid and foreign skill filters. learning-model-verification.trx.",
+      "2026-11-08: AddSkillFoundation migration. Course catalog seeded locally with 17 entries.",
+      "2026-11-20: final-skills-and-learning.trx passed 132 publishing/learning/schema cases. content-catalog-verified.trx passed all 16 final catalog checks, including scoped skills, atomic cap, revision races, archived tags/progress, private creation links and guarded downgrade. Skill desktop/phone journeys passed (46.8s); 20 frontend checks and production build/lint passed. Migration 20261120085844_AddSkillManagement applied locally; no personal account changes."
+    ],
+    "notes": "All documented fields retained. Supporting IsArchived and positive Revision enable safe staff management. Archival preserves associations and learner progress. New manual tags cannot attach an archived skill; old tags may be retained/removed. Course catalog limit 500 includes history and is enforced under a course lock."
+  },
+  {
+    "name": "Exercise",
+    "page": 14,
+    "fields": "id: uuid, lessonVersionId: uuid -> LessonVersion, type: string, prompt: text, explanation: text, orderNumber: int, audioMediaId: uuid? -> MediaAsset, evaluationRules: jsonb",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-16: DocumentedUniqueKeysTests verified the documented uniqueness rule in PostgreSQL. documented-database-keys.trx.",
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: LearningTests/TextAnswerEvaluatorTests against isolated PostgreSQL; journey/lesson-player UI tests; LEARNING_ENGINE.md; AddLearningSessions migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-10-28: ListeningTests6 real PostgreSQL/Garage integration cases; full230backend tests,103frontend tests; author/picker/player/lifecycle coverage; AddSessionAudio; LISTENING_LESSONS.md.",
+      "2026-10-28: SpeakingTests8 PostgreSQL/Garage cases; full238backend tests and111frontend tests passed; guided recording/neutral result/journey/authoring tests; AddUngradedPractice; SPEAKING_LESSONS.md.",
+      "2026-10-28: AudioAssociationTests6 real PostgreSQL/Garage cases; full244backend/119frontend tests passed; matching audio editor/board/transport and Russian mode tests; AddMatchingAudio; AUDIO_ASSOCIATIONS.md.",
+      "2026-10-29: Additional SpeakingCheck format uses private targets, trusted voice-only answer writes and durable atomic retry/heart evidence. Original ungraded Speaking unchanged. SpeechCheckTests/SpokenWordEvaluatorTests; SPOKEN_WORD_CHECKS.md. Overall pending fields/features unchanged.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: UNIT_CHECKS.md; 24 unit assessments added alongside 108 teaching lessons. unit-checks.trx seven passing integration cases cover all132steps/1800answers, early denial/all-unit prerequisites, no teaching hints, progress/XP, old-session preservation and idempotence. Frontend219/buildpass; actual localSQL confirms132steps/24checks/1800currentquestions. All-format assessment and placement remain partial.",
+      "2026-11-02: PICTURE_FIRST_LESSONS.md; picture-first.trx 117 focused backend cases pass (learning, profile and sentence publishing), 246 frontend tests/66 files pass. Twelve original picture-first teaching lessons plus four unit checks installed. Known unique word-bank subsets with distractors graded on server; private keys remain private; answered public exercise retained for feedback. Goal-only ownership/validation/preferences preservation tested.",
+      "2026-11-16: Migrated PostgreSQL verified every documented field, JSONB rules and version/media foreign keys. Publishing and learning tests verified format-specific validation, scoped preview and saved assessment. checklist-280.trx."
+    ],
+    "notes": "All ten formats and audio Matching/Alphabet modes now have author/publication/session support. Private answer/pair grading and ungraded Speaking remain distinct. Real independently reviewed four-course curriculum and full browser/device/dependent content tools remain required.",
+    "additional_fields": [
+      "ContextText: nullable string, maximum4000 characters; public reading passage or dialogue situation, copied into session snapshots."
+    ]
+  },
+  {
+    "name": "ExerciseSkill",
+    "page": 14,
+    "fields": "exerciseId: uuid -> Exercise, skillId: int -> Skill",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. The composite key links an exercise to a skill. Mistake practice tests cover saved skill tagging. learning-model-verification.trx.",
+      "2026-11-08: AddSkillFoundation migration and same-course trigger. 2026-11-09: scoped draft editing, revision copying and private learning-session tags implemented. Topic catalog expansion remains open."
+    ]
+  },
+  {
+    "name": "ExerciseOption",
+    "page": 14,
+    "fields": "id: uuid, exerciseId: uuid -> Exercise, text: string, orderNumber: int, matchKey: string?",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-10-28: AudioAssociationTests6 real PostgreSQL/Garage cases; full244backend/119frontend tests passed; matching audio editor/board/transport and Russian mode tests; AddMatchingAudio; AUDIO_ASSOCIATIONS.md.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: PICTURE_FIRST_LESSONS.md; picture-first.trx 117 focused backend cases pass (learning, profile and sentence publishing), 246 frontend tests/66 files pass. Twelve original picture-first teaching lessons plus four unit checks installed. Known unique word-bank subsets with distractors graded on server; private keys remain private; answered public exercise retained for feedback. Goal-only ownership/validation/preferences preservation tested.",
+      "2026-11-16: Migrated PostgreSQL verified option fields, exercise/media references and order storage. Matching and listening tests verified private keys, scoped playback and saved references. checklist-280.trx."
+    ],
+    "notes": "Adds nullable AudioMediaId FK for left-side matching items. Owned reviewed matching-language distinct clips, revision copying/private-key regeneration and public metadata snapshots verified. Right-side option audio is refused. Other dependent content/resource workflows and real curriculum/device checks remain required."
+  },
+  {
+    "name": "AcceptedAnswer",
+    "page": 14,
+    "fields": "id: uuid, exerciseId: uuid -> Exercise, answerText: text, orderedTokenIds: jsonb?",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. Accepted answers reference an exercise and can hold ordered tokens in JSONB. Publishing and grading tests cover accepted keys. learning-model-verification.trx.",
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: PICTURE_FIRST_LESSONS.md; picture-first.trx 117 focused backend cases pass (learning, profile and sentence publishing), 246 frontend tests/66 files pass. Twelve original picture-first teaching lessons plus four unit checks installed. Known unique word-bank subsets with distractors graded on server; private keys remain private; answered public exercise retained for feedback. Goal-only ownership/validation/preferences preservation tested.",
+      "2026-11-23: BaselineTopicTests verified PostgreSQL-safe unit insertion, stable identifiers/metadata and repeat installation; StarterRevisionTests preserved an active old-version session. Whole-course grading passed all four packs; five final installation/natural-English-alternative cases passed. No schema/field changes. BASELINE_TOPICS.md."
+    ],
+    "notes": "Private alternative text answers and ordered token keys are verified for relevant formats. Text Matching instead uses paired ExerciseOption.MatchKey values, without redundant AcceptedAnswer rows. Remaining exercise types still required. Reading, dialogue-response and Russian visual-letter choice paths are now verified; actual curriculum and audio/speaking variants remain required."
+  },
+  {
+    "name": "MediaAsset",
+    "page": 14,
+    "fields": "id: uuid, storageKey: string, mimeType: string, byteSize: long, languageId: int? -> Language, source: string, license: string, uploadedBy: uuid -> User",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: MediaObjectStoreTests/ObjectStorageOptionsTests, 20 storage cases within full184passing backend tests; PRIVATE_AUDIO_STORAGE.md.",
+      "2026-10-28: WaveAudioInspectorTests32, MediaWorkflowTests8 against PostgreSQL/Garage; full backend224passed, frontend93passed; media-library/media-api component/transport tests; MEDIA_WORKFLOW.md; AddMediaLifecycle applied.",
+      "2026-10-28: ListeningTests6 real PostgreSQL/Garage integration cases; full230backend tests,103frontend tests; author/picker/player/lifecycle coverage; AddSessionAudio; LISTENING_LESSONS.md.",
+      "2026-10-28: AudioAssociationTests6 real PostgreSQL/Garage cases; full244backend/119frontend tests passed; matching audio editor/board/transport and Russian mode tests; AddMatchingAudio; AUDIO_ASSOCIATIONS.md.",
+      "2026-11-06: Explicit finish-deletion endpoint and audio-library action; 12 focused PostgreSQL/Garage/account-deletion tests and 8 UI tests passed, plus production build. MEDIA_WORKFLOW.md records retries, ownership, concurrency and synthetic deletion handoff. Broader release/device gates remain open.",
+      "2026-11-16: Migrated PostgreSQL verified source, license, size, language and uploader fields and references. Media workflow tests verified private delivery, ownership, independent review and protection of in-use files. checklist-280.trx."
+    ],
+    "notes": "PCM upload/review and whole/per-option playback/attachment verified. Four source/snapshot reference types protect deletion/cleanup. Matching and Russian sound samples are bounded to30seconds; duplicate normalized matching clips are refused. Future vocabulary/dialogue/avatar references, broader codecs, real licensed curriculum and device/release checks remain required."
+  },
+  {
+    "name": "Enrollment",
+    "page": 15,
+    "fields": "userId: uuid -> User, courseId: uuid -> Course, enrolledAt: datetime, placementLevel: string?",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-16: DocumentedUniqueKeysTests verified the documented uniqueness rule in PostgreSQL. documented-database-keys.trx.",
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. The learner/course pair is the primary key. Learning tests cover concurrent enrollment and separate course records. learning-model-verification.trx.",
+      "2026-10-28: LearningTests/TextAnswerEvaluatorTests against isolated PostgreSQL; journey/lesson-player UI tests; LEARNING_ENGINE.md; AddLearningSessions migration.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: PLACEMENT.md; four-language diagnostic/start/recommend/apply verified in placement-learning.trx (98learning cases), frontend224/62files, production/backendbuild/noEFdrift/secret-scanpass. Owned/private snapshots, zeroXP/hearts/progress grants, explicit idempotent application, first-gap recommendation, current-unit locks and SQL course/XP denial. Local migration20261102123435 applied."
+    ],
+    "notes": "Self-reported levels and server-tested starting-unit application are distinct. Enrollment persists; diagnostic skips award no lesson completion or XP. PLACEMENT.md."
+  },
+  {
+    "name": "LessonProgress",
+    "page": 15,
+    "fields": "userId: uuid -> User, lessonId: uuid -> Lesson, status: string, bestScore: int, completedAt: datetime?",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-16: DocumentedUniqueKeysTests verified the documented uniqueness rule in PostgreSQL. documented-database-keys.trx.",
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. Progress belongs to a learner and lesson. Learning tests cover passing, repeat completion and owned history. learning-model-verification.trx.",
+      "2026-10-28: LearningTests/TextAnswerEvaluatorTests against isolated PostgreSQL; journey/lesson-player UI tests; LEARNING_ENGINE.md; AddLearningSessions migration.",
+      "2026-10-28: SpeakingTests8 PostgreSQL/Garage cases; full238backend tests and111frontend tests passed; guided recording/neutral result/journey/authoring tests; AddUngradedPractice; SPEAKING_LESSONS.md.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: UNIT_CHECKS.md; 24 unit assessments added alongside 108 teaching lessons. unit-checks.trx seven passing integration cases cover all132steps/1800answers, early denial/all-unit prerequisites, no teaching hints, progress/XP, old-session preservation and idempotence. Frontend219/buildpass; actual localSQL confirms132steps/24checks/1800currentquestions. All-format assessment and placement remain partial.",
+      "2026-11-02: MISTAKE_PRACTICE.md; mistake-learning.trx101learning tests, frontend235/63files, production/APIbuild/format/noEFdrift/offline-secret-scan pass. Owned full-history unresolved text mistakes, pagination, concurrent batch resume, immutable source snapshots, corrected-review resolution and zero hearts/XP/original-completion verified. Skill filtering/audio/due scheduling remain required.",
+      "2026-11-03: LEARNING_OVERVIEW.md; dashboard.trx five isolated PostgreSQL cases pass for anonymous/invalid/unenrolled denial, own ledger and course totals, cross-user isolation, historical daily goals, gap/future exclusion and saved-timezone rollover. Backend build zero warnings/errors. 251 frontend tests/67 files pass including stale-account/course-response isolation and server-offset heart countdown. Actual authenticated browser displays persisted stats.",
+      "2026-11-06: Weekly summaries read owned ledger, first-completion, graded-answer and word-review aggregates without new writes. Four PostgreSQL cases verify privacy, deduplication, future exclusion, ungraded/placement handling and DST boundaries; ten frontend cases and builds/format passed. WEEKLY_SUMMARY.md. Unit completion cards/sharing and broader model requirements remain separate."
+    ],
+    "notes": "Speaking-only lesson completion records practice progress without a fabricated score or XP. Journey hasGradedScore is derived from bounded completed graded history; no extra score flag is persisted. First graded reward remains available once after prior ungraded completion. Full curriculum/dependent progress consumers remain required."
+  },
+  {
+    "name": "LearningSession",
+    "page": 15,
+    "fields": "id: uuid, userId: uuid -> User, courseId: uuid -> Course, lessonId: uuid? -> Lesson, mode: string, hearts: int, startedAt: datetime, completedAt: datetime?, score: int, awardedXp: int, practiceFocus: string?",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. Composite relationships bind sessions to enrolled learners and lesson versions. Learning and placement tests cover private resume and historical snapshots. learning-model-verification.trx.",
+      "2026-11-08: AddSkillPractice adds nullable PracticeSkillId, same-course FK, session mode guard and uniqueness for open skill batches. MistakePracticeTests verify concurrent resume and independent course-wide practice.",
+      "2026-11-12: AddFocusedPractice adds a nullable mode with one open batch per learner, course and focus. The check constraint limits it to zero-XP, course-wide practice.",
+      "2026-10-28: LearningTests/TextAnswerEvaluatorTests against isolated PostgreSQL; journey/lesson-player UI tests; LEARNING_ENGINE.md; AddLearningSessions migration.",
+      "2026-10-28: SpeakingTests8 PostgreSQL/Garage cases; full238backend tests and111frontend tests passed; guided recording/neutral result/journey/authoring tests; AddUngradedPractice; SPEAKING_LESSONS.md.",
+      "2026-10-28: Shared account heart balance for active sessions, historical completed snapshots preserved; concurrent/replay/refill tests; HEART_RECOVERY.md.",
+      "2026-10-29: Additional SpeakingCheck format uses private targets, trusted voice-only answer writes and durable atomic retry/heart evidence. Original ungraded Speaking unchanged. SpeechCheckTests/SpokenWordEvaluatorTests; SPOKEN_WORD_CHECKS.md. Overall pending fields/features unchanged.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: UNIT_CHECKS.md; 24 unit assessments added alongside 108 teaching lessons. unit-checks.trx seven passing integration cases cover all132steps/1800answers, early denial/all-unit prerequisites, no teaching hints, progress/XP, old-session preservation and idempotence. Frontend219/buildpass; actual localSQL confirms132steps/24checks/1800currentquestions. All-format assessment and placement remain partial.",
+      "2026-11-02: PLACEMENT.md; four-language diagnostic/start/recommend/apply verified in placement-learning.trx (98learning cases), frontend224/62files, production/backendbuild/noEFdrift/secret-scanpass. Owned/private snapshots, zeroXP/hearts/progress grants, explicit idempotent application, first-gap recommendation, current-unit locks and SQL course/XP denial. Local migration20261102123435 applied.",
+      "2026-11-02: MISTAKE_PRACTICE.md; mistake-learning.trx101learning tests, frontend235/63files, production/APIbuild/format/noEFdrift/offline-secret-scan pass. Owned full-history unresolved text mistakes, pagination, concurrent batch resume, immutable source snapshots, corrected-review resolution and zero hearts/XP/original-completion verified. Skill filtering/audio/due scheduling remain required.",
+      "2026-11-02: PICTURE_FIRST_LESSONS.md; picture-first.trx 117 focused backend cases pass (learning, profile and sentence publishing), 246 frontend tests/66 files pass. Twelve original picture-first teaching lessons plus four unit checks installed. Known unique word-bank subsets with distractors graded on server; private keys remain private; answered public exercise retained for feedback. Goal-only ownership/validation/preferences preservation tested.",
+      "2026-11-06: Lesson-result continuation uses current owned progress for next unlocked step, saved-session resume, retry and free practice. Nine focused UI cases and existing player/journey regressions passed; three PostgreSQL cases reverified private/idempotent starts, prerequisites and free practice without hearts/rewards. Production build passed; LESSON_CONTINUATION.md."
+    ],
+    "notes": "All ten named exercise types now support immutable sessions; Speaking is ungraded. Shared SessionAssessment separates graded accuracy/counts from self-assessment and requires every step completed. First graded reward uses the unique ledger; speaking-only completion earns zero XP. Audio submodes, Premium heart rights and other dependent consumers remain required. Supporting nullable private PlacementMap, RecommendedUnitId and PlacementAppliedAt preserve diagnostic/application evidence; original fields retained. PLACEMENT.md."
+  },
+  {
+    "name": "SessionExercise",
+    "page": 15,
+    "fields": "id: uuid, sessionId: uuid -> LearningSession, exerciseId: uuid -> Exercise, orderNumber: int, publicSnapshot: jsonb, privateEvaluationSnapshot: jsonb",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. Owned session exercises persist ordered public and private JSONB snapshots. Learning tests verify private evaluation fields stay off the public response. learning-model-verification.trx.",
+      "2026-10-28: LearningTests/TextAnswerEvaluatorTests against isolated PostgreSQL; journey/lesson-player UI tests; LEARNING_ENGINE.md; AddLearningSessions migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-10-28: ListeningTests6 real PostgreSQL/Garage integration cases; full230backend tests,103frontend tests; author/picker/player/lifecycle coverage; AddSessionAudio; LISTENING_LESSONS.md.",
+      "2026-10-28: AudioAssociationTests6 real PostgreSQL/Garage cases; full244backend/119frontend tests passed; matching audio editor/board/transport and Russian mode tests; AddMatchingAudio; AUDIO_ASSOCIATIONS.md.",
+      "2026-10-29: Additional SpeakingCheck format uses private targets, trusted voice-only answer writes and durable atomic retry/heart evidence. Original ungraded Speaking unchanged. SpeechCheckTests/SpokenWordEvaluatorTests; SPOKEN_WORD_CHECKS.md. Overall pending fields/features unchanged.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: PLACEMENT.md; four-language diagnostic/start/recommend/apply verified in placement-learning.trx (98learning cases), frontend224/62files, production/backendbuild/noEFdrift/secret-scanpass. Owned/private snapshots, zeroXP/hearts/progress grants, explicit idempotent application, first-gap recommendation, current-unit locks and SQL course/XP denial. Local migration20261102123435 applied.",
+      "2026-11-02: MISTAKE_PRACTICE.md; mistake-learning.trx101learning tests, frontend235/63files, production/APIbuild/format/noEFdrift/offline-secret-scan pass. Owned full-history unresolved text mistakes, pagination, concurrent batch resume, immutable source snapshots, corrected-review resolution and zero hearts/XP/original-completion verified. Skill filtering/audio/due scheduling remain required."
+    ],
+    "notes": "Whole and per-option saved audio references now preserve original files/attribution independently of source changes. SessionOptionAudio is a supporting FK table, registered separately. Owner/current/answered-only playback and database deletion protection verified; remaining dependent lifecycle and full device checks stay required."
+  },
+  {
+    "name": "AnswerAttempt",
+    "page": 15,
+    "fields": "id: uuid, sessionExerciseId: uuid -> SessionExercise, answerPayload: jsonb, isCorrect: bool, idempotencyKey: uuid, submittedAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-16: DocumentedUniqueKeysTests verified the documented uniqueness rule in PostgreSQL. documented-database-keys.trx.",
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. Attempts reference owned session exercises and store JSONB payloads. Learning tests cover retry keys, cross-owner denial and exactly-once writes. learning-model-verification.trx.",
+      "2026-10-28: LearningTests/TextAnswerEvaluatorTests against isolated PostgreSQL; journey/lesson-player UI tests; LEARNING_ENGINE.md; AddLearningSessions migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-10-28: SpeakingTests8 PostgreSQL/Garage cases; full238backend tests and111frontend tests passed; guided recording/neutral result/journey/authoring tests; AddUngradedPractice; SPEAKING_LESSONS.md.",
+      "2026-10-29: Additional SpeakingCheck format uses private targets, trusted voice-only answer writes and durable atomic retry/heart evidence. Original ungraded Speaking unchanged. SpeechCheckTests/SpokenWordEvaluatorTests; SPOKEN_WORD_CHECKS.md. Overall pending fields/features unchanged.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: UNIT_CHECKS.md; 24 unit assessments added alongside 108 teaching lessons. unit-checks.trx seven passing integration cases cover all132steps/1800answers, early denial/all-unit prerequisites, no teaching hints, progress/XP, old-session preservation and idempotence. Frontend219/buildpass; actual localSQL confirms132steps/24checks/1800currentquestions. All-format assessment and placement remain partial.",
+      "2026-11-02: PLACEMENT.md; four-language diagnostic/start/recommend/apply verified in placement-learning.trx (98learning cases), frontend224/62files, production/backendbuild/noEFdrift/secret-scanpass. Owned/private snapshots, zeroXP/hearts/progress grants, explicit idempotent application, first-gap recommendation, current-unit locks and SQL course/XP denial. Local migration20261102123435 applied.",
+      "2026-11-02: MISTAKE_PRACTICE.md; mistake-learning.trx101learning tests, frontend235/63files, production/APIbuild/format/noEFdrift/offline-secret-scan pass. Owned full-history unresolved text mistakes, pagination, concurrent batch resume, immutable source snapshots, corrected-review resolution and zero hearts/XP/original-completion verified. Skill filtering/audio/due scheduling remain required.",
+      "2026-11-06: Weekly summaries read owned ledger, first-completion, graded-answer and word-review aggregates without new writes. Four PostgreSQL cases verify privacy, deduplication, future exclusion, ungraded/placement handling and DST boundaries; ten frontend cases and builds/format passed. WEEKLY_SUMMARY.md. Unit completion cards/sharing and broader model requirements remain separate."
+    ],
+    "notes": "Adds server-written IsGraded with SQL default/sentinel true for legacy rows and a check denying IsCorrect on ungraded practice. Speaking confirms completion without audio/score payload, leaves hearts unchanged and preserves idempotent replay. Accuracy/mastery/mistake consumers must exclude ungraded rows. Other dependent modules remain required."
+  },
+  {
+    "name": "SkillProgress",
+    "page": 15,
+    "fields": "userId: uuid -> User, skillId: int -> Skill, correctCount: int, incorrectCount: int, lastPracticedAt: datetime?",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. The composite learner/skill key preserves distinct practice counts. Mistake practice tests cover observed skills and unpractised categories. learning-model-verification.trx.",
+      "2026-11-08: AddSkillFoundation, graded-attempt writes, private map and BackfillSkillProgress verified. MistakePracticeTests applied the backfill twice and checked totals and last practice."
+    ]
+  },
+  {
+    "name": "VocabularyItem",
+    "page": 15,
+    "fields": "id: uuid, courseId: uuid -> Course, word: string, englishTranslation: string, example: text, audioMediaId: uuid? -> MediaAsset, partOfSpeech: string",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: AddVocabularyLibrary; six PostgreSQL VocabularyTests, owned library/store/UI tests; VOCABULARY_LIBRARY.md.",
+      "2026-11-05: AddVocabularyTopics; PostgreSQL verified the topic field, starter data and combined filters.",
+      "2026-11-05: VocabularyTests and AudioAssociationTests verified admin attachment and removal, stale-write rejection, audit, reviewed audio access and private storage playback.",
+      "2026-11-05: VocabularyRevisionTests verified starter examples across four courses, new-word visibility and saving after publication, and stable word identity for approved revisions.",
+      "2026-11-16: Migrated PostgreSQL verified every documented field and course/media references. Vocabulary tests verified independently reviewed revisions, private saves and recorded playback. Curriculum-wide recording coverage stays separate. checklist-280.trx.",
+      "2026-11-23: vocabulary-expansion-final-20261123.trx passed 21 vocabulary checks. Concurrent idempotent installation retained staff edits and saved schedules; noun-meaning reviews accept optional English articles without XP. Normal SQL confirmed 22 entries/course. No field/schema changes. VOCABULARY_LIBRARY.md."
+    ],
+    "notes": "All PDF fields mapped. Topic filtering, search/save/remove, review schedules, collections, staff revision workflow and reviewed audio attachment/playback verified. Real recording coverage and full curriculum coverage remain required."
+  },
+  {
+    "name": "SavedWord",
+    "page": 15,
+    "fields": "id: uuid, userId: uuid -> User, vocabularyItemId: uuid -> VocabularyItem, dueAt: datetime, intervalDays: int, correctStreak: int",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-16: DocumentedUniqueKeysTests verified the documented uniqueness rule in PostgreSQL. documented-database-keys.trx.",
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. The model stores the owner, vocabulary reference and review schedule. Vocabulary tests cover isolation and concurrent saves. learning-model-verification.trx.",
+      "2026-10-28: AddVocabularyLibrary; six PostgreSQL VocabularyTests, owned library/store/UI tests; VOCABULARY_LIBRARY.md.",
+      "2026-11-23: vocabulary-expansion-final-20261123.trx passed 21 vocabulary checks. Concurrent idempotent installation retained staff edits and saved schedules; noun-meaning reviews accept optional English articles without XP. Normal SQL confirmed 22 entries/course. No field/schema changes. VOCABULARY_LIBRARY.md."
+    ],
+    "notes": "All PDF fields mapped; search/save/remove persistence verified. Word audio, staff authoring, topic relationships, reviews/collections and dependent retention remain required."
+  },
+  {
+    "name": "WordReview",
+    "page": 15,
+    "fields": "id: uuid, savedWordId: uuid -> SavedWord, isCorrect: bool, reviewedAt: datetime, idempotencyKey: uuid",
+    "status": "implemented_verified",
+    "evidence": [
+      "AddWordReviews applied locally. PostgreSQL verified owned history and one row per submission key.",
+      "2026-11-06: Weekly summaries read owned ledger, first-completion, graded-answer and word-review aggregates without new writes. Four PostgreSQL cases verify privacy, deduplication, future exclusion, ungraded/placement handling and DST boundaries; ten frontend cases and builds/format passed. WEEKLY_SUMMARY.md. Unit completion cards/sharing and broader model requirements remain separate.",
+      "2026-11-23: vocabulary-expansion-final-20261123.trx passed 21 vocabulary checks. Concurrent idempotent installation retained staff edits and saved schedules; noun-meaning reviews accept optional English articles without XP. Normal SQL confirmed 22 entries/course. No field/schema changes. VOCABULARY_LIBRARY.md."
+    ]
+  },
+  {
+    "name": "WordCollection",
+    "page": 15,
+    "fields": "id: uuid, userId: uuid -> User, courseId: uuid -> Course, name: string",
+    "status": "implemented_verified",
+    "evidence": [
+      "AddWordCollections and PostgreSQL tests verified collection ownership, unique membership and cascade cleanup without removing saved words."
+    ]
+  },
+  {
+    "name": "CollectionWord",
+    "page": 15,
+    "fields": "collectionId: uuid -> WordCollection, savedWordId: uuid -> SavedWord",
+    "status": "implemented_verified",
+    "evidence": [
+      "AddWordCollections and PostgreSQL tests verified collection ownership, unique membership and cascade cleanup without removing saved words."
+    ]
+  },
+  {
+    "name": "Dialogue",
+    "page": 15,
+    "fields": "id: uuid, courseId: uuid -> Course, title: string, scenario: string, versionNumber: int, status: string, requiresPremium: bool",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-09: AddDialogueFoundation defines persisted fields and relational constraints.",
+      "2026-11-12: AddPremiumDialogues adds an access flag defaulting to Free. PostgreSQL tests verify four Free scenarios and one Premium scenario per course.",
+      "2026-11-16: DocumentedModelSchemaTests verified migrated PostgreSQL columns, nullability and validated keys. checklist-models.trx."
+    ],
+    "notes": "Course ownership, scenario version and Premium flag were checked. Starter dialogue tests cover Free and Premium access."
+  },
+  {
+    "name": "DialogueNode",
+    "page": 15,
+    "fields": "id: uuid, dialogueId: uuid -> Dialogue, text: text, audioMediaId: uuid? -> MediaAsset, isStart: bool, isTerminal: bool",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-09: AddDialogueFoundation defines persisted fields and relational constraints. Learner workflow and scenario content are still pending.",
+      "2026-11-16: DocumentedModelSchemaTests verified migrated PostgreSQL columns, nullability and validated keys. checklist-models.trx."
+    ],
+    "notes": "Scoped nodes, start and terminal flags, and the optional reviewed audio reference were verified."
+  },
+  {
+    "name": "DialogueChoice",
+    "page": 15,
+    "fields": "id: uuid, nodeId: uuid -> DialogueNode, text: text, feedback: text, isCorrect: bool, nextNodeId: uuid? -> DialogueNode",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-09: AddDialogueFoundation defines persisted fields and relational constraints. Learner workflow and scenario content are still pending.",
+      "2026-11-16: DocumentedModelSchemaTests verified migrated PostgreSQL columns, nullability and validated keys. checklist-models.trx."
+    ],
+    "notes": "PostgreSQL enforces same-dialogue source and destination links. Session tests verify server-selected branches and saved feedback."
+  },
+  {
+    "name": "DialogueSession",
+    "page": 15,
+    "fields": "id: uuid, userId: uuid -> User, dialogueId: uuid -> Dialogue, currentNodeId: uuid -> DialogueNode, versionSnapshot: jsonb, startedAt: datetime, completedAt: datetime?",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-09: AddDialogueFoundation defines persisted fields and relational constraints. Learner workflow and scenario content are still pending.",
+      "2026-11-16: DocumentedModelSchemaTests verified migrated PostgreSQL columns, nullability and validated keys. checklist-models.trx."
+    ],
+    "notes": "Snapshots persist with current-node and owner constraints. Session tests verify saved branches and stable replay."
+  },
+  {
+    "name": "DialogueAttempt",
+    "page": 15,
+    "fields": "id: uuid, sessionId: uuid -> DialogueSession, choiceId: uuid -> DialogueChoice, idempotencyKey: uuid, submittedAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-09: AddDialogueFoundation defines persisted fields and relational constraints. Learner workflow and scenario content are still pending.",
+      "2026-11-16: DocumentedModelSchemaTests verified migrated PostgreSQL columns, nullability and validated keys. checklist-models.trx."
+    ],
+    "notes": "Session and choice links were verified. A retry with the same key does not append a second path entry."
+  },
+  {
+    "name": "CompletionCard",
+    "page": 15,
+    "fields": "id: uuid, userId: uuid -> User, unitId: uuid -> Unit, issuedAt: datetime, verificationCode: string",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. The card references its learner and course unit. Completion card tests cover one private card per earned unit and explicit sharing. learning-model-verification.trx.",
+      "2026-11-06: AddCompletionCards applied locally; all original fields and supporting snapshot/sharing metadata mapped. Nine PostgreSQL cases verify issuance, uniqueness, privacy, revocation, snapshot/revision/score constraints, deletion and rollback protection. Full527 backend and final341 frontend tests passed; production/API builds and EF model consistency passed. COMPLETION_CARDS.md."
+    ],
+    "notes": "Original fields retained. Supporting CourseId, titles, completion date, lesson/graded counts and nullable average score preserve issued work; IsShared/ShareCode/Revision implement opt-in revocable sharing. Current display name is projected, not copied. Native browser/mobile/print/clipboard and release review remain open."
+  },
+  {
+    "name": "DailyActivity",
+    "page": 16,
+    "fields": "userId: uuid -> User, localDate: date, earnedXp: int, completedLessons: int, goalReached: bool",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-16: DocumentedUniqueKeysTests verified the documented uniqueness rule in PostgreSQL. documented-database-keys.trx.",
+      "2026-11-12: DocumentedModelSchemaTests verified the documented columns, PostgreSQL types and nullability, decimal precision where specified, primary key and validated foreign keys. LearningTests and ActivityTests verified one recorded activity day per learner/date, persisted XP and lesson counts, and owner-scoped reads. documented-model-verification.trx.",
+      "2026-11-12: ActivityTests verified owned, paged date-window reads. LearningTests verified that a completed lesson's persisted daily XP, count and goal flag are returned by the activity endpoint.",
+      "2026-10-28: LearningTests/TextAnswerEvaluatorTests against isolated PostgreSQL; journey/lesson-player UI tests; LEARNING_ENGINE.md; AddLearningSessions migration.",
+      "2026-11-03: LEARNING_OVERVIEW.md; dashboard.trx five isolated PostgreSQL cases pass for anonymous/invalid/unenrolled denial, own ledger and course totals, cross-user isolation, historical daily goals, gap/future exclusion and saved-timezone rollover. Backend build zero warnings/errors. 251 frontend tests/67 files pass including stale-account/course-response isolation and server-offset heart countdown. Actual authenticated browser displays persisted stats."
+    ],
+    "notes": "User/local-date key, first-success lesson count, goal and XP totals are atomic using saved timezone. Streaks, challenges, achievements and other activity writers pending."
+  },
+  {
+    "name": "XpTransaction",
+    "page": 16,
+    "fields": "id: uuid, userId: uuid -> User, courseId: uuid -> Course, sourceType: string, sourceId: uuid, amount: int, earnedAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-16: DocumentedUniqueKeysTests verified the documented uniqueness rule in PostgreSQL. documented-database-keys.trx.",
+      "2026-11-12: DocumentedModelSchemaTests verified documented fields, PostgreSQL types, nullability and validated keys. Ledger rows reference an enrolled learner and course. Learning tests cover duplicate reward denial and one completion award. learning-model-verification.trx.",
+      "2026-10-28: LearningTests/TextAnswerEvaluatorTests against isolated PostgreSQL; journey/lesson-player UI tests; LEARNING_ENGINE.md; AddLearningSessions migration.",
+      "2026-11-03: LEARNING_OVERVIEW.md; dashboard.trx five isolated PostgreSQL cases pass for anonymous/invalid/unenrolled denial, own ledger and course totals, cross-user isolation, historical daily goals, gap/future exclusion and saved-timezone rollover. Backend build zero warnings/errors. 251 frontend tests/67 files pass including stale-account/course-response isolation and server-offset heart countdown. Actual authenticated browser displays persisted stats.",
+      "2026-11-03: WEEKLY_RANKING.md; ranking-progress.trx20 focused backend cases pass including three ranking cases for UTC week/course filtering, attained-time ties, opt-in/default/opt-out/privacy/overposting, preference isolation, archived owned history and26participant pagination/ownrank.259frontend tests/69files and production build pass; live enrolled-course read and week/course switching verified without joining. Migration20261103093949 index-only applied with unchanged1XP/8sessions/27answers;25local migrations/noEFdrift.",
+      "2026-11-06: Weekly summaries read owned ledger, first-completion, graded-answer and word-review aggregates without new writes. Four PostgreSQL cases verify privacy, deduplication, future exclusion, ungraded/placement handling and DST boundaries; ten frontend cases and builds/format passed. WEEKLY_SUMMARY.md. Unit completion cards/sharing and broader model requirements remain separate.",
+      "2026-11-20: Conversation rewards reuse the existing ledger with FirstDialogueCompletion and the completing session ID. DialogueSessionTests and DialogueRewardRollbackTests verify single issuance across replay/revisions, independent learners, the 80% boundary, admin-configured amounts, disabled rewards, legacy defaults and rollback. No new table or migration."
+    ],
+    "notes": "Unique user/sourceType/sourceId prevents repeated first-lesson reward. First pass 20 XP; repeat/practice 0. Other source types, billing entitlements and leaderboard consumers pending."
+  },
+  {
+    "name": "Achievement",
+    "page": 16,
+    "fields": "id: uuid, code: string, title: string, ruleType: string, threshold: int",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-03: ACHIEVEMENTS.md; achievements.trx5 PostgreSQL cases;262 frontend tests/70files and production build; local26migrations/noEFdrift/ready200, unchanged learner history; offline secret scan passed.",
+      "2026-11-03: REWARD_CATALOG_MANAGEMENT.md; full445backendtests and274frontendtests/73files, final build/format pass; local28migrations/ready200 and all10expandedSwaggeroperations verified. Live learner guard redirects to /account; no role promotion or user progress change."
+    ],
+    "notes": "Original fields and new archive/revision metadata verified. Admin/SuperAdmin + live MFA management, atomic audits, private reads, conflict handling and preservation rules are documented in REWARD_CATALOG_MANAGEMENT.md.",
+    "additional_fields": [
+      "isArchived: bool (retains original user history)",
+      "revision: int (server-checked stale-edit protection)"
+    ]
+  },
+  {
+    "name": "UserAchievement",
+    "page": 16,
+    "fields": "userId: uuid -> User, achievementId: uuid -> Achievement, earnedAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-16: DocumentedUniqueKeysTests verified the documented uniqueness rule in PostgreSQL. documented-database-keys.trx.",
+      "2026-11-03: ACHIEVEMENTS.md; achievements.trx5 PostgreSQL cases;262 frontend tests/70files and production build; local26migrations/noEFdrift/ready200, unchanged learner history; offline secret scan passed."
+    ],
+    "notes": "Four server-owned milestone rules, atomic unique awards/in-app notices, historical read-only eligibility and explicit collection. See ACHIEVEMENTS.md."
+  },
+  {
+    "name": "Challenge",
+    "page": 16,
+    "fields": "id: uuid, title: string, ruleType: string, target: int, rewardXp: int, startsAt: datetime, endsAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-03: WEEKLY_CHALLENGES.md; final435backendtests after completion-time boundary fix,266frontendtests/71files, final production build/format, offline source-secret scan, local27migrations/noEFdrift/ready200 and actual1/3ownweeklyprogress verified.",
+      "2026-11-03: REWARD_CATALOG_MANAGEMENT.md; full445backendtests and274frontendtests/73files, final build/format pass; local28migrations/ready200 and all10expandedSwaggeroperations verified. Live learner guard redirects to /account; no role promotion or user progress change."
+    ],
+    "notes": "Original fields and new archive/revision metadata verified. Admin/SuperAdmin + live MFA management, atomic audits, private reads, conflict handling and preservation rules are documented in REWARD_CATALOG_MANAGEMENT.md.",
+    "additional_fields": [
+      "isArchived: bool (retains original user history)",
+      "revision: int (server-checked stale-edit protection)"
+    ]
+  },
+  {
+    "name": "UserChallenge",
+    "page": 16,
+    "fields": "userId: uuid -> User, challengeId: uuid -> Challenge, progress: int, completedAt: datetime?, rewardedAt: datetime?",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-03: WEEKLY_CHALLENGES.md; final435backendtests after completion-time boundary fix,266frontendtests/71files, final production build/format, offline source-secret scan, local27migrations/noEFdrift/ready200 and actual1/3ownweeklyprogress verified."
+    ],
+    "notes": "Every documented field, EF migration/constraints, private progress and atomic unique rewards verified. Staff manage-resource CRUD remains separately required."
+  },
+  {
+    "name": "Classroom",
+    "page": 16,
+    "fields": "id: uuid, teacherId: uuid -> User, courseId: uuid -> Course, name: string, isArchived: bool",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: CLASSROOMS.md; 11 focused PostgreSQL cases, 456 full backend tests, 282 frontend tests, local Swagger and migration 29 verified.",
+      "2026-11-20: staff-deletion-regression.trx passed 112 publishing, classroom, profile, refund, staff-note and completion-card checks. Authenticated deletion erases archived teaching labels, copied notifications and departed-author refund notes while preserving submissions, other contributions and immutable monetary fields. Note-only PostgreSQL protection and guarded migration rollback passed; the migration is applied locally."
+    ],
+    "notes": "Additional fields: Description, Revision, CreationKey and CreationFingerprint. 2026-11-18: Protected recipient-specific handover updates TeacherId and Revision under a class lock, preserves members and assignments, revokes old invitations and records one audit. Concurrent acceptance, stale links, deletion responsibilities and desktop/phone browser behavior verified."
+  },
+  {
+    "name": "ClassMembership",
+    "page": 16,
+    "fields": "classroomId: uuid -> Classroom, userId: uuid -> User, joinedAt: datetime, status: string",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-16: DocumentedUniqueKeysTests verified the documented uniqueness rule in PostgreSQL. documented-database-keys.trx.",
+      "2026-11-04: CLASSROOMS.md; 11 focused PostgreSQL cases, 456 full backend tests, 282 frontend tests, local Swagger and migration 29 verified."
+    ],
+    "notes": "Composite classroom/user key and Active, Left or Removed status."
+  },
+  {
+    "name": "ClassInvitation",
+    "page": 16,
+    "fields": "id: uuid, classroomId: uuid -> Classroom, codeHash: string, expiresAt: datetime, maxUses: int, usedCount: int",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: CLASSROOMS.md; 11 focused PostgreSQL cases, 456 full backend tests, 282 frontend tests, local Swagger and migration 29 verified."
+    ],
+    "notes": "Additional RevokedAt field. Only the code hash is persisted."
+  },
+  {
+    "name": "Assignment",
+    "page": 16,
+    "fields": "id: uuid, classroomId: uuid -> Classroom, title: string, dueAt: datetime, minimumScore: int",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: classroom-assignments.trx, 12 PostgreSQL cases; local migration 30 and Swagger verified. See PROJECT_MEMORY.md.",
+      "2026-11-04: assignment-edit.trx verifies persisted revision and atomic lesson-link replacement under concurrent edits.",
+      "2026-11-04: assignment-submissions.trx, 14 classroom PostgreSQL tests and local migration 31/Swagger. Angular receipt behavior covered in 287-test suite.",
+      "2026-11-16: DocumentedModelSchemaTests verified migrated PostgreSQL columns, nullability and validated keys. checklist-models.trx.",
+      "2026-11-20: staff-deletion-regression.trx passed 112 publishing, classroom, profile, refund, staff-note and completion-card checks. Authenticated deletion erases archived teaching labels, copied notifications and departed-author refund notes while preserving submissions, other contributions and immutable monetary fields. Note-only PostgreSQL protection and guarded migration rollback passed; the migration is applied locally."
+    ],
+    "notes": "Classroom tests verified scoped reads, grading deadlines, editing and submitted work."
+  },
+  {
+    "name": "AssignmentLesson",
+    "page": 16,
+    "fields": "assignmentId: uuid -> Assignment, lessonId: uuid -> Lesson",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: classroom-assignments.trx, 12 PostgreSQL cases; local migration 30 and Swagger verified. See PROJECT_MEMORY.md.",
+      "2026-11-04: assignment-edit.trx verifies persisted revision and atomic lesson-link replacement under concurrent edits.",
+      "2026-11-04: assignment-submissions.trx, 14 classroom PostgreSQL tests and local migration 31/Swagger. Angular receipt behavior covered in 287-test suite.",
+      "2026-11-16: DocumentedModelSchemaTests verified migrated PostgreSQL columns, nullability and validated keys. checklist-models.trx."
+    ],
+    "notes": "The composite key and both links were verified. Classroom tests cover published course lessons, atomic edits and submission locks."
+  },
+  {
+    "name": "AssignmentSubmission",
+    "page": 16,
+    "fields": "id: uuid, assignmentId: uuid -> Assignment, userId: uuid -> User, sessionId: uuid -> LearningSession, submittedAt: datetime, isLate: bool",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: assignment-submissions.trx, 14 classroom PostgreSQL tests and local migration 31/Swagger. Angular receipt behavior covered in 287-test suite."
+    ],
+    "notes": "Original fields persisted. Composite owner/session foreign key and unique per-assignment learner/session enforce link integrity. Teacher reporting and feedback are tracked separately."
+  },
+  {
+    "name": "TeacherFeedback",
+    "page": 16,
+    "fields": "id: uuid, submissionId: uuid -> AssignmentSubmission, teacherId: uuid -> User, message: text, createdAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: teacher-feedback.trx, 14 classroom PostgreSQL tests. Local migration AddTeacherFeedback and Swagger verified.",
+      "2026-11-20: StaffTextDeletionTests verifies password-gated note erasure, other-contributor preservation, retained decisions, published authorship and learner score/submission history. Full account erasure remains separately tracked."
+    ],
+    "notes": "Original fields retained. The unique submission link and transactional write prevent duplicate notes and notifications."
+  },
+  {
+    "name": "Notification",
+    "page": 16,
+    "fields": "id: uuid, userId: uuid -> User, type: string, title: string, body: text, readAt: datetime?, createdAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-30: full360backend/192frontend50files and production build pass;70billing/inbox cases; actual hosted-worker, owner/foreign/ended/replay/concurrency/rollback/UTC/read/privacy/quote-history checks. SUBSCRIPTION_RENEWALS.md; FINANCIAL_HISTORY.md; history-full.trx.",
+      "2026-11-04: 17 classroom and notification PostgreSQL tests passed. Assignment creation is atomic and deadline batches skip completed work and deduplicate concurrent runs.",
+      "2026-11-16: DocumentedModelSchemaTests verified migrated PostgreSQL columns, nullability and validated keys. checklist-models.trx.",
+      "2026-11-20: staff-deletion-regression.trx passed 112 publishing, classroom, profile, refund, staff-note and completion-card checks. Authenticated deletion erases archived teaching labels, copied notifications and departed-author refund notes while preserving submissions, other contributions and immutable monetary fields. Note-only PostgreSQL protection and guarded migration rollback passed; the migration is applied locally."
+    ],
+    "notes": "Owner, type, text and timestamps were verified. Inbox tests confirmed private cursors and idempotent read updates."
+  },
+  {
+    "name": "ReminderPreference",
+    "page": 16,
+    "fields": "userId: uuid -> User, channel: string, enabled: bool, localTime: time, weekDays: jsonb",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: SeparateReminderPreferences migrates existing email opt-ins, times and weekdays. The PostgreSQL round-trip preserved midnight and Monday/Sunday settings. Profile and Mailpit delivery tests passed.",
+      "2026-11-20: User explicitly retained the documented JSONB fields as exceptions to the broader prose rule. DocumentedJsonStorageTests verified the complete PostgreSQL JSONB inventory; reminder migration and administration regressions passed. No typed-storage migration was applied."
+    ]
+  },
+  {
+    "name": "ReminderDelivery",
+    "page": 16,
+    "fields": "id: uuid, userId: uuid -> User, localDate: date, type: string, status: string, sentAt: datetime?",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: AddStudyReminderDeliveries links reminders to the email outbox and enforces one row per learner, local date and type. PostgreSQL and Mailpit verified one delivered message and a queued reminder cancelled after opt-out."
+    ]
+  },
+  {
+    "name": "ContentReport",
+    "page": 16,
+    "fields": "id: uuid, reporterId: uuid -> User, resourceType: string, resourceId: uuid, versionId: uuid?, reason: string, comment: text, status: string, resolvedBy: uuid? -> User, resolution: text?",
+    "notes": "2026-11-18: Deleting a reported account redacts its public-name report comments, resolution text and target identifiers. Closed outcomes and dates remain, and open cases close with an account-deleted explanation. Real PostgreSQL tests verify a report retry racing with deletion cannot retain the identifying text.",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: AddContentReports applied locally. 18 focused PostgreSQL tests and the Angular production build passed.",
+      "2026-11-18: PublicName reports cover shared completion cards and enrolled course rankings. MFA moderation makes the reported card private or pauses ranking participation, with repeat-safe owner notifications and audit. Private target IDs are omitted from report receipts and exports.",
+      "2026-11-20: StaffTextDeletionTests verifies password-gated note erasure, other-contributor preservation, retained decisions, published authorship and learner score/submission history. Full account erasure remains separately tracked."
+    ]
+  },
+  {
+    "name": "ImportJob",
+    "page": 16,
+    "fields": "id: uuid, authorId: uuid -> User, status: string, fileKey: string, validationErrors: jsonb, createdAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: AddLessonImportJobs applied locally. Swagger and PostgreSQL HTTP integration verified private validation, ownership and concurrent commit with one draft and audit."
+    ]
+  },
+  {
+    "name": "AuditLog",
+    "page": 16,
+    "fields": "id: uuid, actorId: uuid? -> User, action: string, entityType: string, entityId: string, reason: text?, traceId: string, occurredAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-11: AdministrationTests passed with the new request diagnostics enabled. Administrative role and settings changes are still recorded in the separate audit table.",
+      "2026-10-27: AuditLog/configuration/AddAdministrativeAudit migration; bootstrap and authenticator-replacement writes verified in SuperAdminBootstrapTests/AuthenticatorReplacementTests.",
+      "2026-10-28: role/status before-after audit writes and paged role-filtered reads verified in AdministrationTests; ADMINISTRATION_SECURITY.md.",
+      "2026-11-16: DocumentedModelSchemaTests verified migrated PostgreSQL columns, nullability and validated keys. checklist-models.trx.",
+      "2026-11-20: StaffTextDeletionTests verifies password-gated note erasure, other-contributor preservation, retained decisions, published authorship and learner score/submission history. Full account erasure remains separately tracked."
+    ],
+    "notes": "Actor reference, target, action, reason, time and trace columns were verified. Administration tests cover restricted reads and audited changes."
+  },
+  {
+    "name": "SystemSetting",
+    "page": 16,
+    "fields": "key: string, value: jsonb, updatedBy: uuid -> User, updatedAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: AddSystemSettings applied locally. PostgreSQL verifies Super Admin access, stale updates, retry safety, audit, new learner preferences and new session XP. Angular production build passed.",
+      "2026-11-20: User explicitly retained the documented JSONB fields as exceptions to the broader prose rule. DocumentedJsonStorageTests verified the complete PostgreSQL JSONB inventory; reminder migration and administration regressions passed. No typed-storage migration was applied."
+    ]
+  },
+  {
+    "name": "SubscriptionPlan",
+    "page": 23,
+    "fields": "id: uuid, code: string, name: string, isActive: bool, createdAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified the documented columns, PostgreSQL types and nullability, decimal precision where specified, primary key and validated foreign keys. PlanCatalogueTests verified private draft creation, protected edits, retired plans and public visibility rules. documented-model-verification.trx.",
+      "2026-11-12: PlanCatalogueTests verifies inactive draft creation, unique codes, renaming and public exclusion.",
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification."
+    ],
+    "notes": "PlanCatalogueTests verified private draft creation, protected edits, retired plans and public visibility rules."
+  },
+  {
+    "name": "PlanPrice",
+    "page": 23,
+    "fields": "id: uuid, planId: uuid -> SubscriptionPlan, period: string, amount: decimal(18,2), currency: string, validFrom: datetime, validTo: datetime?",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified the documented columns, PostgreSQL types and nullability, decimal precision where specified, primary key and validated foreign keys. PlanCatalogueTests and SubscriptionPurchaseTests verified scheduled price versions and immutable amounts on saved quotes. documented-model-verification.trx.",
+      "2026-11-12: PlanCatalogueTests verifies admin future-price versions, an exact nonoverlapping handoff, concurrent requests and immutable prior amounts.",
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification."
+    ],
+    "notes": "PlanCatalogueTests and SubscriptionPurchaseTests verified scheduled price versions and immutable amounts on saved quotes."
+  },
+  {
+    "name": "Feature",
+    "page": 23,
+    "fields": "id: int, code: string, description: string",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified the documented columns, PostgreSQL types and nullability, decimal precision where specified, primary key and validated foreign keys. SubscriptionPurchaseTests verified seeded Free and Premium capability codes and current availability. documented-model-verification.trx.",
+      "2026-11-12: AdvancedAnalytics now enables the active-Premium weekly comparison. SubscriptionPurchaseTests verify denied Free access and access after a simulated purchase.",
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification."
+    ],
+    "notes": "SubscriptionPurchaseTests verified seeded Free and Premium capability codes and current availability."
+  },
+  {
+    "name": "PlanFeature",
+    "page": 23,
+    "fields": "planId: uuid -> SubscriptionPlan, featureId: int -> Feature, limitValue: int?",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified the documented columns, PostgreSQL types and nullability, decimal precision where specified, primary key and validated foreign keys. PlanCatalogueTests verified draft feature and limit updates without changing active Premium links. documented-model-verification.trx.",
+      "2026-11-12: PlanCatalogueTests verifies draft feature assignments and optional limits, stale-edit rejection, replay and protection of active plan feature links.",
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification."
+    ],
+    "notes": "PlanCatalogueTests verified draft feature and limit updates without changing active Premium links."
+  },
+  {
+    "name": "TestCard",
+    "page": 23,
+    "fields": "id: uuid, userId: uuid -> User, nickname: string, displayLastFour: string, currency: string, balance: decimal(18,2), status: string, version: long, createdAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified the documented columns, PostgreSQL types and nullability, decimal precision where specified, primary key and validated foreign keys. TestCardTests verified owned simulated balances, masking, concurrent updates and wallet limits. The table contains exactly the documented columns. documented-model-verification.trx.",
+      "2026-10-29: TestCardTests8 real PostgreSQL HTTP cases; atomic top-up/replay/concurrency/audit/rollback, owner/status/limits/SQL constraints; Angular wallet tests and build; TEST_CARD_WALLET.md. Full297backend before final rollback case, final8focusedpass;151frontend pass.",
+      "2026-10-29: User-approved5simGEL heart refill. Full308backend pass plus final19focused billing cases;162frontend/40files and build pass. Atomic immutable debit/refill/replay, declines/free-expiry/owner/forgedprice/SQL consistency/rollback; HEART_CHECKOUT.md.",
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification."
+    ],
+    "notes": "TestCardTests verified owned simulated balances, masking, concurrent updates and wallet limits. The table contains exactly the documented columns."
+  },
+  {
+    "name": "BillingPreference",
+    "page": 23,
+    "fields": "userId: uuid -> User, defaultTestCardId: uuid? -> TestCard, autoRenew: bool",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified the documented columns, PostgreSQL types and nullability, decimal precision where specified, primary key and validated foreign keys. SubscriptionManagementTests verified same-owner card selection, saved renewal preference, and fresh consent after a new purchase. documented-model-verification.trx.",
+      "2026-10-29: TestCardTests8 real PostgreSQL HTTP cases; atomic top-up/replay/concurrency/audit/rollback, owner/status/limits/SQL constraints; Angular wallet tests and build; TEST_CARD_WALLET.md. Full297backend before final rollback case, final8focusedpass;151frontend pass.",
+      "2026-10-29: User-approved5simGEL heart refill. Full308backend pass plus final19focused billing cases;162frontend/40files and build pass. Atomic immutable debit/refill/replay, declines/free-expiry/owner/forgedprice/SQL consistency/rollback; HEART_CHECKOUT.md.",
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification.",
+      "2026-10-29: SubscriptionManagementTests8; full334backend/180frontend46files and production build pass; owner/expiry/replay/concurrency/no-charge/period/blocked-card/consent-reset/SQL rollback evidence. SUBSCRIPTION_MANAGEMENT.md. Automatic processor remains unavailable.",
+      "2026-10-30: full360backend/192frontend50files and production build pass;70billing/inbox cases; actual hosted-worker, owner/foreign/ended/replay/concurrency/rollback/UTC/read/privacy/quote-history checks. SUBSCRIPTION_RENEWALS.md; FINANCIAL_HISTORY.md; history-full.trx."
+    ],
+    "notes": "SubscriptionManagementTests verified same-owner card selection, saved renewal preference, and fresh consent after a new purchase."
+  },
+  {
+    "name": "BillingOrder",
+    "page": 23,
+    "fields": "id: uuid, userId: uuid -> User, planPriceId: uuid -> PlanPrice, subscriptionId: uuid?, amountSnapshot: decimal(18,2), currency: string, periodSnapshot: string, status: string, orderType: string, renewalPeriodKey: string?, createdAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified the documented columns, PostgreSQL types and nullability, decimal precision where specified, primary key and validated foreign keys. SubscriptionPurchaseTests verified server quotes, locked terms, idempotent purchase, stale quotes and atomic rollback. documented-model-verification.trx.",
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification.",
+      "2026-10-30: full360backend/192frontend50files and production build pass;70billing/inbox cases; actual hosted-worker, owner/foreign/ended/replay/concurrency/rollback/UTC/read/privacy/quote-history checks. SUBSCRIPTION_RENEWALS.md; FINANCIAL_HISTORY.md; history-full.trx."
+    ],
+    "notes": "SubscriptionPurchaseTests verified server quotes, locked terms, idempotent purchase, stale quotes, atomic rollback and owner-only cancellation without a debit."
+  },
+  {
+    "name": "PaymentAttempt",
+    "page": 23,
+    "fields": "id: uuid, orderId: uuid -> BillingOrder, testCardId: uuid -> TestCard, status: string, failureCode: string?, idempotencyKey: uuid, amount: decimal(18,2), currency: string, createdAt: datetime, completedAt: datetime?",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified the documented columns, PostgreSQL types and nullability, decimal precision where specified, primary key and validated foreign keys. SubscriptionPurchaseTests and FinancialHistoryTests verified owned successful and failed attempts and prevented orphan successful records. documented-model-verification.trx.",
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification.",
+      "2026-10-30: full360backend/192frontend50files and production build pass;70billing/inbox cases; actual hosted-worker, owner/foreign/ended/replay/concurrency/rollback/UTC/read/privacy/quote-history checks. SUBSCRIPTION_RENEWALS.md; FINANCIAL_HISTORY.md; history-full.trx.",
+      "2026-10-30: full381backend/204frontend55files, production build,102billing/admin/inbox cases, local22migrations/noEFdrift; REFUND_ADMINISTRATION.md; refund-full.trx. No real funds, grants, emails or public deployment."
+    ],
+    "notes": "SubscriptionPurchaseTests and FinancialHistoryTests verified owned successful and failed attempts and prevented orphan successful records. A persisted Pending fixture verified request-key recovery and prevented another charge or cancellation."
+  },
+  {
+    "name": "Subscription",
+    "page": 23,
+    "fields": "id: uuid, userId: uuid -> User, planId: uuid -> SubscriptionPlan, status: string, currentPeriodStart: datetime, currentPeriodEnd: datetime, cancelAtPeriodEnd: bool, scheduledPlanPriceId: uuid?, createdAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified the documented columns, PostgreSQL types and nullability, decimal precision where specified, primary key and validated foreign keys. SubscriptionPurchaseTests and SubscriptionManagementTests verified active-period ownership, expiry, cancellations and one active subscription. documented-model-verification.trx.",
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification.",
+      "2026-10-29: SubscriptionManagementTests8; full334backend/180frontend46files and production build pass; owner/expiry/replay/concurrency/no-charge/period/blocked-card/consent-reset/SQL rollback evidence. SUBSCRIPTION_MANAGEMENT.md. Automatic processor remains unavailable.",
+      "2026-10-30: full360backend/192frontend50files and production build pass;70billing/inbox cases; actual hosted-worker, owner/foreign/ended/replay/concurrency/rollback/UTC/read/privacy/quote-history checks. SUBSCRIPTION_RENEWALS.md; FINANCIAL_HISTORY.md; history-full.trx.",
+      "2026-10-30: full381backend/204frontend55files, production build,102billing/admin/inbox cases, local22migrations/noEFdrift; REFUND_ADMINISTRATION.md; refund-full.trx. No real funds, grants, emails or public deployment."
+    ],
+    "notes": "SubscriptionPurchaseTests and SubscriptionManagementTests verified active-period ownership, expiry, cancellations and one active subscription."
+  },
+  {
+    "name": "SubscriptionEvent",
+    "page": 23,
+    "fields": "id: uuid, subscriptionId: uuid -> Subscription, eventType: string, relatedPaymentId: uuid? -> PaymentAttempt, occurredAt: datetime, actorId: uuid? -> User",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified the documented columns, PostgreSQL types and nullability, decimal precision where specified, primary key and validated foreign keys. SubscriptionHistoryTests verified owned history, foreign and unsuccessful payment denial, and retained original purchase terms. documented-model-verification.trx.",
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification.",
+      "2026-10-29: SubscriptionManagementTests8; full334backend/180frontend46files and production build pass; owner/expiry/replay/concurrency/no-charge/period/blocked-card/consent-reset/SQL rollback evidence. SUBSCRIPTION_MANAGEMENT.md. Automatic processor remains unavailable.",
+      "2026-10-30: full360backend/192frontend50files and production build pass;70billing/inbox cases; actual hosted-worker, owner/foreign/ended/replay/concurrency/rollback/UTC/read/privacy/quote-history checks. SUBSCRIPTION_RENEWALS.md; FINANCIAL_HISTORY.md; history-full.trx.",
+      "2026-10-30: full381backend/204frontend55files, production build,102billing/admin/inbox cases, local22migrations/noEFdrift; REFUND_ADMINISTRATION.md; refund-full.trx. No real funds, grants, emails or public deployment."
+    ],
+    "notes": "SubscriptionHistoryTests verified owned history, foreign and unsuccessful payment denial, and retained original purchase terms."
+  },
+  {
+    "name": "CardTransaction",
+    "page": 23,
+    "fields": "id: uuid, testCardId: uuid -> TestCard, paymentId: uuid? -> PaymentAttempt, refundId: uuid? -> Refund, type: string, amount: decimal(18,2), balanceAfter: decimal(18,2), reference: string, createdAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified the documented columns, PostgreSQL types and nullability, decimal precision where specified, primary key and validated foreign keys. TestCardTests, RefundTests and FinancialHistoryTests verified append-only ledger activity, ownership, replay protection and refund credits. documented-model-verification.trx.",
+      "2026-10-29: TestCardTests8 real PostgreSQL HTTP cases; atomic top-up/replay/concurrency/audit/rollback, owner/status/limits/SQL constraints; Angular wallet tests and build; TEST_CARD_WALLET.md. Full297backend before final rollback case, final8focusedpass;151frontend pass.",
+      "2026-10-29: User-approved5simGEL heart refill. Full308backend pass plus final19focused billing cases;162frontend/40files and build pass. Atomic immutable debit/refill/replay, declines/free-expiry/owner/forgedprice/SQL consistency/rollback; HEART_CHECKOUT.md.",
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification.",
+      "2026-10-30: full360backend/192frontend50files and production build pass;70billing/inbox cases; actual hosted-worker, owner/foreign/ended/replay/concurrency/rollback/UTC/read/privacy/quote-history checks. SUBSCRIPTION_RENEWALS.md; FINANCIAL_HISTORY.md; history-full.trx.",
+      "2026-10-30: full381backend/204frontend55files, production build,102billing/admin/inbox cases, local22migrations/noEFdrift; REFUND_ADMINISTRATION.md; refund-full.trx. No real funds, grants, emails or public deployment."
+    ],
+    "notes": "TestCardTests, RefundTests and FinancialHistoryTests verified append-only ledger activity, ownership, replay protection and refund credits."
+  },
+  {
+    "name": "Refund",
+    "page": 23,
+    "fields": "id: uuid, paymentId: uuid -> PaymentAttempt, amount: decimal(18,2), reason: string, status: string, idempotencyKey: uuid, createdBy: uuid -> User, completedAt: datetime?",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified the documented columns, PostgreSQL types and nullability, decimal precision where specified, primary key and validated foreign keys. RefundTests verified privileged writes, partial and full credits, over-refund rejection, and atomic rollback. documented-model-verification.trx.",
+      "2026-10-30: full381backend/204frontend55files, production build,102billing/admin/inbox cases, local22migrations/noEFdrift; REFUND_ADMINISTRATION.md; refund-full.trx. No real funds, grants, emails or public deployment.",
+      "2026-11-20: staff-deletion-regression.trx passed 112 publishing, classroom, profile, refund, staff-note and completion-card checks. Authenticated deletion erases archived teaching labels, copied notifications and departed-author refund notes while preserving submissions, other contributions and immutable monetary fields. Note-only PostgreSQL protection and guarded migration rollback passed; the migration is applied locally."
+    ],
+    "notes": "All original fields plus createdAt/revoked-period evidence and the private ReasonFingerprint replay field. Capped original-card credit, partial/full/current/historical period policy and atomic audit/event/notice verified. 2026-11-18: Only reason erasure is permitted after buyer deletion; all monetary and reference fields remain immutable. PostgreSQL verifies note/audit redaction, active-account and monetary mutation denial, existing-refund migration/backfill and safe replay. 2026-11-20: Fixed note erasure also covers a deleted author with an active buyer. No other field becomes mutable. Downgrade refuses to remove this support while deleted-author history exists."
+  },
+  {
+    "name": "PaymentReceipt",
+    "page": 23,
+    "fields": "id: uuid, paymentId: uuid -> PaymentAttempt, receiptNumber: string, issuedAt: datetime",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified the documented columns, PostgreSQL types and nullability, decimal precision where specified, primary key and validated foreign keys. SubscriptionPurchaseTests verified one owned, downloadable receipt from a successful payment and protection of recorded evidence. documented-model-verification.trx.",
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification.",
+      "2026-11-06: Receipt recovery displays original order period/quote, retries transient reads, preserves payment after order-detail failure and refreshes pending status without charges. Seventeen frontend billing cases and one routing case passed; three PostgreSQL receipt/ownership cases passed, with production build/format. RECEIPT_RECOVERY.md; browser/download walkthrough remains open."
+    ],
+    "notes": "SubscriptionPurchaseTests verified one owned, downloadable receipt from a successful payment and protection of recorded evidence."
+  },
+  {
+    "name": "BillingJobExecution",
+    "page": 23,
+    "fields": "id: uuid, subscriptionId: uuid -> Subscription, periodKey: string, status: string, lastAttemptAt: datetime, nextAttemptAt: datetime?",
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DocumentedModelSchemaTests verified the documented columns, PostgreSQL types and nullability, decimal precision where specified, primary key and validated foreign keys. SubscriptionRenewalTests verified persisted period records, concurrency, failure outcomes and manual recovery. documented-model-verification.trx.",
+      "2026-10-30: full360backend/192frontend50files and production build pass;70billing/inbox cases; actual hosted-worker, owner/foreign/ended/replay/concurrency/rollback/UTC/read/privacy/quote-history checks. SUBSCRIPTION_RENEWALS.md; FINANCIAL_HISTORY.md; history-full.trx."
+    ]
+  }
+]

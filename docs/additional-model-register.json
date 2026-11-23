@@ -1,0 +1,102 @@
+[
+  {
+    "name": "SessionOptionAudio",
+    "scope": "Supporting immutable per-option audio references for original Matching requirements",
+    "fields": "sessionExerciseId: uuid -> SessionExercise, optionId: uuid snapshot identity, audioMediaId: uuid -> MediaAsset",
+    "key": [
+      "sessionExerciseId",
+      "optionId"
+    ],
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: AudioAssociationTests6 real PostgreSQL/Garage cases; full244backend/119frontend tests passed; matching audio editor/board/transport and Russian mode tests; AddMatchingAudio; AUDIO_ASSOCIATIONS.md."
+    ],
+    "notes": "Restrictive parent/media FKs and indexed media lookups; snapshot option identity deliberately has no mutable source-option FK. Owner/current/answered access checked through parent. Future account/content retention and deletion workflows remain separately required; this does not change the original70-model baseline."
+  },
+  {
+    "name": "LearnerHearts",
+    "scope": "User-requested shared hearts and one-hour full recovery",
+    "fields": "userId: uuid -> User, count: int, refillAt: datetime? UTC",
+    "key": [
+      "userId"
+    ],
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: HeartRecoveryTests6 and SharedHeartsTests3; full274backend/136frontend passed; AddSharedHeartRecovery; HEART_RECOVERY.md."
+    ],
+    "notes": "Shared active-lesson balance with SQL consistency/FK checks and account-row locking. Server-derived recovery deadline/read state; client cannot grant hearts. Simulated purchases, Premium UnlimitedHearts and broader device verification remain separate required work."
+  },
+  {
+    "name": "SpeechCheckAttempt",
+    "scope": "User-approved additional in-lesson local spoken word checking and retry policy",
+    "fields": "id, userId, sessionExerciseId, idempotencyKey, audioSha256, status, heartsCharged, responseSnapshot, createdAt",
+    "key": [
+      "id"
+    ],
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: AddSpeechCheckAttempts applied; real PostgreSQL HTTP tests for atomic retry/charges/replay, quotas and ownership/SQL constraints. SPOKEN_WORD_CHECKS.md.",
+      "Final verification:290backend/143frontend tests passed; production frontend build, formatting, applied migration and API/preview health passed. Native/device gates remain separate."
+    ],
+    "notes": "No raw recording or failed transcript persisted; composite owner FK, unique user/request key, constrained status/charge. Native accuracy and hardware verification are separate gates. Not an addition to the original70model baseline."
+  },
+  {
+    "name": "BillingOperation",
+    "scope": "Durable idempotency for specified test-card operations",
+    "fields": "id, userId, operation, idempotencyKey, requestSnapshot, responseSnapshot, createdAt",
+    "key": [
+      "id"
+    ],
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: TestCardTests8 real PostgreSQL HTTP cases; atomic top-up/replay/concurrency/audit/rollback, owner/status/limits/SQL constraints; Angular wallet tests and build; TEST_CARD_WALLET.md. Full297backend before final rollback case, final8focusedpass;151frontend pass.",
+      "2026-10-29: SubscriptionManagementTests8; full334backend/180frontend46files and production build pass; owner/expiry/replay/concurrency/no-charge/period/blocked-card/consent-reset/SQL rollback evidence. SUBSCRIPTION_MANAGEMENT.md. Automatic processor remains unavailable."
+    ],
+    "notes": "Canonical account/operation/key replay evidence for test-card and subscription preference writes. Atomic with domain changes/event/audit; no raw card credentials. Payment attempts still use their original dedicated records."
+  },
+  {
+    "name": "HeartRefillPurchase",
+    "scope": "User-requested one-time simulated heart refill, separate from required subscription billing",
+    "fields": "id, userId, testCardId, idempotencyKey, offerCode, amount, currency, status, failureCode, reference, heartsBefore, heartsAfter, createdAt",
+    "key": [
+      "id"
+    ],
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: User-approved5simGEL heart refill. Full308backend pass plus final19focused billing cases;162frontend/40files and build pass. Atomic immutable debit/refill/replay, declines/free-expiry/owner/forgedprice/SQL consistency/rollback; HEART_CHECKOUT.md."
+    ],
+    "notes": "Immutable supporting evidence and same-card ledger FK/unique key. Known failures are uncharged, replay cannot grant again. Original payment/subscription/refund models remain required; physical device/production gates pending."
+  },
+  {
+    "name": "ExtraStudyOffer",
+    "scope": "Per-course teacher opt-in for the Premium extra-study directory",
+    "fields": "id, teacherId, courseId, enabled",
+    "key": ["id"],
+    "status": "implemented_verified",
+    "evidence": ["AddExtraStudyOffers enforces unique teacher/course pairs. PostgreSQL verified persistence through opt-in and opt-out."]
+  },
+  {
+    "name": "ExtraStudyRequest",
+    "scope": "Private learner request and teacher decision",
+    "fields": "id, offerId, learnerId, status, createdAt",
+    "key": ["id"],
+    "status": "implemented_verified",
+    "evidence": ["AddExtraStudyRequests enforces one request per learner and offer. PostgreSQL verified concurrent retry and accepted status persistence."]
+  },
+  {
+    "name": "ExtraStudyLesson",
+    "scope": "Teacher-shared lesson in an accepted extra-study space",
+    "fields": "requestId, lessonId, sharedAt",
+    "key": ["requestId", "lessonId"],
+    "status": "implemented_verified",
+    "evidence": ["AddExtraStudyLessons and PostgreSQL integration verified that concurrent sharing returns one lesson to the learner."]
+  },
+  {
+    "name": "VocabularyRevision",
+    "scope": "Staff word draft, independent review and publication history",
+    "fields": "id, revisionToken, courseId, wordId, authorId, reviewerId, publisherId, word, englishTranslation, example, partOfSpeech, topic, status, reviewComment, createdAt, reviewedAt, publishedAt",
+    "key": ["id"],
+    "status": "implemented_verified",
+    "evidence": ["AddVocabularyRevisions and AllowVocabularyWithdrawal enforce one open revision per existing word, excluding terminal published/withdrawn history. VocabularyRevisionTests verified privacy, stale-token rejection, publication/withdrawal concurrency and stable public word identity."]
+  }
+]

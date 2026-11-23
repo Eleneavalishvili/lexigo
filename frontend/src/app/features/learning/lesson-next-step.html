@@ -1,0 +1,53 @@
+<section aria-labelledby="lesson-next-step-title">
+  <h3 id="lesson-next-step-title">Keep your words moving.</h3>
+  @if (loading()) {
+    <p role="status">Finding your next step…</p>
+  }
+  @if (error()) {
+    <p role="alert">{{ error() }}</p>
+  }
+  @if (session().passed && session().mode === 'Lesson') {
+    @if (nextLesson(); as lesson) {
+      <p>{{ lesson.title }}</p>
+      <button
+        type="button"
+        class="button button-red"
+        [disabled]="busy() || loading()"
+        (click)="open('next')"
+      >
+        {{ lesson.activeSessionId ? 'Continue saved lesson' : 'Start next lesson' }} ↗
+      </button>
+    } @else if (ready()) {
+      <p>You’ve finished the currently available steps. Revisit any chapter from your journey.</p>
+    }
+    @if (!loading()) {
+      <button type="button" class="button button-outline" [disabled]="busy()" (click)="load()">
+        Refresh next step
+      </button>
+    }
+  }
+  <div class="repeat-actions">
+    @if (session().mode === 'Lesson') {
+      <button
+        type="button"
+        class="button button-outline"
+        [disabled]="busy()"
+        (click)="open('retry')"
+      >
+        Try this lesson again
+      </button>
+    }
+    <button
+      type="button"
+      class="button button-outline"
+      [disabled]="busy()"
+      (click)="open('practice')"
+    >
+      Free practice · no hearts needed
+    </button>
+  </div>
+  <p class="small">
+    Free practice does not award XP or unlock lessons. Repeat lessons keep your best result.
+  </p>
+  <a routerLink="/completion-cards">Your completed-unit cards ↗</a>
+</section>

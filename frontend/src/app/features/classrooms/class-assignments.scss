@@ -1,0 +1,22 @@
+@use './classrooms';
+
+:host {
+  display: block;
+  margin-block: 1.5rem;
+  overflow-wrap: anywhere;
+}
+
+.class-list li > .text-button {
+  display: block;
+  text-align: start;
+}
+
+.assignment-detail {
+  border-top: 1px solid var(--line);
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+}
+
+.feedback-message {
+  white-space: pre-wrap;
+}

@@ -1,0 +1,43 @@
+<a class="skip-link" href="#main-content">Skip to content</a>
+<div class="announcement">
+  <span aria-hidden="true">✦</span> A LITTLE EVERY DAY. A WHOLE NEW WORLD.
+  <span aria-hidden="true">✦</span>
+</div>
+<header class="site-header wrap">
+  <a class="home-link" href="/" aria-label="LexiGo home"><app-brand-logo /></a>
+  <nav aria-label="Main navigation">
+    <a href="#languages">The languages</a>
+    <a routerLink="/courses">Course catalog</a>
+    <a href="#atlas">Language atlas</a>
+    <a href="#our-way">The LexiGo way</a>
+    <a routerLink="/contact">Contact us</a>
+    @if (auth.user()) {
+      <a class="nav-cta" routerLink="/account">My account <span aria-hidden="true">↗</span></a>
+    } @else {
+      <a routerLink="/login">Sign in</a
+      ><a class="nav-cta" routerLink="/register">Join the club <span aria-hidden="true">↗</span></a>
+    }
+  </nav>
+</header>
+<main id="main-content">
+  <app-home-hero />
+  <div class="manifesto" aria-label="Learning, the LexiGo way">
+    <div class="wrap">
+      <span>Little lessons</span><i aria-hidden="true">✦</i><span>Real conversations</span
+      ><i aria-hidden="true">✦</i><span>Happy little breakthroughs</span><i aria-hidden="true">✦</i
+      ><span>At your own pace</span>
+    </div>
+  </div>
+  <app-language-explorer />
+  <app-world-globe id="atlas" />
+  <app-home-story />
+</main>
+<footer class="site-footer wrap">
+  <a class="home-link" href="#" aria-label="LexiGo, back to top"><app-brand-logo /></a>
+  <p>A little language. A bigger world.</p>
+  <a routerLink="/speaking">Find your voice ↗</a>
+  <a routerLink="/companions">Meet Mira, Nico & Zara ↗</a>
+  <a routerLink="/pricing">Free & Premium ↗</a>
+  <a routerLink="/contact">Contact us ↗</a>
+  <a routerLink="/help">Help & first steps ↗</a>
+</footer>

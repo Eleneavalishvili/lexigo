@@ -1,0 +1,62 @@
+<header>
+  <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a>
+  <a routerLink="/learn">← Learning path</a>
+</header>
+<main>
+  <h1>Learning activity</h1>
+  <form [formGroup]="range" (ngSubmit)="apply()" aria-label="Filter activity by date">
+    <label>From <input type="date" formControlName="from" required /></label>
+    <label>To <input type="date" formControlName="to" required /></label>
+    <button type="submit" class="button button-ink" [disabled]="range.invalid || loading()">
+      Show activity
+    </button>
+  </form>
+  @if (loading()) {
+    <p role="status">Loading your activity…</p>
+  }
+  @if (error()) {
+    <p role="alert">{{ error() }}</p>
+  }
+  @if (days(); as result) {
+    @if (result.items.length) {
+      <ul aria-label="Recorded study days">
+        @for (day of result.items; track day.date) {
+          <li>
+            <time [attr.datetime]="day.date">{{
+              day.date + 'T00:00:00Z' | date: 'mediumDate' : 'UTC'
+            }}</time>
+            <span>{{ day.earnedXp }} XP</span>
+            <span
+              >{{ day.completedLessons }}
+              {{ day.completedLessons === 1 ? 'lesson' : 'lessons' }} completed</span
+            >
+            <span>{{ day.goalReached ? 'Goal reached' : 'Goal in progress' }}</span>
+          </li>
+        }
+      </ul>
+      @if (result.totalCount > result.pageSize) {
+        <nav aria-label="Activity pages">
+          <button
+            type="button"
+            class="button button-outline"
+            (click)="load(result.page - 1)"
+            [disabled]="result.page === 1"
+          >
+            Previous
+          </button>
+          <span>Page {{ result.page }}</span>
+          <button
+            type="button"
+            class="button button-outline"
+            (click)="load(result.page + 1)"
+            [disabled]="result.page * result.pageSize >= result.totalCount"
+          >
+            Next
+          </button>
+        </nav>
+      }
+    } @else {
+      <p role="status">There’s no recorded learning activity for these dates.</p>
+    }
+  }
+</main>

@@ -1,0 +1,146 @@
+<app-account-shell>
+  <p class="eyebrow">A LITTLE EXTRA PEACE OF MIND</p>
+  <h1>Your world.<br /><em>Well protected.</em></h1>
+  @if (complete()) {
+    <p class="form-description" role="status">
+      Your security settings are updated. All devices have been signed out.
+    </p>
+    @if (recoveryCodes().length) {
+      <h2 class="recovery-heading">Keep these somewhere safe.</h2>
+      <p class="field-help">
+        Each recovery code works once, together with your password. These codes are shown only now.
+        Save them before leaving this page.
+      </p>
+      <ul class="recovery-codes">
+        @for (code of recoveryCodes(); track code) {
+          <li>
+            <code>{{ code }}</code>
+          </li>
+        }
+      </ul>
+      <p class="field-help">
+        Use a new authenticator code when you sign in. A code you just used cannot be reused.
+      </p>
+    }
+    <a class="button button-red" routerLink="/login"
+      >I’m ready to sign in <span aria-hidden="true">↗</span></a
+    >
+  } @else if (status(); as security) {
+    <p class="form-description">
+      {{
+        security.enabled
+          ? 'Two-factor authentication is on. Your password and an authenticator code protect sign-in.'
+          : 'Add a time-based authenticator to protect your account with a second step.'
+      }}
+    </p>
+    @if (security.enabled) {
+      <p class="field-help">
+        <a routerLink="/account/security/replace">Replace a lost or changed authenticator ↗</a>
+      </p>
+      <p class="field-help">
+        {{ security.recoveryCodesRemaining }} recovery codes remain. Replacing them makes every
+        previous recovery code unusable.
+      </p>
+    }
+    <form
+      [formGroup]="form"
+      (ngSubmit)="security.enabled ? regenerate() : setup() ? enable() : begin()"
+      novalidate
+    >
+      <div class="field">
+        <label for="security-password">Your current password</label>
+        <div class="password-field">
+          <input
+            id="security-password"
+            formControlName="currentPassword"
+            [type]="showPassword() ? 'text' : 'password'"
+            autocomplete="current-password"
+            maxlength="128"
+          /><app-password-toggle inputId="security-password" [(visible)]="showPassword" />
+        </div>
+      </div>
+      @if (setup(); as enrollment) {
+        <div class="setup-note">
+          <p>
+            In your authenticator app, add an account using a setup key. Name it LexiGo, choose
+            <strong>Time based</strong>, and enter:
+          </p>
+          <code class="shared-key">{{ enrollment.sharedKey }}</code>
+          <p>Keep this key private. Enter the six-digit code from your app to finish.</p>
+        </div>
+      }
+      @if (security.enabled || setup()) {
+        <div class="field">
+          <label for="security-code">Authenticator code</label
+          ><input
+            id="security-code"
+            formControlName="code"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            maxlength="6"
+            placeholder="Six-digit code"
+          />
+        </div>
+      }
+      @if (security.enabled && !privileged) {
+        <div class="recovery-option">
+          <label
+            ><input
+              type="checkbox"
+              [checked]="useRecovery()"
+              (change)="useRecovery.set(!useRecovery())"
+            />
+            Use a recovery code to turn off two-factor authentication</label
+          >
+        </div>
+        @if (useRecovery()) {
+          <div class="field">
+            <label for="security-recovery">Recovery code</label
+            ><input
+              id="security-recovery"
+              formControlName="recoveryCode"
+              autocomplete="off"
+              maxlength="32"
+            />
+          </div>
+        }
+      }
+      @if (form.touched && form.invalid) {
+        <p class="field-error">Enter your current password and the requested code.</p>
+      }
+      <button
+        class="button button-red submit-button"
+        type="submit"
+        [disabled]="working() || useRecovery()"
+      >
+        {{
+          working()
+            ? 'Keeping things safe…'
+            : security.enabled
+              ? 'Replace recovery codes'
+              : setup()
+                ? 'Verify and turn on'
+                : 'Set up my authenticator'
+        }}
+        <span aria-hidden="true">↗</span>
+      </button>
+      @if (security.enabled && !privileged) {
+        <button class="disable-button" type="button" (click)="disable()" [disabled]="working()">
+          Turn off two-factor authentication
+        </button>
+      }
+      @if (privileged) {
+        <p class="field-help">Privileged accounts must keep two-factor authentication enabled.</p>
+      }
+    </form>
+    <p class="small-print"><a routerLink="/account">Back to my account</a></p>
+  } @else {
+    <p class="form-description" role="status">Loading your security settings…</p>
+  }
+  @if (error()) {
+    <p class="form-error" role="alert">{{ error() }}</p>
+    <button class="disable-button" type="button" (click)="load()" [disabled]="working()">
+      Reload settings
+    </button>
+  }
+</app-account-shell>

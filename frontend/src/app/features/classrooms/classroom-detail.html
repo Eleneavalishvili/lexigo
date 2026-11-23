@@ -1,0 +1,200 @@
+<div class="classes-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/classes">↖ Your classes</a>
+  </header>
+  <main>
+    <p class="eyebrow">WORDS WE LEARN TOGETHER</p>
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+    }
+    @if (notice()) {
+      <p role="status">{{ notice() }}</p>
+    }
+    @if (loading()) {
+      <p role="status">Opening this class…</p>
+    }
+    <button class="text-button" type="button" (click)="load()" [disabled]="working() || loading()">
+      Refresh class ↻
+    </button>
+    @if (value(); as detail) {
+      <h1>{{ detail.classroom.name }}</h1>
+      <p>{{ detail.classroom.courseTitle }} · Teacher: {{ detail.classroom.teacherName }}</p>
+      <p>{{ detail.classroom.description }}</p>
+      @if (detail.classroom.isTeacher && !detail.classroom.isArchived) {
+        <app-class-transfer [classId]="detail.classroom.id" />
+      }
+      @if (detail.classroom.isArchived) {
+        <p>This class is archived. Its saved history remains available.</p>
+      }
+      <p>
+        <a [routerLink]="['/learn', detail.classroom.courseId]">Open this language journey ↗</a>
+      </p>
+      <button
+        class="button button-outline"
+        type="button"
+        [attr.aria-expanded]="showAssignments()"
+        (click)="showAssignments.set(!showAssignments())"
+      >
+        {{ showAssignments() ? 'Hide assignments' : 'View assignments' }}
+      </button>
+      @if (showAssignments()) {
+        <app-class-assignments [classroom]="detail.classroom" />
+      }
+      @if (detail.classroom.canLeave) {
+        <button
+          class="button button-outline"
+          type="button"
+          (click)="leave()"
+          [disabled]="working()"
+        >
+          Leave class
+        </button>
+        <p>Leaving preserves your course enrollment and personal lesson progress.</p>
+      }
+      @if (detail.classroom.isTeacher) {
+        <div class="class-grid">
+          <section>
+            <h2>Members</h2>
+            <ul class="class-list">
+              @for (member of detail.members?.items ?? []; track member.userId) {
+                <li class="panel">
+                  <strong>{{ member.displayName }}</strong>
+                  <p>{{ member.status }} · Joined {{ member.joinedAt | date: 'mediumDate' }}</p>
+                  @if (!detail.classroom.isArchived && member.status === 'Active') {
+                    <button
+                      class="button button-danger"
+                      type="button"
+                      (click)="remove(member.userId)"
+                      [disabled]="working()"
+                    >
+                      Remove member
+                    </button>
+                  }
+                  @if (!detail.classroom.isArchived && member.status === 'Removed') {
+                    <button
+                      class="button button-outline"
+                      type="button"
+                      (click)="restore(member.userId)"
+                      [disabled]="working()"
+                    >
+                      Undo removal
+                    </button>
+                  }
+                </li>
+              } @empty {
+                <li>No members yet. Create an invitation to welcome your learners.</li>
+              }
+            </ul>
+            @if (detail.members; as members) {
+              <div class="actions" aria-label="Member pagination">
+                <button
+                  class="button button-outline"
+                  type="button"
+                  (click)="changePage(-1)"
+                  [disabled]="memberPage() === 1 || working()"
+                >
+                  Previous
+                </button>
+                <span>Page {{ memberPage() }}</span>
+                <button
+                  class="button button-outline"
+                  type="button"
+                  (click)="changePage(1)"
+                  [disabled]="memberPage() * members.pageSize >= members.totalCount || working()"
+                >
+                  Next
+                </button>
+              </div>
+            }
+          </section>
+          @if (!detail.classroom.isArchived) {
+            <section>
+              <form [formGroup]="invitationForm" (ngSubmit)="rotate()" class="panel">
+                <h2>Class invitation</h2>
+                <p>
+                  A new code immediately replaces previous codes. Only share it with the learners
+                  you want to invite.
+                </p>
+                @if (detail.invitation; as current) {
+                  @if (!invitation()) {
+                    <p>
+                      {{ current.usedCount }} / {{ current.maxUses }} joins used. Expires
+                      {{ current.expiresAt | date: 'medium' }}.
+                    </p>
+                  }
+                }
+                <label for="invite-days">Valid for (days)</label
+                ><input id="invite-days" type="number" min="1" max="30" formControlName="days" />
+                <label for="invite-uses">Maximum joins</label
+                ><input
+                  id="invite-uses"
+                  type="number"
+                  min="1"
+                  max="200"
+                  formControlName="maxUses"
+                />
+                <button
+                  class="button button-ink"
+                  type="submit"
+                  [disabled]="
+                    invitationForm.invalid || working() || !detail.classroom.coursePublished
+                  "
+                >
+                  Generate new code
+                </button>
+                @if (invitation(); as fresh) {
+                  <div role="status">
+                    <label for="fresh-code">Your new invitation code</label
+                    ><input
+                      id="fresh-code"
+                      [value]="fresh.code"
+                      readonly
+                      autocomplete="off"
+                      spellcheck="false"
+                    />
+                    <p>
+                      Copy it before leaving this page. Expires
+                      {{ fresh.expiresAt | date: 'medium' }}. It is not shown again after
+                      refreshing.
+                    </p>
+                  </div>
+                }
+              </form>
+              <form [formGroup]="editForm" (ngSubmit)="save()" class="panel">
+                <h2>Class details</h2>
+                <label for="edit-class-name">Name</label
+                ><input id="edit-class-name" formControlName="name" maxlength="120" />
+                <label for="edit-class-description">Description</label
+                ><textarea
+                  id="edit-class-description"
+                  formControlName="description"
+                  maxlength="2000"
+                ></textarea>
+                <button
+                  class="button button-ink"
+                  type="submit"
+                  [disabled]="editForm.invalid || working()"
+                >
+                  Save class details
+                </button>
+                <label class="confirmation"
+                  ><input type="checkbox" formControlName="confirmArchive" />I understand archiving
+                  closes this class to new joins and edits.</label
+                >
+                <button
+                  class="button button-danger"
+                  type="button"
+                  (click)="archive()"
+                  [disabled]="!editForm.controls.confirmArchive.value || working()"
+                >
+                  Archive class
+                </button>
+              </form>
+            </section>
+          }
+        </div>
+      }
+    }
+  </main>
+</div>

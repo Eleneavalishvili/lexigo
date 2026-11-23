@@ -1,0 +1,243 @@
+<main>
+  <a routerLink="/manage/lessons">← Lesson workbench</a>
+  @if (admin()) {
+    <a routerLink="/manage/vocabulary">Vocabulary recordings ↗</a>
+  }
+  <h1>Vocabulary drafts</h1>
+  <p>Draft a word, send it for independent review, and publish the approved text.</p>
+  <label for="revision-course">Course</label>
+  <select id="revision-course" #choice [disabled]="busy()" (change)="selectCourse(choice.value)">
+    <option value="">Choose a course</option>
+    @for (item of courses(); track item.id) {
+      <option [value]="item.id">{{ item.title }}</option>
+    }
+  </select>
+  @if (busy()) {
+    <p role="status">Working…</p>
+  }
+  @if (notice()) {
+    <p role="status">{{ notice() }}</p>
+  }
+  @if (error()) {
+    <p role="alert">{{ error() }}</p>
+  }
+
+  @if (course(); as activeCourse) {
+    @if (activeCourse.canAuthor) {
+      <section aria-labelledby="word-source">
+        <h2 id="word-source">Find a published word to revise</h2>
+        <label for="revision-search">Word or English translation</label>
+        <input id="revision-search" #query type="search" maxlength="160" />
+        <button
+          type="button"
+          class="button button-outline"
+          [disabled]="busy()"
+          (click)="search(query.value)"
+        >
+          Search words
+        </button>
+        <ul>
+          @for (word of matches(); track word.id) {
+            <li>
+              <button
+                type="button"
+                class="button button-outline"
+                [disabled]="busy()"
+                (click)="chooseWord(word)"
+              >
+                {{ word.word }} · {{ word.englishTranslation }}
+              </button>
+            </li>
+          }
+        </ul>
+      </section>
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <h2>
+          {{ editing() ? 'Edit draft' : existingWord() ? 'Draft a revision' : 'Draft a new word' }}
+        </h2>
+        <fieldset [disabled]="busy()">
+          <label for="revision-word">Word</label>
+          <input id="revision-word" formControlName="word" maxlength="160" />
+          <label for="revision-english">English translation</label>
+          <input id="revision-english" formControlName="englishTranslation" maxlength="300" />
+          <label for="revision-example">Example</label>
+          <textarea id="revision-example" formControlName="example" maxlength="2000"></textarea>
+          <label for="revision-part">Part of speech</label>
+          <input id="revision-part" formControlName="partOfSpeech" maxlength="60" />
+          <label for="revision-topic">Topic</label>
+          <select id="revision-topic" formControlName="topic">
+            <option value="">Uncategorized</option>
+            @for (topic of topics; track topic.id) {
+              <option [value]="topic.id">{{ topic.label }}</option>
+            }
+          </select>
+        </fieldset>
+        <div class="actions">
+          <button type="submit" class="button button-ink" [disabled]="busy() || form.invalid">
+            Save draft
+          </button>
+          <button
+            type="button"
+            class="button button-outline"
+            [disabled]="busy()"
+            (click)="resetForm()"
+          >
+            Clear form
+          </button>
+        </div>
+      </form>
+    }
+    <section aria-labelledby="revision-list">
+      <h2 id="revision-list">Revisions</h2>
+      <nav class="actions" aria-label="Revision pages">
+        <button
+          type="button"
+          class="button button-outline"
+          [disabled]="busy()"
+          (click)="refresh(page())"
+        >
+          Refresh
+        </button>
+        <button
+          type="button"
+          class="button button-outline"
+          [disabled]="busy() || page() === 1"
+          (click)="refresh(page() - 1)"
+        >
+          Previous
+        </button>
+        <button
+          type="button"
+          class="button button-outline"
+          [disabled]="busy() || revisions().length < 20"
+          (click)="refresh(page() + 1)"
+        >
+          Next
+        </button>
+      </nav>
+      @for (revision of revisions(); track revision.id) {
+        <article>
+          <h3>{{ revision.text.word }} · {{ revision.text.englishTranslation }}</h3>
+          <p>
+            {{ revision.status }}
+            @if (revision.text.partOfSpeech) {
+              · {{ revision.text.partOfSpeech }}
+            }
+            @if (revision.text.topic) {
+              · {{ revision.text.topic }}
+            }
+          </p>
+          @if (revision.text.example) {
+            <blockquote>{{ revision.text.example }}</blockquote>
+          }
+          @if (revision.reviewComment) {
+            <p>Latest review · {{ revision.reviewComment }}</p>
+          }
+          @if (
+            revision.status !== 'Published' &&
+            revision.status !== 'Withdrawn' &&
+            (owns(revision) || admin())
+          ) {
+            @if (withdrawing() === revision.id) {
+              <p>Withdraw this revision? You can create a new revision when you are ready.</p>
+              <div class="actions">
+                <button
+                  type="button"
+                  class="button button-danger"
+                  [disabled]="busy()"
+                  (click)="change(revision, 'withdraw')"
+                >
+                  Confirm withdrawal
+                </button>
+                <button
+                  type="button"
+                  class="button button-outline"
+                  [disabled]="busy()"
+                  (click)="withdrawing.set(null)"
+                >
+                  Keep revision
+                </button>
+              </div>
+            } @else {
+              <button
+                type="button"
+                class="button button-outline"
+                [disabled]="busy()"
+                (click)="withdrawing.set(revision.id)"
+              >
+                Withdraw revision
+              </button>
+            }
+          }
+          @if (revision.status === 'Draft' && owns(revision)) {
+            <div class="actions">
+              <button
+                type="button"
+                class="button button-outline"
+                [disabled]="busy()"
+                (click)="edit(revision)"
+              >
+                Edit draft
+              </button>
+              <button
+                type="button"
+                class="button button-ink"
+                [disabled]="busy() || editing()?.id === revision.id"
+                (click)="change(revision, 'submit')"
+              >
+                Submit for review
+              </button>
+            </div>
+          }
+          @if (revision.status === 'Submitted' && activeCourse.canReview && !owns(revision)) {
+            @if (reviewing() === revision.id) {
+              <label [for]="'comment-' + revision.id">Review comment</label>
+              <textarea [id]="'comment-' + revision.id" #comment maxlength="1000"></textarea>
+              <div class="actions">
+                <button
+                  type="button"
+                  class="button button-ink"
+                  [disabled]="busy()"
+                  (click)="change(revision, 'approve', comment.value)"
+                >
+                  Approve
+                </button>
+                <button
+                  type="button"
+                  class="button button-outline"
+                  [disabled]="busy()"
+                  (click)="change(revision, 'request-changes', comment.value)"
+                >
+                  Request changes
+                </button>
+              </div>
+            } @else {
+              <button
+                type="button"
+                class="button button-outline"
+                [disabled]="busy()"
+                (click)="reviewing.set(revision.id)"
+              >
+                Review draft
+              </button>
+            }
+          }
+          @if (revision.status === 'Approved' && admin()) {
+            <button
+              type="button"
+              class="button button-ink"
+              [disabled]="busy()"
+              (click)="change(revision, 'publish')"
+            >
+              Publish word
+            </button>
+          }
+        </article>
+      } @empty {
+        @if (!busy()) {
+          <p>No revisions on this page.</p>
+        }
+      }
+    </section>
+  }
+</main>

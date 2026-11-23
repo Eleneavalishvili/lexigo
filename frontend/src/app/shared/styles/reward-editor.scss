@@ -1,0 +1,49 @@
+:host {
+  display: block;
+}
+form {
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+}
+fieldset {
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  padding: 1rem;
+  margin: 0 0 1rem;
+  min-width: 0;
+}
+label {
+  display: block;
+  margin-top: 0.8rem;
+}
+input,
+select,
+textarea {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-height: 2.75rem;
+  padding: 0.6rem;
+  margin-block: 0.4rem;
+  border: 1px solid var(--line);
+  border-radius: 0.4rem;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+}
+textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+p {
+  font-size: 0.9rem;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}

@@ -1,0 +1,10 @@
+<section
+  class="context-card"
+  [attr.aria-label]="kind() === 'DialogueChoice' ? 'Dialogue situation' : 'Reading passage'"
+>
+  <p class="eyebrow">
+    {{ kind() === 'DialogueChoice' ? 'A LITTLE REAL-LIFE MOMENT' : 'TAKE A LITTLE READ' }}
+  </p>
+  <h3>{{ kind() === 'DialogueChoice' ? 'You’re in the conversation.' : 'Between the lines.' }}</h3>
+  <div class="context-text">{{ text() }}</div>
+</section>

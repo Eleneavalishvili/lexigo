@@ -1,0 +1,26 @@
+{
+  "es": {
+    "calendar": [["lunes", "Monday"], ["enero", "January"], ["Hoy es el dos de mayo.", "Today is May 2."], ["La clase es el lunes.", "The lesson is on Monday."]],
+    "study": [["el estudiante", "the male student"], ["el profesor", "the male teacher"], ["Estudio inglés.", "I study English."], ["Trabajo en una escuela.", "I work in a school."]],
+    "calendarNote": "Days and months normally begin with a lowercase letter in Spanish. Use el with a weekday for a particular day: el lunes means on Monday. Dates use a number followed by de and the month: el dos de mayo.",
+    "studyNote": "El estudiante refers to a male student; la estudiante refers to a female student. El profesor is a male teacher and la profesora a female teacher. Estudio and trabajo are first-person present forms; Spanish often leaves out yo. Keep the accent in inglés."
+  },
+  "it": {
+    "calendar": [["lunedì", "Monday"], ["gennaio", "January"], ["Oggi è il due maggio.", "Today is May 2."], ["La lezione è lunedì.", "The lesson is on Monday."]],
+    "study": [["lo studente", "the male student"], ["il professore", "the male teacher"], ["Studio inglese.", "I study English."], ["Lavoro in una scuola.", "I work in a school."]],
+    "calendarNote": "Days and months normally begin with a lowercase letter in Italian. Lunedì has an accented final vowel. A particular Monday needs no preposition in La lezione è lunedì. Dates put the number before the month: il due maggio.",
+    "studyNote": "Use lo before studente because it begins with s plus a consonant. The female form is la studentessa. Il professore is a male teacher, particularly in secondary school; la professoressa is the female form. Studio and lavoro are first-person present forms; io is often omitted."
+  },
+  "de": {
+    "calendar": [["Montag", "Monday"], ["Januar", "January"], ["Heute ist der zweite Mai.", "Today is May 2."], ["Der Unterricht ist am Montag.", "The lesson is on Monday."]],
+    "study": [["der Student", "the male student"], ["der Lehrer", "the male teacher"], ["Ich lerne Englisch.", "I study English."], ["Ich arbeite in einer Schule.", "I work in a school."]],
+    "calendarNote": "Weekdays and months are nouns and begin with a capital letter. Am Montag means on Monday. A spoken date uses an ordinal number: der zweite Mai means the second of May. The finite verb stays second in these statements.",
+    "studyNote": "Der Student is a male university student; die Studentin is the female form. Der Lehrer is a male teacher and die Lehrerin a female teacher. Lernen can mean learn or study. In einer Schule describes a location and uses dative feminine einer, rather than accusative eine."
+  },
+  "ru": {
+    "calendar": [["понедельник", "Monday"], ["январь", "January"], ["Сегодня второе мая.", "Today is May 2."], ["Урок в понедельник.", "The lesson is on Monday."]],
+    "study": [["студент", "the male student"], ["учитель", "the male teacher"], ["Я изучаю английский.", "I study English."], ["Я работаю в школе.", "I work in a school."]],
+    "calendarNote": "Days and months normally begin with a lowercase letter. В понедельник means on Monday. Russian usually omits is in the present tense. Calendar dates use a neuter ordinal and the genitive month: второе мая means the second of May.",
+    "studyNote": "Студент is a male university student; студентка is the female form. Учитель is a male teacher and учительница a female teacher. Russian has no articles. В школе means in a school and uses the prepositional form школе; the dictionary form is школа."
+  }
+}

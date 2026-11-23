@@ -1,0 +1,43 @@
+<app-account-shell>
+  @if (status() === 'success') {
+    <p class="eyebrow">ONE LITTLE CHANGE, CONFIRMED</p>
+    <h1>A fresh <em>hello.</em></h1>
+    <p class="form-description" role="status">
+      Your email address is updated. All previous sessions have been signed out. Use your new email
+      and existing password to sign in.
+    </p>
+  } @else if (status() === 'invalid') {
+    <p class="eyebrow">LET’S TAKE ANOTHER LOOK</p>
+    <h1>A little <em>detour.</em></h1>
+    <p class="form-description" role="alert">
+      This link is invalid, already used or expired, or the address is unavailable. Sign in with
+      your current address to request a new change. If you already confirmed, use your new address.
+    </p>
+  } @else if (!hasLink) {
+    <p class="eyebrow">YOUR NEXT LITTLE STEP</p>
+    <h1>Where to <em>next?</em></h1>
+    <p class="form-description">
+      Open the email-change link from your new inbox. If you already confirmed, you can sign in with
+      your new address.
+    </p>
+  } @else {
+    <p class="eyebrow">A NEW HOME FOR YOUR HELLOS</p>
+    <h1>Make it <em>official.</em></h1>
+    <p class="form-description">
+      Confirm your new email address. This will sign out all existing sessions; your password and
+      two-factor settings stay the same.
+    </p>
+    @if (error()) {
+      <p class="form-error" role="alert">{{ error() }}</p>
+    }
+    <button
+      class="button button-ink"
+      type="button"
+      [disabled]="status() === 'working'"
+      (click)="confirm()"
+    >
+      {{ status() === 'working' ? 'Confirming…' : 'Confirm my new email' }} ↗
+    </button>
+  }
+  <p class="small-print"><a routerLink="/login">Go to sign in ↗</a></p>
+</app-account-shell>

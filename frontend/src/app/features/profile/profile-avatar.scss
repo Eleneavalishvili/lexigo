@@ -1,0 +1,40 @@
+.avatar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin-block: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--surface);
+}
+.portrait {
+  inline-size: 8rem;
+  block-size: 8rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 2rem;
+}
+.portrait img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+label {
+  display: block;
+  font-weight: 700;
+}
+input {
+  max-inline-size: 100%;
+  margin-block: 0.5rem;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}

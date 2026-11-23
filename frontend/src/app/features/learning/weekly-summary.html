@@ -1,0 +1,163 @@
+<div class="summary-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a>
+    <a routerLink="/learn">↖ Your learning path</a>
+    <a routerLink="/activity">Learning activity</a>
+    <a routerLink="/completion-cards">Completion cards</a>
+  </header>
+  <main>
+    <p class="eyebrow">A LITTLE EVERY DAY ADDS UP</p>
+    <h1>Your week <em>in words.</em></h1>
+    <nav class="week-picker" aria-label="Choose summary week">
+      <button
+        class="button button-outline"
+        (click)="load(weeksAgo() + 1)"
+        [disabled]="loading() || busy() || weeksAgo() === 12"
+      >
+        ← Previous week
+      </button>
+      <span>{{ weeksAgo() === 0 ? 'This week' : weeksAgo() + ' week(s) ago' }}</span>
+      <button
+        class="button button-outline"
+        (click)="load(weeksAgo() - 1)"
+        [disabled]="loading() || busy() || weeksAgo() === 0"
+      >
+        Next week →
+      </button>
+    </nav>
+    @if (loading()) {
+      <p role="status">Gathering your learning week…</p>
+    }
+    @if (busy()) {
+      <p role="status">Opening free mistake practice…</p>
+    }
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+      <button
+        class="button button-outline"
+        (click)="load(weeksAgo())"
+        [disabled]="loading() || busy()"
+      >
+        Refresh summary
+      </button>
+    }
+    @if (summary(); as week) {
+      <p>
+        {{ week.weekStart + 'T00:00:00Z' | date: 'mediumDate' : 'UTC' }} –
+        {{ week.weekEnd + 'T00:00:00Z' | date: 'mediumDate' : 'UTC' }} · {{ week.timeZone }}
+      </p>
+      <dl class="totals">
+        <div>
+          <dt>XP earned</dt>
+          <dd>{{ week.earnedXp }}</dd>
+        </div>
+        <div>
+          <dt>First lesson completions</dt>
+          <dd>{{ week.newLessonsCompleted }}</dd>
+        </div>
+        <div>
+          <dt>Different words reviewed</dt>
+          <dd>{{ week.reviewedWords }}</dd>
+        </div>
+        <div>
+          <dt>Different conversations finished</dt>
+          <dd>{{ week.conversationsFinished ?? 0 }}</dd>
+        </div>
+        <div>
+          <dt>Days with activity</dt>
+          <dd>{{ week.studyDays }} / 7</dd>
+        </div>
+        <div>
+          <dt>Graded answer accuracy</dt>
+          <dd>{{ week.accuracy === null ? 'Not yet measured' : week.accuracy + '%' }}</dd>
+        </div>
+      </dl>
+      <p class="note">
+        Weeks use your saved time zone. Repeated lessons are not counted as new completions.
+        Ungraded speaking and placement do not affect accuracy.
+      </p>
+      @if (week.weeksAgo < 12) {
+        <app-weekly-comparison [weeksAgo]="week.weeksAgo" />
+      }
+      <section aria-labelledby="summary-days">
+        <h2 id="summary-days">Your seven little days.</h2>
+        <ul class="days">
+          @for (day of week.days; track day.date) {
+            <li [class.studied]="day.studied">
+              <time [attr.datetime]="day.date">{{
+                day.date + 'T00:00:00Z' | date: 'EEE' : 'UTC'
+              }}</time>
+              <strong>{{ day.earnedXp }} XP</strong>
+              <span>{{
+                day.studied
+                  ? 'Activity saved'
+                  : day.date > week.today
+                    ? 'Still ahead'
+                    : 'No activity saved'
+              }}</span>
+            </li>
+          }
+        </ul>
+      </section>
+      <section aria-labelledby="summary-languages">
+        <h2 id="summary-languages">Each language, its own story.</h2>
+        <div class="courses">
+          @for (course of week.courses; track course.courseId) {
+            <article>
+              <h3>{{ course.title }}</h3>
+              <p>
+                {{ course.earnedXp }} XP · {{ course.newLessonsCompleted }} first completions ·
+                {{ course.reviewedWords }} words reviewed ·
+                {{ course.conversationsFinished ?? 0 }} conversations finished
+              </p>
+              <p>{{ course.correctAnswers }} / {{ course.gradedAnswers }} graded answers correct</p>
+              <h4>Suggested today</h4>
+              @if (course.dueWords > 0) {
+                <p>{{ course.dueWords }} saved word(s) are due for review now.</p>
+                <a
+                  routerLink="/vocabulary"
+                  [queryParams]="{ courseId: course.courseId, status: 'due' }"
+                >
+                  Review due words ↗
+                </a>
+              }
+              @if (course.gradedAnswers > course.correctAnswers && course.isPublished) {
+                <p>
+                  You missed {{ course.gradedAnswers - course.correctAnswers }} graded answer(s) in
+                  this week.
+                </p>
+                <button
+                  class="button button-outline"
+                  (click)="practise(course)"
+                  [disabled]="busy() || loading()"
+                >
+                  Practise current mistakes
+                </button>
+              }
+              @if (course.isPublished) {
+                <div class="course-links">
+                  <a [routerLink]="['/learn', course.courseId]">Open this course ↗</a>
+                  <a
+                    [routerLink]="['/learn', course.courseId, 'dialogues']"
+                    [attr.aria-label]="'Practise ' + course.title + ' conversations'"
+                  >
+                    Practise conversations ↗
+                  </a>
+                </div>
+              } @else {
+                <p>This course is archived. Your recorded learning remains here.</p>
+              }
+            </article>
+          } @empty {
+            <p>Choose your first language to start building a learning week.</p>
+            <a class="button button-red" routerLink="/courses">Explore the courses ↗</a>
+          }
+        </div>
+      </section>
+      <p class="note">
+        Free mistake practice uses no hearts and earns no XP. Suggestions are based on recorded
+        activity and words due now.
+      </p>
+    }
+  </main>
+</div>

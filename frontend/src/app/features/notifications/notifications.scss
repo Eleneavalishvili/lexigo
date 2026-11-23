@@ -1,0 +1,16 @@
+.postcards {
+  display: grid;
+  gap: 1rem;
+  margin: 2rem 0;
+  padding: 0;
+  list-style: none;
+}
+.unread {
+  border-inline-start: 5px solid var(--color-accent, #b74634);
+}
+.postcards h2 {
+  font-size: clamp(1.35rem, 4vw, 2rem);
+}
+.postcards p {
+  overflow-wrap: anywhere;
+}

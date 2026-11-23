@@ -1,0 +1,71 @@
+<div class="classes-wrap">
+  <header><a routerLink="/classes/extra-study">↖ Extra study</a></header>
+  <main>
+    <p class="eyebrow">PREMIUM LEARNING</p>
+    <h1>Private study space</h1>
+    <button class="text-button" type="button" [disabled]="loading() || busy()" (click)="refresh()">
+      Refresh study space
+    </button>
+    @if (loading()) {
+      <p role="status">Opening your study space…</p>
+    }
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+    }
+    @if (space(); as data) {
+      <p>{{ data.courseTitle }}</p>
+      <section class="panel" aria-labelledby="shared-title">
+        <h2 id="shared-title">Shared lessons</h2>
+        <ul class="class-list">
+          @for (lesson of data.lessons; track lesson.id) {
+            <li>
+              <p>{{ lesson.title }}</p>
+              @if (!data.canShare) {
+                <button
+                  class="button button-ink"
+                  type="button"
+                  [disabled]="busy()"
+                  (click)="start(lesson.id)"
+                >
+                  Start lesson
+                </button>
+              }
+            </li>
+          } @empty {
+            <li>No lessons have been shared yet.</li>
+          }
+        </ul>
+        @if (!data.canShare) {
+          <a [routerLink]="['/learn', data.courseId]">Open your course journey ↗</a>
+        }
+      </section>
+      @if (data.canShare) {
+        <section class="panel" aria-labelledby="share-title">
+          <h2 id="share-title">Share a lesson</h2>
+          <label for="study-unit">Unit</label>
+          <select id="study-unit" #unit (change)="lesson.value = ''; chooseUnit(unit.value)">
+            <option value="">Choose a unit</option>
+            @for (item of units(); track item.id) {
+              <option [value]="item.id">{{ item.title }}</option>
+            }
+          </select>
+          <label for="study-lesson">Lesson</label>
+          <select id="study-lesson" #lesson>
+            <option value="">Choose a lesson</option>
+            @for (item of lessons(); track item.id) {
+              <option [value]="item.id">{{ item.title }}</option>
+            }
+          </select>
+          <button
+            class="button button-ink"
+            type="button"
+            [disabled]="busy()"
+            (click)="share(lesson.value)"
+          >
+            Share lesson
+          </button>
+        </section>
+      }
+    }
+  </main>
+</div>

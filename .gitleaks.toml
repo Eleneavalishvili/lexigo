@@ -1,0 +1,13 @@
+title = "LexiGo source secret scan"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Ignored runtime data and generated dependencies are not deliverable source; secrets belong in local secret storage."
+paths = [
+  '''(^|/)(work|node_modules|bin|obj|\.git|\.vs|\.angular|dist|coverage|TestResults|\.local)(/|$)''',
+  '''(^|/)\.env$''',
+  '''(^|/)\.env\.(local|development|production|test|staging)(\.local)?$''',
+  '''\.csproj\.user$''',
+]

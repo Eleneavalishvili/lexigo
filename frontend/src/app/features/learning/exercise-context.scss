@@ -1,0 +1,32 @@
+.context-card {
+  position: relative;
+  margin-block: 0 1.5rem;
+  padding: 1.5rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--gold);
+  border-radius: 3px;
+}
+h3 {
+  font-family: var(--display-font);
+  font-size: 1.65rem;
+  line-height: 1.3;
+  margin: 0.7rem 0 1.2rem;
+}
+.context-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.9;
+  font-size: 1.05rem;
+}
+.eyebrow {
+  font-size: 0.65rem;
+}
+@media (max-width: 500px) {
+  .context-card {
+    padding: 1rem;
+  }
+  h3 {
+    font-size: 1.4rem;
+  }
+}

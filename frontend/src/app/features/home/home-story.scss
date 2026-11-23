@@ -1,0 +1,92 @@
+:host {
+  display: block;
+}
+.our-way {
+  background: #eee5d1;
+  border-block: 1px solid var(--line);
+}
+.way-layout {
+  display: grid;
+  gap: 4rem;
+  grid-template-columns: 1fr 1fr;
+  padding-block: 4rem;
+}
+.way-intro {
+  position: relative;
+}
+.way-intro h2 {
+  font-size: clamp(2.5rem, 4vw, 3.4rem);
+}
+.way-intro > p:last-of-type {
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.8;
+  margin-top: 1.3rem;
+  max-width: 290px;
+}
+.drawn-flower {
+  bottom: -0.5rem;
+  color: var(--red);
+  font-size: 5rem;
+  position: absolute;
+  right: 2rem;
+  transform: rotate(-12deg);
+}
+.way-steps article {
+  border-bottom: 1px solid #213e622b;
+  display: flex;
+  gap: 1.5rem;
+  padding-block: 1.2rem;
+}
+.way-steps article:first-child {
+  padding-top: 0;
+}
+.way-steps article:last-child {
+  border: 0;
+  padding-bottom: 0;
+}
+.way-steps article > span {
+  color: var(--red);
+  font-family: var(--display-font);
+  font-size: 1.5rem;
+  font-style: italic;
+}
+.way-steps h3 {
+  font-family: var(--display-font);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5rem;
+}
+.way-steps p {
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.8;
+  margin: 0;
+}
+.closing {
+  padding-block: 4.5rem;
+  text-align: center;
+}
+.closing > span {
+  color: var(--red);
+  display: block;
+  font-size: 2.7rem;
+  margin-bottom: 1rem;
+}
+.closing .eyebrow {
+  font-size: 0.58rem;
+}
+.closing h2 {
+  margin-bottom: 1.8rem;
+}
+@media (max-width: 760px) {
+  .way-layout {
+    gap: 2rem;
+    grid-template-columns: 1fr;
+    padding-block: 3rem;
+  }
+  .drawn-flower {
+    right: 1rem;
+  }
+}

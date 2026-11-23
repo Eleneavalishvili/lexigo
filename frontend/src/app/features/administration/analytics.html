@@ -1,0 +1,138 @@
+@if (ownsView()) {
+  <main class="analytics">
+    <a routerLink="/account">← Back to account</a>
+    <h1>Learning analytics</h1>
+    <form [formGroup]="filters" (ngSubmit)="load()">
+      <label
+        >Course<select formControlName="courseId">
+          <option value="">All courses</option>
+          @for (course of courses(); track course.id) {
+            <option [value]="course.id">{{ course.title }}</option>
+          }
+        </select></label
+      >
+      <label>From (UTC)<input type="date" formControlName="from" required /></label>
+      <label>Through (UTC)<input type="date" formControlName="through" required /></label>
+      <button class="button button-red" type="submit" [disabled]="busy()">Apply filters</button>
+    </form>
+    @if (courseError()) {
+      <p role="status">Course choices are unavailable. You can still view all courses.</p>
+    }
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+    }
+    @if (busy()) {
+      <p role="status">Working…</p>
+    }
+    @if (report(); as data) {
+      <p>
+        <strong>{{ data.activeLearners }}</strong> learners started a session in this date range.
+      </p>
+      <button class="button button-outline" type="button" (click)="exportCsv()" [disabled]="busy()">
+        Download CSV for this report
+      </button>
+      @if (data.courses.length) {
+        <app-analytics-chart
+          title="Course activity"
+          [labels]="courseChart().labels"
+          [series]="courseChart().series"
+        />
+      }
+      <div class="table-wrap" tabindex="0" aria-label="Course engagement">
+        <table>
+          <caption>
+            Course engagement
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Course</th>
+              <th scope="col">Learners</th>
+              <th scope="col">Sessions started</th>
+              <th scope="col">Lessons finished</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (course of data.courses; track course.courseId) {
+              <tr>
+                <th scope="row">{{ course.course }}</th>
+                <td>{{ course.learners }}</td>
+                <td>{{ course.started }}</td>
+                <td>{{ course.finished }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4">No sessions started in this range.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      @if (data.difficulty.length) {
+        <app-analytics-chart
+          title="Error rate by exercise format"
+          [labels]="difficultyChart().labels"
+          [series]="difficultyChart().series"
+          [percentage]="true"
+        />
+      }
+      <div class="table-wrap" tabindex="0" aria-label="Exercise difficulty">
+        <table>
+          <caption>
+            Exercise difficulty
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Format</th>
+              <th scope="col">Graded answers</th>
+              <th scope="col">Errors</th>
+              <th scope="col">Error rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (format of data.difficulty; track format.format) {
+              <tr>
+                <th scope="row">{{ format.format }}</th>
+                <td>{{ format.answers }}</td>
+                <td>{{ format.errors }}</td>
+                <td>{{ (format.errors / format.answers) * 100 | number: '1.0-1' }}%</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4">No graded answers in this range.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap" tabindex="0" aria-label="Most missed exercises">
+        <table>
+          <caption>
+            Most missed exercises
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Exercise ID</th>
+              <th scope="col">Format</th>
+              <th scope="col">Graded answers</th>
+              <th scope="col">Errors</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (exercise of data.commonErrors; track exercise.exerciseId) {
+              <tr>
+                <th scope="row">{{ exercise.exerciseId }}</th>
+                <td>{{ exercise.format }}</td>
+                <td>{{ exercise.answers }}</td>
+                <td>{{ exercise.errors }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4">No incorrect graded answers in this range.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </main>
+}

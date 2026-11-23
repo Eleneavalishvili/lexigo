@@ -1,0 +1,119 @@
+<section class="languages-section wrap" id="languages" aria-labelledby="languages-title">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">PICK A NEW POSSIBILITY</p>
+      <h2 id="languages-title">Where shall we <em>go?</em></h2>
+    </div>
+    <p>Four different doors.<br />A whole world on the other side.</p>
+  </div>
+  <div class="language-grid" role="group" aria-label="Choose a course">
+    @for (language of languages; track language.code; let index = $index) {
+      <a
+        [routerLink]="['/learn/start', language.courseId]"
+        class="language-card"
+        [class]="'language-card language-' + language.code"
+        [class.is-selected]="selectedLanguage().code === language.code"
+        (mouseenter)="selectLanguage(language)"
+        (focus)="selectLanguage(language)"
+      >
+        <span class="card-topline"
+          ><span>EN → {{ language.code.toUpperCase() }}</span
+          ><span>0{{ index + 1 }}</span></span
+        >
+        <span class="postcard-art" aria-hidden="true">
+          @switch (language.code) {
+            @case ('es') {
+              <svg viewBox="0 0 220 100">
+                <g fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="110" cy="51" r="29" />
+                  <path
+                    d="M110 8v10m0 66v10M67 51H57m106 0h-10M80 20l7 8m46 46 7 8m0-62-7 8M87 74l-7 8"
+                  />
+                  <path d="M96 49q4-6 8 0m11 0q4-6 8 0m-24 10q11 13 22 0" />
+                </g>
+              </svg>
+            }
+            @case ('it') {
+              <svg viewBox="0 0 220 100">
+                <path
+                  d="M67 64c-7-26 6-39 26-39 15 0 41 9 55 29 10 16-6 26-22 25-29 6-49 2-59-15Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M104 27c10-24 32-24 39-12-13 15-26 16-39 12Z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <path
+                  d="m82 44-3 7m9 7-2 5m15-18-1 6"
+                  stroke="var(--paper)"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            }
+            @case ('de') {
+              <svg viewBox="0 0 220 100">
+                <g fill="none" stroke="currentColor" stroke-width="5">
+                  <path
+                    d="M109 69C69 25 45 57 68 76c19 13 35-12 44-34 12-33 46-16 36 5-8 20-44 32-59 14-17-22-6-49 12-38 18 12 40 70 54 47 9-15-6-36-24-22"
+                  />
+                </g>
+                <g stroke="var(--paper)" stroke-width="3">
+                  <path d="m77 50 5 5m13-23 5 3m36 4 4 4m-9 20 3 4" />
+                </g>
+              </svg>
+            }
+            @case ('ru') {
+              <svg viewBox="0 0 220 100">
+                <path
+                  d="m110 8 11 29 32-4-22 23 14 29-35-12-34 12 13-29-21-23 31 4Z"
+                  fill="currentColor"
+                />
+                <circle cx="110" cy="51" r="12" fill="var(--paper)" />
+              </svg>
+            }
+          }
+        </span>
+        <span class="card-greeting" [lang]="language.code"
+          >{{ language.greeting.split(',')[0] }}<span class="greeting-dot">.</span></span
+        >
+        <span class="card-name">{{ language.name }} <span aria-hidden="true">↗</span></span>
+        <span class="card-invitation">{{ language.invitation }}</span>
+        <span class="card-bottom">A NEW CHAPTER STARTS HERE <span aria-hidden="true">✦</span></span>
+      </a>
+    }
+  </div>
+  <section
+    class="language-preview"
+    aria-labelledby="preview-title"
+    aria-live="polite"
+    aria-atomic="true"
+  >
+    <div class="preview-label">
+      <span class="tiny-star" aria-hidden="true">✦</span><span>YOUR FIRST<br />LITTLE HELLO</span>
+    </div>
+    <div class="preview-word">
+      <h3 id="preview-title" [lang]="selectedLanguage().code">
+        {{ selectedLanguage().greeting }}
+      </h3>
+      <p>
+        {{ selectedLanguage().pronunciation }} <span>· {{ selectedLanguage().translation }}</span>
+      </p>
+      <app-pronunciation-button
+        [text]="selectedLanguage().greeting"
+        [courseId]="selectedLanguage().courseId"
+      />
+    </div>
+
+    <div class="preview-topics">
+      <p>MEET {{ selectedLanguage().name.toUpperCase() }}</p>
+      <ul>
+        @for (topic of selectedLanguage().topics; track topic) {
+          <li>{{ topic }}</li>
+        }
+      </ul>
+    </div>
+  </section>
+</section>

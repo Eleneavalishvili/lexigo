@@ -1,0 +1,256 @@
+:host {
+  display: block;
+}
+.hero {
+  align-items: center;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+  padding-block: 35px 55px;
+}
+.hero-copy {
+  padding-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+}
+.hero .eyebrow {
+  align-items: center;
+  display: flex;
+  gap: 0.6rem;
+}
+.little-globe {
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1;
+}
+h1 {
+  font-size: clamp(3.2rem, 6vw, 5.15rem);
+  line-height: 0.99;
+  margin-bottom: 1.8rem;
+}
+h1 em {
+  color: var(--red);
+  font-size: 0.78em;
+  font-weight: inherit;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+.hero-description {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  max-width: 420px;
+}
+.hero-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 1.9rem;
+}
+.handwritten {
+  font-family: var(--display-font);
+  font-size: 0.88rem;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.4;
+  position: relative;
+  transform: rotate(-8deg);
+}
+.handwritten svg {
+  bottom: -0.7rem;
+  fill: none;
+  left: -2.3rem;
+  position: absolute;
+  stroke: var(--ink);
+  stroke-linecap: round;
+  stroke-width: 1.5;
+  width: 3.3rem;
+}
+.hero-footnote {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  font-size: 0.66rem;
+  gap: 0.5rem;
+  margin: 1.8rem 0 0;
+}
+.hero-footnote span {
+  color: var(--red);
+  font-size: 1rem;
+}
+.hero-art {
+  min-width: 0;
+}
+.art-stage {
+  isolation: isolate;
+  perspective: 1000px;
+}
+.art-plane {
+  display: grid;
+  place-items: center;
+  position: relative;
+  transform-style: preserve-3d;
+}
+.has-depth .art-plane {
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform 220ms ease-out;
+}
+.art-halo {
+  background: radial-gradient(
+    circle at 38% 30%,
+    var(--surface),
+    color-mix(in srgb, var(--gold) 30%, var(--paper)) 60%,
+    transparent 72%
+  );
+  border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
+  border-radius: 50%;
+  inset: 12%;
+  position: absolute;
+}
+.has-depth .art-halo {
+  box-shadow: 0 22px 60px color-mix(in srgb, var(--ink) 15%, transparent);
+  transform: translateZ(-26px);
+}
+.art-spark {
+  color: var(--red);
+  font-size: clamp(1.2rem, 4vw, 2.4rem);
+  inset: 12% 12% auto auto;
+  position: absolute;
+}
+.art-plane img {
+  display: block;
+  height: auto;
+  position: relative;
+  width: 100%;
+}
+.has-depth img {
+  filter: drop-shadow(0 12px 10px color-mix(in srgb, var(--ink) 20%, transparent));
+  transform: translateZ(24px);
+}
+.has-motion img,
+.has-motion .art-spark {
+  animation: globe-drift 6s ease-in-out infinite;
+}
+.has-motion .art-spark {
+  animation-delay: -2s;
+}
+@keyframes globe-drift {
+  50% {
+    translate: 0 -8px;
+  }
+}
+:host-context(html[data-reduce-motion='true']) .has-depth .art-plane {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .has-depth .art-plane {
+    transform: none;
+  }
+}
+.art-caption {
+  align-items: center;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.68rem;
+  font-weight: 600;
+  gap: 0.25rem 1rem;
+  justify-content: space-between;
+  margin-inline: clamp(0rem, 3vw, 1.7rem);
+}
+.art-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+}
+.art-controls label {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  font-size: 0.83rem;
+  gap: 0.4rem;
+  min-height: 44px;
+}
+.art-controls input {
+  appearance: none;
+  background: var(--surface);
+  border: 1px solid var(--muted);
+  border-radius: 1rem;
+  cursor: pointer;
+  height: 1.25rem;
+  margin: 0;
+  width: 2.15rem;
+}
+.art-controls input::before {
+  background: var(--muted);
+  border-radius: 50%;
+  content: '';
+  display: block;
+  height: 0.85rem;
+  margin: 0.13rem;
+  transition: translate 180ms ease;
+  width: 0.85rem;
+}
+.art-controls input:checked {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.art-controls input:checked::before {
+  background: var(--paper);
+  translate: 0.9rem;
+}
+.art-controls input:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+@media (min-width: 1500px) {
+  .hero {
+    padding-block: 55px 75px;
+  }
+}
+@media (max-width: 1000px) {
+  h1 {
+    font-size: 4.6rem;
+  }
+  .hero-actions {
+    gap: 1rem;
+  }
+  .handwritten {
+    font-size: 0.75rem;
+  }
+}
+@media (max-width: 760px) {
+  .hero {
+    gap: 1rem;
+    grid-template-columns: 1fr;
+    padding-block: 20px 35px;
+  }
+  h1 {
+    font-size: clamp(3.2rem, 10vw, 4.6rem);
+  }
+  .hero-copy {
+    padding-bottom: 0;
+  }
+  .hero-art {
+    margin-inline: auto;
+    max-width: 500px;
+    width: 100%;
+  }
+  .hero-description {
+    font-size: 0.9rem;
+  }
+  .hero-actions {
+    gap: 2rem;
+  }
+}
+@media (max-width: 390px) {
+  .handwritten {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  h1 em {
+    font-size: clamp(1.8rem, 8.7vw, 3.6rem);
+  }
+}

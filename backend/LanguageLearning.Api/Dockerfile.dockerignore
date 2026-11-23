@@ -1,0 +1,16 @@
+**
+!global.json
+!NuGet.Config
+!backend/
+!backend/Directory.Build.props
+!backend/LanguageLearning.Core/
+!backend/LanguageLearning.Core/**
+!backend/LanguageLearning.Infrastructure/
+!backend/LanguageLearning.Infrastructure/**
+!backend/LanguageLearning.Api/
+!backend/LanguageLearning.Api/**
+**/bin
+**/obj
+**/.local
+**/.env*
+**/appsettings.Development.json

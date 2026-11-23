@@ -1,0 +1,1640 @@
+[
+  {
+    "method": "POST",
+    "document_route": "/api/v1/auth/register",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: backend RegistrationTests, browser registration/Mailpit/verification check, Development Swagger and health endpoints"
+    ],
+    "notes": "Applies to this operation only; see individual entries for remaining account and authorization operations."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/auth/login",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: SessionTests and PasswordRecoveryTests against isolated PostgreSQL; account browser sign-in/reload/session removal/logout/guard checks; ACCOUNT_SECURITY.md",
+      "2026-10-27: TwoFactorTests verifies TOTP challenge, MFA claims, replay protection and concurrent one-use recovery login."
+    ],
+    "notes": "Optional AuthenticatorCode or RecoveryCode accompanies the password; a challenge response never contains an access token. See additional-api-register.json for setup/settings endpoints."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/auth/refresh",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: SessionTests and PasswordRecoveryTests against isolated PostgreSQL; account browser sign-in/reload/session removal/logout/guard checks; ACCOUNT_SECURITY.md"
+    ]
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/auth/logout",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: SessionTests and PasswordRecoveryTests against isolated PostgreSQL; account browser sign-in/reload/session removal/logout/guard checks; ACCOUNT_SECURITY.md"
+    ]
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/auth/verify-email",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: backend RegistrationTests, browser registration/Mailpit/verification check, Development Swagger and health endpoints",
+      "2026-10-27: approved Brevo inbox receipt and confirmed SQL account status; RegistrationTests verifies valid replay versus tampered/expired tokens; VerifyEmail frontend tests verify retry and missing-token guidance."
+    ],
+    "notes": "Successful confirmation remains single-use. A valid unexpired token for an already-confirmed account returns HTTP 400 code email_already_confirmed; invalid tokens return invalid_confirmation. See individual entries for other account operations."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/auth/resend-verification",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: backend RegistrationTests, browser registration/Mailpit/verification check, Development Swagger and health endpoints"
+    ],
+    "notes": "Applies to this operation only; see individual entries for remaining account and authorization operations."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/auth/forgot-password",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: SessionTests and PasswordRecoveryTests against isolated PostgreSQL; account browser sign-in/reload/session removal/logout/guard checks; ACCOUNT_SECURITY.md"
+    ]
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/auth/reset-password",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: SessionTests and PasswordRecoveryTests against isolated PostgreSQL; account browser sign-in/reload/session removal/logout/guard checks; ACCOUNT_SECURITY.md"
+    ]
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: ProfileTests verified the account summary uses the token owner even when another user ID is supplied. The response is private and uncached. Swagger success contract and anonymous denial verified. learner-session-activity-verification.trx and learner-session-activity-final.trx.",
+      "2026-10-27: authenticated account summary and ownership verified; complete editable profile is pending."
+    ],
+    "notes": "The summary includes the current display name, confirmed email state, roles and authorized permissions. Preferences and avatar use dedicated endpoints."
+  },
+  {
+    "method": "PATCH",
+    "document_route": "/api/v1/me",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: ProfileTests verified trimming, HTTP 200 with the saved name, ownership and rejection of invalid names and extra role fields. Swagger success contract and anonymous denial verified. learner-session-activity-verification.trx and learner-session-activity-final.trx.",
+      "2026-10-27: ProfileService and ProfileTests; synthetic browser rename; PROFILE_SETTINGS.md"
+    ],
+    "notes": "Display-name updates use the token owner. Preferences, email and avatar use their dedicated operations."
+  },
+  {
+    "method": "DELETE",
+    "document_route": "/api/v1/me",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "AccountDeletionTests, LearningDataExportTests and RefundTests verified request verification, password/MFA proof, private erasure, session revocation, last-admin/teaching safeguards and retained financial history with synthetic accounts.",
+      "2026-11-20: StaffTextDeletionTests verifies own review/moderation/feedback/audit note erasure only after correct account proof, preserving other contributions and learner history. Complete staff-retention reconciliation remains pending.",
+      "2026-11-20: staff-deletion-regression.trx passed 112 publishing, classroom, profile, refund, staff-note and completion-card checks. Authenticated deletion erases archived teaching labels, copied notifications and departed-author refund notes while preserving submissions, other contributions and immutable monetary fields. Note-only PostgreSQL protection and guarded migration rollback passed; the migration is applied locally."
+    ],
+    "notes": "Approved retention and erasure policy: ACCOUNT_DATA.md. Confirmed learner deletion and class handover have desktop/phone browser evidence. Staff deletion now reconciles review, moderation, feedback, audit, teaching-label, notification and refund notes; unresolved responsibilities block deletion until safely closed, erased or transferred. Financial history and published attribution remain. No personal account was deleted during verification."
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/me/email",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: EmailChangeTests against isolated PostgreSQL; email-change.spec.ts/confirm-email-change.spec.ts; synthetic browser request and unchanged-address check; EMAIL_CHANGE_SECURITY.md"
+    ],
+    "notes": "Authenticated request with current password plus MFA proof when enabled. Confirmation is the additional anonymous POST /api/v1/auth/confirm-email-change. Old email remains until confirmation; sessions revoke on success."
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/me/password",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: SessionTests and PasswordRecoveryTests against isolated PostgreSQL; account browser sign-in/reload/session removal/logout/guard checks; ACCOUNT_SECURITY.md"
+    ]
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/sessions[/{id}]",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: SessionTests and PasswordRecoveryTests against isolated PostgreSQL; account browser sign-in/reload/session removal/logout/guard checks; ACCOUNT_SECURITY.md"
+    ],
+    "notes": "Expanded GET list and GET owned /{id}; DELETE all and DELETE owned /{id}. IDs represent a device session family across token rotations. Missing or unowned active sessions return 404."
+  },
+  {
+    "method": "DELETE",
+    "document_route": "/api/v1/me/sessions[/{id}]",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: SessionTests and PasswordRecoveryTests against isolated PostgreSQL; account browser sign-in/reload/session removal/logout/guard checks; ACCOUNT_SECURITY.md"
+    ],
+    "notes": "Expanded GET list and GET owned /{id}; DELETE all and DELETE owned /{id}. IDs represent a device session family across token rotations. Missing or unowned active sessions return 404."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/preferences",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: ProfileTests PostgreSQL ownership/validation/concurrency/constraints; preference-store.spec.ts and profile.spec.ts; synthetic browser save/reload; PROFILE_SETTINGS.md"
+    ],
+    "notes": "Preference persistence is verified. Sound effects, leaderboard and reminder delivery remain tracked separately."
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/me/preferences",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: ProfileTests PostgreSQL ownership/validation/concurrency/constraints; preference-store.spec.ts and profile.spec.ts; synthetic browser save/reload; PROFILE_SETTINGS.md"
+    ],
+    "notes": "Preference persistence is verified. Sound effects, leaderboard and reminder delivery remain tracked separately."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/export",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "LearningDataExportTests verified anonymous denial, no-store and scoped profile, learning history, vocabulary, classroom submissions and feedback, Extra Study requests, notifications and reports. RefundTests and FinancialHistoryTests verified buyer-only simulated billing history, including refunds, receipts, wallet and heart refill records."
+    ],
+    "notes": "2026-11-18: Export sections were reconciled with the documented personal records. Desktop and phone Edge downloaded the actual JSON from Profile, verified saved name/email/timezone/goal and expected sections, and checked that credentials were excluded. PostgreSQL export tests verify ownership and private ranking report identifiers. Account deletion remains separately tracked. ACCOUNT_DATA.md."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/courses",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration."
+    ],
+    "notes": "Published course metadata only; this catalog operation contains no exercises or grading keys. Authenticated learning and the read-only anonymous trial use separate endpoints. GUEST_TRIAL.md records the 2026-11-06 trial addition and no-XP verification."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/courses/{id}",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration."
+    ],
+    "notes": "Published metadata only; no public exercises or answer keys. Learning sessions are separate pending operations."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/courses/{id}/units",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration."
+    ],
+    "notes": "Published metadata only; no public exercises or answer keys. Learning sessions are separate pending operations."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/units/{id}/lessons",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration."
+    ],
+    "notes": "Published metadata only; no public exercises or answer keys. Learning sessions are separate pending operations."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/lessons/{id}",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-11: Desktop Playwright verified that draft and approved content return 404 anonymously and the published lesson returns 200.",
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration."
+    ],
+    "notes": "Published metadata only; no public exercises or answer keys. Learning sessions are separate pending operations."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/enrollments",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: LearningTests/TextAnswerEvaluatorTests against isolated PostgreSQL; journey/lesson-player UI tests; LEARNING_ENGINE.md; AddLearningSessions migration.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: PLACEMENT.md; four-language diagnostic/start/recommend/apply verified in placement-learning.trx (98learning cases), frontend224/62files, production/backendbuild/noEFdrift/secret-scanpass. Owned/private snapshots, zeroXP/hearts/progress grants, explicit idempotent application, first-gap recommendation, current-unit locks and SQL course/XP denial. Local migration20261102123435 applied."
+    ],
+    "notes": "Owned paged listing and explicit enrollment in published courses; concurrent duplicate joins reuse one row. Enrollment persists across course switching/archive. Placement assessment is a separate pending operation."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/enrollments",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-17: enrollment-contract.trx verified private Location, concurrent retry, and unchanged join time and starting level.",
+      "2026-10-28: LearningTests/TextAnswerEvaluatorTests against isolated PostgreSQL; journey/lesson-player UI tests; LEARNING_ENGINE.md; AddLearningSessions migration.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: PLACEMENT.md; four-language diagnostic/start/recommend/apply verified in placement-learning.trx (98learning cases), frontend224/62files, production/backendbuild/noEFdrift/secret-scanpass. Owned/private snapshots, zeroXP/hearts/progress grants, explicit idempotent application, first-gap recommendation, current-unit locks and SQL course/XP denial. Local migration20261102123435 applied."
+    ],
+    "notes": "Owned paged listing and explicit enrollment in published courses; concurrent duplicate joins reuse one row. Enrollment persists across course switching/archive. Placement assessment is a separate pending operation."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/progress?courseId=",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: LearningTests and PlacementTests verified independent course progress, saved session IDs, prerequisite locks, applied placement and denial of unpublished course access for an unenrolled account. Swagger success contract and anonymous denial verified. learner-session-activity-verification.trx and learner-session-activity-final.trx.",
+      "2026-10-28: LearningTests/TextAnswerEvaluatorTests against isolated PostgreSQL; journey/lesson-player UI tests; LEARNING_ENGINE.md; AddLearningSessions migration.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: UNIT_CHECKS.md; 24 unit assessments added alongside 108 teaching lessons. unit-checks.trx seven passing integration cases cover all132steps/1800answers, early denial/all-unit prerequisites, no teaching hints, progress/XP, old-session preservation and idempotence. Frontend219/buildpass; actual localSQL confirms132steps/24checks/1800currentquestions. All-format assessment and placement remain partial.",
+      "2026-11-02: PLACEMENT.md; four-language diagnostic/start/recommend/apply verified in placement-learning.trx (98learning cases), frontend224/62files, production/backendbuild/noEFdrift/secret-scanpass. Owned/private snapshots, zeroXP/hearts/progress grants, explicit idempotent application, first-gap recommendation, current-unit locks and SQL course/XP denial. Local migration20261102123435 applied.",
+      "2026-11-06: Lesson-result continuation uses current owned progress for next unlocked step, saved-session resume, retry and free practice. Nine focused UI cases and existing player/journey regressions passed; three PostgreSQL cases reverified private/idempotent starts, prerequisites and free practice without hearts/rewards. Production build passed; LESSON_CONTINUATION.md."
+    ],
+    "notes": "The private course map projects learner-specific progress, prerequisite availability and resumable sessions."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/courses/{id}/placement-sessions",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-17: placement-session-contract.trx verified 201 with a private session URL for all four courses, 200 on concurrent resume and foreign denial.",
+      "2026-11-12: PlacementTests verified private four-course starts, concurrent resume, hidden assessment keys and zero XP. The typed response and anonymous denial were checked through Swagger and HTTP. learner-api-verification.trx.",
+      "2026-11-02: PLACEMENT.md; four-language diagnostic/start/recommend/apply verified in placement-learning.trx (98learning cases), frontend224/62files, production/backendbuild/noEFdrift/secret-scanpass. Owned/private snapshots, zeroXP/hearts/progress grants, explicit idempotent application, first-gap recommendation, current-unit locks and SQL course/XP denial. Local migration20261102123435 applied."
+    ],
+    "notes": "Starts/resumes an owned course-specific zero-XP diagnostic. Result/apply are supporting operations. Text-only sampled recommendation, not a certified CEFR assessment."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/lessons/{id}/sessions",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-17: learning-session-contract.trx verified 201 with a private session URL and 200 on concurrent resume.",
+      "2026-11-12: LearningTests verified enrollment, prerequisite locks, one session on concurrent start and server-owned question snapshots. Audio and speaking cases covered reviewed clips and saved exercise formats. Swagger success contract and anonymous denial verified. learner-session-activity-verification.trx and learner-session-activity-final.trx.",
+      "2026-10-28: LearningTests/TextAnswerEvaluatorTests against isolated PostgreSQL; journey/lesson-player UI tests; LEARNING_ENGINE.md; AddLearningSessions migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-10-28: ListeningTests6 real PostgreSQL/Garage integration cases; full230backend tests,103frontend tests; author/picker/player/lifecycle coverage; AddSessionAudio; LISTENING_LESSONS.md.",
+      "2026-10-28: SpeakingTests8 PostgreSQL/Garage cases; full238backend tests and111frontend tests passed; guided recording/neutral result/journey/authoring tests; AddUngradedPractice; SPEAKING_LESSONS.md.",
+      "2026-10-28: AudioAssociationTests6 real PostgreSQL/Garage cases; full244backend/119frontend tests passed; matching audio editor/board/transport and Russian mode tests; AddMatchingAudio; AUDIO_ASSOCIATIONS.md.",
+      "2026-10-28: SharedHeartsTests/HeartRecoveryTests; current shared balance, exhaustion/refill, concurrent spending/replay and history preservation; HEART_RECOVERY.md. Status unchanged for other required behavior.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: UNIT_CHECKS.md; 24 unit assessments added alongside 108 teaching lessons. unit-checks.trx seven passing integration cases cover all132steps/1800answers, early denial/all-unit prerequisites, no teaching hints, progress/XP, old-session preservation and idempotence. Frontend219/buildpass; actual localSQL confirms132steps/24checks/1800currentquestions. All-format assessment and placement remain partial.",
+      "2026-11-02: PICTURE_FIRST_LESSONS.md; picture-first.trx 117 focused backend cases pass (learning, profile and sentence publishing), 246 frontend tests/66 files pass. Twelve original picture-first teaching lessons plus four unit checks installed. Known unique word-bank subsets with distractors graded on server; private keys remain private; answered public exercise retained for feedback. Goal-only ownership/validation/preferences preservation tested.",
+      "2026-11-06: Lesson-result continuation uses current owned progress for next unlocked step, saved-session resume, retry and free practice. Nine focused UI cases and existing player/journey regressions passed; three PostgreSQL cases reverified private/idempotent starts, prerequisites and free practice without hearts/rewards. Production build passed; LESSON_CONTINUATION.md."
+    ],
+    "notes": "Creates or resumes a lesson session with public question data and server-owned evaluation."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/learning-sessions/{id}",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: LearningTests, ListeningTests and SpeakingTests verified owned session reload, snapshots, private evaluation, progress and results. Swagger success contract and anonymous denial verified. learner-session-activity-verification.trx and learner-session-activity-final.trx.",
+      "2026-10-28: LearningTests/TextAnswerEvaluatorTests against isolated PostgreSQL; journey/lesson-player UI tests; LEARNING_ENGINE.md; AddLearningSessions migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-10-28: ListeningTests6 real PostgreSQL/Garage integration cases; full230backend tests,103frontend tests; author/picker/player/lifecycle coverage; AddSessionAudio; LISTENING_LESSONS.md.",
+      "2026-10-28: SpeakingTests8 PostgreSQL/Garage cases; full238backend tests and111frontend tests passed; guided recording/neutral result/journey/authoring tests; AddUngradedPractice; SPEAKING_LESSONS.md.",
+      "2026-10-28: AudioAssociationTests6 real PostgreSQL/Garage cases; full244backend/119frontend tests passed; matching audio editor/board/transport and Russian mode tests; AddMatchingAudio; AUDIO_ASSOCIATIONS.md.",
+      "2026-10-28: SharedHeartsTests/HeartRecoveryTests; current shared balance, exhaustion/refill, concurrent spending/replay and history preservation; HEART_RECOVERY.md. Status unchanged for other required behavior.",
+      "2026-10-29: Additional SpeakingCheck format uses private targets, trusted voice-only answer writes and durable atomic retry/heart evidence. Original ungraded Speaking unchanged. SpeechCheckTests/SpokenWordEvaluatorTests; SPOKEN_WORD_CHECKS.md. Overall pending fields/features unchanged.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: UNIT_CHECKS.md; 24 unit assessments added alongside 108 teaching lessons. unit-checks.trx seven passing integration cases cover all132steps/1800answers, early denial/all-unit prerequisites, no teaching hints, progress/XP, old-session preservation and idempotence. Frontend219/buildpass; actual localSQL confirms132steps/24checks/1800currentquestions. All-format assessment and placement remain partial.",
+      "2026-11-02: PLACEMENT.md; four-language diagnostic/start/recommend/apply verified in placement-learning.trx (98learning cases), frontend224/62files, production/backendbuild/noEFdrift/secret-scanpass. Owned/private snapshots, zeroXP/hearts/progress grants, explicit idempotent application, first-gap recommendation, current-unit locks and SQL course/XP denial. Local migration20261102123435 applied.",
+      "2026-11-02: PICTURE_FIRST_LESSONS.md; picture-first.trx 117 focused backend cases pass (learning, profile and sentence publishing), 246 frontend tests/66 files pass. Twelve original picture-first teaching lessons plus four unit checks installed. Known unique word-bank subsets with distractors graded on server; private keys remain private; answered public exercise retained for feedback. Goal-only ownership/validation/preferences preservation tested."
+    ],
+    "notes": "The private, uncached read restores owned progress and feedback. Unfinished Premium practice retains its active entitlement requirement."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/learning-sessions/{id}/answers",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: LearningTests, ListeningTests and SpeakingTests verified ordered answer validation, normalized grading, stored feedback, ungraded practice and retries without duplicate attempts. Swagger success contract and anonymous denial verified. learner-session-activity-verification.trx and learner-session-activity-final.trx.",
+      "2026-10-28: LearningTests/TextAnswerEvaluatorTests against isolated PostgreSQL; journey/lesson-player UI tests; LEARNING_ENGINE.md; AddLearningSessions migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-10-28: ListeningTests6 real PostgreSQL/Garage integration cases; full230backend tests,103frontend tests; author/picker/player/lifecycle coverage; AddSessionAudio; LISTENING_LESSONS.md.",
+      "2026-10-28: SpeakingTests8 PostgreSQL/Garage cases; full238backend tests and111frontend tests passed; guided recording/neutral result/journey/authoring tests; AddUngradedPractice; SPEAKING_LESSONS.md.",
+      "2026-10-28: AudioAssociationTests6 real PostgreSQL/Garage cases; full244backend/119frontend tests passed; matching audio editor/board/transport and Russian mode tests; AddMatchingAudio; AUDIO_ASSOCIATIONS.md.",
+      "2026-10-28: SharedHeartsTests/HeartRecoveryTests; current shared balance, exhaustion/refill, concurrent spending/replay and history preservation; HEART_RECOVERY.md. Status unchanged for other required behavior.",
+      "2026-10-29: Additional SpeakingCheck format uses private targets, trusted voice-only answer writes and durable atomic retry/heart evidence. Original ungraded Speaking unchanged. SpeechCheckTests/SpokenWordEvaluatorTests; SPOKEN_WORD_CHECKS.md. Overall pending fields/features unchanged.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: UNIT_CHECKS.md; 24 unit assessments added alongside 108 teaching lessons. unit-checks.trx seven passing integration cases cover all132steps/1800answers, early denial/all-unit prerequisites, no teaching hints, progress/XP, old-session preservation and idempotence. Frontend219/buildpass; actual localSQL confirms132steps/24checks/1800currentquestions. All-format assessment and placement remain partial.",
+      "2026-11-02: PLACEMENT.md; four-language diagnostic/start/recommend/apply verified in placement-learning.trx (98learning cases), frontend224/62files, production/backendbuild/noEFdrift/secret-scanpass. Owned/private snapshots, zeroXP/hearts/progress grants, explicit idempotent application, first-gap recommendation, current-unit locks and SQL course/XP denial. Local migration20261102123435 applied.",
+      "2026-11-02: PICTURE_FIRST_LESSONS.md; picture-first.trx 117 focused backend cases pass (learning, profile and sentence publishing), 246 frontend tests/66 files pass. Twelve original picture-first teaching lessons plus four unit checks installed. Known unique word-bank subsets with distractors graded on server; private keys remain private; answered public exercise retained for feedback. Goal-only ownership/validation/preferences preservation tested."
+    ],
+    "notes": "Server scoring checks the current exercise and replay key. Spoken word checks use their dedicated endpoint."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/learning-sessions/{id}/complete",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: LearningTests and completion-card tests verified the finish gate, concurrent retries, one XP grant, daily activity and eligibility for private cards. Swagger success contract and anonymous denial verified. learner-session-activity-verification.trx and learner-session-activity-final.trx.",
+      "2026-10-28: LearningTests/TextAnswerEvaluatorTests against isolated PostgreSQL; journey/lesson-player UI tests; LEARNING_ENGINE.md; AddLearningSessions migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-10-28: ListeningTests6 real PostgreSQL/Garage integration cases; full230backend tests,103frontend tests; author/picker/player/lifecycle coverage; AddSessionAudio; LISTENING_LESSONS.md.",
+      "2026-10-28: SpeakingTests8 PostgreSQL/Garage cases; full238backend tests and111frontend tests passed; guided recording/neutral result/journey/authoring tests; AddUngradedPractice; SPEAKING_LESSONS.md.",
+      "2026-10-28: AudioAssociationTests6 real PostgreSQL/Garage cases; full244backend/119frontend tests passed; matching audio editor/board/transport and Russian mode tests; AddMatchingAudio; AUDIO_ASSOCIATIONS.md.",
+      "2026-10-28: SharedHeartsTests/HeartRecoveryTests; current shared balance, exhaustion/refill, concurrent spending/replay and history preservation; HEART_RECOVERY.md. Status unchanged for other required behavior.",
+      "2026-10-29: Additional SpeakingCheck format uses private targets, trusted voice-only answer writes and durable atomic retry/heart evidence. Original ungraded Speaking unchanged. SpeechCheckTests/SpokenWordEvaluatorTests; SPOKEN_WORD_CHECKS.md. Overall pending fields/features unchanged.",
+      "2026-11-02: CURRICULUM_STATUS.md; 60 installed lessons/736 questions/12 units; curriculum.trx six passing integration cases covering every answer, reload, cross-unit prerequisites, completion/XP and idempotence. Existing publication workflow remains unchanged; full A1–C2 content and assessment remain open.",
+      "2026-11-02: curriculum-next.trx seven passing integration cases covering all92lessons/1248answers, persistence, XP, prerequisite unlocking and old-version session preservation. LocalSQL confirms92publishedlessons/1248currentquestions/20units.1996referenceWAVs validated; productionbuild passes. CURRICULUM_STATUS.md. Full curriculum and production/device/language review remain open.",
+      "2026-11-02: connected-lessons.trx all94learning tests pass, including every108lesson/1504answers, keyboard variants/heart effects, private correction reload, old-version preservation and prerequisites. LiveSQL108lessons/1504currentquestions/24units; 2587WAVsvalidated; productionbuild/source-secret-scanpass. TEXT_GRADING.md; CURRICULUM_STATUS.md. Fullcurriculum/independent-language-review/release scope remains incomplete.",
+      "2026-11-02: UNIT_CHECKS.md; 24 unit assessments added alongside 108 teaching lessons. unit-checks.trx seven passing integration cases cover all132steps/1800answers, early denial/all-unit prerequisites, no teaching hints, progress/XP, old-session preservation and idempotence. Frontend219/buildpass; actual localSQL confirms132steps/24checks/1800currentquestions. All-format assessment and placement remain partial.",
+      "2026-11-02: PLACEMENT.md; four-language diagnostic/start/recommend/apply verified in placement-learning.trx (98learning cases), frontend224/62files, production/backendbuild/noEFdrift/secret-scanpass. Owned/private snapshots, zeroXP/hearts/progress grants, explicit idempotent application, first-gap recommendation, current-unit locks and SQL course/XP denial. Local migration20261102123435 applied."
+    ],
+    "notes": "Owned completion persists the result and awards first-pass XP once. Placement and practice retain their distinct rules."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/practice-sessions",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-17: learning-session-contract.trx verified private creation URLs, concurrent resume and focused practice access.",
+      "2026-11-12: LearningTests, MistakePracticeTests and SubscriptionPurchaseTests verified free recovery, owned mistake and skill batches, separate Premium modes and access after expiry. Swagger success contract and anonymous denial verified. learner-session-activity-verification.trx and learner-session-activity-final.trx.",
+      "2026-11-12: Optional focus selects repeated mistakes or scheduled due review for an enrolled learner with active AdvancedPractice. PostgreSQL HTTP tests cover the simulated purchase gate, separate saved sessions and unchanged basic practice.",
+      "2026-10-28: LearningTests/TextAnswerEvaluatorTests against isolated PostgreSQL; journey/lesson-player UI tests; LEARNING_ENGINE.md; AddLearningSessions migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-10-28: SpeakingTests8 PostgreSQL/Garage cases; full238backend tests and111frontend tests passed; guided recording/neutral result/journey/authoring tests; AddUngradedPractice; SPEAKING_LESSONS.md.",
+      "2026-11-02: MISTAKE_PRACTICE.md; mistake-learning.trx101learning tests, frontend235/63files, production/APIbuild/format/noEFdrift/offline-secret-scan pass. Owned full-history unresolved text mistakes, pagination, concurrent batch resume, immutable source snapshots, corrected-review resolution and zero hearts/XP/original-completion verified. Skill filtering/audio/due scheduling remain required.",
+      "2026-11-06: Lesson-result continuation uses current owned progress for next unlocked step, saved-session resume, retry and free practice. Nine focused UI cases and existing player/journey regressions passed; three PostgreSQL cases reverified private/idempotent starts, prerequisites and free practice without hearts/rewards. Production build passed; LESSON_CONTINUATION.md."
+    ],
+    "notes": "Core lesson replay and mixed mistake practice remain Free. Dedicated repeat-mistake and due-only sessions require active Premium."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/mistakes?courseId=&skillId=",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: MistakePracticeTests verified owned course and skill filters, due dates, stable paging and the 20-item page size. The typed response and anonymous denial were checked through Swagger and HTTP. learner-api-verification.trx.",
+      "2026-11-12: The owned response reports whether focused practice is available under the current subscription.",
+      "2026-11-09: Optional includeDue=true adds due questions and dates. MistakePracticeTests checked the before/after due boundary and preserved the default unresolved-only list.",
+      "2026-11-02: MISTAKE_PRACTICE.md; mistake-learning.trx101learning tests, frontend235/63files, production/APIbuild/format/noEFdrift/offline-secret-scan pass. Owned full-history unresolved text mistakes, pagination, concurrent batch resume, immutable source snapshots, corrected-review resolution and zero hearts/XP/original-completion verified. Skill filtering/audio/due scheduling remain required."
+    ],
+    "notes": "Owned mistakes support optional integer skillId and reviewed audio. Saved session tags take priority over the exercise-format fallback. ListeningTests verifies owned review playback and denies new links after review revocation. Optional includeDue adds scheduled review to the owned list. PageSize is fixed at 20."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/vocabulary?courseId=&search=",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: VocabularyTests six PostgreSQL cases; full250 backend/125 frontend passed; AddVocabularyLibrary; VOCABULARY_LIBRARY.md.",
+      "2026-11-23: expanded dictionary has 88 entries. Final vocabulary backend regression passed 21 tests; ten desktop/phone journeys verified bilingual search, 20+2 paging, save, persisted review schedules and collections. Noun articles are optional only in word-meaning reviews. Existing routes/permissions unchanged. VOCABULARY_LIBRARY.md."
+    ],
+    "notes": "Published catalog search, language and topic filters and reviewed audio availability verified by VocabularyTests on 2026-11-05. Playback is tracked in the additional API register."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/saved-words",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: VocabularyTests six PostgreSQL cases; full250 backend/125 frontend passed; AddVocabularyLibrary; VOCABULARY_LIBRARY.md.",
+      "2026-11-23: expanded dictionary has 88 entries. Final vocabulary backend regression passed 21 tests; ten desktop/phone journeys verified bilingual search, 20+2 paging, save, persisted review schedules and collections. Noun articles are optional only in word-meaning reviews. Existing routes/permissions unchanged. VOCABULARY_LIBRARY.md."
+    ],
+    "notes": "Owned search, topic and review schedule filters and reviewed audio availability verified by VocabularyTests on 2026-11-05."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/saved-words",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-17: saved-word-contract.trx verified 201 and owner-only Location, 200 on repeat and one persisted schedule.",
+      "2026-10-28: VocabularyTests six PostgreSQL cases; full250 backend/125 frontend passed; AddVocabularyLibrary; VOCABULARY_LIBRARY.md.",
+      "2026-11-23: expanded dictionary has 88 entries. Final vocabulary backend regression passed 21 tests; ten desktop/phone journeys verified bilingual search, 20+2 paging, save, persisted review schedules and collections. Noun articles are optional only in word-meaning reviews. Existing routes/permissions unchanged. VOCABULARY_LIBRARY.md."
+    ],
+    "notes": "Owned save/remove operation verified; shared vocabulary preserved, concurrent saves preserve schedule and award no XP. Review and collection operations remain separately required."
+  },
+  {
+    "method": "DELETE",
+    "document_route": "/api/v1/me/saved-words/{id}",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: VocabularyTests six PostgreSQL cases; full250 backend/125 frontend passed; AddVocabularyLibrary; VOCABULARY_LIBRARY.md.",
+      "2026-11-23: expanded dictionary has 88 entries. Final vocabulary backend regression passed 21 tests; ten desktop/phone journeys verified bilingual search, 20+2 paging, save, persisted review schedules and collections. Noun articles are optional only in word-meaning reviews. Existing routes/permissions unchanged. VOCABULARY_LIBRARY.md."
+    ],
+    "notes": "Owned save/remove operation verified; shared vocabulary preserved, concurrent saves preserve schedule and award no XP. Review and collection operations remain separately required."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/saved-words/{id}/reviews",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "PostgreSQL verified scoring, all five intervals, early and foreign request denial and concurrent replay.",
+      "2026-11-23: expanded dictionary has 88 entries. Final vocabulary backend regression passed 21 tests; ten desktop/phone journeys verified bilingual search, 20+2 paging, save, persisted review schedules and collections. Noun articles are optional only in word-meaning reviews. Existing routes/permissions unchanged. VOCABULARY_LIBRARY.md."
+    ]
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/collections",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "PostgreSQL HTTP integration verified private collection CRUD, replay-safe word membership and saved-word preservation."
+    ]
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/collections",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-17: PostgreSQL verified 201 with owner-only Location, 200 on an identical concurrent retry, and 404 on foreign access. collection-creation-final.trx.",
+      "PostgreSQL HTTP integration verified private collection CRUD, replay-safe word membership and saved-word preservation."
+    ]
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/me/collections/{id}",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "PostgreSQL HTTP integration verified private collection CRUD, replay-safe word membership and saved-word preservation."
+    ]
+  },
+  {
+    "method": "DELETE",
+    "document_route": "/api/v1/me/collections/{id}",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "PostgreSQL HTTP integration verified private collection CRUD, replay-safe word membership and saved-word preservation."
+    ]
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/collections/{id}/words[/{wordId}]",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "PostgreSQL HTTP integration verified private collection CRUD, replay-safe word membership and saved-word preservation."
+    ]
+  },
+  {
+    "method": "DELETE",
+    "document_route": "/api/v1/me/collections/{id}/words[/{wordId}]",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "PostgreSQL HTTP integration verified private collection CRUD, replay-safe word membership and saved-word preservation."
+    ]
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/dialogues?courseId=",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DialogueSessionTests and SubscriptionPurchaseTests verified published versions, private resume IDs and Free and Premium access markers. The typed response and anonymous denial were checked through Swagger and HTTP. learner-api-verification.trx.",
+      "2026-11-09: DialogueSessionTests verifies enrollment, current scenario versions and owned resume IDs across versions. The Angular catalog links to the saved session.",
+      "2026-11-12: PostgreSQL HTTP integration verifies Free core listing, locked Premium metadata and unlocking after simulated purchase. Native walkthrough remains pending."
+    ]
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/dialogues/{id}/sessions",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-17: dialogue-session-contract.trx verified 201 with a usable private session URL, 200 for concurrent resume, foreign denial and Premium restrictions.",
+      "2026-11-12: DialogueSessionTests and SubscriptionPurchaseTests verified enrollment, concurrent resume, and denial for Free learners before simulated Premium checkout. The typed response and anonymous denial were checked through Swagger and HTTP. learner-api-verification.trx.",
+      "2026-11-09: DialogueSessionTests verifies enrollment, concurrent start reuse and resuming earlier saved versions through the latest scenario.",
+      "2026-11-12: PostgreSQL HTTP integration verifies Free core start, Premium 403 for Free and successful start after simulated purchase. Native walkthrough remains pending."
+    ]
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/dialogue-sessions/{id}",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DialogueSessionTests and SubscriptionPurchaseTests verified ownership, saved versions, unfinished Premium denial after expiry and preserved completed history. The typed response and anonymous denial were checked through Swagger and HTTP. learner-api-verification.trx.",
+      "2026-11-09: DialogueSessionTests verified enrollment, ownership, graph snapshots and concurrent retries.",
+      "2026-11-20: Dialogue responses include persisted AwardedXp and current RewardXp. Super Admin settings separately configure DialogueXp (default 10; 0 pauses new awards). The 53-case dialogue/learning/challenge/admin regression and five frontend checks passed; browser verification is recorded separately."
+    ]
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/dialogue-sessions/{id}/choices",
+    "page": 11,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: DialogueSessionTests and SubscriptionPurchaseTests verified ownership, valid branches, feedback, idempotent retries and Premium expiry denial. The typed response and anonymous denial were checked through Swagger and HTTP. learner-api-verification.trx.",
+      "2026-11-09: DialogueSessionTests verified enrollment, ownership, graph snapshots and concurrent retries.",
+      "2026-11-20: Dialogue responses include persisted AwardedXp and current RewardXp. Super Admin settings separately configure DialogueXp (default 10; 0 pauses new awards). The 53-case dialogue/learning/challenge/admin regression and five frontend checks passed; browser verification is recorded separately."
+    ]
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/dashboard?courseId=",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-03: LEARNING_OVERVIEW.md; dashboard.trx five isolated PostgreSQL cases pass for anonymous/invalid/unenrolled denial, own ledger and course totals, cross-user isolation, historical daily goals, gap/future exclusion and saved-timezone rollover. Backend build zero warnings/errors. 251 frontend tests/67 files pass including stale-account/course-response isolation and server-offset heart countdown. Actual authenticated browser displays persisted stats."
+    ],
+    "notes": "Authenticated own dashboard; optional course must be enrolled. Private/no-store, existing learning rate limit, repeatable-read coherent counters, no score mutation. Streak preserves historical goal flags; no invented gems/achievements. Wider analytics/social/challenge endpoints remain separate."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/activity?from=&to=",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: ActivityTests and LearningTests verified inclusive dates, bounded paging, owner isolation, no-store and daily results written by completing an actual lesson. Swagger success contract and anonymous denial verified. learner-session-activity-verification.trx and learner-session-activity-final.trx."
+    ],
+    "notes": "Reads persisted local study days, including XP, completed lessons and goal status. Both dates are required. Maximum range is 366 days and maximum page size is 100."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/achievements",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-03: ACHIEVEMENTS.md; achievements.trx5 PostgreSQL cases;262 frontend tests/70files and production build; local26migrations/noEFdrift/ready200, unchanged learner history; offline secret scan passed."
+    ],
+    "notes": "Four server-owned milestone rules, atomic unique awards/in-app notices, historical read-only eligibility and explicit collection. See ACHIEVEMENTS.md."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/challenges",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-03: WEEKLY_CHALLENGES.md; final435backendtests after completion-time boundary fix,266frontendtests/71files, final production build/format, offline source-secret scan, local27migrations/noEFdrift/ready200 and actual1/3ownweeklyprogress verified."
+    ],
+    "notes": "Owner-only read, no-store/rate limit, bounded50 current/recent records, existing weekly ledger progress and separate reward history. No GET mutations or extra API."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/leaderboards?courseId=&week=",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-03: WEEKLY_RANKING.md; ranking-progress.trx20 focused backend cases pass including three ranking cases for UTC week/course filtering, attained-time ties, opt-in/default/opt-out/privacy/overposting, preference isolation, archived owned history and26participant pagination/ownrank.259frontend tests/69files and production build pass; live enrolled-course read and week/course switching verified without joining. Migration20261103093949 index-only applied with unchanged1XP/8sessions/27answers;25local migrations/noEFdrift."
+    ],
+    "notes": "Authenticated joined-course read, Monday UTC weekly snapshots,20row pages, current active/confirmed opt-in subjects only, no emails/privateIDs/lesson results. Default initial avatars while uploaded-avatar workflow and actual promotion/demotion leagues remain separate unfinished scope."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/completion-cards",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: CompletionCardTests and CompletionCardSharingTests verified the owned list, unit filtering, card issuance after passing and isolation from other accounts. Swagger success contract and anonymous denial verified. learner-session-activity-verification.trx and learner-session-activity-final.trx."
+    ],
+    "notes": "Returns private, paged cards with an optional unit filter. Shared links use a separate explicit-consent flow."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/notifications",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-30: full360backend/192frontend50files and production build pass;70billing/inbox cases; actual hosted-worker, owner/foreign/ended/replay/concurrency/rollback/UTC/read/privacy/quote-history checks. SUBSCRIPTION_RENEWALS.md; FINANCIAL_HISTORY.md; history-full.trx."
+    ],
+    "notes": "Owned bounded reads/mutations verified. Renewal processing explicitly enabled locally after migration; old saved preferences require fresh subscription-bound consent. Completed declines/missed periods require new reviewed purchase. No real charges or email."
+  },
+  {
+    "method": "PATCH",
+    "document_route": "/api/v1/me/notifications/{id}/read",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-30: full360backend/192frontend50files and production build pass;70billing/inbox cases; actual hosted-worker, owner/foreign/ended/replay/concurrency/rollback/UTC/read/privacy/quote-history checks. SUBSCRIPTION_RENEWALS.md; FINANCIAL_HISTORY.md; history-full.trx."
+    ],
+    "notes": "Owned bounded reads/mutations verified. Renewal processing explicitly enabled locally after migration; old saved preferences require fresh subscription-bound consent. Completed declines/missed periods require new reviewed purchase. No real charges or email."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/reports",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-17: report-creation-contract.trx verified 201 with the reporter-only Location, 200 on duplicate submission and 409 on changed comment.",
+      "2026-11-04: AddContentReports applied locally. 18 focused PostgreSQL tests and the Angular production build passed."
+    ]
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/reports",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: AddContentReports applied locally. 18 focused PostgreSQL tests and the Angular production build passed."
+    ]
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/classes",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: CLASSROOMS.md; 11 focused PostgreSQL cases, 456 full backend tests, 282 frontend tests, local Swagger and migration 29 verified."
+    ],
+    "notes": "Ownership, current roles, membership privacy and teacher MFA enforced by ClassroomAccess."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/classes",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: CLASSROOMS.md; 11 focused PostgreSQL cases, 456 full backend tests, 282 frontend tests, local Swagger and migration 29 verified.",
+      "2026-11-17: PostgreSQL verified 201 Created and a usable Location, 200 on identical replay and 409 on changed details. api-problem-final.trx."
+    ],
+    "notes": "Ownership, current roles, membership privacy and teacher MFA enforced by ClassroomAccess."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/classes/{id}",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: CLASSROOMS.md; 11 focused PostgreSQL cases, 456 full backend tests, 282 frontend tests, local Swagger and migration 29 verified."
+    ],
+    "notes": "Ownership, current roles, membership privacy and teacher MFA enforced by ClassroomAccess."
+  },
+  {
+    "method": "PATCH",
+    "document_route": "/api/v1/classes/{id}",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: CLASSROOMS.md; 11 focused PostgreSQL cases, 456 full backend tests, 282 frontend tests, local Swagger and migration 29 verified."
+    ],
+    "notes": "Ownership, current roles, membership privacy and teacher MFA enforced by ClassroomAccess."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/classes/{id}/invitations",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: CLASSROOMS.md; 11 focused PostgreSQL cases, 456 full backend tests, 282 frontend tests, local Swagger and migration 29 verified."
+    ],
+    "notes": "Ownership, current roles, membership privacy and teacher MFA enforced by ClassroomAccess."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/classes/join",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: CLASSROOMS.md; 11 focused PostgreSQL cases, 456 full backend tests, 282 frontend tests, local Swagger and migration 29 verified."
+    ],
+    "notes": "Ownership, current roles, membership privacy and teacher MFA enforced by ClassroomAccess."
+  },
+  {
+    "method": "DELETE",
+    "document_route": "/api/v1/classes/{id}/members/{userId}",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: CLASSROOMS.md; 11 focused PostgreSQL cases, 456 full backend tests, 282 frontend tests, local Swagger and migration 29 verified."
+    ],
+    "notes": "Ownership, current roles, membership privacy and teacher MFA enforced by ClassroomAccess."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/classes/{id}/assignments",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: classroom-assignments.trx, 12 PostgreSQL cases; local migration 30 and Swagger verified. See PROJECT_MEMORY.md."
+    ],
+    "notes": "Creation is owner teacher only with current MFA. Reads require owner teacher or active learner membership."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/classes/{id}/assignments",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-17: assignment-creation.trx verified 201 with the detail URL, 200 on identical replay, 409 for changed details and owner/member access.",
+      "2026-11-04: classroom-assignments.trx, 12 PostgreSQL cases; local migration 30 and Swagger verified. See PROJECT_MEMORY.md."
+    ],
+    "notes": "Creation is owner teacher only with current MFA. Reads require owner teacher or active learner membership."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/assignments/{id}",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: classroom-assignments.trx, 12 PostgreSQL cases; local migration 30 and Swagger verified. See PROJECT_MEMORY.md."
+    ],
+    "notes": "Creation is owner teacher only with current MFA. Reads require owner teacher or active learner membership."
+  },
+  {
+    "method": "PATCH",
+    "document_route": "/api/v1/assignments/{id}",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: assignment-edit.trx, 13 classroom PostgreSQL cases including owner-only access, stale concurrent edit, archived denial, validation and creation replay. Local Swagger and readiness confirmed. Angular edit form covered in 286-test suite."
+    ],
+    "notes": "Revisioned replacement of title, due date, minimum score and lesson IDs under the class lock. Archived classrooms are read-only."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/assignments/{id}/results",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: classroom-results-and-grading-final.trx, 69 focused tests. Current owner MFA, no learner or outside-teacher access, aggregates exclude private work. Local Swagger and Angular results panel verified."
+    ],
+    "notes": "20 learners per page. Counts and scores use explicitly submitted sessions. Completion requires reaching the threshold on every assigned lesson."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/assignments/{id}/feedback",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: teacher-feedback.trx, 14 classroom PostgreSQL tests. Local migration AddTeacherFeedback and Swagger verified."
+    ],
+    "notes": "Current MFA-verified owner only. One note per submission and one in-app notification. New feedback requires current membership and an active class."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/manage/{resource}",
+    "page": 12,
+    "status": "partial",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-11-03: REWARD_CATALOG_MANAGEMENT.md; full445backendtests and274frontendtests/73files, final build/format pass; local28migrations/ready200 and all10expandedSwaggeroperations verified. Live learner guard redirects to /account; no role promotion or user progress change.",
+      "2026-11-20: final-skills-and-learning.trx passed 132 publishing/learning/schema cases. content-catalog-verified.trx passed all 16 final catalog checks, including scoped skills, atomic cap, revision races, archived tags/progress, private creation links and guarded downgrade. Skill desktop/phone journeys passed (46.8s); 20 frontend checks and production build/lint passed. Migration 20261120085844_AddSkillManagement applied locally; no personal account changes.",
+      "2026-11-20: content-catalog-verified.trx passed 16 final checks; reward lists support bounded pageSize, search and exact filtered totalCount. POST returns 201 and a private readable Location. Desktop/phone badge/challenge browser journeys passed (20.6s); 20 frontend tests and production build/lint passed. Earlier final-validation run had an invalid random badge code and remains failed."
+    ],
+    "notes": "Eight text/visual formats supported: MultipleChoice, Translation, FillBlank, SentenceBuilder, text Matching, Reading, DialogueChoice and Russian visual Alphabet. ContextText is bounded, validated, privately authored and copied into public exercise/result snapshots. Choice answers remain server-owned and shuffled. Listening, Speaking, audio variants, branching dialogue sessions and other unchecked resource workflows remain required; this operation status is unchanged. Achievement/challenge expanded operations now verified separately in reward_catalog_operations. Macro status stays partial for unfinished resources; no scope removed.",
+    "reward_catalog_operations": [
+      {
+        "resource": "achievements",
+        "method": "GET",
+        "route": "/api/v1/manage/achievements",
+        "status": "implemented_verified",
+        "evidence": [
+          "2026-11-03: REWARD_CATALOG_MANAGEMENT.md; full445backendtests and274frontendtests/73files, final build/format pass; local28migrations/ready200 and all10expandedSwaggeroperations verified. Live learner guard redirects to /account; no role promotion or user progress change."
+        ]
+      },
+      {
+        "resource": "challenges",
+        "method": "GET",
+        "route": "/api/v1/manage/challenges",
+        "status": "implemented_verified",
+        "evidence": [
+          "2026-11-03: REWARD_CATALOG_MANAGEMENT.md; full445backendtests and274frontendtests/73files, final build/format pass; local28migrations/ready200 and all10expandedSwaggeroperations verified. Live learner guard redirects to /account; no role promotion or user progress change."
+        ]
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/{resource}",
+    "page": 12,
+    "status": "partial",
+    "evidence": [
+      "2026-11-17: POST /api/v1/manage/lessons returns 201 with the scoped workshop detail URL. lesson-creation-contract.trx.",
+      "2026-11-17: POST /api/v1/manage/units returns 201 with a workshop detail URL. unit-creation-contract.trx.",
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-11-03: REWARD_CATALOG_MANAGEMENT.md; full445backendtests and274frontendtests/73files, final build/format pass; local28migrations/ready200 and all10expandedSwaggeroperations verified. Live learner guard redirects to /account; no role promotion or user progress change.",
+      "2026-11-20: final-skills-and-learning.trx passed 132 publishing/learning/schema cases. content-catalog-verified.trx passed all 16 final catalog checks, including scoped skills, atomic cap, revision races, archived tags/progress, private creation links and guarded downgrade. Skill desktop/phone journeys passed (46.8s); 20 frontend checks and production build/lint passed. Migration 20261120085844_AddSkillManagement applied locally; no personal account changes.",
+      "2026-11-20: content-catalog-verified.trx passed 16 final checks; reward lists support bounded pageSize, search and exact filtered totalCount. POST returns 201 and a private readable Location. Desktop/phone badge/challenge browser journeys passed (20.6s); 20 frontend tests and production build/lint passed. Earlier final-validation run had an invalid random badge code and remains failed."
+    ],
+    "notes": "Eight text/visual formats supported: MultipleChoice, Translation, FillBlank, SentenceBuilder, text Matching, Reading, DialogueChoice and Russian visual Alphabet. ContextText is bounded, validated, privately authored and copied into public exercise/result snapshots. Choice answers remain server-owned and shuffled. Listening, Speaking, audio variants, branching dialogue sessions and other unchecked resource workflows remain required; this operation status is unchanged. Achievement/challenge expanded operations now verified separately in reward_catalog_operations. Macro status stays partial for unfinished resources; no scope removed.",
+    "reward_catalog_operations": [
+      {
+        "resource": "achievements",
+        "method": "POST",
+        "route": "/api/v1/manage/achievements",
+        "status": "implemented_verified",
+        "evidence": [
+          "2026-11-03: REWARD_CATALOG_MANAGEMENT.md; full445backendtests and274frontendtests/73files, final build/format pass; local28migrations/ready200 and all10expandedSwaggeroperations verified. Live learner guard redirects to /account; no role promotion or user progress change."
+        ]
+      },
+      {
+        "resource": "challenges",
+        "method": "POST",
+        "route": "/api/v1/manage/challenges",
+        "status": "implemented_verified",
+        "evidence": [
+          "2026-11-03: REWARD_CATALOG_MANAGEMENT.md; full445backendtests and274frontendtests/73files, final build/format pass; local28migrations/ready200 and all10expandedSwaggeroperations verified. Live learner guard redirects to /account; no role promotion or user progress change."
+        ]
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/manage/{resource}/{id}",
+    "page": 12,
+    "status": "partial",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-11-03: REWARD_CATALOG_MANAGEMENT.md; full445backendtests and274frontendtests/73files, final build/format pass; local28migrations/ready200 and all10expandedSwaggeroperations verified. Live learner guard redirects to /account; no role promotion or user progress change.",
+      "2026-11-20: final-skills-and-learning.trx passed 132 publishing/learning/schema cases. content-catalog-verified.trx passed all 16 final catalog checks, including scoped skills, atomic cap, revision races, archived tags/progress, private creation links and guarded downgrade. Skill desktop/phone journeys passed (46.8s); 20 frontend checks and production build/lint passed. Migration 20261120085844_AddSkillManagement applied locally; no personal account changes.",
+      "2026-11-20: content-catalog-verified.trx passed 16 final checks; reward lists support bounded pageSize, search and exact filtered totalCount. POST returns 201 and a private readable Location. Desktop/phone badge/challenge browser journeys passed (20.6s); 20 frontend tests and production build/lint passed. Earlier final-validation run had an invalid random badge code and remains failed."
+    ],
+    "notes": "Eight text/visual formats supported: MultipleChoice, Translation, FillBlank, SentenceBuilder, text Matching, Reading, DialogueChoice and Russian visual Alphabet. ContextText is bounded, validated, privately authored and copied into public exercise/result snapshots. Choice answers remain server-owned and shuffled. Listening, Speaking, audio variants, branching dialogue sessions and other unchecked resource workflows remain required; this operation status is unchanged. Achievement/challenge expanded operations now verified separately in reward_catalog_operations. Macro status stays partial for unfinished resources; no scope removed.",
+    "reward_catalog_operations": [
+      {
+        "resource": "achievements",
+        "method": "GET",
+        "route": "/api/v1/manage/achievements/{id}",
+        "status": "implemented_verified",
+        "evidence": [
+          "2026-11-03: REWARD_CATALOG_MANAGEMENT.md; full445backendtests and274frontendtests/73files, final build/format pass; local28migrations/ready200 and all10expandedSwaggeroperations verified. Live learner guard redirects to /account; no role promotion or user progress change."
+        ]
+      },
+      {
+        "resource": "challenges",
+        "method": "GET",
+        "route": "/api/v1/manage/challenges/{id}",
+        "status": "implemented_verified",
+        "evidence": [
+          "2026-11-03: REWARD_CATALOG_MANAGEMENT.md; full445backendtests and274frontendtests/73files, final build/format pass; local28migrations/ready200 and all10expandedSwaggeroperations verified. Live learner guard redirects to /account; no role promotion or user progress change."
+        ]
+      }
+    ]
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/manage/{resource}/{id}",
+    "page": 12,
+    "status": "partial",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-11-03: REWARD_CATALOG_MANAGEMENT.md; full445backendtests and274frontendtests/73files, final build/format pass; local28migrations/ready200 and all10expandedSwaggeroperations verified. Live learner guard redirects to /account; no role promotion or user progress change.",
+      "2026-11-20: final-skills-and-learning.trx passed 132 publishing/learning/schema cases. content-catalog-verified.trx passed all 16 final catalog checks, including scoped skills, atomic cap, revision races, archived tags/progress, private creation links and guarded downgrade. Skill desktop/phone journeys passed (46.8s); 20 frontend checks and production build/lint passed. Migration 20261120085844_AddSkillManagement applied locally; no personal account changes.",
+      "2026-11-20: content-catalog-verified.trx passed 16 final checks; reward lists support bounded pageSize, search and exact filtered totalCount. POST returns 201 and a private readable Location. Desktop/phone badge/challenge browser journeys passed (20.6s); 20 frontend tests and production build/lint passed. Earlier final-validation run had an invalid random badge code and remains failed."
+    ],
+    "notes": "Eight text/visual formats supported: MultipleChoice, Translation, FillBlank, SentenceBuilder, text Matching, Reading, DialogueChoice and Russian visual Alphabet. ContextText is bounded, validated, privately authored and copied into public exercise/result snapshots. Choice answers remain server-owned and shuffled. Listening, Speaking, audio variants, branching dialogue sessions and other unchecked resource workflows remain required; this operation status is unchanged. Achievement/challenge expanded operations now verified separately in reward_catalog_operations. Macro status stays partial for unfinished resources; no scope removed.",
+    "reward_catalog_operations": [
+      {
+        "resource": "achievements",
+        "method": "PUT",
+        "route": "/api/v1/manage/achievements/{id}",
+        "status": "implemented_verified",
+        "evidence": [
+          "2026-11-03: REWARD_CATALOG_MANAGEMENT.md; full445backendtests and274frontendtests/73files, final build/format pass; local28migrations/ready200 and all10expandedSwaggeroperations verified. Live learner guard redirects to /account; no role promotion or user progress change."
+        ]
+      },
+      {
+        "resource": "challenges",
+        "method": "PUT",
+        "route": "/api/v1/manage/challenges/{id}",
+        "status": "implemented_verified",
+        "evidence": [
+          "2026-11-03: REWARD_CATALOG_MANAGEMENT.md; full445backendtests and274frontendtests/73files, final build/format pass; local28migrations/ready200 and all10expandedSwaggeroperations verified. Live learner guard redirects to /account; no role promotion or user progress change."
+        ]
+      }
+    ]
+  },
+  {
+    "method": "DELETE",
+    "document_route": "/api/v1/manage/{resource}/{id}",
+    "page": 12,
+    "status": "partial",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-11-03: REWARD_CATALOG_MANAGEMENT.md; full445backendtests and274frontendtests/73files, final build/format pass; local28migrations/ready200 and all10expandedSwaggeroperations verified. Live learner guard redirects to /account; no role promotion or user progress change.",
+      "2026-11-20: final-skills-and-learning.trx passed 132 publishing/learning/schema cases. content-catalog-verified.trx passed all 16 final catalog checks, including scoped skills, atomic cap, revision races, archived tags/progress, private creation links and guarded downgrade. Skill desktop/phone journeys passed (46.8s); 20 frontend checks and production build/lint passed. Migration 20261120085844_AddSkillManagement applied locally; no personal account changes.",
+      "2026-11-20: content-catalog-verified.trx passed 16 final checks; reward lists support bounded pageSize, search and exact filtered totalCount. POST returns 201 and a private readable Location. Desktop/phone badge/challenge browser journeys passed (20.6s); 20 frontend tests and production build/lint passed. Earlier final-validation run had an invalid random badge code and remains failed."
+    ],
+    "notes": "Eight text/visual formats supported: MultipleChoice, Translation, FillBlank, SentenceBuilder, text Matching, Reading, DialogueChoice and Russian visual Alphabet. ContextText is bounded, validated, privately authored and copied into public exercise/result snapshots. Choice answers remain server-owned and shuffled. Listening, Speaking, audio variants, branching dialogue sessions and other unchecked resource workflows remain required; this operation status is unchanged. Achievement/challenge expanded operations now verified separately in reward_catalog_operations. Macro status stays partial for unfinished resources; no scope removed.",
+    "reward_catalog_operations": [
+      {
+        "resource": "achievements",
+        "method": "DELETE",
+        "route": "/api/v1/manage/achievements/{id}",
+        "status": "implemented_verified",
+        "evidence": [
+          "2026-11-03: REWARD_CATALOG_MANAGEMENT.md; full445backendtests and274frontendtests/73files, final build/format pass; local28migrations/ready200 and all10expandedSwaggeroperations verified. Live learner guard redirects to /account; no role promotion or user progress change."
+        ]
+      },
+      {
+        "resource": "challenges",
+        "method": "DELETE",
+        "route": "/api/v1/manage/challenges/{id}",
+        "status": "implemented_verified",
+        "evidence": [
+          "2026-11-03: REWARD_CATALOG_MANAGEMENT.md; full445backendtests and274frontendtests/73files, final build/format pass; local28migrations/ready200 and all10expandedSwaggeroperations verified. Live learner guard redirects to /account; no role promotion or user progress change."
+        ]
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/lessons/{id}/submit",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-11: Desktop Playwright verified scoped draft creation and submission, and no approval control on the author's own submission.",
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-10-28: ListeningTests6 real PostgreSQL/Garage integration cases; full230backend tests,103frontend tests; author/picker/player/lifecycle coverage; AddSessionAudio; LISTENING_LESSONS.md.",
+      "2026-10-28: SpeakingTests8 PostgreSQL/Garage cases; full238backend tests and111frontend tests passed; guided recording/neutral result/journey/authoring tests; AddUngradedPractice; SPEAKING_LESSONS.md.",
+      "2026-10-28: AudioAssociationTests6 real PostgreSQL/Garage cases; full244backend/119frontend tests passed; matching audio editor/board/transport and Russian mode tests; AddMatchingAudio; AUDIO_ASSOCIATIONS.md.",
+      "2026-11-16: POST /api/v1/manage/lessons/{id}/submit. Verified owned current draft submission, format validation and stale or unauthorized denial in PostgreSQL and the workshop. checklist-280.trx."
+    ],
+    "notes": "Eight text/visual formats supported: MultipleChoice, Translation, FillBlank, SentenceBuilder, text Matching, Reading, DialogueChoice and Russian visual Alphabet. ContextText is bounded, validated, privately authored and copied into public exercise/result snapshots. Choice answers remain server-owned and shuffled. Listening, Speaking, audio variants, branching dialogue sessions and other unchecked resource workflows remain required; this operation status is unchanged."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/lessons/{id}/reviews",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-11: Desktop Playwright verified approval by a separate MFA-authenticated, Spanish-scoped reviewer.",
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-10-28: ListeningTests6 real PostgreSQL/Garage integration cases; full230backend tests,103frontend tests; author/picker/player/lifecycle coverage; AddSessionAudio; LISTENING_LESSONS.md.",
+      "2026-10-28: SpeakingTests8 PostgreSQL/Garage cases; full238backend tests and111frontend tests passed; guided recording/neutral result/journey/authoring tests; AddUngradedPractice; SPEAKING_LESSONS.md.",
+      "2026-10-28: AudioAssociationTests6 real PostgreSQL/Garage cases; full244backend/119frontend tests passed; matching audio editor/board/transport and Russian mode tests; AddMatchingAudio; AUDIO_ASSOCIATIONS.md.",
+      "2026-11-16: POST /api/v1/manage/lessons/{id}/reviews. Verified language scope, independent approval, changes requests and concurrent review handling in PostgreSQL and the workshop. checklist-280.trx."
+    ],
+    "notes": "Eight text/visual formats supported: MultipleChoice, Translation, FillBlank, SentenceBuilder, text Matching, Reading, DialogueChoice and Russian visual Alphabet. ContextText is bounded, validated, privately authored and copied into public exercise/result snapshots. Choice answers remain server-owned and shuffled. Listening, Speaking, audio variants, branching dialogue sessions and other unchecked resource workflows remain required; this operation status is unchanged."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/lessons/{id}/publish",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-11: Desktop Playwright verified the administrator published the approved draft and its public lesson endpoint returned 200.",
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-10-28: ListeningTests6 real PostgreSQL/Garage integration cases; full230backend tests,103frontend tests; author/picker/player/lifecycle coverage; AddSessionAudio; LISTENING_LESSONS.md.",
+      "2026-10-28: SpeakingTests8 PostgreSQL/Garage cases; full238backend tests and111frontend tests passed; guided recording/neutral result/journey/authoring tests; AddUngradedPractice; SPEAKING_LESSONS.md.",
+      "2026-10-28: AudioAssociationTests6 real PostgreSQL/Garage cases; full244backend/119frontend tests passed; matching audio editor/board/transport and Russian mode tests; AddMatchingAudio; AUDIO_ASSOCIATIONS.md.",
+      "2026-11-02: PICTURE_FIRST_LESSONS.md; picture-first.trx 117 focused backend cases pass (learning, profile and sentence publishing), 246 frontend tests/66 files pass. Twelve original picture-first teaching lessons plus four unit checks installed. Known unique word-bank subsets with distractors graded on server; private keys remain private; answered public exercise retained for feedback. Goal-only ownership/validation/preferences preservation tested.",
+      "2026-11-16: POST /api/v1/manage/lessons/{id}/publish. Verified administrator access, independent approval, revalidation, catalog visibility and preserved old sessions in PostgreSQL and the workshop. checklist-280.trx."
+    ],
+    "notes": "Eight text/visual formats supported: MultipleChoice, Translation, FillBlank, SentenceBuilder, text Matching, Reading, DialogueChoice and Russian visual Alphabet. ContextText is bounded, validated, privately authored and copied into public exercise/result snapshots. Choice answers remain server-owned and shuffled. Listening, Speaking, audio variants, branching dialogue sessions and other unchecked resource workflows remain required; this operation status is unchanged."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/lessons/{id}/preview/check",
+    "page": 9,
+    "status": "partial",
+    "evidence": [
+      "2026-11-13: Desktop and phone-width Edge verified incorrect and correct typed answers on a private draft.",
+      "2026-11-15: PostgreSQL integration verified cross-author denial, rejection of incomplete matching, wrong and correct matching feedback, and no answer-attempt or XP writes.",
+      "2026-11-15: Desktop and phone-width Edge verified anonymous denial and incorrect and correct grades for sentence tiles and matching."
+    ],
+    "notes": "Uses scoped staff read permissions. Accepts typed, choice, sentence tile and matching responses. Preview grading does not create lesson sessions or persist learner progress."
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/manage/units/{id}/position",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "PostgreSQL verified administrator-only swaps, stale-request denial, public unit order and unchanged lesson associations and versions.",
+      "Desktop and phone-width Edge verified the unit position form and reopened the unit with its new position."
+    ],
+    "notes": "Moves a unit within its course or swaps it with the current occupant. The course transaction lock serializes ordering changes."
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/manage/courses/{id}",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "PostgreSQL HTTP test verified author denial and saved course title and description.",
+      "Desktop and phone-width Edge edited a course description and verified it on the public courses page."
+    ],
+    "notes": "Administrator-only title and description editing for an existing course. The operation is audited."
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/manage/courses/{id}/position",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "PostgreSQL verified an administrator swap, author denial, stale-position rejection, changed public catalog order and preservation of the published lesson version.",
+      "Desktop and phone-width Edge moved a course from the workshop and verified its new position on the public courses page."
+    ],
+    "notes": "Changes the catalog position of a course. An occupied position swaps both courses in one transaction. Only administrators may move courses."
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/manage/lessons/{id}/position",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "PostgreSQL verified an occupied-position swap, a free-position move, author denial, stale-position rejection, unchanged published versions, saved session access, and preserved prerequisite gating.",
+      "Desktop and phone-width Edge moved a published lesson from the workshop and confirmed the updated position through the public catalog."
+    ],
+    "notes": "Administrators can move a lesson to a free position in its unit or atomically swap with the occupant. Checks the starting position and keeps lesson versions and prerequisite links."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/lessons/{lessonId}/versions/{versionId}/exercises/{exerciseId}/preview-speech",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "PostgreSQL HTTP tests verified scoped author access, invalid WAV rejection, match/mismatch/no-speech feedback, unavailable recognizer and no learner activity writes.",
+      "Angular tests verified explicit submission, preview endpoint selection, no learner answer event and recording cleanup."
+    ],
+    "notes": "Checks a short recording with LexiGo's local speech recognizer and the scoped draft's speaking answer keys. Preview speech does not create learner activity."
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/manage/units/{id}/archive",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "PostgreSQL verified author denial, cross-unit dependency conflicts, public catalog removal, blocked starts, preserved sessions and restoration.",
+      "Desktop and phone-width Edge verified the workshop unit archive and restore controls."
+    ],
+    "notes": "Archives or restores a unit without deleting lessons or existing session data. Requires administrator access and a reason. Prerequisites constrain the order of archive and restore operations."
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/manage/courses/{id}/archive",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "PostgreSQL HTTP integration verified administrator authorization, catalog removal, blocked new sessions, access to an existing session, blocked publication during archival, and restoration.",
+      "Desktop and phone-width Edge walkthroughs verified administrator archive and restore controls."
+    ],
+    "notes": "Sets or clears the course archive timestamp. Requires a reason and records an audit event for each state change."
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/manage/units/{id}",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-15: PostgreSQL HTTP integration verified administrator-only edits, occupied-position rejection, persistence of updated fields, stable course ownership and an audit record.",
+      "2026-11-15: Desktop and phone-width Edge created a unit, loaded it into the administrator form, and reopened it with the changed description and difficulty."
+    ],
+    "notes": "Supports administrator changes to the unit title, description, difficulty and position in its existing course. Conflicting positions are rejected."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/lessons/{id}/exercises/{exerciseId}/move",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-15: PostgreSQL HTTP integration verified cross-author denial, concurrent duplicate move conflict, stable exercise and answer IDs, and rejection after submission.",
+      "2026-11-15: Desktop and phone-width Edge moved an exercise up and then back down and verified the resulting order in the workshop."
+    ],
+    "notes": "Draft exercise reordering swaps adjacent positions under the course write lock, requires the neighbor the author saw, and keeps the exercise and answer IDs."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/lessons/{id}/duplicate",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-13: Desktop and phone-width Edge verified a separate private draft. PostgreSQL verified cross-author and stale-version denial and preserved matching and sentence answers.",
+      "2026-11-17: A successful duplicate returns 201 with the private detail URL. The owner can follow it, anonymous requests receive 401 and another author receives 404. lesson-creation-contract.trx."
+    ],
+    "notes": "Creates a private lesson at the end of the source unit. Shared revision-copy logic handles exercise content."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/manage/lessons/{id}/versions",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md.",
+      "2026-10-28: ListeningTests6 real PostgreSQL/Garage integration cases; full230backend tests,103frontend tests; author/picker/player/lifecycle coverage; AddSessionAudio; LISTENING_LESSONS.md.",
+      "2026-10-28: SpeakingTests8 PostgreSQL/Garage cases; full238backend tests and111frontend tests passed; guided recording/neutral result/journey/authoring tests; AddUngradedPractice; SPEAKING_LESSONS.md.",
+      "2026-10-28: AudioAssociationTests6 real PostgreSQL/Garage cases; full244backend/119frontend tests passed; matching audio editor/board/transport and Russian mode tests; AddMatchingAudio; AUDIO_ASSOCIATIONS.md.",
+      "2026-11-02: PICTURE_FIRST_LESSONS.md; picture-first.trx 117 focused backend cases pass (learning, profile and sentence publishing), 246 frontend tests/66 files pass. Twelve original picture-first teaching lessons plus four unit checks installed. Known unique word-bank subsets with distractors graded on server; private keys remain private; answered public exercise retained for feedback. Goal-only ownership/validation/preferences preservation tested."
+    ],
+    "notes": "Eight text/visual formats supported: MultipleChoice, Translation, FillBlank, SentenceBuilder, text Matching, Reading, DialogueChoice and Russian visual Alphabet. ContextText is bounded, validated, privately authored and copied into public exercise/result snapshots. Choice answers remain server-owned and shuffled. Listening, Speaking, audio variants, branching dialogue sessions and other unchecked resource workflows remain required; this operation status is unchanged."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/media",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: WaveAudioInspectorTests32, MediaWorkflowTests8 against PostgreSQL/Garage; full backend224passed, frontend93passed; media-library/media-api component/transport tests; MEDIA_WORKFLOW.md; AddMediaLifecycle applied.",
+      "2026-10-28: ListeningTests6 real PostgreSQL/Garage integration cases; full230backend tests,103frontend tests; author/picker/player/lifecycle coverage; AddSessionAudio; LISTENING_LESSONS.md.",
+      "2026-10-28: AudioAssociationTests6 real PostgreSQL/Garage cases; full244backend/119frontend tests passed; matching audio editor/board/transport and Russian mode tests; AddMatchingAudio; AUDIO_ASSOCIATIONS.md."
+    ],
+    "notes": "Scoped MFA-protected PCM upload with mandatory source/permission metadata and durable SQL reservation; owned/admin delete denies saved exercise/version references and queues durable private-object deletion. Real PostgreSQL/Garage tests verify independent review, private preview, cleanup retries/concurrency and no raw storage access. Learner attachment/playback, real licensed curriculum, other codecs and browser/device verification remain tracked separately."
+  },
+  {
+    "method": "DELETE",
+    "document_route": "/api/v1/manage/media/{id}",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: WaveAudioInspectorTests32, MediaWorkflowTests8 against PostgreSQL/Garage; full backend224passed, frontend93passed; media-library/media-api component/transport tests; MEDIA_WORKFLOW.md; AddMediaLifecycle applied.",
+      "2026-10-28: ListeningTests6 real PostgreSQL/Garage integration cases; full230backend tests,103frontend tests; author/picker/player/lifecycle coverage; AddSessionAudio; LISTENING_LESSONS.md.",
+      "2026-10-28: AudioAssociationTests6 real PostgreSQL/Garage cases; full244backend/119frontend tests passed; matching audio editor/board/transport and Russian mode tests; AddMatchingAudio; AUDIO_ASSOCIATIONS.md.",
+      "2026-11-06: Explicit finish-deletion endpoint and audio-library action; 12 focused PostgreSQL/Garage/account-deletion tests and 8 UI tests passed, plus production build. MEDIA_WORKFLOW.md records retries, ownership, concurrency and synthetic deletion handoff. Broader release/device gates remain open."
+    ],
+    "notes": "Scoped MFA-protected PCM upload with mandatory source/permission metadata and durable SQL reservation; owned/admin delete denies saved exercise/version references and queues durable private-object deletion. Real PostgreSQL/Garage tests verify independent review, private preview, cleanup retries/concurrency and no raw storage access. Learner attachment/playback, real licensed curriculum, other codecs and browser/device verification remain tracked separately."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/imports/validate",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: AddLessonImportJobs applied locally. Swagger and PostgreSQL HTTP integration verified private validation, ownership and concurrent commit with one draft and audit."
+    ]
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/imports/{id}/commit",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: AddLessonImportJobs applied locally. Swagger and PostgreSQL HTTP integration verified private validation, ownership and concurrent commit with one draft and audit.",
+      "2026-11-20: First commit returns 201 with a readable private draft Location; an identical retry returns 200 with the same ID. Concurrent requests create one draft and audit. Verified in final-creation-and-listening.trx (88 passed) and full-backend-verified.trx (663 passed)."
+    ]
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/admin/users",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: AdministrationTests PostgreSQL role/ownership/validation/concurrency/constraints/paging; users.spec.ts; live Development Swagger; ADMINISTRATION_SECURITY.md"
+    ],
+    "notes": "Admin status control excludes privileged targets. SuperAdmin controls roles/languages. Mutations require recent MFA sign-in, password/reason; last administrator protected. Admin audit reads only status history, SuperAdmin reads all existing events. Other admin modules pending."
+  },
+  {
+    "method": "PATCH",
+    "document_route": "/api/v1/admin/users/{id}/status",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: AdministrationTests PostgreSQL role/ownership/validation/concurrency/constraints/paging; users.spec.ts; live Development Swagger; ADMINISTRATION_SECURITY.md"
+    ],
+    "notes": "Admin status control excludes privileged targets. SuperAdmin controls roles/languages. Mutations require recent MFA sign-in, password/reason; last administrator protected. Admin audit reads only status history, SuperAdmin reads all existing events. Other admin modules pending."
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/admin/users/{id}/roles",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: AdministrationTests PostgreSQL role/ownership/validation/concurrency/constraints/paging; users.spec.ts; live Development Swagger; ADMINISTRATION_SECURITY.md"
+    ],
+    "notes": "Admin status control excludes privileged targets. SuperAdmin controls roles/languages. Mutations require recent MFA sign-in, password/reason; last administrator protected. Admin audit reads only status history, SuperAdmin reads all existing events. Other admin modules pending."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/admin/reports[/{id}]",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: AddContentReports applied locally. 18 focused PostgreSQL tests and the Angular production build passed."
+    ]
+  },
+  {
+    "method": "PATCH",
+    "document_route": "/api/v1/admin/reports[/{id}]",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: AddContentReports applied locally. 18 focused PostgreSQL tests and the Angular production build passed."
+    ]
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/admin/analytics",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: PostgreSQL analytics integration and Angular build passed. Course and UTC date filters apply to both aggregate JSON and CSV."
+    ]
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/admin/audit-logs",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-28: AdministrationTests PostgreSQL role/ownership/validation/concurrency/constraints/paging; users.spec.ts; live Development Swagger; ADMINISTRATION_SECURITY.md"
+    ],
+    "notes": "Admin status control excludes privileged targets. SuperAdmin controls roles/languages. Mutations require recent MFA sign-in, password/reason; last administrator protected. Admin audit reads only status history, SuperAdmin reads all existing events. Other admin modules pending."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/admin/settings",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: AddSystemSettings applied locally. PostgreSQL verifies Super Admin access, stale updates, retry safety, audit, new learner preferences and new session XP. Angular production build passed.",
+      "2026-11-20: Dialogue responses include persisted AwardedXp and current RewardXp. Super Admin settings separately configure DialogueXp (default 10; 0 pauses new awards). The 53-case dialogue/learning/challenge/admin regression and five frontend checks passed; browser verification is recorded separately."
+    ]
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/admin/settings",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-04: AddSystemSettings applied locally. PostgreSQL verifies Super Admin access, stale updates, retry safety, audit, new learner preferences and new session XP. Angular production build passed.",
+      "2026-11-20: Dialogue responses include persisted AwardedXp and current RewardXp. Super Admin settings separately configure DialogueXp (default 10; 0 pauses new awards). The 53-case dialogue/learning/challenge/admin regression and five frontend checks passed; browser verification is recorded separately."
+    ]
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/plans",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification."
+    ],
+    "notes": "Verified purchase/catalog/owned quote/payment/receipt operation only. Subscription management/history, renewal/refund administration and unimplemented Premium learning features stay required; GETentitlements distinguishes planned availability."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/subscription",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: SubscriptionManagementTests verified the signed-in subscription summary, period preservation, scheduled preferences and return to Free after expiration. The typed response and anonymous denial were checked through Swagger and HTTP. learner-api-verification.trx.",
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification.",
+      "2026-10-29: SubscriptionManagementTests8; full334backend/180frontend46files and production build pass; owner/expiry/replay/concurrency/no-charge/period/blocked-card/consent-reset/SQL rollback evidence. SUBSCRIPTION_MANAGEMENT.md. Automatic processor remains unavailable."
+    ],
+    "notes": "Owned current summary includes cancellation, renewal availability, preferences and scheduled-price details. History is a separate route."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/entitlements",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: SubscriptionPurchaseTests, SubscriptionManagementTests and RefundTests verified available Free core features, simulated Premium access, and revocation after expiry or full current refund. The typed response and anonymous denial were checked through Swagger and HTTP. learner-api-verification.trx.",
+      "2026-11-12: Active Premium gates weekly comparison through AdvancedAnalytics. The basic weekly summary and core listening stay Free. PREMIUM_ENTITLEMENTS.md.",
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification."
+    ],
+    "notes": "Owned active-period entitlements distinguish available capabilities from planned ones. Dedicated voice practice and character calls remain separately tracked."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/subscription/cancel",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: SubscriptionManagementTests8; full334backend/180frontend46files and production build pass; owner/expiry/replay/concurrency/no-charge/period/blocked-card/consent-reset/SQL rollback evidence. SUBSCRIPTION_MANAGEMENT.md. Automatic processor remains unavailable."
+    ],
+    "notes": "Owned current-period control verified, explicit target/key and atomic event/audit/replay. No current charge/date/access change. PUT preferences save correctly; actual renewal/scheduled-plan execution remains required."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/subscription/resume",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: SubscriptionManagementTests8; full334backend/180frontend46files and production build pass; owner/expiry/replay/concurrency/no-charge/period/blocked-card/consent-reset/SQL rollback evidence. SUBSCRIPTION_MANAGEMENT.md. Automatic processor remains unavailable."
+    ],
+    "notes": "Owned current-period control verified, explicit target/key and atomic event/audit/replay. No current charge/date/access change. PUT preferences save correctly; actual renewal/scheduled-plan execution remains required."
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/me/subscription/renewal",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: SubscriptionManagementTests8; full334backend/180frontend46files and production build pass; owner/expiry/replay/concurrency/no-charge/period/blocked-card/consent-reset/SQL rollback evidence. SUBSCRIPTION_MANAGEMENT.md. Automatic processor remains unavailable.",
+      "2026-10-30: full360backend/192frontend50files and production build pass;70billing/inbox cases; actual hosted-worker, owner/foreign/ended/replay/concurrency/rollback/UTC/read/privacy/quote-history checks. SUBSCRIPTION_RENEWALS.md; FINANCIAL_HISTORY.md; history-full.trx."
+    ],
+    "notes": "Owned bounded reads/mutations verified. Renewal processing explicitly enabled locally after migration; old saved preferences require fresh subscription-bound consent. Completed declines/missed periods require new reviewed purchase. No real charges or email."
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/me/subscription/scheduled-plan",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: SubscriptionManagementTests8; full334backend/180frontend46files and production build pass; owner/expiry/replay/concurrency/no-charge/period/blocked-card/consent-reset/SQL rollback evidence. SUBSCRIPTION_MANAGEMENT.md. Automatic processor remains unavailable.",
+      "2026-10-30: full360backend/192frontend50files and production build pass;70billing/inbox cases; actual hosted-worker, owner/foreign/ended/replay/concurrency/rollback/UTC/read/privacy/quote-history checks. SUBSCRIPTION_RENEWALS.md; FINANCIAL_HISTORY.md; history-full.trx."
+    ],
+    "notes": "Owned bounded reads/mutations verified. Renewal processing explicitly enabled locally after migration; old saved preferences require fresh subscription-bound consent. Completed declines/missed periods require new reviewed purchase. No real charges or email."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/test-cards",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: TestCardTests8 real PostgreSQL HTTP cases; atomic top-up/replay/concurrency/audit/rollback, owner/status/limits/SQL constraints; Angular wallet tests and build; TEST_CARD_WALLET.md. Full297backend before final rollback case, final8focusedpass;151frontend pass.",
+      "2026-10-29: User-approved5simGEL heart refill. Full308backend pass plus final19focused billing cases;162frontend/40files and build pass. Atomic immutable debit/refill/replay, declines/free-expiry/owner/forgedprice/SQL consistency/rollback; HEART_CHECKOUT.md."
+    ],
+    "notes": "Simulated test-card operation only; no real funds, subscription or heart purchase. Active subject ownership, no-store, strict inputs and durable replay verified."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/test-cards",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: TestCardTests8 real PostgreSQL HTTP cases; atomic top-up/replay/concurrency/audit/rollback, owner/status/limits/SQL constraints; Angular wallet tests and build; TEST_CARD_WALLET.md. Full297backend before final rollback case, final8focusedpass;151frontend pass.",
+      "2026-10-29: User-approved5simGEL heart refill. Full308backend pass plus final19focused billing cases;162frontend/40files and build pass. Atomic immutable debit/refill/replay, declines/free-expiry/owner/forgedprice/SQL consistency/rollback; HEART_CHECKOUT.md."
+    ],
+    "notes": "Simulated test-card operation only; no real funds, subscription or heart purchase. Active subject ownership, no-store, strict inputs and durable replay verified."
+  },
+  {
+    "method": "PATCH",
+    "document_route": "/api/v1/me/test-cards/{id}",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: TestCardTests8 real PostgreSQL HTTP cases; atomic top-up/replay/concurrency/audit/rollback, owner/status/limits/SQL constraints; Angular wallet tests and build; TEST_CARD_WALLET.md. Full297backend before final rollback case, final8focusedpass;151frontend pass.",
+      "2026-10-29: User-approved5simGEL heart refill. Full308backend pass plus final19focused billing cases;162frontend/40files and build pass. Atomic immutable debit/refill/replay, declines/free-expiry/owner/forgedprice/SQL consistency/rollback; HEART_CHECKOUT.md."
+    ],
+    "notes": "Simulated test-card operation only; no real funds, subscription or heart purchase. Active subject ownership, no-store, strict inputs and durable replay verified."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/test-cards/{id}/block",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: TestCardTests8 real PostgreSQL HTTP cases; atomic top-up/replay/concurrency/audit/rollback, owner/status/limits/SQL constraints; Angular wallet tests and build; TEST_CARD_WALLET.md. Full297backend before final rollback case, final8focusedpass;151frontend pass.",
+      "2026-10-29: User-approved5simGEL heart refill. Full308backend pass plus final19focused billing cases;162frontend/40files and build pass. Atomic immutable debit/refill/replay, declines/free-expiry/owner/forgedprice/SQL consistency/rollback; HEART_CHECKOUT.md."
+    ],
+    "notes": "Simulated test-card operation only; no real funds, subscription or heart purchase. Active subject ownership, no-store, strict inputs and durable replay verified."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/test-cards/{id}/unblock",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: TestCardTests8 real PostgreSQL HTTP cases; atomic top-up/replay/concurrency/audit/rollback, owner/status/limits/SQL constraints; Angular wallet tests and build; TEST_CARD_WALLET.md. Full297backend before final rollback case, final8focusedpass;151frontend pass.",
+      "2026-10-29: User-approved5simGEL heart refill. Full308backend pass plus final19focused billing cases;162frontend/40files and build pass. Atomic immutable debit/refill/replay, declines/free-expiry/owner/forgedprice/SQL consistency/rollback; HEART_CHECKOUT.md."
+    ],
+    "notes": "Simulated test-card operation only; no real funds, subscription or heart purchase. Active subject ownership, no-store, strict inputs and durable replay verified."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/test-cards/{id}/top-ups",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: TestCardTests8 real PostgreSQL HTTP cases; atomic top-up/replay/concurrency/audit/rollback, owner/status/limits/SQL constraints; Angular wallet tests and build; TEST_CARD_WALLET.md. Full297backend before final rollback case, final8focusedpass;151frontend pass.",
+      "2026-10-29: User-approved5simGEL heart refill. Full308backend pass plus final19focused billing cases;162frontend/40files and build pass. Atomic immutable debit/refill/replay, declines/free-expiry/owner/forgedprice/SQL consistency/rollback; HEART_CHECKOUT.md."
+    ],
+    "notes": "Simulated test-card operation only; no real funds, subscription or heart purchase. Active subject ownership, no-store, strict inputs and durable replay verified."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/test-cards/{id}/transactions",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: TestCardTests and RefundTests verified ownership, scoped paging and the original card refund credit. The typed response and anonymous denial were checked through Swagger and HTTP. learner-api-verification.trx.",
+      "2026-10-29: TestCardTests8 real PostgreSQL HTTP cases; atomic top-up/replay/concurrency/audit/rollback, owner/status/limits/SQL constraints; Angular wallet tests and build; TEST_CARD_WALLET.md. Full297backend before final rollback case, final8focusedpass;151frontend pass.",
+      "2026-10-29: User-approved5simGEL heart refill. Full308backend pass plus final19focused billing cases;162frontend/40files and build pass. Atomic immutable debit/refill/replay, declines/free-expiry/owner/forgedprice/SQL consistency/rollback; HEART_CHECKOUT.md.",
+      "2026-10-30: full360backend/192frontend50files and production build pass;70billing/inbox cases; actual hosted-worker, owner/foreign/ended/replay/concurrency/rollback/UTC/read/privacy/quote-history checks. SUBSCRIPTION_RENEWALS.md; FINANCIAL_HISTORY.md; history-full.trx."
+    ],
+    "notes": "Owned paged activity unions real ledger movements and non-succeeded payment/refill projections, with card/type/status/UTC dates, quoted currency/order/reference. Failed/pending balances null, no fake debit or receipt. Refund credits reference the original payment and order."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/billing-orders",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-17: billing-order-contract.trx verified private Location, concurrent replay, price conflict and foreign denial.",
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification."
+    ],
+    "notes": "Verified purchase/catalog/owned quote/payment/receipt operation only. Subscription management/history, renewal/refund administration and unimplemented Premium learning features stay required; GETentitlements distinguishes planned availability."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/billing-orders/{id}",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification.",
+      "2026-11-06: Receipt recovery displays original order period/quote, retries transient reads, preserves payment after order-detail failure and refreshes pending status without charges. Seventeen frontend billing cases and one routing case passed; three PostgreSQL receipt/ownership cases passed, with production build/format. RECEIPT_RECOVERY.md; browser/download walkthrough remains open."
+    ],
+    "notes": "Verified purchase/catalog/owned quote/payment/receipt operation only. Subscription management/history, renewal/refund administration and unimplemented Premium learning features stay required; GETentitlements distinguishes planned availability."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/billing-orders/{id}/cancel",
+    "page": 24,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-13: SubscriptionPurchaseTests verified ownership, replay, pending protection, no debit and one audit entry. Desktop and phone-width Edge verified cancellation and a fresh checkout."
+    ],
+    "notes": "Supporting endpoint for the documented Cancelled order state."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/me/billing-orders/{id}/payments",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification."
+    ],
+    "notes": "Verified purchase/catalog/owned quote/payment/receipt operation only. Subscription management/history, renewal/refund administration and unimplemented Premium learning features stay required; GETentitlements distinguishes planned availability."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/payments/{id}",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification.",
+      "2026-11-06: Receipt recovery displays original order period/quote, retries transient reads, preserves payment after order-detail failure and refreshes pending status without charges. Seventeen frontend billing cases and one routing case passed; three PostgreSQL receipt/ownership cases passed, with production build/format. RECEIPT_RECOVERY.md; browser/download walkthrough remains open."
+    ],
+    "notes": "Verified purchase/catalog/owned quote/payment/receipt operation only. Subscription management/history, renewal/refund administration and unimplemented Premium learning features stay required; GETentitlements distinguishes planned availability."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/payments/{id}/receipt",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification.",
+      "2026-11-06: Receipt recovery displays original order period/quote, retries transient reads, preserves payment after order-detail failure and refreshes pending status without charges. Seventeen frontend billing cases and one routing case passed; three PostgreSQL receipt/ownership cases passed, with production build/format. RECEIPT_RECOVERY.md; browser/download walkthrough remains open."
+    ],
+    "notes": "Verified purchase/catalog/owned quote/payment/receipt operation only. Subscription management/history, renewal/refund administration and unimplemented Premium learning features stay required; GETentitlements distinguishes planned availability."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/me/transactions",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: TestCardTests, FinancialHistoryTests and RefundTests verified owned filters and paging, separate attempt projections and original refund credits. The typed response and anonymous denial were checked through Swagger and HTTP. learner-api-verification.trx.",
+      "2026-10-29: TestCardTests8 real PostgreSQL HTTP cases; atomic top-up/replay/concurrency/audit/rollback, owner/status/limits/SQL constraints; Angular wallet tests and build; TEST_CARD_WALLET.md. Full297backend before final rollback case, final8focusedpass;151frontend pass.",
+      "2026-10-29: User-approved5simGEL heart refill. Full308backend pass plus final19focused billing cases;162frontend/40files and build pass. Atomic immutable debit/refill/replay, declines/free-expiry/owner/forgedprice/SQL consistency/rollback; HEART_CHECKOUT.md.",
+      "2026-10-30: full360backend/192frontend50files and production build pass;70billing/inbox cases; actual hosted-worker, owner/foreign/ended/replay/concurrency/rollback/UTC/read/privacy/quote-history checks. SUBSCRIPTION_RENEWALS.md; FINANCIAL_HISTORY.md; history-full.trx."
+    ],
+    "notes": "Owned paged activity unions real ledger movements and non-succeeded payment/refill projections, with card/type/status/UTC dates, quoted currency/order/reference. Failed/pending balances null, no fake debit or receipt. Refund credits reference the original payment and order."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/admin/plans",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-30: PlanCatalogueTests covers SuperAdmin/delegated Admin, inactive visibility, complete price periods, planned feature labels, no private account data, public exclusion and bounded filter/page validation. BillingPermissionTests denies other roles and unverified MFA. Full383backend/206frontend/build passed; PLAN_CATALOGUE.md."
+    ],
+    "notes": "Read operation returns inactive drafts and recorded prices to billing administrators. Public pricing excludes drafts."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/admin/plans",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: PlanCatalogueTests verified delegated access, unique draft codes, replay, audit and public exclusion.",
+      "2026-11-13: Desktop and phone-width Edge verified draft creation and public exclusion."
+    ],
+    "notes": "Creates private drafts. The documented public catalogue has Free and Premium."
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/admin/plans/{id}",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-12: PlanCatalogueTests verified stale-name and stale-feature checks, draft feature limits and live plan protection. SubscriptionPurchaseTests verified Premium retirement and reopening, preserved quotes and retained paid access.",
+      "2026-11-13: Desktop and phone-width Edge verified draft edits survive reload and retiring or reopening Premium updates the public catalogue."
+    ],
+    "notes": "Supports renaming, private draft feature editing and Premium sales availability. PostgreSQL verifies that private draft activation is rejected. Additional public tiers would require a separate scope decision."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/admin/subscriptions",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-30: full381backend/204frontend55files, production build,102billing/admin/inbox cases, local22migrations/noEFdrift; REFUND_ADMINISTRATION.md; refund-full.trx. No real funds, grants, emails or public deployment."
+    ],
+    "notes": "Current active confirmed MFA SuperAdmin or explicitly delegated Admin only; fresh<=5minute sign-in/password/reason for refund. No implicit staff access. Scoped no-store bounded reads; failed/self/over-refund denied; atomic immutable evidence and unknown-result recovery verified."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/admin/payments",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-30: full381backend/204frontend55files, production build,102billing/admin/inbox cases, local22migrations/noEFdrift; REFUND_ADMINISTRATION.md; refund-full.trx. No real funds, grants, emails or public deployment."
+    ],
+    "notes": "Current active confirmed MFA SuperAdmin or explicitly delegated Admin only; fresh<=5minute sign-in/password/reason for refund. No implicit staff access. Scoped no-store bounded reads; failed/self/over-refund denied; atomic immutable evidence and unknown-result recovery verified."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/admin/payments/{id}/refunds",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-30: full381backend/204frontend55files, production build,102billing/admin/inbox cases, local22migrations/noEFdrift; REFUND_ADMINISTRATION.md; refund-full.trx. No real funds, grants, emails or public deployment."
+    ],
+    "notes": "Current active confirmed MFA SuperAdmin or explicitly delegated Admin only; fresh<=5minute sign-in/password/reason for refund. No implicit staff access. Scoped no-store bounded reads; failed/self/over-refund denied; atomic immutable evidence and unknown-result recovery verified."
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/admin/billing-audit",
+    "page": 22,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-30: full381backend/204frontend55files, production build,102billing/admin/inbox cases, local22migrations/noEFdrift; REFUND_ADMINISTRATION.md; refund-full.trx. No real funds, grants, emails or public deployment."
+    ],
+    "notes": "Current active confirmed MFA SuperAdmin or explicitly delegated Admin only; fresh<=5minute sign-in/password/reason for refund. No implicit staff access. Scoped no-store bounded reads; failed/self/over-refund denied; atomic immutable evidence and unknown-result recovery verified."
+  },
+  {
+    "method": "GET",
+    "document_route": "/health/live",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: backend RegistrationTests, browser registration/Mailpit/verification check, Development Swagger and health endpoints"
+    ],
+    "notes": "Applies to this operation only; see individual entries for remaining account and authorization operations."
+  },
+  {
+    "method": "GET",
+    "document_route": "/health/ready",
+    "page": 12,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-10-27: backend RegistrationTests, browser registration/Mailpit/verification check, Development Swagger and health endpoints"
+    ],
+    "notes": "Applies to this operation only; see individual entries for remaining account and authorization operations."
+  }
+]

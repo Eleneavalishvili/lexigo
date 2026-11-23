@@ -1,0 +1,29 @@
+<section aria-labelledby="deletion-work-title">
+  <h2 id="deletion-work-title">Before you leave</h2>
+  @if (loading()) {
+    <p role="status">Checking unfinished responsibilities…</p>
+  }
+  @if (error()) {
+    <p role="alert">{{ error() }}</p>
+  }
+  @if (checked()) {
+    @if (pending().length) {
+      <ul>
+        @for (item of pending(); track item.code) {
+          <li>
+            <a [routerLink]="destination(item.code)">{{ item.message }} ↗</a>
+          </li>
+        }
+      </ul>
+      <p>
+        If you no longer have staff access, <a routerLink="/contact">contact support</a> for help.
+      </p>
+    } @else {
+      <p role="status">You have no unfinished teaching, draft or recording responsibilities.</p>
+    }
+  }
+  <p>Security and retained billing records are checked when you confirm deletion.</p>
+  <button type="button" class="button button-outline" (click)="refresh()" [disabled]="loading()">
+    Refresh responsibilities
+  </button>
+</section>

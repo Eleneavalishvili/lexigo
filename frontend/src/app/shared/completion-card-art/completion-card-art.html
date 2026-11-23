@@ -1,0 +1,24 @@
+<article class="completion-card" aria-label="LexiGo unit completion card">
+  <div class="card-top"><app-brand-logo /><span class="seal" aria-hidden="true">✦</span></div>
+  <p class="eyebrow">ONE CHAPTER. A WORLD OF POSSIBILITY.</p>
+  <p class="recognition">A unit completed by</p>
+  <p class="learner-name">{{ details().displayName }}</p>
+  <h2>{{ details().unitTitle }}</h2>
+  <p class="course">
+    {{ details().courseTitle }} · {{ details().lessonCount }} completed lesson(s)
+  </p>
+  @if (details().averageBestScore !== null) {
+    <p class="score">
+      {{ details().averageBestScore | number: '1.0-2' }}% average best graded score
+    </p>
+    <p>{{ details().gradedLessonCount }} graded lesson(s) included</p>
+  } @else {
+    <p class="score">Practice completed · ungraded</p>
+  }
+  <p>Completed {{ details().completedAt | date: 'longDate' : 'UTC' }} (UTC)</p>
+  <p class="fine">Results recorded when issued. A record of learning completed on LexiGo.</p>
+  <footer>
+    <span>Verification code</span><code>{{ details().verificationCode }}</code>
+    <span>Issued {{ details().issuedAt | date: 'mediumDate' : 'UTC' }}</span>
+  </footer>
+</article>

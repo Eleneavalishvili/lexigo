@@ -1,0 +1,68 @@
+<section class="permission-panel" aria-labelledby="billing-delegation-title">
+  <h3 id="billing-delegation-title">Financial responsibility.</h3>
+  <p>
+    Admin alone grants no financial access. BillingManage is an explicit Super Admin delegation,
+    protected by two-factor authentication.
+  </p>
+  @if (working()) {
+    <p role="status">Checking billing delegation…</p>
+  }
+  @if (error()) {
+    <p class="error" role="alert">{{ error() }}</p>
+  }
+  @if (notice()) {
+    <p role="status">{{ notice() }}</p>
+  }
+  @if (view(); as permission) {
+    <p>Current billing access: {{ permission.granted ? 'Granted' : 'Not granted' }}.</p>
+    @if (permission.inherited) {
+      <p>
+        Super Admin billing access is inherited. Manage that role through account administration.
+      </p>
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <fieldset [disabled]="working()">
+          <label
+            ><input
+              type="checkbox"
+              formControlName="enabled"
+              [attr.disabled]="
+                retrying() || (!permission.eligible && !permission.granted) ? true : null
+              "
+            />Grant BillingManage</label
+          >
+          @if (!permission.eligible) {
+            <p>
+              New grants require an active, confirmed Admin enrolled in two-factor authentication.
+            </p>
+          }
+          <label for="billing-permission-reason">Reason</label
+          ><textarea
+            id="billing-permission-reason"
+            formControlName="reason"
+            minlength="3"
+            maxlength="500"
+            [readOnly]="retrying()"
+          ></textarea>
+          <label for="billing-permission-password">Your current password</label>
+          <div class="password-row">
+            <input
+              id="billing-permission-password"
+              [type]="visible() ? 'text' : 'password'"
+              formControlName="currentPassword"
+              autocomplete="current-password"
+              maxlength="128"
+            /><app-password-toggle inputId="billing-permission-password" [(visible)]="visible" />
+          </div>
+          <p>Use a two-factor sign-in from the last five minutes. Passwords are not saved.</p>
+          @if (form.touched && form.invalid) {
+            <p class="error" role="alert">Enter a reason and your current password.</p>
+          }
+          <button type="submit">
+            {{ retrying() ? 'Retry saved delegation ↗' : 'Save billing delegation ↗' }}
+          </button>
+        </fieldset>
+      </form>
+    }
+  }
+</section>

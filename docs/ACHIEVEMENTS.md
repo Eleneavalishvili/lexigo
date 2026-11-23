@@ -1,0 +1,19 @@
+# Achievement delivery — 2026-11-03
+
+The four documented milestone categories now use persisted server progress: one successfully completed lesson, three consecutive daily XP-goal days, ten currently saved distinct words, and a completely answered lesson with 100% graded accuracy. Speaking-only practice and diagnostic/practice sessions do not qualify as perfect lessons. Badges award no extra XP. Previously earned badges remain after a streak ends or a word is removed. EarnedAt records recognition time.
+
+GET /api/v1/me/achievements is authenticated, private, no-store and read-only. Earlier qualifying progress appears ready to collect. Supporting POST /api/v1/me/achievements/collect takes an empty body, derives the account from authentication, locks the current active user/session family and awards each badge once. Successful future lesson completion and word saving call the same award operation inside their existing transaction. Each newly awarded badge creates one in-app Achievement notification atomically. No outgoing email is sent.
+
+Migration 20261103103011_AddAchievements creates original Achievement/UserAchievement models, four catalog records, unique code/composite ownership key, foreign keys and allowed-rule/positive-threshold constraints. No learner awards are seeded. It is migration 26 locally: four catalog entries, zero learner awards, and unchanged one XP transaction/eight sessions/27 answers. API readiness returned 200; EF reports no pending model changes.
+
+Frontend /achievements displays earned/ready/in-progress cards, descriptions, server progress, recognition dates and an explicit collect button with an accessible status announcement. Account changes invalidate pending reads/collection responses. Titles render as escaped text. Learning navigation and achievement inbox notices link to this page. Existing brand, typography and colors remain. Desktop and mobile layout checks: document widths1265/375 within1280/390 viewports; existing learner's first lesson is ready, not silently collected.
+
+Verification: five PostgreSQL achievement tests passed, covering private reads/authentication/unknown fields, concurrent perfect completions, duplicate SQL keys/FKs, historical streak/future exclusion, concurrent collection, saved-word automatic awards/removal and practice exclusion. Frontend262 tests/70files and production build passed. Scoped .NET formatting and offline source secret scan passed. Broader regression retry passed429 matching PostgreSQL/backend cases (achievements-regression-elevated.log); the initial sandbox attempt aborted before test-host connection. Frontend initial sandbox attempt also failed before executing tests because temporary-file renames were denied; the outside-sandbox rerun passed. No failed attempt is counted as a pass.
+
+Changed backend: Core Learning Achievement/UserAchievement; Infrastructure Data context/configurations/migration/snapshot; Learning AchievementProgressQueries/AchievementQueries/AchievementAwards and completion/saved-word hooks; API AchievementsController/DI; Learning AchievementTests.
+Changed frontend: core/learning/achievements-api; features/learning/achievements.{ts,html,scss,spec.ts}; app.routes; learning-overview.html; notifications.html.
+
+Still required: documented challenges/rewards and remaining notification categories, full social profile/friends, league promotion/demotion, lesson-time achievement/level-up toasts, all remaining baseline and security gates. The collect-page announcement is implemented; a general automatic toast system is not claimed. The original70model/122API scope is unchanged; supporting models remain5, supporting APIs become46 including explicit historical collection.
+
+
+Follow-up2026-11-03: documented weekly challenges and protected staff catalog management are now implemented. See WEEKLY_CHALLENGES.md and REWARD_CATALOG_MANAGEMENT.md for current evidence, files and remaining scope.

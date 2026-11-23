@@ -1,0 +1,143 @@
+.profile-wrap {
+  margin: auto;
+  max-width: 1140px;
+  padding: 2rem 2.5rem;
+}
+header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+header a:last-child {
+  font-size: 0.8rem;
+}
+main {
+  margin-block: 5rem;
+}
+h1 {
+  font-size: clamp(2.25rem, 4.8vw, 3.8rem);
+  line-height: 1.08;
+  margin-bottom: 1.4rem;
+}
+h2 {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+}
+.intro {
+  color: var(--muted);
+  line-height: 1.7;
+}
+section {
+  border-top: 1px solid var(--ink);
+  margin-top: 3rem;
+  padding-block: 2rem;
+}
+.name-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+label,
+legend {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+input,
+select {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--muted);
+  border-radius: 3px;
+  font: inherit;
+  min-height: 48px;
+  padding: 0.8rem;
+  width: 100%;
+}
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+.help {
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.8;
+  margin-block: 0.6rem;
+}
+fieldset {
+  border: 0;
+  margin: 2rem 0 1rem;
+  padding: 0;
+}
+.days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.days button {
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+  min-height: 44px;
+  padding: 0.7rem;
+}
+.days button[aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.check {
+  align-items: center;
+  display: flex;
+  gap: 0.8rem;
+  margin-block: 1.4rem;
+  min-height: 44px;
+}
+.check input {
+  accent-color: var(--ink);
+  min-height: 22px;
+  width: 22px;
+  height: 22px;
+}
+.name-card button {
+  margin-top: 1rem;
+}
+.notice {
+  border: 1px solid var(--ink);
+  padding: 1rem;
+  line-height: 1.7;
+}
+.error {
+  color: var(--red);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+footer {
+  border-top: 1px solid var(--line);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  padding-block: 2rem;
+}
+@media (max-width: 650px) {
+  .profile-wrap {
+    padding: 1.5rem;
+  }
+  main {
+    margin-block: 3rem;
+  }
+  .name-card,
+  .fields {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

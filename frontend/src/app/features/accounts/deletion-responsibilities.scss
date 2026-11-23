@@ -1,0 +1,19 @@
+section {
+  border-block: 1px solid var(--line);
+  margin-block: 1.5rem;
+  padding-block: 1.2rem;
+}
+h2 {
+  font-size: 1.3rem;
+}
+p,
+li {
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+li + li {
+  margin-top: 0.6rem;
+}
+button {
+  margin-top: 0.5rem;
+}

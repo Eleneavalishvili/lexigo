@@ -1,0 +1,82 @@
+<div class="achievements-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a>
+    <a routerLink="/learn">↖ Back to learning</a>
+  </header>
+  <main>
+    <p class="eyebrow">A LITTLE MOTIVATION FOR YOUR WEEK</p>
+    <h1>Small challenges.<br /><em>Extra possibility.</em></h1>
+    <p class="intro">Make time for something new. Your lessons count across all four languages.</p>
+    <button class="text-button" type="button" (click)="load()" [disabled]="loading()">
+      Refresh progress ↻
+    </button>
+    @if (loading()) {
+      <p role="status">Opening your challenges…</p>
+    }
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+    }
+    @if (!loading() && !error() && !items().length) {
+      <p>No challenges are available yet. Your learning path is ready whenever you are.</p>
+    }
+    <ul class="badge-grid" aria-label="Your challenges">
+      @for (item of items(); track item.id) {
+        <li class="badge-card" [class.earned]="!!item.rewardedAt">
+          <span class="medallion" aria-hidden="true">{{
+            item.ruleType === 'CompletedLessons' ? '✦' : '☀'
+          }}</span>
+          <p class="eyebrow">
+            {{
+              item.rewardedAt
+                ? 'BONUS EARNED'
+                : item.isActive
+                  ? 'WEEKLY CHALLENGE'
+                  : 'CHALLENGE ENDED'
+            }}
+          </p>
+          <h2>{{ item.title }}</h2>
+          <p>{{ description(item) }}</p>
+          <p class="reward">
+            <strong>+{{ item.rewardXp }} XP</strong> bonus
+          </p>
+          <label [for]="'challenge-' + item.id">{{ item.progress }} / {{ item.target }}</label>
+          <progress
+            [id]="'challenge-' + item.id"
+            [value]="item.progress"
+            [max]="item.target"
+          ></progress>
+          @if (item.rewardedAt) {
+            <p>
+              Reward received
+              <time [attr.datetime]="item.rewardedAt">{{
+                item.rewardedAt | date: 'mediumDate'
+              }}</time>
+              in the language of your completing lesson.
+            </p>
+          } @else {
+            @if (item.isActive && item.progress >= item.target) {
+              <p>
+                Your goal is reached. Finish your next new lesson to receive this bonus in that
+                language.
+              </p>
+            }
+            <p>
+              Window: {{ item.startsAt | date: 'MMM d, y' : 'UTC' }} to
+              <time [attr.datetime]="item.endsAt">{{
+                item.endsAt | date: 'MMM d, y, HH:mm' : 'UTC'
+              }}</time>
+              UTC.
+            </p>
+          }
+        </li>
+      }
+    </ul>
+    <p class="footnote">
+      Weeks run Monday to Monday in UTC. Repeated lessons, free practice and bonus XP do not advance
+      challenges. Rewards arrive automatically once, count toward your daily XP goal, and are
+      separate from lesson XP. Your daily goal and streak still use your saved time zone. This page
+      shows your latest 50 available challenges and personal challenge records.
+    </p>
+    <a class="button button-ink" routerLink="/learn">Back to your next lesson ↗</a>
+  </main>
+</div>

@@ -1,0 +1,162 @@
+<div class="account-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/notifications">Your inbox ↗</a
+    ><button class="text-button" type="button" (click)="signOut()" [disabled]="working()">
+      Sign out ↗
+    </button>
+  </header>
+  <main>
+    <section class="welcome" aria-labelledby="account-title">
+      <p class="eyebrow">A LITTLE SPACE OF YOUR OWN</p>
+      <h1 id="account-title">
+        Hello, <em>{{ auth.user()?.displayName }}.</em>
+      </h1>
+      <p>Keep your account safe. Keep your curiosity going.</p>
+      <p><a routerLink="/account/profile">Profile, settings &amp; privacy ↗</a></p>
+      <p><a routerLink="/learn">Continue your language journey ↗</a></p>
+      <p><a routerLink="/classes">Open your classes ↗</a></p>
+      <p><a routerLink="/speaking">Practise speaking ↗</a></p>
+      <p><a routerLink="/billing/subscription">Your plan and subscription ↗</a></p>
+      <p><a routerLink="/billing/cards">Open your test wallet ↗</a></p>
+      <p><a routerLink="/billing/history">Your subscription paper trail ↗</a></p>
+      @if (
+        auth.user()?.roles?.includes('SuperAdmin') ||
+        (auth.user()?.roles?.includes('Admin') &&
+          auth.user()?.permissions?.includes('BillingManage'))
+      ) {
+        <p><a routerLink="/admin/billing">Open the billing desk ↗</a></p>
+      }
+      <p><a routerLink="/vocabulary">Open your word library ↗</a></p>
+      @if (
+        auth.user()?.roles?.includes('ContentAuthor') ||
+        auth.user()?.roles?.includes('Reviewer') ||
+        auth.user()?.roles?.includes('Admin') ||
+        auth.user()?.roles?.includes('SuperAdmin')
+      ) {
+        <p><a routerLink="/manage/lessons">Open the lesson workshop ↗</a></p>
+      }
+      @if (
+        auth.user()?.roles?.includes('Reviewer') ||
+        auth.user()?.roles?.includes('Moderator') ||
+        auth.user()?.roles?.includes('Admin') ||
+        auth.user()?.roles?.includes('SuperAdmin')
+      ) {
+        <p><a routerLink="/manage/reports">Review content reports ↗</a></p>
+      }
+      @if (auth.user()?.roles?.includes('Admin') || auth.user()?.roles?.includes('SuperAdmin')) {
+        <p><a routerLink="/admin/users">Manage people and permissions ↗</a></p>
+        <p><a routerLink="/admin/analytics">Open learning analytics ↗</a></p>
+        @if (auth.user()?.roles?.includes('SuperAdmin')) {
+          <p><a routerLink="/admin/audit">Open the administrative audit log ↗</a></p>
+          <p><a routerLink="/admin/settings">Open system settings ↗</a></p>
+        }
+        <p><a routerLink="/manage/rewards">Manage badges and challenges ↗</a></p>
+      }
+      <a routerLink="/" class="button button-red"
+        >Explore the languages <span aria-hidden="true">↗</span></a
+      ><span class="welcome-star" aria-hidden="true">✦</span>
+    </section>
+    @if (error()) {
+      <p class="account-error" role="alert">{{ error() }}</p>
+    }
+    <div class="account-grid">
+      <section class="profile-section" aria-labelledby="profile-title">
+        <p class="eyebrow">THE BASICS</p>
+        <h2 id="profile-title">Your little <em>details.</em></h2>
+        <dl>
+          <dt>Name</dt>
+          <dd>{{ auth.user()?.displayName }}</dd>
+          <dt>Email</dt>
+          <dd>{{ auth.user()?.email }}</dd>
+          <dt>Email status</dt>
+          <dd>Confirmed <span aria-hidden="true">✓</span></dd>
+        </dl>
+        <details>
+          <summary>Change your password</summary>
+          <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" novalidate>
+            <label for="current-password">Current password</label>
+            <div class="password-field">
+              <input
+                id="current-password"
+                [type]="showCurrentPassword() ? 'text' : 'password'"
+                formControlName="currentPassword"
+                autocomplete="current-password"
+                maxlength="128"
+              /><app-password-toggle inputId="current-password" [(visible)]="showCurrentPassword" />
+            </div>
+            <label for="new-password">New password</label>
+            <div class="password-field">
+              <input
+                id="new-password"
+                [type]="showNewPassword() ? 'text' : 'password'"
+                formControlName="newPassword"
+                autocomplete="new-password"
+                maxlength="128"
+              /><app-password-toggle inputId="new-password" [(visible)]="showNewPassword" />
+            </div>
+            <p class="field-help">
+              {{ passwordGuidance }} Changing your password signs out every device.
+            </p>
+            @if (passwordForm.touched && passwordForm.invalid) {
+              <p class="account-error">Enter your current password. {{ passwordGuidance }}</p>
+            }
+            <button class="button button-ink" type="submit" [disabled]="working()">
+              Update password <span aria-hidden="true">↗</span>
+            </button>
+          </form>
+        </details>
+        <p class="field-help"><a routerLink="/account/email">Change your email address ↗</a></p>
+        <p class="field-help">
+          <a routerLink="/account/security">Manage two-factor authentication ↗</a>
+        </p>
+      </section>
+      <section class="sessions-section" aria-labelledby="sessions-title">
+        <p class="eyebrow">YOU’RE IN CONTROL</p>
+        <h2 id="sessions-title">Where you’re <em>signed in.</em></h2>
+        <p class="section-description">
+          Recognize your devices? You can sign out a session whenever you need to.
+        </p>
+        @if (loading()) {
+          <p role="status">Finding your sessions…</p>
+        } @else {
+          <ul class="session-list">
+            @for (session of sessions(); track session.id) {
+              <li>
+                <div>
+                  <h3>
+                    {{ session.deviceLabel || 'Web browser' }}
+                    @if (session.isCurrent) {
+                      <span class="current-badge">THIS SESSION</span>
+                    }
+                  </h3>
+                  <p>Started {{ session.createdAt | date: 'mediumDate' }}</p>
+                </div>
+                <button
+                  class="text-button"
+                  type="button"
+                  (click)="revoke(session)"
+                  [disabled]="working()"
+                  [attr.aria-label]="'Sign out ' + (session.deviceLabel || 'web browser')"
+                >
+                  Sign out ↗
+                </button>
+              </li>
+            } @empty {
+              <li>No active sessions found.</li>
+            }
+          </ul>
+        }
+        <button
+          class="button button-outline"
+          type="button"
+          (click)="signOutEverywhere()"
+          [disabled]="working() || loading()"
+        >
+          Sign out on all devices <span aria-hidden="true">↗</span>
+        </button>
+      </section>
+    </div>
+  </main>
+  <footer>A LITTLE LANGUAGE. A BIGGER WORLD. <span aria-hidden="true">✦</span></footer>
+</div>

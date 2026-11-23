@@ -1,0 +1,104 @@
+<section class="speaking-card" aria-label="Speaking self-assessment">
+  <p class="eyebrow">YOUR VOICE, YOUR PACE</p>
+  <p>
+    Listen to the model, say the phrase, then listen back. Notice the sounds, stress and rhythm.
+    This is self-assessment; your pronunciation is not scored. It does not cost hearts or affect
+    accuracy.
+  </p>
+  @if (audio(); as referenceAudio) {
+    <app-lesson-audio
+      [sessionId]="sessionId()"
+      [exerciseId]="exerciseId()"
+      [audio]="referenceAudio"
+      (starting)="beforeReference()"
+    />
+  }
+  <p class="privacy">
+    Your microphone starts only with your permission. Recordings stay in this browser, are never
+    uploaded, and are cleared after listening or leaving. Maximum 30 seconds.
+  </p>
+  <p role="status">
+    {{
+      recorder.state() === 'requesting'
+        ? 'Waiting for microphone permission…'
+        : recorder.state() === 'recording'
+          ? 'Recording · ' + recorder.seconds() + ' / 30 seconds'
+          : recorder.state() === 'processing'
+            ? 'Finishing your clip…'
+            : listened()
+              ? 'You listened back. What would you like to try differently?'
+              : 'Ready when you are.'
+    }}
+  </p>
+  <div class="actions">
+    @if (recorder.state() === 'recording') {
+      <button type="button" class="button button-red" (click)="recorder.stop()">
+        Stop recording ■
+      </button>
+    } @else {
+      <button
+        type="button"
+        class="button button-outline"
+        (click)="record()"
+        [disabled]="
+          disabled() || recorder.state() === 'requesting' || recorder.state() === 'processing'
+        "
+      >
+        {{ listened() || recorder.clip() ? 'Try another recording ●' : 'Record my voice ●' }}
+      </button>
+    }
+    @if (recorder.state() === 'requesting' || recorder.clip()) {
+      <button type="button" (click)="discard()">Discard recording</button>
+    }
+  </div>
+  @if (recorder.error()) {
+    <p class="error" role="alert">{{ recorder.error() }}</p>
+  }
+  @if (recorder.clip(); as clip) {
+    <audio
+      #ownPlayer
+      [src]="clip"
+      controls
+      preload="none"
+      (play)="beforeOwnPlayback()"
+      (ended)="heardOwnClip()"
+      (error)="recorder.playbackError()"
+    >
+      Your browser does not support audio playback.
+    </audio>
+  }
+  <button
+    class="manual-toggle"
+    type="button"
+    (click)="chooseManual()"
+    [disabled]="disabled()"
+    [attr.aria-pressed]="manual()"
+  >
+    {{ manual() ? 'Use recording instead' : 'I can’t record right now' }}
+  </button>
+  @if (manual()) {
+    <p>
+      Practise the phrase out loud with the reference audio. You can complete this self-assessment
+      without sharing a recording.
+    </p>
+  }
+  @if (listened() || manual()) {
+    <label class="confirmation"
+      ><input
+        type="checkbox"
+        [checked]="confirmed()"
+        (change)="confirm($event)"
+        [disabled]="disabled()"
+      />
+      I practised the phrase and reflected on what to improve.</label
+    >
+    <button
+      type="button"
+      class="button button-ink"
+      (click)="finish()"
+      [disabled]="disabled() || !confirmed()"
+    >
+      {{ preview() ? 'Finish preview practice' : 'Save practice completion ↗' }}
+    </button>
+  }
+</section>

@@ -1,0 +1,47 @@
+.permission-panel {
+  padding: 1.25rem;
+  border: 1px solid currentColor;
+  margin: 1.5rem 0;
+}
+h3 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.4rem;
+}
+fieldset {
+  display: grid;
+  gap: 0.6rem;
+  border: 0;
+  padding: 0;
+}
+input:not([type='checkbox']),
+textarea {
+  padding: 0.65rem;
+  font: inherit;
+  color: inherit;
+  min-width: 0;
+  border: 1px solid currentColor;
+  background: transparent;
+}
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+.password-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.password-row input {
+  flex: 1;
+}
+button {
+  cursor: pointer;
+  padding: 0.75rem;
+  font: inherit;
+  background: transparent;
+  border: 1px solid currentColor;
+  color: inherit;
+}
+.error {
+  color: #a92f2f;
+}

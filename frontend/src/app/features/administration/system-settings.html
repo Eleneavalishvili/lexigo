@@ -1,0 +1,70 @@
+@if (canView()) {
+  <main class="settings">
+    <a routerLink="/account">← Back to account</a>
+    <h1>System settings</h1>
+    <p>
+      Lesson XP applies to new lesson sessions. Study goals and reminder schedules are defaults for
+      new accounts.
+    </p>
+    <button class="button button-outline" type="button" (click)="reload()" [disabled]="busy()">
+      Reload settings
+    </button>
+    @if (busy()) {
+      <p role="status">Working…</p>
+    }
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+    }
+    @if (notice()) {
+      <p role="status">{{ notice() }}</p>
+    }
+    @if (ready()) {
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <fieldset [disabled]="busy()">
+          <legend>Learning and uploads</legend>
+          <label
+            >First lesson completion XP
+            <input formControlName="lessonXp" type="number" min="1" max="1000" required
+          /></label>
+          <label
+            >First successful conversation XP
+            <input formControlName="dialogueXp" type="number" min="0" max="1000" required
+          /></label>
+          <p>Conversation rewards apply on completion. Set 0 to pause new rewards.</p>
+          <p>Repeated lessons and free review practice earn 0 XP.</p>
+          <label
+            >Default daily XP goal
+            <input formControlName="dailyGoalXp" type="number" min="1" max="1000" required
+          /></label>
+          <label
+            >Audio upload limit (MiB)
+            <input formControlName="audioUploadMiB" type="number" min="1" max="10" required
+          /></label>
+        </fieldset>
+        <fieldset [disabled]="busy()">
+          <legend>Default study schedule</legend>
+          <label>Reminder time <input formControlName="reminderTime" type="time" required /></label>
+          <div class="days">
+            @for (day of days; track day; let index = $index) {
+              <label
+                ><input type="checkbox" [checked]="isStudyDay(index)" (change)="toggleDay(index)" />
+                {{ day }}</label
+              >
+            }
+          </div>
+        </fieldset>
+        <label
+          >Reason for this change
+          <textarea formControlName="reason" minlength="3" maxlength="500" required></textarea>
+        </label>
+        <button
+          class="button button-red"
+          type="submit"
+          [disabled]="busy() || form.invalid || studyDays() === 0"
+        >
+          Save settings
+        </button>
+      </form>
+    }
+  </main>
+}

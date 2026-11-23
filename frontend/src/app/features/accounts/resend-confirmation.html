@@ -1,0 +1,41 @@
+<app-account-shell>
+  <p class="eyebrow">LET’S TRY THAT HELLO AGAIN</p>
+  <h1>Another little <em>letter.</em></h1>
+  @if (submitted()) {
+    <p class="form-description" role="status">
+      If this address needs confirmation, a new email will arrive shortly. For your protection, we
+      wait a few minutes between emails.
+    </p>
+    <a class="button button-ink" routerLink="/">Back to LexiGo <span aria-hidden="true">↗</span></a>
+  } @else {
+    <p class="form-description">
+      Enter your email and we’ll send a new confirmation link if your account needs one.
+    </p>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate [attr.aria-busy]="working()">
+      <div class="field">
+        <label for="resend-email">Your email</label
+        ><input
+          id="resend-email"
+          formControlName="email"
+          type="email"
+          autocomplete="email"
+          maxlength="256"
+          placeholder="you@example.com"
+          [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid"
+          [attr.aria-describedby]="
+            form.controls.email.touched && form.controls.email.invalid ? 'resend-error' : null
+          "
+        />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+          <p class="field-error" id="resend-error">Enter a valid email address.</p>
+        }
+      </div>
+      @if (error()) {
+        <p class="form-error" role="alert">{{ error() }}</p>
+      }
+      <button class="button button-red submit-button" type="submit" [disabled]="working()">
+        {{ working() ? 'Sending…' : 'Send another confirmation' }} <span aria-hidden="true">↗</span>
+      </button>
+    </form>
+  }
+</app-account-shell>

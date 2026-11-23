@@ -1,0 +1,80 @@
+<app-account-shell>
+  @if (done()) {
+    <p class="eyebrow">A LITTLE LETTER, ON ITS WAY</p>
+    <h1>Check your <em>new inbox.</em></h1>
+    <p class="form-description" role="status">
+      If the address is available, a confirmation link will be sent. Your current email stays the
+      same until you confirm. After confirmation, sign in with your new address.
+    </p>
+    <a class="button button-ink" routerLink="/account">Back to your account ↗</a>
+  } @else {
+    <p class="eyebrow">A NEW HOME FOR YOUR HELLOS</p>
+    <h1>A little <em>address change.</em></h1>
+    <p class="form-description">
+      Enter your new address and current password. Confirm the link in your new inbox within 30
+      minutes. All devices will sign out when the change is confirmed.
+    </p>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="field">
+        <label for="new-email">New email address</label
+        ><input
+          id="new-email"
+          type="email"
+          formControlName="newEmail"
+          autocomplete="email"
+          maxlength="256"
+        />
+      </div>
+      <div class="field">
+        <label for="email-current-password">Current password</label>
+        <div class="password-field">
+          <input
+            id="email-current-password"
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="currentPassword"
+            autocomplete="current-password"
+            maxlength="128"
+          /><app-password-toggle inputId="email-current-password" [(visible)]="showPassword" />
+        </div>
+      </div>
+      <details>
+        <summary>Have two-factor authentication enabled?</summary>
+        <p class="field-help">
+          Enter a fresh authenticator code or one unused recovery code. A recently used
+          authenticator code cannot be reused.
+        </p>
+        <div class="field">
+          <label for="email-authenticator">Authenticator code</label
+          ><input
+            id="email-authenticator"
+            formControlName="authenticatorCode"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            maxlength="32"
+          />
+        </div>
+        <div class="field">
+          <label for="email-recovery">Recovery code instead</label
+          ><input
+            id="email-recovery"
+            formControlName="recoveryCode"
+            autocomplete="off"
+            maxlength="32"
+          />
+        </div>
+      </details>
+      @if (form.touched && form.invalid) {
+        <p class="field-error" role="alert">
+          Enter a valid email address and your current password.
+        </p>
+      }
+      @if (error()) {
+        <p class="form-error" role="alert">{{ error() }}</p>
+      }
+      <button class="button button-ink submit-button" [disabled]="working()" type="submit">
+        {{ working() ? 'Preparing your letter…' : 'Send my confirmation link' }} ↗
+      </button>
+    </form>
+    <p class="small-print"><a routerLink="/account">↖ Keep my current address</a></p>
+  }
+</app-account-shell>

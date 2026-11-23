@@ -1,0 +1,214 @@
+@import '@angular/cdk/overlay-prebuilt.css';
+@import '@fontsource/fraunces/latin-600.css';
+@import '@fontsource/fraunces/latin-700.css';
+@import '@fontsource/fraunces/latin-900.css';
+@import '@fontsource/fraunces/latin-900-italic.css';
+@import '@fontsource/fraunces/latin-700-italic.css';
+@import '@fontsource/dm-sans/latin-400.css';
+@import '@fontsource/dm-sans/latin-500.css';
+@import '@fontsource/dm-sans/latin-600.css';
+@import '@fontsource/dm-sans/latin-700.css';
+
+:root {
+  --paper: #f7f1e3;
+  --ink: #213e62;
+  --red: #bd432d;
+  --gold: #f1bd4b;
+  --sage: #becbb0;
+  --line: #d8d1bf;
+  --muted: #56616a;
+  --surface: #fffdf7;
+  --body-font: 'DM Sans', sans-serif;
+  --display-font: 'Fraunces', Georgia, serif;
+  --control-depth: 2px;
+  --control-radius: 10px;
+  --success: #416944;
+  --control-shadow: color-mix(in srgb, var(--ink) 28%, transparent);
+  font-synthesis: none;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --paper: #182534;
+  --ink: #f4e9d0;
+  --red: #ff9981;
+  --gold: #dba840;
+  --sage: #829e84;
+  --line: #52616d;
+  --muted: #c1c8ca;
+  --surface: #243547;
+}
+html[data-reduce-motion='true'] {
+  scroll-behavior: auto;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+}
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body-font);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+button,
+input {
+  font: inherit;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+a {
+  color: inherit;
+}
+button {
+  color: inherit;
+}
+summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding-block: 0.6rem;
+}
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 5px;
+}
+::selection {
+  background: var(--gold);
+  color: var(--ink);
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// Shared LexiGo typography, page width and controls.
+.wrap {
+  margin-inline: auto;
+  max-width: 1280px;
+  padding-inline: 40px;
+}
+.eyebrow {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.7;
+  margin: 0 0 1.1rem;
+}
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+h1,
+h2 {
+  font-family: var(--display-font);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+.button {
+  align-items: center;
+  border: 1px solid var(--ink);
+  border-radius: var(--control-radius);
+  display: inline-flex;
+  font-size: 0.83rem;
+  font-weight: 700;
+  letter-spacing: 0.015em;
+  cursor: pointer;
+  background: var(--surface);
+  box-shadow: 0 var(--control-depth) 0 var(--control-shadow);
+  gap: 1.9rem;
+  justify-content: space-between;
+  min-height: 51px;
+  padding: 0.95rem 1.3rem;
+  text-decoration: none;
+  transition:
+    translate 120ms,
+    box-shadow 120ms;
+}
+.button:hover:not(:disabled) {
+  translate: 0 -1px;
+  box-shadow: 0 calc(var(--control-depth) + 1px) 0 var(--control-shadow);
+}
+.button:active:not(:disabled) {
+  translate: 0 1px;
+  box-shadow: 0 1px 0 var(--control-shadow);
+}
+.button:disabled {
+  background: var(--line);
+  border-color: var(--line);
+  color: var(--muted);
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--line) 75%, var(--muted));
+  translate: none;
+  cursor: not-allowed;
+  opacity: 1;
+}
+.button-red,
+.button-primary,
+.button-danger {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--paper);
+}
+.button-outline,
+.button-secondary {
+  background: var(--surface);
+  color: var(--ink);
+}
+.button-ink {
+  background: var(--ink);
+  color: var(--paper);
+}
+.text-button {
+  background: none;
+  border: 0;
+  padding: 0.5rem;
+  min-height: 44px;
+  text-decoration: underline;
+  color: var(--ink);
+  cursor: pointer;
+}
+.text-button:disabled {
+  color: var(--muted);
+  cursor: not-allowed;
+}
+h2 {
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  line-height: 1.12;
+  margin-bottom: 0;
+}
+h2 em {
+  color: var(--red);
+}
+@media (max-width: 1000px) {
+  .wrap {
+    padding-inline: 28px;
+  }
+}
+@media (max-width: 390px) {
+  .wrap {
+    padding-inline: 20px;
+  }
+}

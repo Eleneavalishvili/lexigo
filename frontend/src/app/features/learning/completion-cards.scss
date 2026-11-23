@@ -1,0 +1,65 @@
+.cards-wrap {
+  max-width: 1000px;
+  margin-inline: auto;
+  padding: clamp(1rem, 4vw, 3rem);
+}
+header,
+.pages {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+main {
+  margin-top: 3rem;
+}
+h1 {
+  font-size: clamp(2.3rem, 5vw, 4rem);
+}
+p {
+  line-height: 1.7;
+}
+.card-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-block: 2rem;
+}
+.pages {
+  margin-block: 1.5rem;
+}
+.sharing {
+  margin-block: 2rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1.5rem;
+}
+.sharing button {
+  margin: 1rem 1rem 0 0;
+}
+.consent {
+  display: flex;
+  align-items: start;
+  gap: 0.7rem;
+  line-height: 1.7;
+}
+#card-share-link {
+  width: 100%;
+  padding: 0.8rem;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+@media print {
+  header,
+  .page-tools,
+  .card-list {
+    display: none;
+  }
+  main {
+    margin: 0;
+  }
+  .cards-wrap {
+    padding: 0;
+  }
+}

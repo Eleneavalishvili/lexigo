@@ -1,0 +1,231 @@
+:host {
+  display: block;
+}
+.checkout-wrap {
+  max-width: 1100px;
+  margin: auto;
+  padding: 32px 36px;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+main {
+  padding-top: 56px;
+}
+h1 {
+  font-family: var(--display-font);
+  font-size: clamp(2.8rem, 6vw, 5.4rem);
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+  margin: 20px 0;
+}
+h1 em,
+.refill-card h2 em {
+  color: var(--red);
+}
+h2 {
+  font-family: var(--display-font);
+  font-size: 2rem;
+  line-height: 1.2;
+}
+p {
+  line-height: 1.75;
+}
+.intro {
+  max-width: 610px;
+  font-size: 1.1rem;
+}
+.simulation {
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--gold);
+  background: var(--surface);
+  padding: 20px;
+  margin: 24px 0;
+  line-height: 1.7;
+}
+.simulation strong {
+  display: block;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin: 28px 0;
+}
+.refill-card {
+  padding: 30px;
+  background: var(--sage);
+  color: #213e62;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: 5px 5px 0 var(--line);
+}
+.refill-card h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+.refill-card h2 em {
+  color: #973b2b;
+}
+.heart-stamp {
+  position: absolute;
+  right: 22px;
+  top: 14px;
+  font-size: 3rem;
+  transform: rotate(12deg);
+  color: #973b2b;
+}
+.price {
+  font-family: var(--display-font);
+  font-size: 2.4rem;
+  line-height: 1.3;
+}
+.price small {
+  display: block;
+  font-family: var(--body-font);
+  font-size: 0.85rem;
+}
+.payment-panel {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  padding: 30px;
+}
+label {
+  display: block;
+  font-weight: 600;
+  margin: 20px 0 10px;
+}
+select {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding: 14px 12px;
+  border: 1px solid var(--line);
+  font: inherit;
+  background: var(--paper);
+  color: var(--ink);
+}
+select:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+.payment-panel .button {
+  width: 100%;
+  white-space: normal;
+}
+.recovery {
+  padding: 24px;
+  border: 2px solid var(--gold);
+  margin: 24px 0;
+}
+.recovery button {
+  margin: 8px 12px 0 0;
+}
+.purchase-result {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 24px;
+  margin: 24px 0;
+}
+.purchase-result app-character-cue {
+  flex: 0 0 130px;
+}
+.reference {
+  overflow-wrap: anywhere;
+}
+.free-option {
+  font-size: 0.95rem;
+  max-width: 650px;
+}
+.history {
+  margin-top: 48px;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+li {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  border-top: 1px solid var(--line);
+  padding: 20px 0;
+}
+li p {
+  font-size: 0.9rem;
+  margin: 8px 0;
+}
+li > strong {
+  text-align: right;
+  white-space: nowrap;
+}
+li > strong small {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+nav button {
+  min-height: 44px;
+}
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+footer {
+  margin-top: 60px;
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+}
+@media (max-width: 700px) {
+  .checkout-wrap {
+    padding: 24px 20px;
+  }
+  main {
+    padding-top: 36px;
+  }
+  .checkout-grid {
+    grid-template-columns: 1fr;
+  }
+  .refill-card,
+  .payment-panel {
+    padding: 24px;
+  }
+  .purchase-result {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .purchase-result app-character-cue {
+    flex-basis: auto;
+    width: 100px;
+  }
+  li {
+    flex-direction: column;
+    gap: 12px;
+  }
+  li > strong {
+    text-align: left;
+  }
+  header > a:last-child {
+    font-size: 0.85rem;
+  }
+}

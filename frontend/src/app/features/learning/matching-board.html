@@ -1,0 +1,65 @@
+<div class="matching-board">
+  @if (!reviewOnly()) {
+    <p class="matching-hint">Choose a match for each item. Every answer is used once.</p>
+    <p class="pair-count" aria-live="polite">
+      {{ pairs().length }} of {{ left().length }} connected
+    </p>
+  } @else {
+    <p>Review the recordings and answer labels. Your saved result appears above.</p>
+  }
+  <div class="matching-rows">
+    @for (item of left(); track item.id; let index = $index) {
+      <div class="matching-row" [class.review-only]="reviewOnly()">
+        <div class="left-item">
+          <label [for]="'match-' + item.id"
+            ><span class="pair-number" aria-hidden="true">{{ index + 1 }}</span
+            >{{ item.text }}</label
+          >
+          @if (item.audio && sessionId() && exerciseId()) {
+            <app-lesson-audio
+              [sessionId]="sessionId()"
+              [exerciseId]="exerciseId()"
+              [optionId]="item.id"
+              [audio]="item.audio"
+              (starting)="focus(item.id)"
+            />
+          }
+        </div>
+        @if (!reviewOnly()) {
+          <span class="connector" aria-hidden="true">↔</span>
+          <select
+            [id]="'match-' + item.id"
+            [value]="selected(item.id)"
+            [disabled]="disabled()"
+            (change)="choose(item.id, $event)"
+            [attr.aria-label]="'Match for ' + item.text"
+          >
+            <option value="">Choose a match</option>
+            @for (target of right(); track target.id) {
+              <option [value]="target.id" [disabled]="usedByAnother(item.id, target.id)">
+                {{ target.text }}
+              </option>
+            }
+          </select>
+        }
+      </div>
+    }
+  </div>
+  @if (reviewOnly()) {
+    <p>Answer labels:</p>
+    <ul>
+      @for (item of right(); track item.id) {
+        <li>{{ item.text }}</li>
+      }
+    </ul>
+  } @else {
+    <button
+      type="button"
+      class="clear-matches"
+      [disabled]="disabled() || !pairs().length"
+      (click)="clear()"
+    >
+      Clear connections ↺
+    </button>
+  }
+</div>

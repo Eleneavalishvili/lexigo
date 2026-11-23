@@ -1,0 +1,726 @@
+[
+  {
+    "code": "es",
+    "items": [
+      {
+        "key": "coffee",
+        "word": "el café",
+        "englishTranslation": "coffee",
+        "example": "El café está caliente.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "milk",
+        "word": "la leche",
+        "englishTranslation": "milk",
+        "example": "La leche está fría.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "tea",
+        "word": "el té",
+        "englishTranslation": "tea",
+        "example": "El té está caliente.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "water",
+        "word": "el agua",
+        "englishTranslation": "water",
+        "example": "El agua está fría.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "mother",
+        "word": "la madre",
+        "englishTranslation": "mother",
+        "example": "Mi madre trabaja hoy.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "father",
+        "word": "el padre",
+        "englishTranslation": "father",
+        "example": "Mi padre está en casa.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "boy",
+        "word": "el niño",
+        "englishTranslation": "boy",
+        "example": "El niño bebe agua.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "girl",
+        "word": "la niña",
+        "englishTranslation": "girl",
+        "example": "La niña bebe leche.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "monday",
+        "word": "lunes",
+        "englishTranslation": "Monday",
+        "example": "La clase es el lunes.",
+        "partOfSpeech": "noun",
+        "topic": "numbers"
+      },
+      {
+        "key": "january",
+        "word": "enero",
+        "englishTranslation": "January",
+        "example": "Enero es un mes.",
+        "partOfSpeech": "noun",
+        "topic": "numbers"
+      },
+      {
+        "key": "student",
+        "word": "el estudiante",
+        "englishTranslation": "student",
+        "example": "El estudiante estudia inglés.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "teacher",
+        "word": "el profesor",
+        "englishTranslation": "teacher",
+        "example": "El profesor trabaja en una escuela.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "school",
+        "word": "la escuela",
+        "englishTranslation": "school",
+        "example": "La escuela está cerca.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "ticket",
+        "word": "el billete",
+        "englishTranslation": "ticket",
+        "example": "Necesito un billete.",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "sun",
+        "word": "el sol",
+        "englishTranslation": "sun",
+        "example": "Hoy hace sol.",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "three",
+        "word": "tres",
+        "englishTranslation": "three",
+        "example": "Tengo tres libros.",
+        "partOfSpeech": "numeral",
+        "topic": "numbers"
+      },
+      {
+        "key": "hello",
+        "word": "hola",
+        "englishTranslation": "hello",
+        "example": "¡Hola! ¿Cómo estás?",
+        "partOfSpeech": "interjection",
+        "topic": "greetings"
+      },
+      {
+        "key": "two",
+        "word": "dos",
+        "englishTranslation": "two",
+        "example": "Tengo dos entradas.",
+        "partOfSpeech": "numeral",
+        "topic": "numbers"
+      },
+      {
+        "key": "sister",
+        "word": "la hermana",
+        "englishTranslation": "sister",
+        "example": "La hermana de Ana vive aquí.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "bread",
+        "word": "el pan",
+        "englishTranslation": "bread",
+        "example": "El pan está en la mesa.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "station",
+        "word": "la estación",
+        "englishTranslation": "station",
+        "example": "La estación está cerca.",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "rain",
+        "word": "la lluvia",
+        "englishTranslation": "rain",
+        "example": "La lluvia moja las calles.",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      }
+    ]
+  },
+  {
+    "code": "it",
+    "items": [
+      {
+        "key": "coffee",
+        "word": "il caffè",
+        "englishTranslation": "coffee",
+        "example": "Il caffè è caldo.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "milk",
+        "word": "il latte",
+        "englishTranslation": "milk",
+        "example": "Il latte è freddo.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "tea",
+        "word": "il tè",
+        "englishTranslation": "tea",
+        "example": "Il tè è caldo.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "water",
+        "word": "l'acqua",
+        "englishTranslation": "water",
+        "example": "L'acqua è fredda.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "mother",
+        "word": "la madre",
+        "englishTranslation": "mother",
+        "example": "Mia madre lavora oggi.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "father",
+        "word": "il padre",
+        "englishTranslation": "father",
+        "example": "Mio padre è a casa.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "boy",
+        "word": "il bambino",
+        "englishTranslation": "boy",
+        "example": "Il bambino beve acqua.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "girl",
+        "word": "la bambina",
+        "englishTranslation": "girl",
+        "example": "La bambina beve latte.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "monday",
+        "word": "lunedì",
+        "englishTranslation": "Monday",
+        "example": "La lezione è lunedì.",
+        "partOfSpeech": "noun",
+        "topic": "numbers"
+      },
+      {
+        "key": "january",
+        "word": "gennaio",
+        "englishTranslation": "January",
+        "example": "Gennaio è un mese.",
+        "partOfSpeech": "noun",
+        "topic": "numbers"
+      },
+      {
+        "key": "student",
+        "word": "lo studente",
+        "englishTranslation": "student",
+        "example": "Lo studente studia inglese.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "teacher",
+        "word": "il professore",
+        "englishTranslation": "teacher",
+        "example": "Il professore lavora in una scuola.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "school",
+        "word": "la scuola",
+        "englishTranslation": "school",
+        "example": "La scuola è vicina.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "ticket",
+        "word": "il biglietto",
+        "englishTranslation": "ticket",
+        "example": "Ho bisogno di un biglietto.",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "sun",
+        "word": "il sole",
+        "englishTranslation": "sun",
+        "example": "Oggi c'è il sole.",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "three",
+        "word": "tre",
+        "englishTranslation": "three",
+        "example": "Ho tre libri.",
+        "partOfSpeech": "numeral",
+        "topic": "numbers"
+      },
+      {
+        "key": "hello",
+        "word": "ciao",
+        "englishTranslation": "hello",
+        "example": "Ciao, come stai?",
+        "partOfSpeech": "interjection",
+        "topic": "greetings"
+      },
+      {
+        "key": "two",
+        "word": "due",
+        "englishTranslation": "two",
+        "example": "Ho due biglietti.",
+        "partOfSpeech": "numeral",
+        "topic": "numbers"
+      },
+      {
+        "key": "sister",
+        "word": "la sorella",
+        "englishTranslation": "sister",
+        "example": "La sorella di Anna abita qui.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "bread",
+        "word": "il pane",
+        "englishTranslation": "bread",
+        "example": "Il pane è sul tavolo.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "station",
+        "word": "la stazione",
+        "englishTranslation": "station",
+        "example": "La stazione è vicina.",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "rain",
+        "word": "la pioggia",
+        "englishTranslation": "rain",
+        "example": "La pioggia bagna le strade.",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      }
+    ]
+  },
+  {
+    "code": "de",
+    "items": [
+      {
+        "key": "coffee",
+        "word": "der Kaffee",
+        "englishTranslation": "coffee",
+        "example": "Der Kaffee ist heiß.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "milk",
+        "word": "die Milch",
+        "englishTranslation": "milk",
+        "example": "Die Milch ist kalt.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "tea",
+        "word": "der Tee",
+        "englishTranslation": "tea",
+        "example": "Der Tee ist heiß.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "water",
+        "word": "das Wasser",
+        "englishTranslation": "water",
+        "example": "Das Wasser ist kalt.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "mother",
+        "word": "die Mutter",
+        "englishTranslation": "mother",
+        "example": "Meine Mutter arbeitet heute.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "father",
+        "word": "der Vater",
+        "englishTranslation": "father",
+        "example": "Mein Vater ist zu Hause.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "boy",
+        "word": "der Junge",
+        "englishTranslation": "boy",
+        "example": "Der Junge trinkt Wasser.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "girl",
+        "word": "das Mädchen",
+        "englishTranslation": "girl",
+        "example": "Das Mädchen trinkt Milch.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "monday",
+        "word": "der Montag",
+        "englishTranslation": "Monday",
+        "example": "Der Unterricht ist am Montag.",
+        "partOfSpeech": "noun",
+        "topic": "numbers"
+      },
+      {
+        "key": "january",
+        "word": "der Januar",
+        "englishTranslation": "January",
+        "example": "Der Januar ist ein Monat.",
+        "partOfSpeech": "noun",
+        "topic": "numbers"
+      },
+      {
+        "key": "student",
+        "word": "der Student",
+        "englishTranslation": "student",
+        "example": "Der Student lernt Englisch.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "teacher",
+        "word": "der Lehrer",
+        "englishTranslation": "teacher",
+        "example": "Der Lehrer arbeitet in einer Schule.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "school",
+        "word": "die Schule",
+        "englishTranslation": "school",
+        "example": "Die Schule ist in der Nähe.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "ticket",
+        "word": "die Fahrkarte",
+        "englishTranslation": "ticket",
+        "example": "Ich brauche eine Fahrkarte.",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "sun",
+        "word": "die Sonne",
+        "englishTranslation": "sun",
+        "example": "Heute scheint die Sonne.",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "three",
+        "word": "drei",
+        "englishTranslation": "three",
+        "example": "Ich habe drei Bücher.",
+        "partOfSpeech": "numeral",
+        "topic": "numbers"
+      },
+      {
+        "key": "hello",
+        "word": "Hallo",
+        "englishTranslation": "hello",
+        "example": "Hallo, wie geht es dir?",
+        "partOfSpeech": "interjection",
+        "topic": "greetings"
+      },
+      {
+        "key": "two",
+        "word": "zwei",
+        "englishTranslation": "two",
+        "example": "Ich habe zwei Fahrkarten.",
+        "partOfSpeech": "numeral",
+        "topic": "numbers"
+      },
+      {
+        "key": "sister",
+        "word": "die Schwester",
+        "englishTranslation": "sister",
+        "example": "Die Schwester von Anna wohnt hier.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "bread",
+        "word": "das Brot",
+        "englishTranslation": "bread",
+        "example": "Das Brot liegt auf dem Tisch.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "station",
+        "word": "der Bahnhof",
+        "englishTranslation": "train station",
+        "example": "Der Bahnhof ist ganz in der Nähe.",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "rain",
+        "word": "der Regen",
+        "englishTranslation": "rain",
+        "example": "Der Regen macht die Straßen nass.",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      }
+    ]
+  },
+  {
+    "code": "ru",
+    "items": [
+      {
+        "key": "coffee",
+        "word": "кофе",
+        "englishTranslation": "coffee",
+        "example": "Кофе горячий.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "milk",
+        "word": "молоко",
+        "englishTranslation": "milk",
+        "example": "Молоко холодное.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "tea",
+        "word": "чай",
+        "englishTranslation": "tea",
+        "example": "Чай горячий.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "water",
+        "word": "вода",
+        "englishTranslation": "water",
+        "example": "Вода холодная.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "mother",
+        "word": "мама",
+        "englishTranslation": "mother",
+        "example": "Моя мама работает сегодня.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "father",
+        "word": "папа",
+        "englishTranslation": "father",
+        "example": "Мой папа дома.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "boy",
+        "word": "мальчик",
+        "englishTranslation": "boy",
+        "example": "Мальчик пьёт воду.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "girl",
+        "word": "девочка",
+        "englishTranslation": "girl",
+        "example": "Девочка пьёт молоко.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "monday",
+        "word": "понедельник",
+        "englishTranslation": "Monday",
+        "example": "Урок в понедельник.",
+        "partOfSpeech": "noun",
+        "topic": "numbers"
+      },
+      {
+        "key": "january",
+        "word": "январь",
+        "englishTranslation": "January",
+        "example": "Январь — месяц.",
+        "partOfSpeech": "noun",
+        "topic": "numbers"
+      },
+      {
+        "key": "student",
+        "word": "студент",
+        "englishTranslation": "student",
+        "example": "Студент изучает английский.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "teacher",
+        "word": "учитель",
+        "englishTranslation": "teacher",
+        "example": "Учитель работает в школе.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "school",
+        "word": "школа",
+        "englishTranslation": "school",
+        "example": "Школа рядом.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "ticket",
+        "word": "билет",
+        "englishTranslation": "ticket",
+        "example": "Мне нужен билет.",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "sun",
+        "word": "солнце",
+        "englishTranslation": "sun",
+        "example": "Сегодня светит солнце.",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "three",
+        "word": "три",
+        "englishTranslation": "three",
+        "example": "У меня три книги.",
+        "partOfSpeech": "numeral",
+        "topic": "numbers"
+      },
+      {
+        "key": "hello",
+        "word": "привет",
+        "englishTranslation": "hello",
+        "example": "Привет! Как дела?",
+        "partOfSpeech": "interjection",
+        "topic": "greetings"
+      },
+      {
+        "key": "two",
+        "word": "два",
+        "englishTranslation": "two",
+        "example": "У меня два билета.",
+        "partOfSpeech": "numeral",
+        "topic": "numbers"
+      },
+      {
+        "key": "sister",
+        "word": "сестра",
+        "englishTranslation": "sister",
+        "example": "Моя сестра живёт здесь.",
+        "partOfSpeech": "noun",
+        "topic": "family"
+      },
+      {
+        "key": "bread",
+        "word": "хлеб",
+        "englishTranslation": "bread",
+        "example": "Хлеб лежит на столе.",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "station",
+        "word": "вокзал",
+        "englishTranslation": "train station",
+        "example": "Вокзал находится рядом.",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "rain",
+        "word": "дождь",
+        "englishTranslation": "rain",
+        "example": "На улице идёт дождь.",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      }
+    ]
+  }
+]

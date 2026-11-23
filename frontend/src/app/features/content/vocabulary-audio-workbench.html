@@ -1,0 +1,105 @@
+<main>
+  <nav aria-label="Content navigation">
+    <a routerLink="/manage/lessons">← Lesson workbench</a>
+    <a routerLink="/manage/media">Audio library ↗</a>
+  </nav>
+  <h1>Vocabulary recordings</h1>
+  <p>Choose a course and attach an independently reviewed pronunciation recording.</p>
+  <label for="vocabulary-audio-course">Course</label>
+  <select
+    id="vocabulary-audio-course"
+    #choice
+    [disabled]="saving() || loading()"
+    (change)="chooseCourse(choice.value)"
+  >
+    <option value="">Choose a course</option>
+    @for (item of courses(); track item.id) {
+      <option [value]="item.id">{{ item.title }}</option>
+    }
+  </select>
+  @if (notice()) {
+    <p role="status">{{ notice() }}</p>
+  }
+  @if (error()) {
+    <p role="alert">{{ error() }}</p>
+  }
+  @if (loading()) {
+    <p role="status">Loading words…</p>
+  }
+  @if (course(); as activeCourse) {
+    <nav aria-label="Vocabulary pages">
+      <button
+        type="button"
+        class="button button-outline"
+        [disabled]="loading() || saving()"
+        (click)="load(page())"
+      >
+        Refresh list
+      </button>
+      <button
+        type="button"
+        class="button button-outline"
+        [disabled]="loading() || saving() || page() === 1"
+        (click)="load(page() - 1)"
+      >
+        Previous
+      </button>
+      <button
+        type="button"
+        class="button button-outline"
+        [disabled]="loading() || saving() || page() * 20 >= total()"
+        (click)="load(page() + 1)"
+      >
+        Next
+      </button>
+    </nav>
+    @for (word of rows(); track word.id) {
+      <article>
+        <h2>{{ word.word }}</h2>
+        <p>
+          {{ word.englishTranslation }} ·
+          {{ word.audioMediaId ? 'Recording attached' : 'No recording attached' }}
+        </p>
+        @if (selected()?.id === word.id) {
+          <app-reviewed-audio-picker
+            [languageId]="activeCourse.targetLanguageId"
+            [selectedId]="audioId()"
+            [disabled]="saving()"
+            (chosen)="audioId.set($event)"
+          />
+          <div class="actions">
+            <button
+              type="button"
+              class="button button-ink"
+              [disabled]="saving() || audioId() === word.audioMediaId"
+              (click)="save(word)"
+            >
+              Save recording
+            </button>
+            <button
+              type="button"
+              class="button button-outline"
+              [disabled]="saving()"
+              (click)="selected.set(undefined)"
+            >
+              Cancel
+            </button>
+          </div>
+        } @else {
+          <button
+            type="button"
+            class="button button-outline"
+            [disabled]="saving()"
+            (click)="edit(word)"
+          >
+            Choose recording
+          </button>
+        }
+      </article>
+    } @empty {
+      @if (!loading() && !error()) {
+        <p>No vocabulary words on this page.</p>
+      }
+    }
+  }
+</main>

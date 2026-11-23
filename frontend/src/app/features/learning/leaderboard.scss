@@ -1,0 +1,166 @@
+.ranking-wrap {
+  max-width: 1050px;
+  margin: auto;
+  padding: 2rem;
+}
+header,
+.week-picker,
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+header > a:last-child {
+  font-size: 0.85rem;
+}
+main {
+  margin-block: 4rem;
+}
+h1 {
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  line-height: 1.1;
+}
+h1 em {
+  color: var(--red);
+}
+.intro,
+.small {
+  color: var(--muted);
+  line-height: 1.7;
+}
+.small {
+  font-size: 0.8rem;
+}
+label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-top: 2rem;
+}
+select {
+  min-height: 48px;
+  width: 100%;
+  max-width: 350px;
+  border: 1px solid var(--ink);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  padding: 0.7rem;
+  border-radius: 0.6rem;
+}
+.week-picker {
+  margin-top: 2rem;
+}
+.participation {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2rem;
+  align-items: center;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--surface);
+  margin-block: 2rem;
+}
+h2 {
+  font-size: 1.7rem;
+  margin-bottom: 0.8rem;
+}
+p {
+  line-height: 1.8;
+}
+.ranking {
+  list-style: none;
+  padding: 0;
+}
+.ranking li {
+  display: grid;
+  grid-template-columns: 2rem 48px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
+  min-height: 80px;
+}
+.ranking .me {
+  background: var(--surface);
+  outline: 2px solid var(--ink);
+  border-radius: 0.7rem;
+}
+.rank {
+  font-family: var(--display-font);
+  font-size: 1.5rem;
+}
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--sage);
+  color: #213e62;
+  font-weight: 700;
+}
+.podium .avatar {
+  background: var(--gold);
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+.avatar > * {
+  grid-area: 1 / 1;
+}
+.name {
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+small {
+  font-size: 0.7rem;
+}
+.name small {
+  display: block;
+  color: var(--muted);
+}
+.empty {
+  padding: 2rem;
+  margin-top: 2rem;
+  text-align: center;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--surface);
+}
+.empty > span {
+  display: block;
+  font-size: 3rem;
+  color: var(--red);
+}
+@media (max-width: 650px) {
+  .ranking-wrap {
+    padding: 1.25rem;
+  }
+  main {
+    margin-block: 2rem;
+  }
+  .participation {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .ranking li {
+    grid-template-columns: 1.5rem 40px minmax(0, 1fr) auto;
+    gap: 0.5rem;
+    padding: 0.8rem 0.4rem;
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+  }
+  .week-picker .button {
+    font-size: 0.7rem;
+    padding: 0.7rem;
+  }
+}

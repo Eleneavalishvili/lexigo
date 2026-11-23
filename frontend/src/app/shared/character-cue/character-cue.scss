@@ -1,0 +1,105 @@
+:host {
+  display: block;
+  width: 180px;
+  max-width: 100%;
+}
+svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+.companion {
+  transform-origin: 120px 260px;
+  animation: breathe 3.5s ease-in-out infinite;
+}
+.eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: blink 5.2s infinite;
+}
+.right-arm {
+  transform-origin: 157px 149px;
+}
+[data-mood='greeting'] .right-arm,
+[data-mood='celebration'] .right-arm {
+  animation: wave 1.4s ease-in-out infinite;
+}
+[data-mood='correct'] .companion,
+[data-mood='celebration'] .companion {
+  animation: bounce 0.75s ease-in-out infinite;
+}
+[data-mood='encouragement'] .head {
+  transform-origin: 120px 110px;
+  animation: tilt 2s ease-in-out infinite;
+}
+[data-mood='listening'] .head,
+[data-mood='checking'] .head {
+  transform: rotate(4deg);
+  transform-origin: 120px 130px;
+}
+.talking-mouth {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: talking 0.25s ease-in-out infinite alternate;
+}
+.motion-toggle {
+  display: block;
+  margin: 0.3rem auto 0;
+  padding: 0.2rem 0.4rem;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+:host([data-paused='true']) * {
+  animation-play-state: paused !important;
+}
+:host-context([data-reduce-motion='true']) * {
+  animation: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+  }
+}
+@keyframes breathe {
+  50% {
+    transform: translateY(-3px);
+  }
+}
+@keyframes blink {
+  0%,
+  45%,
+  49%,
+  100% {
+    transform: scaleY(1);
+  }
+  47% {
+    transform: scaleY(0.08);
+  }
+}
+@keyframes wave {
+  50% {
+    transform: rotate(-15deg);
+  }
+}
+@keyframes bounce {
+  50% {
+    transform: translateY(-8px) rotate(-2deg);
+  }
+}
+@keyframes tilt {
+  50% {
+    transform: rotate(-5deg);
+  }
+}
+@keyframes talking {
+  from {
+    transform: scaleY(0.35);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}

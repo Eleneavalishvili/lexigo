@@ -1,0 +1,63 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="reward-editor">
+  <h2>{{ value() ? 'Challenge details' : 'Schedule a challenge' }}</h2>
+  @if (value() && !value()!.canEdit) {
+    <p>
+      Started and archived challenges are protected. Existing progress and rewards stay unchanged.
+    </p>
+  }
+  <fieldset [disabled]="busy() || (!!value() && !value()!.canEdit)">
+    <legend>Challenge rule</legend>
+    <label for="challenge-title">Title</label
+    ><input id="challenge-title" formControlName="title" maxlength="120" />
+    <label for="challenge-rule">Rule</label>
+    <select id="challenge-rule" formControlName="ruleType">
+      <option value="CompletedLessons">New lessons</option>
+      <option value="StudyDays">Different UTC study days</option>
+    </select>
+    <label for="challenge-target">Target</label
+    ><input id="challenge-target" type="number" min="1" max="10000" formControlName="target" />
+    <label for="challenge-xp">Bonus XP</label
+    ><input id="challenge-xp" type="number" min="1" max="1000" formControlName="rewardXp" />
+    <label for="challenge-start">Starts at (UTC)</label
+    ><input id="challenge-start" type="datetime-local" formControlName="startsAt" />
+    <label for="challenge-end">Ends at (UTC, exclusive)</label
+    ><input id="challenge-end" type="datetime-local" formControlName="endsAt" />
+    <p>
+      Schedule at least five minutes ahead, for no more than 366 days. A rule cannot have two active
+      records with the exact same window.
+    </p>
+  </fieldset>
+  <label for="challenge-reason">Reason for this change</label
+  ><textarea
+    id="challenge-reason"
+    formControlName="reason"
+    minlength="10"
+    maxlength="500"
+    [readOnly]="busy()"
+  ></textarea>
+  @if (form.touched && form.invalid) {
+    <p role="alert">Complete the fields and enter a reason of 10–500 characters.</p>
+  }
+  @if (error()) {
+    <p role="alert">{{ error() }}</p>
+  }
+  <div class="actions">
+    <button
+      class="button button-ink"
+      type="submit"
+      [disabled]="busy() || form.invalid || (!!value() && !value()!.canEdit)"
+    >
+      Save challenge
+    </button>
+    @if (value()?.canEdit) {
+      <button
+        class="button button-danger"
+        type="button"
+        (click)="retire()"
+        [disabled]="busy() || form.controls.reason.invalid"
+      >
+        Cancel future challenge
+      </button>
+    }
+  </div>
+</form>

@@ -1,0 +1,127 @@
+<section class="panel" aria-labelledby="subscription-settings-title">
+  <p class="eyebrow">YOUR PLAN, YOUR CHOICE</p>
+  <h2 id="subscription-settings-title">Make room for your next chapter.</h2>
+  @if (store.notice()) {
+    <p class="notice" role="status">{{ store.notice() }}</p>
+  }
+  @if (store.error()) {
+    <p class="error" role="alert">{{ store.error() }}</p>
+  }
+  @if (store.pending()) {
+    <button
+      class="button button-outline"
+      type="button"
+      (click)="retry()"
+      [disabled]="store.busy() || disabled()"
+    >
+      Retry the same saved change ↗
+    </button>
+  }
+  @if (subscription().id) {
+    @if (subscription().cancelAtPeriodEnd) {
+      <p class="notice">
+        Your plan is set to end on {{ subscription().currentPeriodEnd | date: 'medium' }}. Premium
+        stays available until then.
+      </p>
+      <button class="button button-ink" type="button" (click)="cancel(false)" [disabled]="locked()">
+        Resume subscription ↗
+      </button>
+    } @else {
+      <p>Cancel at the end of your paid period. Your access and learning progress stay intact.</p>
+      <button
+        class="button button-outline"
+        type="button"
+        (click)="cancel(true)"
+        [disabled]="locked()"
+      >
+        Cancel at period end ↗
+      </button>
+    }
+    <form [formGroup]="renewal" (ngSubmit)="saveRenewal()">
+      <fieldset [disabled]="locked()">
+        <h3>Renewal preferences.</h3>
+        @if (!subscription().renewalProcessingAvailable) {
+          <p class="simulation">
+            Automatic renewal processing is not available yet. These are saved preferences; no
+            renewal runs from this control.
+          </p>
+        }
+        @if (subscription().renewalProcessingAvailable) {
+          <p class="simulation">
+            Saving renewal ON authorizes a simulated debit at period end using your selected
+            next-period price, or your existing price. Failed renewals stop and require a manual
+            purchase. Processing more than 15 minutes late also stops without charging. No real
+            money is used.
+          </p>
+        }
+        @if (subscription().renewalConsentRequired && subscription().renewalProcessingAvailable) {
+          <p class="notice">
+            Your earlier preference was saved before processing was available. Save renewal ON again
+            to confirm it. It cannot renew until you confirm.
+          </p>
+        }
+        <label class="check"
+          ><input type="checkbox" formControlName="autoRenew" />Save an automatic test-renewal
+          preference</label
+        >
+        <label for="renewal-card">Default test card</label
+        ><select id="renewal-card" formControlName="cardId">
+          <option value="">No renewal card</option>
+          @for (card of cards(); track card.id) {
+            <option [value]="card.id" [disabled]="card.status !== 'Active'">
+              {{ card.nickname }} · {{ card.currency }} · {{ card.status }}
+            </option>
+          }
+        </select>
+        <p>
+          Turning renewal off never shortens your current paid period. A cancellation takes
+          precedence over a saved renewal preference.
+        </p>
+        <button class="button button-ink" type="submit">Save renewal preferences ↗</button>
+      </fieldset>
+    </form>
+    <form [formGroup]="schedule" (ngSubmit)="saveSchedule()">
+      <fieldset [disabled]="locked()">
+        <h3>Your next period.</h3>
+        <p>Your current {{ subscription().period }} period and price stay unchanged.</p>
+        @if (subscription().scheduledPlanPrice; as price) {
+          <p class="notice">
+            Selected for the next period: {{ price.period }} ·
+            {{ price.amount | currency: price.currency : 'code' }} simulated funds.
+          </p>
+        }
+        <label for="scheduled-plan">Next-period selection</label
+        ><select id="scheduled-plan" formControlName="priceId">
+          <option value="">Keep the current period type</option>
+          @for (plan of plans(); track plan.id) {
+            @if (plan.code === subscription().planCode) {
+              @for (price of plan.prices; track price.id) {
+                <option [value]="price.id">
+                  {{ price.period }} · {{ price.amount | currency: price.currency : 'code' }}
+                </option>
+              }
+            }
+          }
+        </select>
+        <p>
+          This selects the price for your next renewal if automatic test-renewal is enabled. Saving
+          the choice does not charge funds now.
+        </p>
+        <button class="button button-outline" type="submit">Save next-period choice ↗</button>
+      </fieldset>
+    </form>
+  } @else {
+    <p>
+      Your paid period has ended. You can still stop any pending renewal before the processor
+      handles it.
+    </p>
+    <button
+      class="button button-outline"
+      type="button"
+      (click)="stopRenewal()"
+      [disabled]="locked()"
+    >
+      Turn off pending renewal ↗
+    </button>
+  }
+</section>

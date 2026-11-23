@@ -1,0 +1,117 @@
+<div class="classes-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/learn">↖ Back to learning</a>
+  </header>
+  <main>
+    <p class="eyebrow">GOOD WORDS, GOOD COMPANY</p>
+    <h1>A little language.<br /><em>A shared journey.</em></h1>
+    <p>Your classes stay private. Join with an invitation from your teacher.</p>
+    <p><a routerLink="/classes/extra-study">Explore Premium extra study ↗</a></p>
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+    }
+    @if (loading()) {
+      <p role="status">Opening your classes…</p>
+    }
+    <button class="text-button" type="button" (click)="load()" [disabled]="loading() || working()">
+      Refresh classes ↻
+    </button>
+    <div class="class-grid">
+      <section>
+        <h2>Your classes</h2>
+        <ul class="class-list">
+          @for (item of value()?.items ?? []; track item.id) {
+            <li>
+              <a [routerLink]="['/classes', item.id]"
+                ><strong>{{ item.name }}</strong
+                ><span
+                  >{{ item.courseTitle }} · {{ item.isTeacher ? 'Teaching' : 'Learning'
+                  }}{{ item.isArchived ? ' · Archived' : '' }}</span
+                ></a
+              >
+            </li>
+          } @empty {
+            @if (!loading() && value()) {
+              <li>No classes yet. Your teacher’s invitation is your way in.</li>
+            }
+          }
+        </ul>
+        @if (value(); as result) {
+          <div class="actions" aria-label="Class pagination">
+            <button
+              class="button button-outline"
+              type="button"
+              (click)="changePage(-1)"
+              [disabled]="page() === 1 || loading() || working()"
+            >
+              Previous</button
+            ><span>Page {{ page() }}</span>
+            <button
+              class="button button-outline"
+              type="button"
+              (click)="changePage(1)"
+              [disabled]="page() * result.pageSize >= result.totalCount || loading() || working()"
+            >
+              Next
+            </button>
+          </div>
+        }
+      </section>
+      <section>
+        <form [formGroup]="joinForm" (ngSubmit)="join()" class="panel">
+          <h2>Join your class</h2>
+          <label for="join-code">Invitation code</label
+          ><input
+            id="join-code"
+            formControlName="code"
+            aria-describedby="join-code-help"
+            maxlength="64"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+          />
+          <p id="join-code-help">
+            Paste the invitation code your teacher shared with you. If you don’t have one, ask your
+            teacher for a code.
+          </p>
+          <button
+            class="button button-ink"
+            type="submit"
+            [disabled]="joinForm.invalid || working() || loading()"
+          >
+            Join class ↗
+          </button>
+        </form>
+        @if (teacher()) {
+          <form [formGroup]="createForm" (ngSubmit)="create()" class="panel">
+            <h2>Create a class</h2>
+            <label for="class-course">Course</label
+            ><select id="class-course" formControlName="courseId">
+              <option value="">Choose a course</option>
+              @for (course of courses(); track course.id) {
+                <option [value]="course.id">{{ course.title }}</option>
+              }
+            </select>
+            <label for="class-name">Class name</label
+            ><input id="class-name" formControlName="name" maxlength="120" />
+            <label for="class-description">Description</label
+            ><textarea
+              id="class-description"
+              formControlName="description"
+              maxlength="2000"
+            ></textarea>
+            <p>Teacher actions require a verified two-factor session.</p>
+            <button
+              class="button button-ink"
+              type="submit"
+              [disabled]="createForm.invalid || working() || loading()"
+            >
+              Create class ↗
+            </button>
+          </form>
+        }
+      </section>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,1237 @@
+[
+  {
+    "method": "POST",
+    "route": "/api/v1/classes/{id}/transfer",
+    "scope": "Offer a class handover to a specific eligible teacher",
+    "status": "implemented_verified",
+    "permissions": "Current MFA teacher owning an active class. Designated recipient must be an active confirmed Teacher with two-factor authentication. Private 24-hour protected link.",
+    "evidence": [
+      "2026-11-18: class-handover.trx, class-handover-deletion-gate.trx and desktop/phone classroom-assignment.spec.ts."
+    ]
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/classes/transfers/preview",
+    "scope": "Show a pending handover to its designated teacher",
+    "status": "implemented_verified",
+    "permissions": "Designated MFA teacher, valid protected link, original class owner and revision, active class. Private/no-store.",
+    "evidence": [
+      "2026-11-18: PostgreSQL verifies tamper and stale-revision denial. Desktop and phone show the receiving teacher the class before acceptance."
+    ]
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/classes/transfers/accept",
+    "scope": "Accept responsibility for a class while preserving members and assignments",
+    "status": "implemented_verified",
+    "permissions": "Designated MFA teacher and valid unexpired class handover. User/class locks serialize acceptance. Teacher capacity limit applies. Prior joining codes are revoked.",
+    "evidence": [
+      "2026-11-18: Concurrent acceptance writes one transfer audit; old owner loses management; current members and assignment history remain. Accepted handover clears the original teacher's active-class deletion responsibility."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/enrollments/{courseId}",
+    "scope": "Read the private course enrollment returned by creation",
+    "status": "implemented_verified",
+    "permissions": "Authenticated owner only. An unenrolled account receives 404.",
+    "evidence": [
+      "2026-11-17: enrollment-contract.trx verified the creation URL, foreign denial and detail access after course archival."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/saved-words/{id}",
+    "scope": "Read a saved word's personal review schedule",
+    "status": "implemented_verified",
+    "permissions": "Authenticated owner only. Other accounts receive 404.",
+    "evidence": [
+      "2026-11-17: saved-word-contract.trx verified the creation URL, the exact saved schedule and foreign denial."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/reports/{id}",
+    "scope": "Read a submitted report and its learner-facing decision",
+    "status": "implemented_verified",
+    "permissions": "Authenticated reporter only. Other accounts receive 404.",
+    "evidence": [
+      "2026-11-17: report-creation-contract.trx verified the creation URL, owner access, foreign denial and public-facing resolution without staff actor details."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/units/{id}",
+    "scope": "Read an individual course unit after creation",
+    "status": "implemented_verified",
+    "permissions": "Active privileged staff session. Course language scope or administrator access is required.",
+    "evidence": [
+      "2026-11-17: unit-creation-contract.trx verified scoped author access, 404 for another language and 401 for anonymous requests."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/collections/{id}",
+    "scope": "Read the collection returned by creation",
+    "status": "implemented_verified",
+    "permissions": "Authenticated owner only. A foreign collection returns 404.",
+    "evidence": [
+      "2026-11-17: VocabularyTests followed the created Location and verified owner access and foreign denial. collection-creation-final.trx."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/avatar",
+    "scope": "Issue a short-lived read link for the current avatar",
+    "status": "implemented_verified",
+    "permissions": "Authenticated owner only. Writes require a live session family.",
+    "evidence": [
+      "ProfileAvatarTests: PostgreSQL and private object storage upload, owner read, replacement and removal."
+    ]
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/me/avatar",
+    "scope": "Replace the current avatar using bounded RGBA pixels",
+    "status": "implemented_verified",
+    "permissions": "Authenticated owner only. Writes require a live session family.",
+    "evidence": [
+      "ProfileAvatarTests: PostgreSQL and private object storage upload, owner read, replacement and removal."
+    ]
+  },
+  {
+    "method": "DELETE",
+    "route": "/api/v1/me/avatar",
+    "scope": "Clear the current avatar and queue private storage cleanup",
+    "status": "implemented_verified",
+    "permissions": "Authenticated owner only. Writes require a live session family.",
+    "evidence": [
+      "ProfileAvatarTests: PostgreSQL and private object storage upload, owner read, replacement and removal."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/courses/{courseId}/skills",
+    "scope": "Read course skill counts and last practice for the signed-in learner",
+    "status": "implemented_verified",
+    "permissions": "Authenticated learner with an enrollment in the published course. Private no-store response.",
+    "evidence": [
+      "2026-11-08: MistakePracticeTests verified owner counts, unpractised skills, anonymous denial and separation between learners. Local readiness and journey 200, anonymous endpoint 401."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/two-factor",
+    "scope": "SEC-003 approved security amendment",
+    "status": "implemented_verified",
+    "permissions": "Authenticated owner; current password and relevant factor required for mutations; privileged disable denied.",
+    "evidence": [
+      "2026-10-27: TwoFactorTests; two-factor.spec.ts; TWO_FACTOR_SECURITY.md"
+    ],
+    "notes": "Initial enrollment before privileged role assignment. Privileged provisioning and authenticator replacement remain pending."
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/me/two-factor/setup",
+    "scope": "SEC-003 approved security amendment",
+    "status": "implemented_verified",
+    "permissions": "Authenticated owner; current password and relevant factor required for mutations; privileged disable denied.",
+    "evidence": [
+      "2026-10-27: TwoFactorTests; two-factor.spec.ts; TWO_FACTOR_SECURITY.md"
+    ],
+    "notes": "Initial enrollment before privileged role assignment. Privileged provisioning and authenticator replacement remain pending."
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/me/two-factor/enable",
+    "scope": "SEC-003 approved security amendment",
+    "status": "implemented_verified",
+    "permissions": "Authenticated owner; current password and relevant factor required for mutations; privileged disable denied.",
+    "evidence": [
+      "2026-10-27: TwoFactorTests; two-factor.spec.ts; TWO_FACTOR_SECURITY.md"
+    ],
+    "notes": "Initial enrollment before privileged role assignment. Privileged provisioning and authenticator replacement remain pending."
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/me/two-factor/recovery-codes",
+    "scope": "SEC-003 approved security amendment",
+    "status": "implemented_verified",
+    "permissions": "Authenticated owner; current password and relevant factor required for mutations; privileged disable denied.",
+    "evidence": [
+      "2026-10-27: TwoFactorTests; two-factor.spec.ts; TWO_FACTOR_SECURITY.md"
+    ],
+    "notes": "Initial enrollment before privileged role assignment. Privileged provisioning and authenticator replacement remain pending."
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/me/two-factor/disable",
+    "scope": "SEC-003 approved security amendment",
+    "status": "implemented_verified",
+    "permissions": "Authenticated owner; current password and relevant factor required for mutations; privileged disable denied.",
+    "evidence": [
+      "2026-10-27: TwoFactorTests; two-factor.spec.ts; TWO_FACTOR_SECURITY.md"
+    ],
+    "notes": "Initial enrollment before privileged role assignment. Privileged provisioning and authenticator replacement remain pending."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/preferences/courses",
+    "scope": "PDF page 4 active-course selection",
+    "status": "implemented_verified",
+    "permissions": "Authenticated account; only published courses returned.",
+    "evidence": [
+      "2026-10-27: ProfileTests and profile browser check; PROFILE_SETTINGS.md"
+    ],
+    "notes": "Does not replace public catalog endpoints."
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/auth/confirm-email-change",
+    "scope": "PDF page 4 confirmed email change",
+    "status": "implemented_verified",
+    "permissions": "Anonymous holder of unexpired target-bound token and current pending request ID; request requires authenticated password/MFA proof.",
+    "evidence": [
+      "2026-10-27: EmailChangeTests; confirm-email-change.spec.ts; EMAIL_CHANGE_SECURITY.md"
+    ],
+    "notes": "Explicit action only, transactionally one-use; revokes sessions and preserves MFA. No external test email sent."
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/me/two-factor/replacement",
+    "scope": "SEC-003 authenticator recovery",
+    "status": "implemented_verified",
+    "permissions": "Authenticated owner, enabled MFA, password proof and server-validated MFA session. Begin requires original sign-in age <=5min; confirmation requires same session and pending request <=10min.",
+    "evidence": [
+      "2026-10-27: AuthenticatorReplacementTests; replace-authenticator.spec.ts; PRIVILEGED_SETUP.md"
+    ],
+    "notes": "Old key stays active until verification. Success replaces codes, revokes sessions and writes audit/notice. Operator-only bootstrap is not an HTTP endpoint."
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/me/two-factor/replacement/confirm",
+    "scope": "SEC-003 authenticator recovery",
+    "status": "implemented_verified",
+    "permissions": "Authenticated owner, enabled MFA, password proof and server-validated MFA session. Begin requires original sign-in age <=5min; confirmation requires same session and pending request <=10min.",
+    "evidence": [
+      "2026-10-27: AuthenticatorReplacementTests; replace-authenticator.spec.ts; PRIVILEGED_SETUP.md"
+    ],
+    "notes": "Old key stays active until verification. Success replaces codes, revokes sessions and writes audit/notice. Operator-only bootstrap is not an HTTP endpoint."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/admin/languages",
+    "scope": "PDF language-scope administration",
+    "status": "implemented_verified",
+    "permissions": "SuperAdmin only; four target language choices.",
+    "evidence": [
+      "2026-10-28: AdministrationTests/Development Swagger; ADMINISTRATION_SECURITY.md"
+    ],
+    "notes": "Supports role/language form; does not grant permissions by itself."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/courses",
+    "scope": "Concrete operations supporting baseline generic content-management routes",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed MFA staff session; server enforces role, language scope, ownership and workflow. Unit creation admin only; published archive admin only.",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration."
+    ],
+    "notes": "Verified first text-content operation; this does not complete generic full-resource CRUD or other exercise formats."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/units",
+    "scope": "Concrete operations supporting baseline generic content-management routes",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed MFA staff session; server enforces role, language scope, ownership and workflow. Unit creation admin only; published archive admin only.",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration."
+    ],
+    "notes": "Verified first text-content operation; this does not complete generic full-resource CRUD or other exercise formats."
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/manage/units",
+    "scope": "Concrete operations supporting baseline generic content-management routes",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed MFA staff session; server enforces role, language scope, ownership and workflow. Unit creation admin only; published archive admin only.",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration."
+    ],
+    "notes": "Verified first text-content operation; this does not complete generic full-resource CRUD or other exercise formats."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/lessons",
+    "scope": "Concrete operations supporting baseline generic content-management routes",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed MFA staff session; server enforces role, language scope, ownership and workflow. Unit creation admin only; published archive admin only.",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md."
+    ],
+    "notes": "Current relevant content operations support eight text/visual formats. Reading/DialogueChoice add optional draft ContextText, required for review/publication; Russian Alphabet is restricted to Russian-course Cyrillic choices. Full CRUD/media/remaining-format work is still required. See CONTEXT_EXERCISES.md."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/lessons/{id}",
+    "scope": "Concrete operations supporting baseline generic content-management routes",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed MFA staff session; server enforces role, language scope, ownership and workflow. Unit creation admin only; published archive admin only.",
+    "evidence": [
+      "2026-11-09: Staff content payloads support course skill tags through existing scoped draft and review workflows.",
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md."
+    ],
+    "notes": "Current relevant content operations support eight text/visual formats. Reading/DialogueChoice add optional draft ContextText, required for review/publication; Russian Alphabet is restricted to Russian-course Cyrillic choices. Full CRUD/media/remaining-format work is still required. See CONTEXT_EXERCISES.md."
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/manage/lessons",
+    "scope": "Concrete operations supporting baseline generic content-management routes",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed MFA staff session; server enforces role, language scope, ownership and workflow. Unit creation admin only; published archive admin only.",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md."
+    ],
+    "notes": "Current relevant content operations support eight text/visual formats. Reading/DialogueChoice add optional draft ContextText, required for review/publication; Russian Alphabet is restricted to Russian-course Cyrillic choices. Full CRUD/media/remaining-format work is still required. See CONTEXT_EXERCISES.md."
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/manage/lessons/{id}",
+    "scope": "Concrete operations supporting baseline generic content-management routes",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed MFA staff session; server enforces role, language scope, ownership and workflow. Unit creation admin only; published archive admin only.",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md."
+    ],
+    "notes": "Current relevant content operations support eight text/visual formats. Reading/DialogueChoice add optional draft ContextText, required for review/publication; Russian Alphabet is restricted to Russian-course Cyrillic choices. Full CRUD/media/remaining-format work is still required. See CONTEXT_EXERCISES.md."
+  },
+  {
+    "method": "DELETE",
+    "route": "/api/v1/manage/lessons/{id}",
+    "scope": "Concrete operations supporting baseline generic content-management routes",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed MFA staff session; server enforces role, language scope, ownership and workflow. Unit creation admin only; published archive admin only.",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md."
+    ],
+    "notes": "Current relevant content operations support eight text/visual formats. Reading/DialogueChoice add optional draft ContextText, required for review/publication; Russian Alphabet is restricted to Russian-course Cyrillic choices. Full CRUD/media/remaining-format work is still required. See CONTEXT_EXERCISES.md."
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/manage/lessons/{id}/exercises",
+    "scope": "Concrete operations supporting baseline generic content-management routes",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed MFA staff session; server enforces role, language scope, ownership and workflow. Unit creation admin only; published archive admin only.",
+    "evidence": [
+      "2026-11-09: Staff content payloads support course skill tags through existing scoped draft and review workflows.",
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md."
+    ],
+    "notes": "Current relevant content operations support eight text/visual formats. Reading/DialogueChoice add optional draft ContextText, required for review/publication; Russian Alphabet is restricted to Russian-course Cyrillic choices. Full CRUD/media/remaining-format work is still required. See CONTEXT_EXERCISES.md."
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/manage/lessons/{id}/exercises/{exerciseId}",
+    "scope": "Concrete operations supporting baseline generic content-management routes",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed MFA staff session; server enforces role, language scope, ownership and workflow. Unit creation admin only; published archive admin only.",
+    "evidence": [
+      "2026-11-09: Staff content payloads support course skill tags through existing scoped draft and review workflows.",
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md."
+    ],
+    "notes": "Current relevant content operations support eight text/visual formats. Reading/DialogueChoice add optional draft ContextText, required for review/publication; Russian Alphabet is restricted to Russian-course Cyrillic choices. Full CRUD/media/remaining-format work is still required. See CONTEXT_EXERCISES.md."
+  },
+  {
+    "method": "DELETE",
+    "route": "/api/v1/manage/lessons/{id}/exercises/{exerciseId}",
+    "scope": "Concrete operations supporting baseline generic content-management routes",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed MFA staff session; server enforces role, language scope, ownership and workflow. Unit creation admin only; published archive admin only.",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md."
+    ],
+    "notes": "Current relevant content operations support eight text/visual formats. Reading/DialogueChoice add optional draft ContextText, required for review/publication; Russian Alphabet is restricted to Russian-course Cyrillic choices. Full CRUD/media/remaining-format work is still required. See CONTEXT_EXERCISES.md."
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/manage/lessons/{id}/versions",
+    "scope": "Concrete operations supporting baseline generic content-management routes",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed MFA staff session; server enforces role, language scope, ownership and workflow. Unit creation admin only; published archive admin only.",
+    "evidence": [
+      "2026-11-20: Revision creation returns 201 with a Location containing the private lesson ID and exact new versionId. Publishing format tests follow the URL and verify the version; the 88-case targeted run and all 663 backend tests passed.",
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md."
+    ],
+    "notes": "Current relevant content operations support eight text/visual formats. Reading/DialogueChoice add optional draft ContextText, required for review/publication; Russian Alphabet is restricted to Russian-course Cyrillic choices. Full CRUD/media/remaining-format work is still required. See CONTEXT_EXERCISES.md."
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/manage/lessons/{id}/prerequisites",
+    "scope": "Concrete operations supporting baseline generic content-management routes",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed MFA staff session; server enforces role, language scope, ownership and workflow. Unit creation admin only; published archive admin only.",
+    "evidence": [
+      "2026-10-28: PublishingTests (8 PostgreSQL integration cases); catalog/workbench/composer component tests; CONTENT_PUBLISHING.md; AddLessonPublishing migration.",
+      "2026-10-28: TextFormatPublishingTests, SentenceAnswerKeysTests, sentence-builder/exercise-composer/lesson-player UI tests; SENTENCE_EXERCISES.md.",
+      "2026-10-28: MatchingPublishingTests and MatchingAnswerKeysTests in PostgreSQL; matching-board/composer/player component tests; MATCHING_EXERCISES.md.",
+      "2026-10-28: ContextPublishingTests/AlphabetPublishingTests, PostgreSQL ContextText bound and legacy snapshot tests; composer/context/player UI tests; CONTEXT_EXERCISES.md."
+    ],
+    "notes": "Current relevant content operations support eight text/visual formats. Reading/DialogueChoice add optional draft ContextText, required for review/publication; Russian Alphabet is restricted to Russian-course Cyrillic choices. Full CRUD/media/remaining-format work is still required. See CONTEXT_EXERCISES.md."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/media",
+    "scope": "Supporting original media upload/review workflow",
+    "status": "implemented_verified",
+    "permissions": "Current MFA staff; own uploads, Admin/SuperAdmin or matching-language Reviewer; bounded25-row pages.",
+    "evidence": [
+      "2026-10-28: WaveAudioInspectorTests32, MediaWorkflowTests8 against PostgreSQL/Garage; full backend224passed, frontend93passed; media-library/media-api component/transport tests; MEDIA_WORKFLOW.md; AddMediaLifecycle applied."
+    ],
+    "notes": "Staff workflow only; learner playback remains required."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/media/{id}/preview",
+    "scope": "Supporting original media upload/review workflow",
+    "status": "implemented_verified",
+    "permissions": "Same staff visibility; Ready files only; two-minute private signed link, no-store response.",
+    "evidence": [
+      "2026-10-28: WaveAudioInspectorTests32, MediaWorkflowTests8 against PostgreSQL/Garage; full backend224passed, frontend93passed; media-library/media-api component/transport tests; MEDIA_WORKFLOW.md; AddMediaLifecycle applied."
+    ],
+    "notes": "Staff workflow only; learner playback remains required."
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/manage/media/{id}/reviews",
+    "scope": "Supporting original media upload/review workflow",
+    "status": "implemented_verified",
+    "permissions": "Independent Reviewer role plus assigned language, never uploader; Ready validated unverified audio; audited approve/reject.",
+    "evidence": [
+      "2026-10-28: WaveAudioInspectorTests32, MediaWorkflowTests8 against PostgreSQL/Garage; full backend224passed, frontend93passed; media-library/media-api component/transport tests; MEDIA_WORKFLOW.md; AddMediaLifecycle applied."
+    ],
+    "notes": "Staff workflow only; learner playback remains required."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/learning-sessions/{id}/exercises/{exerciseId}/audio",
+    "scope": "Supporting original core Listening and reviewed lesson audio",
+    "status": "implemented_verified",
+    "permissions": "Active session owner; current or previously answered exercise only; saved Ready independently reviewed audio. Core playback is Free; signed link300seconds/no-store.",
+    "evidence": [
+      "2026-10-28: ListeningTests6 real PostgreSQL/Garage integration cases; full230backend tests,103frontend tests; author/picker/player/lifecycle coverage; AddSessionAudio; LISTENING_LESSONS.md.",
+      "2026-10-28: SpeakingTests8 PostgreSQL/Garage cases; full238backend tests and111frontend tests passed; guided recording/neutral result/journey/authoring tests; AddUngradedPractice; SPEAKING_LESSONS.md."
+    ],
+    "notes": "Explicit AudioPlaybackLink response in OpenAPI. Future unanswered/foreign/revoked requests denied; actual browser/device and licensed curriculum checks remain required."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/learning-sessions/{id}/exercises/{exerciseId}/options/{optionId}/audio",
+    "scope": "Supporting original audio Matching requirement",
+    "status": "implemented_verified",
+    "permissions": "Active owner and current/answered saved exercise; option must have its own saved reviewed reference. Five-minute private no-store playback, no media/storage ID supplied by client.",
+    "evidence": [
+      "2026-10-28: AudioAssociationTests6 real PostgreSQL/Garage cases; full244backend/119frontend tests passed; matching audio editor/board/transport and Russian mode tests; AddMatchingAudio; AUDIO_ASSOCIATIONS.md."
+    ],
+    "notes": "Explicit AudioPlaybackLink schema; source-independent FK and foreign/media-ID denial verified. Real device and curriculum checks remain required."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/hearts",
+    "scope": "User-requested shared heart status/countdown",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed account/session; only subject-owned wallet, private/no-store and existing learning rate limit. No user-selected account or client refill time.",
+    "evidence": [
+      "2026-10-28: SharedHeartsTests3 real PostgreSQL cases, HeartRecoveryTests6; full274backend/136frontend passed; explicit HeartStatus OpenAPI schema; HEART_RECOVERY.md."
+    ],
+    "notes": "Current count/maximum/refillAt/serverNow only; server computes expiry, future mutation persists refill. Purchase/entitlement operations are not implied complete."
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/me/learning-sessions/{id}/speech-checks",
+    "scope": "User-approved additional local spoken word verification",
+    "status": "implemented_verified",
+    "permissions": "Active owner/current saved SpeakingCheck; server-derived language/private answers, shared hearts, no typed correctness inputs. Bounded one-file multipart, IP/account quotas, no-store.",
+    "evidence": [
+      "2026-10-29: SpeechCheckTests actual PostgreSQL HTTP/transaction/constraint cases with controlled recognizer; native engine tested separately with12licensed human/noise fixtures. Angular recorder/cancellation/idempotency tests. SPOKEN_WORD_CHECKS.md.",
+      "Final verification:290backend/143frontend tests passed; production frontend build, formatting, applied migration and API/preview health passed. Native/device gates remain separate."
+    ],
+    "notes": "First mismatch free, later misses1heart, no-speech/technical0, Practice0. Canonical audio hash/request replay; match-only trusted answer. No raw recording persisted/cloud/real charge. Real microphone, accuracy and production-native gates remain open."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/hearts/refill-offer",
+    "scope": "User-requested simulated heart refill/check/status/history",
+    "status": "implemented_verified",
+    "permissions": "Active authenticated subject only; mutation rechecks confirmed account/session/security stamp under user lock. Owned card/result/history; no-store, bounded DTOs and existing learning rate limit.",
+    "evidence": [
+      "2026-10-29: User-approved5simGEL heart refill. Full308backend pass plus final19focused billing cases;162frontend/40files and build pass. Atomic immutable debit/refill/replay, declines/free-expiry/owner/forgedprice/SQL consistency/rollback; HEART_CHECKOUT.md."
+    ],
+    "notes": "Versioned server price5GEL, no client price/heart inputs. Atomic local simulation only; no real money/subscription/Premium activation. Original billing baseline stays required."
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/me/hearts/purchases",
+    "scope": "User-requested simulated heart refill/check/status/history",
+    "status": "implemented_verified",
+    "permissions": "Active authenticated subject only; mutation rechecks confirmed account/session/security stamp under user lock. Owned card/result/history; no-store, bounded DTOs and existing learning rate limit.",
+    "evidence": [
+      "2026-10-29: User-approved5simGEL heart refill. Full308backend pass plus final19focused billing cases;162frontend/40files and build pass. Atomic immutable debit/refill/replay, declines/free-expiry/owner/forgedprice/SQL consistency/rollback; HEART_CHECKOUT.md."
+    ],
+    "notes": "Versioned server price5GEL, no client price/heart inputs. Atomic local simulation only; no real money/subscription/Premium activation. Original billing baseline stays required."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/hearts/purchases/by-request/{key}",
+    "scope": "User-requested simulated heart refill/check/status/history",
+    "status": "implemented_verified",
+    "permissions": "Active authenticated subject only; mutation rechecks confirmed account/session/security stamp under user lock. Owned card/result/history; no-store, bounded DTOs and existing learning rate limit.",
+    "evidence": [
+      "2026-10-29: User-approved5simGEL heart refill. Full308backend pass plus final19focused billing cases;162frontend/40files and build pass. Atomic immutable debit/refill/replay, declines/free-expiry/owner/forgedprice/SQL consistency/rollback; HEART_CHECKOUT.md."
+    ],
+    "notes": "Versioned server price5GEL, no client price/heart inputs. Atomic local simulation only; no real money/subscription/Premium activation. Original billing baseline stays required."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/hearts/purchases",
+    "scope": "User-requested simulated heart refill/check/status/history",
+    "status": "implemented_verified",
+    "permissions": "Active authenticated subject only; mutation rechecks confirmed account/session/security stamp under user lock. Owned card/result/history; no-store, bounded DTOs and existing learning rate limit.",
+    "evidence": [
+      "2026-10-29: User-approved5simGEL heart refill. Full308backend pass plus final19focused billing cases;162frontend/40files and build pass. Atomic immutable debit/refill/replay, declines/free-expiry/owner/forgedprice/SQL consistency/rollback; HEART_CHECKOUT.md."
+    ],
+    "notes": "Versioned server price5GEL, no client price/heart inputs. Atomic local simulation only; no real money/subscription/Premium activation. Original billing baseline stays required."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/billing-orders/by-request/{key}",
+    "scope": "Supporting documented subscription checkout unknown-result recovery",
+    "status": "implemented_verified",
+    "permissions": "Authenticated active subject, owned request key only, private no-store and rate-limited. Foreign results404.",
+    "evidence": [
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification."
+    ],
+    "notes": "Lookup only; never auto-pays. Original122API baseline preserved."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/payments/by-request/{key}",
+    "scope": "Supporting documented subscription checkout unknown-result recovery",
+    "status": "implemented_verified",
+    "permissions": "Authenticated active subject, owned request key only, private no-store and rate-limited. Foreign results404.",
+    "evidence": [
+      "2026-10-29: AddSubscriptionPurchases applied; full323backend pass plus final36billing focused cases (17subscription/11heart/8wallet);174frontend/44files/build; SUBSCRIPTION_PURCHASES.md. No claim of full326backend suite or device verification."
+    ],
+    "notes": "Lookup only; never auto-pays. Original122API baseline preserved."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/subscriptions",
+    "scope": "Supporting original REQ-121 owned subscription history",
+    "status": "implemented_verified",
+    "permissions": "Authenticated active subject only; no Premium requirement, bounded pages, generic foreign/unknown404, no-store and learning rate limit. Events exclude foreign/non-succeeded payment joins.",
+    "evidence": [
+      "2026-10-30: full360backend/192frontend50files and production build pass;70billing/inbox cases; actual hosted-worker, owner/foreign/ended/replay/concurrency/rollback/UTC/read/privacy/quote-history checks. SUBSCRIPTION_RENEWALS.md; FINANCIAL_HISTORY.md; history-full.trx."
+    ],
+    "notes": "Original70models/122APIs unchanged. Adds read-only history support; does not mutate subscriptions or charge funds."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/subscriptions/{id}/events",
+    "scope": "Supporting original REQ-121 owned subscription history",
+    "status": "implemented_verified",
+    "permissions": "Authenticated active subject only; no Premium requirement, bounded pages, generic foreign/unknown404, no-store and learning rate limit. Events exclude foreign/non-succeeded payment joins.",
+    "evidence": [
+      "2026-10-30: full360backend/192frontend50files and production build pass;70billing/inbox cases; actual hosted-worker, owner/foreign/ended/replay/concurrency/rollback/UTC/read/privacy/quote-history checks. SUBSCRIPTION_RENEWALS.md; FINANCIAL_HISTORY.md; history-full.trx."
+    ],
+    "notes": "Original70models/122APIs unchanged. Adds read-only history support; does not mutate subscriptions or charge funds."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/admin/refunds/by-request/{key}",
+    "scope": "Supporting original reasoned refund recovery and explicit BillingManage delegation",
+    "status": "implemented_verified",
+    "permissions": "Refund lookup: current MFA billing authority, actor-scoped key. Delegation: current MFA SuperAdmin only; mutation adds fresh password/session/reason and canonical actor/key replay, stamp/session revocation.",
+    "evidence": [
+      "2026-10-30: full381backend/204frontend55files, production build,102billing/admin/inbox cases, local22migrations/noEFdrift; REFUND_ADMINISTRATION.md; refund-full.trx. No real funds, grants, emails or public deployment."
+    ],
+    "notes": "No password in snapshots/storage; no actual role or claim granted by agent tools. Original70models/122operations unchanged."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/admin/users/{id}/billing-permission",
+    "scope": "Supporting original reasoned refund recovery and explicit BillingManage delegation",
+    "status": "implemented_verified",
+    "permissions": "Refund lookup: current MFA billing authority, actor-scoped key. Delegation: current MFA SuperAdmin only; mutation adds fresh password/session/reason and canonical actor/key replay, stamp/session revocation.",
+    "evidence": [
+      "2026-10-30: full381backend/204frontend55files, production build,102billing/admin/inbox cases, local22migrations/noEFdrift; REFUND_ADMINISTRATION.md; refund-full.trx. No real funds, grants, emails or public deployment."
+    ],
+    "notes": "No password in snapshots/storage; no actual role or claim granted by agent tools. Original70models/122operations unchanged."
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/admin/users/{id}/billing-permission",
+    "scope": "Supporting original reasoned refund recovery and explicit BillingManage delegation",
+    "status": "implemented_verified",
+    "permissions": "Refund lookup: current MFA billing authority, actor-scoped key. Delegation: current MFA SuperAdmin only; mutation adds fresh password/session/reason and canonical actor/key replay, stamp/session revocation.",
+    "evidence": [
+      "2026-10-30: full381backend/204frontend55files, production build,102billing/admin/inbox cases, local22migrations/noEFdrift; REFUND_ADMINISTRATION.md; refund-full.trx. No real funds, grants, emails or public deployment."
+    ],
+    "notes": "No password in snapshots/storage; no actual role or claim granted by agent tools. Original70models/122operations unchanged."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/placement-sessions/{id}",
+    "scope": "Supporting original placement result and explicit application",
+    "status": "implemented_verified",
+    "permissions": "Authenticated owner; apply rechecks active user/session stamp and locks the user. No client score/unit selection.",
+    "evidence": [
+      "2026-11-02: PLACEMENT.md; four-language diagnostic/start/recommend/apply verified in placement-learning.trx (98learning cases), frontend224/62files, production/backendbuild/noEFdrift/secret-scanpass. Owned/private snapshots, zeroXP/hearts/progress grants, explicit idempotent application, first-gap recommendation, current-unit locks and SQL course/XP denial. Local migration20261102123435 applied."
+    ],
+    "notes": "No hearts, skipped-lesson XP, invented completions, real charges or outbound messages."
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/me/placement-sessions/{id}/apply",
+    "scope": "Supporting original placement result and explicit application",
+    "status": "implemented_verified",
+    "permissions": "Authenticated owner; apply rechecks active user/session stamp and locks the user. No client score/unit selection.",
+    "evidence": [
+      "2026-11-02: PLACEMENT.md; four-language diagnostic/start/recommend/apply verified in placement-learning.trx (98learning cases), frontend224/62files, production/backendbuild/noEFdrift/secret-scanpass. Owned/private snapshots, zeroXP/hearts/progress grants, explicit idempotent application, first-gap recommendation, current-unit locks and SQL course/XP denial. Local migration20261102123435 applied."
+    ],
+    "notes": "No hearts, skipped-lesson XP, invented completions, real charges or outbound messages."
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/me/study-goal",
+    "scope": "Supporting documented daily goal and beginner onboarding",
+    "status": "implemented_verified",
+    "permissions": "Authenticated active owner; only DailyGoalXp, range 1..1000; rejects unknown fields. User lock and active session checks; preserves other preferences.",
+    "evidence": [
+      "2026-11-02: PICTURE_FIRST_LESSONS.md; picture-first.trx 117 focused backend cases pass (learning, profile and sentence publishing), 246 frontend tests/66 files pass. Twelve original picture-first teaching lessons plus four unit checks installed. Known unique word-bank subsets with distractors graded on server; private keys remain private; answered public exercise retained for feedback. Goal-only ownership/validation/preferences preservation tested."
+    ],
+    "notes": "5/10/15/20 minute UI estimates map to 20/40/60/80 XP. No minute-tracking claim or new model. Original 70 models/122 APIs retained."
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/me/leaderboard-participation",
+    "scope": "Supporting original optional ranking participation",
+    "status": "implemented_verified",
+    "permissions": "Current active confirmed user/family under the account row lock. Requires optedIn; accepts optional sharePhoto for explicit consent to the current avatar. Unknown fields are rejected. Account-entry rate limit applies.",
+    "evidence": [
+      "2026-11-03: WEEKLY_RANKING.md; ranking-progress.trx20 focused backend cases pass including three ranking cases for UTC week/course filtering, attained-time ties, opt-in/default/opt-out/privacy/overposting, preference isolation, archived owned history and26participant pagination/ownrank.259frontend tests/69files and production build pass; live enrolled-course read and week/course switching verified without joining. Migration20261103093949 index-only applied with unchanged1XP/8sessions/27answers;25local migrations/noEFdrift."
+    ],
+    "notes": "Preserves unrelated preferences and other accounts. No score/reward mutation. Withdrawal applies to historical rankings and clears stored photo consent. 2026-11-17: PostgreSQL tests verify default-off consent, valid and invalid requests, and clearing after withdrawal and photo removal. Shared image delivery remains open."
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/me/achievements/collect",
+    "scope": "Historical milestone recognition",
+    "status": "implemented_verified",
+    "permissions": "Current active confirmed owner/family under account lock; empty body, unknown fields rejected; no-store, account-entry rate limit.",
+    "evidence": [
+      "2026-11-03: ACHIEVEMENTS.md; achievements.trx5 PostgreSQL cases;262 frontend tests/70files and production build; local26migrations/noEFdrift/ready200, unchanged learner history; offline secret scan passed."
+    ],
+    "notes": "No extra XP/email. Unique award and one atomic in-app notification; concurrent/repeated requests verified."
+  },
+  {
+    "method": "PATCH",
+    "route": "/api/v1/classes/{id}/members/{userId}",
+    "scope": "Undo teacher removal",
+    "status": "implemented_verified",
+    "permissions": "Current MFA-verified owner teacher in an active classroom for a published course.",
+    "evidence": [
+      "2026-11-04: CLASSROOMS.md; 11 focused PostgreSQL cases, 456 full backend tests, 282 frontend tests, local Swagger and migration 29 verified."
+    ],
+    "notes": "Only restores a teacher-removed member. Voluntary departures require a new join."
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/assignments/{id}/submissions",
+    "scope": "Explicit learner attempt linking",
+    "status": "implemented_verified",
+    "permissions": "Current learner session and active class membership. Session must be owned, completed, graded and match an assigned course lesson.",
+    "evidence": [
+      "2026-11-04: assignment-submissions.trx, 14 classroom PostgreSQL tests and local migration 31/Swagger. Angular receipt behavior covered in 287-test suite."
+    ],
+    "notes": "Server records late status. Unique assignment/learner/session and owner-session foreign key. Retries return the same receipt."
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/extra-study/courses/{courseId}/teachers",
+    "scope": "Extra study teacher directory",
+    "status": "implemented_verified",
+    "permissions": "Current learner session and active Premium",
+    "evidence": [
+      "PostgreSQL verified Free and expired Premium denial, opted-in listing, opt-out removal and response privacy."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/extra-study/availability",
+    "scope": "Read own extra study availability",
+    "status": "partial",
+    "permissions": "Current MFA-verified Teacher session",
+    "evidence": [
+      "Endpoint implemented. Signed-in read verification remains open."
+    ]
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/extra-study/availability/{courseId}",
+    "scope": "Set own extra study availability",
+    "status": "implemented_verified",
+    "permissions": "Current MFA-verified Teacher session. Opt-in requires a published course.",
+    "evidence": [
+      "PostgreSQL verified learner denial and teacher opt-in and opt-out."
+    ]
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/extra-study/offers/{offerId}/requests",
+    "scope": "Request a teacher for extra study",
+    "status": "implemented_verified",
+    "permissions": "Active Premium learner and an available teacher offer",
+    "evidence": [
+      "PostgreSQL verified simultaneous retries return the same request."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/extra-study/requests",
+    "scope": "Read private study requests",
+    "status": "implemented_verified",
+    "permissions": "Requesting learner or selected MFA-verified teacher",
+    "evidence": [
+      "PostgreSQL verified learner history and that an unrelated teacher sees no request."
+    ]
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/extra-study/requests/{requestId}/decision",
+    "scope": "Accept or decline an extra-study request",
+    "status": "implemented_verified",
+    "permissions": "Selected MFA-verified teacher. Acceptance rechecks the listing and learner's Premium eligibility.",
+    "evidence": [
+      "PostgreSQL verified acceptance, learner denial, unrelated teacher denial, and conflict on reversing a recorded decision."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/extra-study/requests/{requestId}/space",
+    "scope": "Read a private study space",
+    "status": "implemented_verified",
+    "permissions": "Accepted request participants, published course and active learner Premium. Teacher requires current MFA.",
+    "evidence": [
+      "PostgreSQL verified learner read, pending and expired denial, and denial for unrelated teachers."
+    ]
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/extra-study/requests/{requestId}/space/lessons/{lessonId}",
+    "scope": "Share a published lesson in a private study space",
+    "status": "implemented_verified",
+    "permissions": "Selected MFA-verified teacher. The lesson must be published in the agreed course.",
+    "evidence": [
+      "PostgreSQL verified concurrent replay creates one shared lesson and denies learner writes and cross-course lessons."
+    ]
+  },
+  {
+    "method": "DELETE",
+    "route": "/api/v1/extra-study/requests/{requestId}",
+    "scope": "Withdraw or close an extra-study request",
+    "status": "implemented_verified",
+    "permissions": "Requesting learner or selected MFA-verified teacher",
+    "evidence": [
+      "PostgreSQL verified foreign denial, closure after Premium expiry, repeated closure and denial of later access and acceptance."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/vocabulary/{id}/audio",
+    "scope": "Open reviewed vocabulary pronunciation",
+    "status": "implemented_verified",
+    "permissions": "Authenticated learners. Published course and reviewed recording in the course language.",
+    "evidence": [
+      "VocabularyTests and AudioAssociationTests verified access, no-store, five-minute signed playback and exact bytes from private object storage."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/vocabulary",
+    "scope": "List course words for recording management",
+    "status": "implemented_verified",
+    "permissions": "Active Admin or SuperAdmin with a live MFA session",
+    "evidence": [
+      "AudioAssociationTests verified course word and attachment lookup after save."
+    ]
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/manage/vocabulary/{id}/audio",
+    "scope": "Attach or detach a reviewed pronunciation recording",
+    "status": "implemented_verified",
+    "permissions": "Active Admin or SuperAdmin with a live MFA session",
+    "evidence": [
+      "AudioAssociationTests verified author denial, wrong-language denial, repeatable attach, stale-write conflict, signed playback, removal and audit."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/vocabulary/revisions",
+    "scope": "List staff vocabulary revisions by course",
+    "status": "implemented_verified",
+    "permissions": "Live MFA. Authors see their own revisions, language reviewers see submitted and later revisions, admins see the full list.",
+    "evidence": [
+      "VocabularyRevisionTests verified learner denial, wrong-language denial and visibility only after submission for the reviewer."
+    ]
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/manage/vocabulary/revisions",
+    "scope": "Create a vocabulary draft",
+    "status": "implemented_verified",
+    "permissions": "Live MFA and course-language author scope or admin",
+    "evidence": [
+      "VocabularyRevisionTests verified draft creation and conflict for an existing open revision."
+    ]
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/manage/vocabulary/revisions/{id}",
+    "scope": "Edit, submit, review, withdraw or publish a vocabulary revision",
+    "status": "implemented_verified",
+    "permissions": "Live MFA. Draft author edits, submits or withdraws; admin may withdraw; independent language reviewer decides; admin publishes.",
+    "evidence": [
+      "VocabularyRevisionTests verified early publication denial, self-review denial, stale review rejection and repeatable publication. Concurrent publication and withdrawal have one winner. Withdrawal preserves the published word and frees the next revision."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/export/vocabulary",
+    "scope": "Download owned saved words, reviews and collections as JSON",
+    "status": "implemented_verified",
+    "permissions": "Active authenticated session. The account is taken from the token.",
+    "evidence": [
+      "VocabularyTests verified private/no-store, all four owned sections, absent retry key, no disclosure to another account and anonymous denial."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/deletion-verification",
+    "scope": "Issue request verification bound to the signed-in account",
+    "status": "implemented_verified",
+    "permissions": "Active authenticated session",
+    "evidence": [
+      "AccountDeletionTests verified the private/no-store response. Deletion rejects a request without valid verification."
+    ]
+  },
+  {
+    "method": "DELETE",
+    "route": "/api/v1/manage/lessons/{id}/versions/{versionId}/private-text",
+    "scope": "Erase never-published private draft wording and exercises",
+    "status": "implemented_verified",
+    "permissions": "Live MFA. Version creator with course-language author access or admin.",
+    "evidence": [
+      "PrivateDraftErasureTests verified foreign denial, idempotence, publication/legacy usage protection, concurrent erasure/publication and the account-deletion handoff."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/lessons/{id}/versions",
+    "scope": "Page through authorized lesson version history",
+    "status": "implemented_verified",
+    "permissions": "Live MFA staff access scoped by lesson ownership or reviewer language and workflow state",
+    "evidence": [
+      "PublishingTests verified reviewer read access; workbench tests verified history selection and opening an explicit version. The server bounds each page at 20 rows."
+    ]
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/manage/media/{id}/finish-deletion",
+    "scope": "Finish durable deletion of an unused recording",
+    "status": "implemented_verified",
+    "permissions": "Live MFA. Owning language-scoped author or admin. Recording must already be queued for deletion.",
+    "evidence": [
+      "2026-11-06: MediaWorkflowTests verified actual object removal, single completion audit under concurrent requests, foreign denial, disabled-storage retry and the synthetic account-deletion handoff. Eight media-library tests and production build passed."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/deletion-responsibilities",
+    "scope": "List owned unresolved teaching, content and recording responsibilities before deletion",
+    "status": "implemented_verified",
+    "permissions": "Current active authenticated session. Account identity comes from the token; response is private/no-store.",
+    "evidence": [
+      "2026-11-06: AccountDeletionTests verified owned checklist, ignored foreign account query, anonymous/revoked denial and closing classes/Extra Study before synthetic deletion. Shared gates passed 51 focused backend tests plus the export/deletion regression. Four deletion/checklist UI tests passed."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/courses/{courseId}/trial",
+    "scope": "Read a short published-only trial and its introductory word guide",
+    "status": "implemented_verified",
+    "permissions": "Anonymous or authenticated. Published courses/current published versions only; no grading keys in initial DTO.",
+    "evidence": [
+      "2026-11-06: GuestTrialTests verified four languages, omitted keys, hidden-course denial and no account/learning/reward writes. Guest trial UI and shared learning regression tests passed; GUEST_TRIAL.md."
+    ]
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/courses/{courseId}/trial/answers",
+    "scope": "Grade one of the published trial questions without recording XP or progress",
+    "status": "implemented_verified",
+    "permissions": "Anonymous or authenticated. Valid current trial version, question and belonging option required; bounded/rate-limited read-only operation.",
+    "evidence": [
+      "2026-11-06: GuestTrialTests verified correct/wrong corrections, foreign-option/version denial, hidden-course denial and no account/learning/reward writes. UI tests verified explicit feedback, retry and completion."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/weekly-summary",
+    "scope": "Read owned weekly learning totals, activity days and per-course recommendations",
+    "status": "implemented_verified",
+    "permissions": "Current validated authenticated account; identity from token only. weeksAgo 0–12; private/no-store.",
+    "evidence": [
+      "2026-11-06: WeeklySummaryTests passed four PostgreSQL cases for empty data, owner/course isolation, duplicate reviews, graded accuracy, future exclusion, zero-XP practice, placement exclusion and DST boundaries. Ten relevant frontend tests and production/API builds passed; WEEKLY_SUMMARY.md."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/weekly-summary/comparison",
+    "scope": "Compare owned XP, first lesson completions, study days and graded accuracy across adjacent weeks",
+    "status": "implemented_verified",
+    "permissions": "Current authenticated account with active AdvancedAnalytics entitlement. weeksAgo 0–11; private/no-store.",
+    "evidence": [
+      "2026-11-12: SubscriptionPurchaseTests verify Free denial and active simulated Premium success. Weekly summary UI tests verify the Premium prompt and comparison table. PREMIUM_ENTITLEMENTS.md."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/completion-cards",
+    "scope": "Read paged owned cards with optional unit filter",
+    "status": "implemented_verified",
+    "permissions": "Current validated account; identity from token. Private/no-store.",
+    "evidence": [
+      "2026-11-06: Nine CompletionCardTests cases and full527 backend/final341 frontend regressions passed. Consent, ownership, idempotence, revocation/rotation, current name, SQL integrity and deletion/rollback verified. COMPLETION_CARDS.md."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/me/completion-cards/{id}",
+    "scope": "Read an owned completion card",
+    "status": "implemented_verified",
+    "permissions": "Current validated owner; foreign/missing records return 404.",
+    "evidence": [
+      "2026-11-06: Nine CompletionCardTests cases and full527 backend/final341 frontend regressions passed. Consent, ownership, idempotence, revocation/rotation, current name, SQL integrity and deletion/rollback verified. COMPLETION_CARDS.md."
+    ]
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/me/units/{unitId}/completion-card",
+    "scope": "Claim an eligible historic completed unit card idempotently",
+    "status": "implemented_verified",
+    "permissions": "Active owner session and enrollment; all published unit steps completed; no client scores or names.",
+    "evidence": [
+      "2026-11-17: completion-card-contract.trx verified 201 with an owner-only detail URL, 200 on concurrent replay, and 404 for a different learner.",
+      "2026-11-06: Nine CompletionCardTests cases and full527 backend/final341 frontend regressions passed. Consent, ownership, idempotence, revocation/rotation, current name, SQL integrity and deletion/rollback verified. COMPLETION_CARDS.md."
+    ]
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/me/completion-cards/{id}/sharing",
+    "scope": "Enable or revoke sharing with consent and revision protection",
+    "status": "implemented_verified",
+    "permissions": "Active owner session, current revision and explicit public-name consent for enable.",
+    "evidence": [
+      "2026-11-06: Nine CompletionCardTests cases and full527 backend/final341 frontend regressions passed. Consent, ownership, idempotence, revocation/rotation, current name, SQL integrity and deletion/rollback verified. COMPLETION_CARDS.md."
+    ]
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/admin/plans/prices/{priceId}/schedule",
+    "scope": "Append a future simulated price while preserving the quoted amount and billing period",
+    "status": "implemented_verified",
+    "permissions": "Active MFA SuperAdmin or billing-delegated Admin, current password and recent MFA sign-in, reason and idempotency key.",
+    "evidence": [
+      "2026-11-12: PlanCatalogueTests, PlanPriceWindowTests, SubscriptionPurchaseTests and the scheduling form retry test passed. PLAN_CATALOGUE.md."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/admin/plans/features",
+    "scope": "List catalogue features for the inactive draft editor",
+    "status": "implemented_verified",
+    "permissions": "Active MFA SuperAdmin or billing-delegated Admin. Private/no-store.",
+    "evidence": [
+      "2026-11-12: PlanCatalogueTests and the Edge admin walkthrough used this catalogue to save a draft feature limit."
+    ]
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/reports/public-names",
+    "scope": "Report an inappropriate name on a currently shared completion card",
+    "status": "implemented_verified",
+    "permissions": "Active learner session and the current public card code. Self-reports and revoked cards are unavailable. The receipt is private to the reporter; moderator access uses the existing staff report queue.",
+    "evidence": [
+      "2026-11-17: moderation-public-names.trx covers creation, idempotent retry, anonymous denial, self-report denial, revoked link denial, and moderator-only resolution."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/completion-cards/shared/{code}",
+    "scope": "Read the current public opt-in card summary",
+    "status": "implemented_verified",
+    "permissions": "Anonymous lookup requires a random active sharing code and active confirmed owner; generic 404 otherwise.",
+    "evidence": [
+      "2026-11-06: Nine CompletionCardTests cases and full527 backend/final341 frontend regressions passed. Consent, ownership, idempotence, revocation/rotation, current name, SQL integrity and deletion/rollback verified. COMPLETION_CARDS.md."
+    ]
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/reports/ranking-names",
+    "scope": "Report an inappropriate name visible in an enrolled course ranking",
+    "status": "implemented_verified",
+    "permissions": "Active account session, own course enrollment, and a valid protected ten-minute report reference. The target must still be opted in and use the reported display name. Reports omit the target account ID.",
+    "evidence": [
+      "2026-11-18: PostgreSQL moderation and ranking tests verify tampered references, changed names, private receipts, repeated decisions, notification uniqueness and preserved XP. Desktop and phone Edge verify learner submission and MFA moderator resolution."
+    ]
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/manage/lessons/{id}/owner",
+    "scope": "Hand over a never-published lesson while preserving version authorship",
+    "status": "implemented_verified",
+    "permissions": "MFA Admin or SuperAdmin; eligible active confirmed MFA author in the course language or administrator recipient; expected current owner; no publication or learner history.",
+    "evidence": [
+      "2026-11-18: private-draft-handover.trx (50 passing publishing/account checks), private-draft-handover-boundaries.trx (2 passing boundary checks), four Angular workbench checks and desktop/phone Edge publishing scenarios. Stale owner, wrong language, ordinary author and published history are rejected; repeat transfer creates one audit; departing owner deletion preserves other drafts."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/skills",
+    "scope": "Concrete operation expanding PDF page 12 manage/{resource}",
+    "status": "implemented_verified",
+    "permissions": "Current MFA staff session; author/reviewer reads restricted by course target-language scope; administrators may read all courses. Private/no-store.",
+    "evidence": [
+      "2026-11-20: final-skills-and-learning.trx passed 132 publishing/learning/schema cases. content-catalog-verified.trx passed all 16 final catalog checks, including scoped skills, atomic cap, revision races, archived tags/progress, private creation links and guarded downgrade. Skill desktop/phone journeys passed (46.8s); 20 frontend checks and production build/lint passed. Migration 20261120085844_AddSkillManagement applied locally; no personal account changes."
+    ]
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/manage/skills",
+    "scope": "Concrete operation expanding PDF page 12 manage/{resource}",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed Admin/SuperAdmin with a current MFA-verified session. Server roles and optimistic revisions enforced; changes audited. Private/no-store.",
+    "evidence": [
+      "2026-11-20: final-skills-and-learning.trx passed 132 publishing/learning/schema cases. content-catalog-verified.trx passed all 16 final catalog checks, including scoped skills, atomic cap, revision races, archived tags/progress, private creation links and guarded downgrade. Skill desktop/phone journeys passed (46.8s); 20 frontend checks and production build/lint passed. Migration 20261120085844_AddSkillManagement applied locally; no personal account changes."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/skills/{id}",
+    "scope": "Concrete operation expanding PDF page 12 manage/{resource}",
+    "status": "implemented_verified",
+    "permissions": "Current MFA staff session; author/reviewer reads restricted by course target-language scope; administrators may read all courses. Private/no-store.",
+    "evidence": [
+      "2026-11-20: final-skills-and-learning.trx passed 132 publishing/learning/schema cases. content-catalog-verified.trx passed all 16 final catalog checks, including scoped skills, atomic cap, revision races, archived tags/progress, private creation links and guarded downgrade. Skill desktop/phone journeys passed (46.8s); 20 frontend checks and production build/lint passed. Migration 20261120085844_AddSkillManagement applied locally; no personal account changes."
+    ]
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/manage/skills/{id}",
+    "scope": "Concrete operation expanding PDF page 12 manage/{resource}",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed Admin/SuperAdmin with a current MFA-verified session. Server roles and optimistic revisions enforced; changes audited. Private/no-store.",
+    "evidence": [
+      "2026-11-20: final-skills-and-learning.trx passed 132 publishing/learning/schema cases. content-catalog-verified.trx passed all 16 final catalog checks, including scoped skills, atomic cap, revision races, archived tags/progress, private creation links and guarded downgrade. Skill desktop/phone journeys passed (46.8s); 20 frontend checks and production build/lint passed. Migration 20261120085844_AddSkillManagement applied locally; no personal account changes."
+    ]
+  },
+  {
+    "method": "DELETE",
+    "route": "/api/v1/manage/skills/{id}",
+    "scope": "Concrete operation expanding PDF page 12 manage/{resource}",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed Admin/SuperAdmin with a current MFA-verified session. Server roles and optimistic revisions enforced; changes audited. Private/no-store.",
+    "evidence": [
+      "2026-11-20: final-skills-and-learning.trx passed 132 publishing/learning/schema cases. content-catalog-verified.trx passed all 16 final catalog checks, including scoped skills, atomic cap, revision races, archived tags/progress, private creation links and guarded downgrade. Skill desktop/phone journeys passed (46.8s); 20 frontend checks and production build/lint passed. Migration 20261120085844_AddSkillManagement applied locally; no personal account changes."
+    ]
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/manage/skills/{id}/visibility",
+    "scope": "Concrete operation expanding PDF page 12 manage/{resource}",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed Admin/SuperAdmin with a current MFA-verified session. Server roles and optimistic revisions enforced; changes audited. Private/no-store.",
+    "evidence": [
+      "2026-11-20: final-skills-and-learning.trx passed 132 publishing/learning/schema cases. content-catalog-verified.trx passed all 16 final catalog checks, including scoped skills, atomic cap, revision races, archived tags/progress, private creation links and guarded downgrade. Skill desktop/phone journeys passed (46.8s); 20 frontend checks and production build/lint passed. Migration 20261120085844_AddSkillManagement applied locally; no personal account changes."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/achievements",
+    "scope": "Concrete operation expanding PDF page 12 manage/{resource}",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed Admin/SuperAdmin with a current MFA-verified session. Server roles and optimistic revisions enforced; changes audited. Private/no-store.",
+    "evidence": [
+      "2026-11-20: content-catalog-verified.trx passed 16 final checks; reward lists support bounded pageSize, search and exact filtered totalCount. POST returns 201 and a private readable Location. Desktop/phone badge/challenge browser journeys passed (20.6s); 20 frontend tests and production build/lint passed. Earlier final-validation run had an invalid random badge code and remains failed."
+    ]
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/manage/achievements",
+    "scope": "Concrete operation expanding PDF page 12 manage/{resource}",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed Admin/SuperAdmin with a current MFA-verified session. Server roles and optimistic revisions enforced; changes audited. Private/no-store.",
+    "evidence": [
+      "2026-11-20: content-catalog-verified.trx passed 16 final checks; reward lists support bounded pageSize, search and exact filtered totalCount. POST returns 201 and a private readable Location. Desktop/phone badge/challenge browser journeys passed (20.6s); 20 frontend tests and production build/lint passed. Earlier final-validation run had an invalid random badge code and remains failed."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/achievements/{id}",
+    "scope": "Concrete operation expanding PDF page 12 manage/{resource}",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed Admin/SuperAdmin with a current MFA-verified session. Server roles and optimistic revisions enforced; changes audited. Private/no-store.",
+    "evidence": [
+      "2026-11-20: content-catalog-verified.trx passed 16 final checks; reward lists support bounded pageSize, search and exact filtered totalCount. POST returns 201 and a private readable Location. Desktop/phone badge/challenge browser journeys passed (20.6s); 20 frontend tests and production build/lint passed. Earlier final-validation run had an invalid random badge code and remains failed."
+    ]
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/manage/achievements/{id}",
+    "scope": "Concrete operation expanding PDF page 12 manage/{resource}",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed Admin/SuperAdmin with a current MFA-verified session. Server roles and optimistic revisions enforced; changes audited. Private/no-store.",
+    "evidence": [
+      "2026-11-20: content-catalog-verified.trx passed 16 final checks; reward lists support bounded pageSize, search and exact filtered totalCount. POST returns 201 and a private readable Location. Desktop/phone badge/challenge browser journeys passed (20.6s); 20 frontend tests and production build/lint passed. Earlier final-validation run had an invalid random badge code and remains failed."
+    ]
+  },
+  {
+    "method": "DELETE",
+    "route": "/api/v1/manage/achievements/{id}",
+    "scope": "Concrete operation expanding PDF page 12 manage/{resource}",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed Admin/SuperAdmin with a current MFA-verified session. Server roles and optimistic revisions enforced; changes audited. Private/no-store.",
+    "evidence": [
+      "2026-11-20: content-catalog-verified.trx passed 16 final checks; reward lists support bounded pageSize, search and exact filtered totalCount. POST returns 201 and a private readable Location. Desktop/phone badge/challenge browser journeys passed (20.6s); 20 frontend tests and production build/lint passed. Earlier final-validation run had an invalid random badge code and remains failed."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/challenges",
+    "scope": "Concrete operation expanding PDF page 12 manage/{resource}",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed Admin/SuperAdmin with a current MFA-verified session. Server roles and optimistic revisions enforced; changes audited. Private/no-store.",
+    "evidence": [
+      "2026-11-20: content-catalog-verified.trx passed 16 final checks; reward lists support bounded pageSize, search and exact filtered totalCount. POST returns 201 and a private readable Location. Desktop/phone badge/challenge browser journeys passed (20.6s); 20 frontend tests and production build/lint passed. Earlier final-validation run had an invalid random badge code and remains failed."
+    ]
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/manage/challenges",
+    "scope": "Concrete operation expanding PDF page 12 manage/{resource}",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed Admin/SuperAdmin with a current MFA-verified session. Server roles and optimistic revisions enforced; changes audited. Private/no-store.",
+    "evidence": [
+      "2026-11-20: content-catalog-verified.trx passed 16 final checks; reward lists support bounded pageSize, search and exact filtered totalCount. POST returns 201 and a private readable Location. Desktop/phone badge/challenge browser journeys passed (20.6s); 20 frontend tests and production build/lint passed. Earlier final-validation run had an invalid random badge code and remains failed."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/challenges/{id}",
+    "scope": "Concrete operation expanding PDF page 12 manage/{resource}",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed Admin/SuperAdmin with a current MFA-verified session. Server roles and optimistic revisions enforced; changes audited. Private/no-store.",
+    "evidence": [
+      "2026-11-20: content-catalog-verified.trx passed 16 final checks; reward lists support bounded pageSize, search and exact filtered totalCount. POST returns 201 and a private readable Location. Desktop/phone badge/challenge browser journeys passed (20.6s); 20 frontend tests and production build/lint passed. Earlier final-validation run had an invalid random badge code and remains failed."
+    ]
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/manage/challenges/{id}",
+    "scope": "Concrete operation expanding PDF page 12 manage/{resource}",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed Admin/SuperAdmin with a current MFA-verified session. Server roles and optimistic revisions enforced; changes audited. Private/no-store.",
+    "evidence": [
+      "2026-11-20: content-catalog-verified.trx passed 16 final checks; reward lists support bounded pageSize, search and exact filtered totalCount. POST returns 201 and a private readable Location. Desktop/phone badge/challenge browser journeys passed (20.6s); 20 frontend tests and production build/lint passed. Earlier final-validation run had an invalid random badge code and remains failed."
+    ]
+  },
+  {
+    "method": "DELETE",
+    "route": "/api/v1/manage/challenges/{id}",
+    "scope": "Concrete operation expanding PDF page 12 manage/{resource}",
+    "status": "implemented_verified",
+    "permissions": "Active confirmed Admin/SuperAdmin with a current MFA-verified session. Server roles and optimistic revisions enforced; changes audited. Private/no-store.",
+    "evidence": [
+      "2026-11-20: content-catalog-verified.trx passed 16 final checks; reward lists support bounded pageSize, search and exact filtered totalCount. POST returns 201 and a private readable Location. Desktop/phone badge/challenge browser journeys passed (20.6s); 20 frontend tests and production build/lint passed. Earlier final-validation run had an invalid random badge code and remains failed."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/exercises/{id}",
+    "scope": "Private resource detail and creation Location",
+    "status": "implemented_verified",
+    "permissions": "Current MFA staff session and existing draft ownership, language and review-access rules. Private answer-bearing DTO; not a learner endpoint.",
+    "evidence": [
+      "2026-11-22: confirmed archived 2026-11-20 result. exercise-resource-contracts.trx: 76 passed. Creation links, scoped reads, anonymous/foreign-staff denial and removal verified. Current Release API rebuilt successfully."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/vocabulary/revisions/{id}",
+    "scope": "Private resource detail and creation Location",
+    "status": "implemented_verified",
+    "permissions": "Current MFA staff session with existing vocabulary revision ownership, language and review-state access rules. Private/no-store.",
+    "evidence": [
+      "2026-11-22: confirmed archived 2026-11-20 result. private-resource-creation-final.trx: 36 passed, including readable private creation links and scoped vocabulary revision access. Current Release API rebuilt successfully."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/media/{id}",
+    "scope": "Private resource detail and creation Location",
+    "status": "implemented_verified",
+    "permissions": "Existing MFA staff media visibility policy. Metadata excludes the private object storage key.",
+    "evidence": [
+      "2026-11-22: confirmed archived 2026-11-20 result. private-resource-creation-final.trx: 36 passed, including creation metadata Location, anonymous and foreign-author denial. Current Release API rebuilt successfully."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/manage/imports/{id}",
+    "scope": "Private resource detail and creation Location",
+    "status": "implemented_verified",
+    "permissions": "Current MFA authoring session, job owner and target language permission. Restores status/title/count/lesson reference without raw CSV, payload or answer data.",
+    "evidence": [
+      "2026-11-22: confirmed archived 2026-11-20 result. creation-and-import-restoration-verified.trx: 36 passed, including private status, foreign-account denial and committed-job restoration. Current Release API rebuilt successfully."
+    ]
+  }
+]

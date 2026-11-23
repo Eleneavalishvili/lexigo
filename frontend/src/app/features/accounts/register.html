@@ -1,0 +1,94 @@
+<app-account-shell>
+  @if (submitted()) {
+    <div class="success-mark" aria-hidden="true">✉</div>
+    <p class="eyebrow">A LITTLE SOMETHING IN YOUR INBOX</p>
+    <h1>First, say <em>hello.</em></h1>
+    <p class="form-description" role="status">
+      If this address can be registered, a confirmation email is on its way. Open the link to
+      confirm your address.
+    </p>
+    <p class="small-print">
+      No email yet? <a routerLink="/resend-confirmation">Send another confirmation.</a>
+    </p>
+    <a class="button button-ink" routerLink="/">Back to LexiGo <span aria-hidden="true">↗</span></a>
+  } @else {
+    <p class="eyebrow">LET YOUR CURIOSITY LEAD</p>
+    <h1>A little <em>beginning.</em></h1>
+    <p class="form-description">Create your free account. Your first hello is waiting.</p>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate [attr.aria-busy]="working()">
+      <div class="field">
+        <label for="display-name">What should we call you?</label
+        ><input
+          id="display-name"
+          formControlName="displayName"
+          autocomplete="nickname"
+          maxlength="80"
+          placeholder="Your name"
+          [attr.aria-invalid]="
+            form.controls.displayName.touched && form.controls.displayName.invalid
+          "
+          [attr.aria-describedby]="
+            form.controls.displayName.touched && form.controls.displayName.invalid
+              ? 'name-error'
+              : null
+          "
+        />
+        @if (form.controls.displayName.touched && form.controls.displayName.invalid) {
+          <p class="field-error" id="name-error">Use a name between 2 and 80 characters.</p>
+        }
+      </div>
+      <div class="field">
+        <label for="email">Your email</label
+        ><input
+          id="email"
+          formControlName="email"
+          type="email"
+          autocomplete="email"
+          maxlength="256"
+          placeholder="you@example.com"
+          [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid"
+          [attr.aria-describedby]="
+            form.controls.email.touched && form.controls.email.invalid ? 'email-error' : null
+          "
+        />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+          <p class="field-error" id="email-error">Enter a valid email address.</p>
+        }
+      </div>
+      <div class="field">
+        <label for="password">Make a password</label>
+        <div class="password-field">
+          <input
+            id="password"
+            formControlName="password"
+            [type]="showPassword() ? 'text' : 'password'"
+            autocomplete="new-password"
+            maxlength="128"
+            placeholder="A memorable passphrase"
+            [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid"
+            [attr.aria-describedby]="
+              form.controls.password.touched && form.controls.password.invalid
+                ? 'password-help password-error'
+                : 'password-help'
+            "
+          /><app-password-toggle inputId="password" [(visible)]="showPassword" />
+        </div>
+        <p class="field-help" id="password-help">
+          {{ passwordGuidance }}
+        </p>
+        @if (form.controls.password.touched && form.controls.password.invalid) {
+          <p class="field-error" id="password-error">{{ passwordGuidance }}</p>
+        }
+      </div>
+      @if (error()) {
+        <p class="form-error" role="alert">{{ error() }}</p>
+      }
+      <button class="button button-red submit-button" type="submit" [disabled]="working()">
+        {{ working() ? 'Making a little beginning…' : 'Create my free account' }}
+        <span aria-hidden="true">↗</span>
+      </button>
+      <p class="small-print">Four languages to explore. No payment details needed.</p>
+      <p class="small-print">Already part of the club? <a routerLink="/login">Sign in.</a></p>
+    </form>
+  }
+</app-account-shell>

@@ -1,0 +1,105 @@
+@if (canView()) {
+  <main>
+    <a routerLink="/manage/lessons">← Back to lesson workshop</a>
+    <h1>Import a lesson draft</h1>
+    <p>
+      Use one row per translation exercise, up to 50 rows. Each row needs a prompt, one accepted
+      answer, and feedback.
+    </p>
+    <a href="/lesson-import-template.csv" download>Download the CSV template</a>
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+      <button class="button button-outline" type="button" (click)="reload()" [disabled]="busy()">
+        Retry loading import
+      </button>
+      <button class="button button-outline" type="button" (click)="edit()" [disabled]="busy()">
+        Start a new import
+      </button>
+    }
+    @if (busy()) {
+      <p role="status">Working…</p>
+    }
+    @if (!restored()) {
+      <form [formGroup]="form" (ngSubmit)="validate()">
+        <fieldset [disabled]="busy() || !!review()">
+          <legend>Draft details</legend>
+          <label
+            >Course
+            <select #course (change)="chooseCourse(course.value)">
+              <option value="">Choose a course</option>
+              @for (item of courses(); track item.id) {
+                <option [value]="item.id">{{ item.title }}</option>
+              }
+            </select>
+          </label>
+          <label
+            >Unit
+            <select formControlName="unitId" #unit (change)="chooseUnit(unit.value)">
+              <option value="">Choose a unit</option>
+              @for (item of units(); track item.id) {
+                <option [value]="item.id">{{ item.title }}</option>
+              }
+            </select>
+          </label>
+          <label
+            >Lesson position <input type="number" formControlName="orderNumber" min="1" required
+          /></label>
+          <label>Lesson title <input formControlName="title" maxlength="160" required /></label>
+          <label>Objective <input formControlName="objective" maxlength="1000" required /></label>
+          <label
+            >English explanation
+            <textarea formControlName="explanation" maxlength="20000" required></textarea>
+          </label>
+          <label
+            >Exercise CSV <input type="file" accept=".csv,text/csv" #csv (change)="chooseFile(csv)"
+          /></label>
+          <button class="button button-red" type="submit" [disabled]="form.invalid || !file()">
+            Validate CSV
+          </button>
+        </fieldset>
+      </form>
+    }
+
+    @if (review(); as result) {
+      <section aria-labelledby="validation-heading">
+        <h2 id="validation-heading">Validation report</h2>
+        <p>{{ savedTitle() }}</p>
+        @if (restored()) {
+          <p role="status">Saved validation report restored.</p>
+        }
+        @if (result.exerciseCount !== null) {
+          <p>{{ result.exerciseCount }} valid exercise rows.</p>
+        } @else {
+          <p>
+            The saved report lists the validation issues. Validate a corrected file to get a new
+            exercise count.
+          </p>
+        }
+        @if (lessonId()) {
+          <p role="status">
+            Draft created. Open the lesson workshop to edit it or submit it for review.
+          </p>
+          <a routerLink="/manage/lessons">Open lesson workshop ↗</a>
+        } @else if (result.status === 'Valid') {
+          <button class="button button-red" type="button" (click)="commit()" [disabled]="busy()">
+            Create draft
+          </button>
+        } @else {
+          <ul>
+            @for (issue of result.errors; track $index) {
+              <li>
+                @if (issue.row > 0) {
+                  <strong>Line {{ issue.row }} · </strong>
+                }
+                {{ issue.message }}
+              </li>
+            }
+          </ul>
+        }
+        <button class="button button-outline" type="button" (click)="edit()" [disabled]="busy()">
+          Edit or upload another CSV
+        </button>
+      </section>
+    }
+  </main>
+}

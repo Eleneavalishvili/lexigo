@@ -1,0 +1,88 @@
+<main class="alphabet-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a>
+    <a [routerLink]="['/learn', courseId]">Back to Russian ↗</a>
+  </header>
+  <p class="eyebrow">A NEW ALPHABET. A NEW BEGINNING.</p>
+  <h1>Meet <em>Cyrillic.</em></h1>
+  <p>
+    All 33 Russian letters, with their names and an example word. Choose a letter to hear its name.
+  </p>
+  <p class="note">
+    Letter names and word sounds are different things. Stress and nearby letters can change how a
+    letter sounds in a word.
+  </p>
+  @if (loading()) {
+    <p role="status">Opening the alphabet…</p>
+  }
+  @if (error()) {
+    <p role="alert">{{ error() }}</p>
+    <button type="button" class="button button-outline" (click)="load()" [disabled]="loading()">
+      Try again
+    </button>
+  }
+  @if (selected(); as letter) {
+    <p id="letter-help" class="note">
+      Use Left/Right, Home or End to move between letters. Press Enter to hear the selected name.
+    </p>
+    <div
+      class="letter-grid"
+      role="group"
+      aria-label="Russian letters"
+      aria-describedby="letter-help"
+    >
+      @for (item of letters(); track item.upper; let position = $index) {
+        <button
+          type="button"
+          [attr.aria-label]="'Letter ' + item.upper + ', ' + item.lower"
+          [attr.aria-pressed]="position === index()"
+          [attr.tabindex]="position === index() ? 0 : -1"
+          (click)="choose(position)"
+          (keydown)="move($event, position)"
+        >
+          <span lang="ru">{{ item.upper }} {{ item.lower }}</span>
+        </button>
+      }
+    </div>
+    <section class="letter-card" aria-labelledby="selected-letter" aria-live="polite">
+      <p class="eyebrow">LETTER {{ index() + 1 }} OF 33</p>
+      <h2 id="selected-letter" lang="ru">
+        {{ letter.upper }} <span>{{ letter.lower }}</span>
+      </h2>
+      <p>
+        Letter name: <strong lang="ru">{{ letter.name }}</strong>
+      </p>
+      <app-pronunciation-button [text]="letter.audioText" [courseId]="courseId" />
+      <div class="example">
+        <p class="eyebrow">IN A WORD</p>
+        <p class="example-word" lang="ru">
+          @for (character of letter.example; track $index) {
+            <span [class.highlight]="character.toLowerCase() === letter.lower">{{
+              character
+            }}</span>
+          }
+        </p>
+        <p>{{ letter.meaning }}</p>
+        <app-pronunciation-button [text]="letter.example" [courseId]="courseId" />
+      </div>
+      @if (letter.note) {
+        <p class="letter-note">{{ letter.note }}</p>
+      }
+      @if (voice.message()) {
+        <p role="status">{{ voice.message() }}</p>
+      }
+      <nav aria-label="Letter navigation">
+        <button type="button" class="button button-outline" (click)="choose(index() - 1)">
+          ← Previous letter
+        </button>
+        <button type="button" class="button button-ink" (click)="choose(index() + 1)">
+          Next letter →
+        </button>
+      </nav>
+    </section>
+  }
+  <p class="note">
+    Reference study uses no hearts and awards no XP. Return to the course for scored lessons and
+    saved progress.
+  </p>
+</main>

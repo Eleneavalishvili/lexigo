@@ -1,0 +1,62 @@
+<section aria-labelledby="week-comparison-title">
+  <h2 id="week-comparison-title">Week comparison</h2>
+  @if (comparison(); as weeks) {
+    @if (weeks.selected.weeksAgo === 0) {
+      <p>This week is still in progress. The previous column covers a full week.</p>
+    }
+    <div class="comparison-table">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Activity</th>
+            <th scope="col">
+              {{ weeks.previous.weekStart + 'T00:00:00Z' | date: 'MMM d' : 'UTC' }}
+            </th>
+            <th scope="col">
+              {{ weeks.selected.weekStart + 'T00:00:00Z' | date: 'MMM d' : 'UTC' }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">XP earned</th>
+            <td>{{ weeks.previous.earnedXp }}</td>
+            <td>{{ weeks.selected.earnedXp }}</td>
+          </tr>
+          <tr>
+            <th scope="row">First lesson completions</th>
+            <td>{{ weeks.previous.newLessonsCompleted }}</td>
+            <td>{{ weeks.selected.newLessonsCompleted }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Study days</th>
+            <td>{{ weeks.previous.studyDays }}</td>
+            <td>{{ weeks.selected.studyDays }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Answer accuracy</th>
+            <td>{{ weeks.previous.accuracy === null ? '—' : weeks.previous.accuracy + '%' }}</td>
+            <td>{{ weeks.selected.accuracy === null ? '—' : weeks.selected.accuracy + '%' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  } @else if (state() === 'locked') {
+    <p role="status">Week comparison is included with Premium.</p>
+    <a class="button button-outline" routerLink="/pricing">Compare plans ↗</a>
+  } @else {
+    @if (state() === 'error') {
+      <p role="alert">The comparison could not load. Try again.</p>
+    }
+    <button
+      class="button button-outline"
+      type="button"
+      [disabled]="state() === 'loading'"
+      (click)="load()"
+    >
+      {{
+        state() === 'loading' ? 'Loading comparison…' : 'Compare with the previous week · Premium'
+      }}
+    </button>
+  }
+</section>

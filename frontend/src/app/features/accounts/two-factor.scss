@@ -1,0 +1,53 @@
+.setup-note {
+  background: #f1bd4b25;
+  border: 1px solid var(--line);
+  font-size: 0.75rem;
+  line-height: 1.8;
+  margin-block: 1rem;
+  padding: 1rem;
+}
+.shared-key {
+  display: block;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  margin-block: 1rem;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+.recovery-heading {
+  font-size: 1.5rem;
+}
+.recovery-codes {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: 1fr 1fr;
+  list-style: none;
+  padding: 1rem;
+}
+.recovery-codes code {
+  font-size: 0.9rem;
+  user-select: all;
+}
+.disable-button {
+  background: transparent;
+  border: 0;
+  display: block;
+  font-size: 0.75rem;
+  margin-top: 1rem;
+  min-height: 44px;
+  padding: 0.5rem 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.recovery-option label {
+  align-items: flex-start;
+  display: flex;
+  gap: 0.75rem;
+  line-height: 1.6;
+}
+.recovery-option input {
+  min-height: 20px;
+  width: 20px;
+}

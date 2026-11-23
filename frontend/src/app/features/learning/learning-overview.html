@@ -1,0 +1,84 @@
+<section aria-label="Your learning overview">
+  @if (value(); as stats) {
+    <a class="language" routerLink="/courses"
+      ><app-course-flag [language]="stats.course?.languageCode ?? ''" />
+      {{ stats.course?.title ?? 'Pick a language' }} <span aria-hidden="true">⌄</span></a
+    >
+    <dl class="counters">
+      <div>
+        <dt><span aria-hidden="true">🔥</span> Streak</dt>
+        <dd>
+          {{ stats.currentStreak }} <small>{{ stats.currentStreak === 1 ? 'day' : 'days' }}</small>
+        </dd>
+      </div>
+      <div>
+        <dt><span aria-hidden="true">✦</span> Total XP</dt>
+        <dd>{{ stats.totalXp }}</dd>
+      </div>
+      <div>
+        <dt><span aria-hidden="true">♥</span> Hearts</dt>
+        <dd>
+          {{ stats.hearts.unlimited ? '∞' : stats.hearts.count + '/' + stats.hearts.maximum }}
+        </dd>
+      </div>
+    </dl>
+    @if (countdown() && !stats.hearts.unlimited) {
+      <p class="hint">Full hearts in {{ countdown() }}</p>
+    }
+    <div class="daily-goal">
+      <div class="goal-label">
+        <strong>Today’s goal</strong><span>{{ stats.todayXp }} / {{ stats.dailyGoalXp }} XP</span>
+      </div>
+      <progress
+        aria-label="Daily XP goal"
+        [value]="stats.todayXp"
+        [max]="stats.dailyGoalXp"
+      ></progress>
+      <p>
+        {{ stats.goalReached ? '✓ A daily goal reached today' : 'A little progress, every day.' }}
+      </p>
+      @if (stats.course) {
+        <p>{{ stats.course.earnedXp }} XP in this language</p>
+      }
+    </div>
+  } @else if (loading()) {
+    <p role="status">Opening your learning stats…</p>
+  }
+  @if (error()) {
+    <p role="status">{{ error() }}</p>
+    <button class="text-button" (click)="load()" [disabled]="loading()">Refresh stats</button>
+  }
+</section>
+<nav aria-label="Learning navigation">
+  <a
+    [routerLink]="value()?.course ? ['/learn', value()!.course!.id] : ['/learn']"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    >✦ Learn</a
+  >
+  @if (value()?.course; as course) {
+    <a
+      [routerLink]="['/learn', course.id, 'dialogues']"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      >Conversations</a
+    >
+  }
+  <a
+    routerLink="/leaderboard"
+    [queryParams]="value()?.course ? { courseId: value()!.course!.id } : {}"
+    routerLinkActive="active"
+    >♕ Weekly ranking</a
+  >
+  <a routerLink="/vocabulary" routerLinkActive="active">▤ My words</a>
+  <a routerLink="/weekly-summary" routerLinkActive="active">◷ My learning week</a>
+  <a routerLink="/activity" routerLinkActive="active">Learning activity</a>
+  <a routerLink="/speaking" routerLinkActive="active">Listening and speaking</a>
+  <a routerLink="/completion-cards" routerLinkActive="active">✦ Completion cards</a>
+  <a routerLink="/achievements" routerLinkActive="active">✧ Achievements</a>
+  <a routerLink="/challenges" routerLinkActive="active">☀ Challenges</a>
+  <a routerLink="/classes" routerLinkActive="active">♧ My classes</a>
+  <a routerLink="/classes/extra-study" routerLinkActive="active">Extra study with a teacher</a>
+  <a routerLink="/account/profile" routerLinkActive="active">○ My profile</a>
+  <a routerLink="/pricing" routerLinkActive="active">♢ Free & Premium</a>
+</nav>

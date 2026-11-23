@@ -1,0 +1,34 @@
+@if (status(); as hearts) {
+  @if (hearts.count === 0) {
+    <aside class="heart-card" aria-labelledby="heart-recovery-title">
+      <span class="heart-art" aria-hidden="true">♡</span>
+      <div>
+        <p class="eyebrow">A LITTLE TIME TO RECHARGE</p>
+        <h2 id="heart-recovery-title">Your next five <em>are on their way.</em></h2>
+        <p>All five hearts return after one hour. Your lesson stays saved while you wait.</p>
+        <p
+          class="countdown"
+          role="timer"
+          aria-live="off"
+          aria-label="Time until all five hearts return"
+        >
+          {{ countdown() }}
+        </p>
+        <button type="button" class="button button-outline" [disabled]="loading()" (click)="load()">
+          {{ loading() ? 'Checking…' : 'Check hearts ↗' }}
+        </button>
+      </div>
+    </aside>
+  }
+}
+@if (error()) {
+  <p class="heart-error" role="alert">{{ error() }}</p>
+  @if (!status()) {
+    <button type="button" class="button button-outline" [disabled]="loading()" (click)="load()">
+      Check hearts again ↗
+    </button>
+  }
+}
+@if (!status() && loading()) {
+  <p role="status">Checking your hearts…</p>
+}

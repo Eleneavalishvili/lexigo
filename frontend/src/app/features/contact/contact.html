@@ -1,0 +1,106 @@
+<div class="contact-page wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a>
+    <a class="back-link" routerLink="/">Back to the little big world ↗</a>
+  </header>
+  <main id="main-content">
+    <section class="contact-hero" aria-labelledby="contact-title">
+      <div>
+        <p class="eyebrow">GOOD CONVERSATIONS START WITH HELLO</p>
+        <h1 id="contact-title">A little hello.<br /><em>A real connection.</em></h1>
+        <p class="intro">
+          A question, a bright idea, or a little bump along the way? There’s always room for a
+          conversation.
+        </p>
+        <a class="text-link" routerLink="/contact" fragment="contact-inbox"
+          >Find your way to us <span aria-hidden="true">↓</span></a
+        >
+      </div>
+      <div class="postcard" aria-hidden="true">
+        <div class="postcard-top">
+          <span>A LETTER TO LEXIGO</span><span class="stamp">L<span>✦</span></span>
+        </div>
+        <p>Hello,<br /><em>curious you.</em></p>
+        <svg viewBox="0 0 300 120" focusable="false">
+          <path d="M12 90Q65 10 102 68T194 53Q218 16 246 45" />
+          <path d="m236 23 24 22-31 7" />
+        </svg>
+        <span class="postmark">SENT WITH CURIOSITY ✦</span>
+      </div>
+    </section>
+    <div class="contact-grid">
+      <section class="inbox-section" id="contact-inbox" aria-labelledby="inbox-title">
+        <p class="eyebrow">LET’S TALK</p>
+        <h2 id="inbox-title">Our little <em>inbox.</em></h2>
+        <p>For account questions, feedback and anything LexiGo.</p>
+        @if (details.supportEmail) {
+          <a class="email-link" [href]="'mailto:' + details.supportEmail"
+            >{{ details.supportEmail }} <span aria-hidden="true">↗</span></a
+          >
+        } @else {
+          <p class="contact-notice">Our support contact details will be published here soon.</p>
+        }
+        @if (details.supportHours) {
+          <p class="support-hours">{{ details.supportHours }}</p>
+        }
+        <p class="privacy-note">
+          Keep your password, verification codes and payment details to yourself. Support will never
+          ask you to share them.
+        </p>
+      </section>
+      <section class="company-section" aria-labelledby="company-title">
+        <p class="eyebrow">THE PEOPLE BEHIND THE HELLOS</p>
+        <h2 id="company-title">Meet <em>LexiGo.</em></h2>
+        <p>
+          A language-learning project with a curious spirit and a love of everyday conversation. Our
+          world begins with English and opens into Spanish, Italian, German and Russian.
+        </p>
+        <dl>
+          <div>
+            <dt>Brand</dt>
+            <dd>{{ details.brand }}</dd>
+          </div>
+          <div>
+            <dt>Our focus</dt>
+            <dd>Language learning & everyday connection</dd>
+          </div>
+          @if (details.legalName) {
+            <div>
+              <dt>Company</dt>
+              <dd>{{ details.legalName }}</dd>
+            </div>
+          }
+          @if (details.address) {
+            <div>
+              <dt>{{ details.addressIsDemo ? 'Demo address' : 'Address' }}</dt>
+              <dd>{{ details.address }}</dd>
+            </div>
+          }
+        </dl>
+        <span class="company-signature" aria-hidden="true">Stay curious. Go places. ✦</span>
+      </section>
+    </div>
+    <section class="quick-help" aria-labelledby="help-title">
+      <div>
+        <p class="eyebrow">A SMALL SHORTCUT</p>
+        <h2 id="help-title">Before you <em>write.</em></h2>
+      </div>
+      <div class="help-links">
+        <a routerLink="/forgot-password"
+          ><span>01</span>Forgot your password?<b aria-hidden="true">↗</b></a
+        >
+        <a routerLink="/resend-confirmation"
+          ><span>02</span>Need a confirmation email?<b aria-hidden="true">↗</b></a
+        >
+        <a routerLink="/account"
+          ><span>03</span>Review your signed-in devices<b aria-hidden="true">↗</b></a
+        >
+      </div>
+    </section>
+  </main>
+  <footer>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a>
+    <p>A little language. A bigger world.</p>
+    <span>HELLO IS JUST THE BEGINNING. ✦</span>
+  </footer>
+</div>

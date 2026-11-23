@@ -1,0 +1,72 @@
+<app-account-shell>
+  @switch (status()) {
+    @case ('success') {
+      <div class="success-mark" aria-hidden="true">✦</div>
+      <p class="eyebrow">ONE LITTLE STEP, DONE</p>
+      <h1>You’re <em>confirmed.</em></h1>
+      <p class="form-description" role="status">
+        Your email address is verified. Welcome to your little big world.
+      </p>
+      <a class="button button-ink" routerLink="/login"
+        >Let’s sign in <span aria-hidden="true">↗</span></a
+      >
+    }
+    @case ('already-confirmed') {
+      <div class="success-mark" aria-hidden="true">✦</div>
+      <p class="eyebrow">YOU’VE ALREADY SAID HELLO</p>
+      <h1>Already <em>confirmed.</em></h1>
+      <p class="form-description" role="status">
+        Your email has already been verified. There’s nothing else to confirm—your next stop is
+        sign-in.
+      </p>
+      <a class="button button-ink" routerLink="/login"
+        >Let’s sign in <span aria-hidden="true">↗</span></a
+      >
+    }
+    @case ('missing') {
+      <p class="eyebrow">YOUR NEXT LITTLE STEP</p>
+      <h1>Where to <em>next?</em></h1>
+      <p class="form-description">
+        If you’ve already confirmed your email, you can sign in. To verify a new account, open the
+        link from your confirmation email.
+      </p>
+      <a class="button button-ink" routerLink="/login"
+        >Go to sign in <span aria-hidden="true">↗</span></a
+      >
+      <p class="small-print">
+        <a routerLink="/resend-confirmation">Need another confirmation email?</a>
+      </p>
+    }
+    @case ('error') {
+      <p class="eyebrow">LET’S TAKE ANOTHER LOOK</p>
+      <h1>A little <em>detour.</em></h1>
+      <p class="form-description" role="alert">
+        This link is invalid or has expired. Open the latest confirmation email or request a new
+        one. If you’ve already confirmed your email, you can sign in.
+      </p>
+      <a class="button button-ink" routerLink="/resend-confirmation"
+        >Request a new link <span aria-hidden="true">↗</span></a
+      >
+      <p class="small-print"><a routerLink="/login">Already confirmed? Sign in.</a></p>
+    }
+    @default {
+      <p class="eyebrow">YOUR FIRST HELLO IS WAITING</p>
+      <h1>Is that <em>you?</em></h1>
+      <p class="form-description">
+        Confirm your email address to finish creating your LexiGo account.
+      </p>
+      @if (retryMessage()) {
+        <p class="form-error" role="alert">{{ retryMessage() }}</p>
+      }
+      <button
+        class="button button-red"
+        type="button"
+        (click)="confirm()"
+        [disabled]="status() === 'working'"
+      >
+        {{ status() === 'working' ? 'Confirming…' : 'Yes, confirm my email' }}
+        <span aria-hidden="true">↗</span>
+      </button>
+    }
+  }
+</app-account-shell>

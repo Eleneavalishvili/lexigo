@@ -1,0 +1,19 @@
+@use './classrooms';
+h1 {
+  overflow-wrap: anywhere;
+}
+.confirmation {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  margin-block: 1.25rem;
+}
+.confirmation input {
+  width: 1.25rem;
+  min-height: 1.25rem;
+  margin: 0;
+  flex: 0 0 auto;
+}
+#fresh-code {
+  font-family: monospace;
+}

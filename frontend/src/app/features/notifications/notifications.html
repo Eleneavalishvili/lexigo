@@ -1,0 +1,78 @@
+<div class="subscription-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a>
+    <a routerLink="/learn">↖ Back to learning</a>
+  </header>
+  <main>
+    <p class="eyebrow">POSTCARDS FROM LEXIGO</p>
+    <h1>A little<br /><em>heads-up.</em></h1>
+    <p>Your account updates stay here. Billing notices refer to simulated funds.</p>
+    <a routerLink="/billing/subscription">Open your subscription ↗</a>
+    <a routerLink="/reports">Open your content reports ↗</a>
+    <button
+      class="text-button"
+      type="button"
+      (click)="store.load(true)"
+      [disabled]="store.loading()"
+    >
+      Refresh inbox ↻
+    </button>
+    @if (store.error()) {
+      <p class="error" role="alert">{{ store.error() }}</p>
+    }
+    @if (store.loading()) {
+      <p role="status">Opening your postcards…</p>
+    }
+    @if (!store.loading() && !store.error() && !store.items().length) {
+      <p>Your inbox is all caught up.</p>
+    }
+    <ul class="postcards" aria-label="Account notifications">
+      @for (item of store.items(); track item.id) {
+        <li class="panel" [class.unread]="!item.readAt">
+          <p class="eyebrow">{{ item.readAt ? 'READ' : 'NEW POSTCARD' }}</p>
+          <h2>{{ item.title }}</h2>
+          <p>{{ item.body }}</p>
+          @if (item.type === 'Achievement') {
+            <a routerLink="/achievements">Open your badge collection ↗</a>
+          }
+          @if (item.type === 'Challenge') {
+            <a routerLink="/challenges">See your challenge reward ↗</a>
+          }
+          @if (item.type === 'ReportOutcome') {
+            <a routerLink="/reports">Read the report decision ↗</a>
+          }
+          @if (
+            item.type === 'AssignmentCreated' ||
+            item.type === 'AssignmentDue' ||
+            item.type === 'AssignmentFeedback'
+          ) {
+            <a routerLink="/classes">Open your classes ↗</a>
+          }
+          <p>
+            <time [attr.datetime]="item.createdAt">{{ item.createdAt | date: 'medium' }}</time>
+          </p>
+          @if (!item.readAt) {
+            <button
+              class="button button-outline"
+              type="button"
+              (click)="store.read(item.id)"
+              [disabled]="!!store.reading()"
+            >
+              Mark as read ↗
+            </button>
+          }
+        </li>
+      }
+    </ul>
+    @if (store.more()) {
+      <button
+        class="button button-ink"
+        type="button"
+        (click)="store.load()"
+        [disabled]="store.loading()"
+      >
+        Older postcards ↗
+      </button>
+    }
+  </main>
+</div>

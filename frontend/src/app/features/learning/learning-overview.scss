@@ -1,0 +1,102 @@
+:host {
+  display: block;
+}
+section {
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--surface);
+}
+.language {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  text-decoration: none;
+  font-weight: 700;
+  min-height: 44px;
+}
+.language > span:first-child {
+  font-size: 1.6rem;
+}
+.counters {
+  display: grid;
+  gap: 1rem;
+  margin-block: 1rem;
+}
+.counters > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+dt {
+  font-size: 0.85rem;
+}
+dt span {
+  color: var(--red);
+}
+dd {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+}
+small {
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+.goal-label {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+}
+progress {
+  width: 100%;
+  height: 0.7rem;
+  accent-color: var(--red);
+  margin-block: 0.6rem;
+}
+p {
+  font-size: 0.75rem;
+  line-height: 1.6;
+  margin: 0.4rem 0;
+  color: var(--muted);
+}
+nav {
+  display: grid;
+  gap: 0.5rem;
+  margin-block: 1rem;
+}
+nav a {
+  padding: 0.9rem 1rem;
+  min-height: 44px;
+  border-radius: 0.7rem;
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-weight: 700;
+}
+nav a:hover,
+.active {
+  border-color: var(--ink);
+  background: var(--surface);
+}
+@media (max-width: 900px) {
+  .counters {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+  .counters > div {
+    display: block;
+  }
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+  nav a {
+    padding: 0.7rem;
+    font-size: 0.8rem;
+  }
+}

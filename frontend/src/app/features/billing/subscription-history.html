@@ -1,0 +1,146 @@
+<div class="subscription-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/billing/subscription">↖ Your subscription</a
+    ><a routerLink="/billing/cards">Your transaction trail ↗</a>
+  </header>
+  <main>
+    <p class="eyebrow">EVERY CHAPTER, KEPT</p>
+    <h1>Your little<br /><em>paper trail.</em></h1>
+    <p class="simulation">
+      All payments here use simulated funds. Your history stays available on the Free plan.
+    </p>
+    <button type="button" class="text-button" (click)="store.load()" [disabled]="store.loading()">
+      Refresh history ↻
+    </button>
+    @if (store.error()) {
+      <p class="error" role="alert">{{ store.error() }}</p>
+    }
+    @if (store.loading()) {
+      <p role="status">Opening your chapters…</p>
+    }
+    @if (store.subscriptions(); as history) {
+      <ul class="chapters" aria-label="Subscription history">
+        @for (item of history.items; track item.id) {
+          <li class="panel">
+            <p class="eyebrow">{{ item.isCurrent ? 'CURRENT CHAPTER' : 'PAST CHAPTER' }}</p>
+            <h2>{{ item.period }} {{ item.planCode === 'PREMIUM' ? 'Premium' : item.planCode }}</h2>
+            <p>
+              {{ item.status }} · Latest paid period:
+              {{ item.currentPeriodStart | date: 'medium' }} –
+              {{ item.currentPeriodEnd | date: 'medium' }}
+            </p>
+            @if (item.cancelAtPeriodEnd) {
+              <p>Period-end cancellation saved.</p>
+            }
+            <button
+              class="button button-outline"
+              type="button"
+              [attr.aria-pressed]="store.selected() === item.id"
+              (click)="store.select(item.id)"
+              [disabled]="store.loading()"
+            >
+              View updates ↗
+            </button>
+          </li>
+        } @empty {
+          <li>No paid subscription history yet. Your Free learning is always here.</li>
+        }
+      </ul>
+      <nav class="history-pages" aria-label="Subscription history pages">
+        <button
+          class="text-button"
+          type="button"
+          (click)="store.load(history.page - 1)"
+          [disabled]="store.loading() || history.page === 1"
+        >
+          ← Previous</button
+        ><span>Page {{ history.page }} · {{ history.totalCount }} subscriptions</span
+        ><button
+          class="text-button"
+          type="button"
+          (click)="store.load(history.page + 1)"
+          [disabled]="store.loading() || history.page * history.pageSize >= history.totalCount"
+        >
+          Next →
+        </button>
+      </nav>
+    }
+    @if (store.selected(); as selected) {
+      <section aria-labelledby="updates-title" class="updates">
+        <p class="eyebrow">AS IT HAPPENED</p>
+        <h2 id="updates-title">The chapter's updates.</h2>
+        @if (store.loadingEvents()) {
+          <p role="status">Opening saved updates…</p>
+        }
+        @if (store.eventError()) {
+          <p class="error" role="alert">{{ store.eventError() }}</p>
+          <button class="text-button" type="button" (click)="store.select(selected)">
+            Try updates again ↻
+          </button>
+        }
+        @if (store.events(); as events) {
+          <ol class="timeline">
+            @for (item of events.items; track item.id) {
+              <li>
+                <h3>{{ eventLabel(item.type) }}</h3>
+                <p>
+                  <time [attr.datetime]="item.occurredAt">{{
+                    item.occurredAt | date: 'medium'
+                  }}</time>
+                  · {{ item.bySystem ? 'Automatic account update' : 'Account action' }}
+                </p>
+                @if (item.amount !== null && item.currency) {
+                  <p>
+                    {{ item.amount | currency: item.currency : 'code' }} simulated ·
+                    {{ item.period }}
+                  </p>
+                }
+                @if (item.paidPeriodStart && item.paidPeriodEnd) {
+                  <p>
+                    Paid period: {{ item.paidPeriodStart | date: 'medium' }} –
+                    {{ item.paidPeriodEnd | date: 'medium' }}
+                  </p>
+                }
+                @if (item.stopReason) {
+                  <p>
+                    Renewal stopped. See your inbox for the explanation; no funds were charged for
+                    this stopped renewal.
+                  </p>
+                  <a routerLink="/notifications">Open your inbox ↗</a>
+                }
+                @if (item.paymentId) {
+                  <a [routerLink]="['/billing/receipt', item.paymentId]"
+                    >View this test receipt ↗</a
+                  >
+                }
+              </li>
+            } @empty {
+              <li>No saved updates for this subscription.</li>
+            }
+          </ol>
+          <nav class="history-pages" aria-label="Subscription update pages">
+            <button
+              class="text-button"
+              type="button"
+              (click)="store.select(selected, events.page - 1)"
+              [disabled]="store.loadingEvents() || events.page === 1"
+            >
+              ← Previous</button
+            ><span>Page {{ events.page }} · {{ events.totalCount }} updates</span
+            ><button
+              class="text-button"
+              type="button"
+              (click)="store.select(selected, events.page + 1)"
+              [disabled]="
+                store.loadingEvents() || events.page * events.pageSize >= events.totalCount
+              "
+            >
+              Next →
+            </button>
+          </nav>
+        }
+      </section>
+    }
+  </main>
+</div>

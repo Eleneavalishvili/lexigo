@@ -1,0 +1,33 @@
+<section aria-label="Matching recordings" class="matching-audio-editor">
+  <p>
+    Optional recordings for the left-side items. Use distinct reviewed clips up to 30 seconds. Check
+    each recording if you reorder the rows.
+  </p>
+  @for (label of labels(); track $index; let index = $index) {
+    <div class="audio-row">
+      <strong>{{ index + 1 }}. {{ label }}</strong>
+      <span>{{ ids()[index] ? 'Recording selected' : 'Text only' }}</span>
+      <button
+        type="button"
+        (click)="active.set(active() === index ? null : index)"
+        [disabled]="disabled()"
+      >
+        {{ ids()[index] ? 'Replace recording' : 'Choose recording' }}
+      </button>
+      @if (ids()[index]) {
+        <button type="button" (click)="choose(index, null)" [disabled]="disabled()">
+          Use text only
+        </button>
+      }
+      @if (active() === index) {
+        <app-reviewed-audio-picker
+          [languageId]="languageId()"
+          [maximumDurationMs]="30000"
+          [selectedId]="ids()[index] ?? null"
+          [disabled]="disabled()"
+          (chosen)="choose(index, $event)"
+        />
+      }
+    </div>
+  }
+</section>

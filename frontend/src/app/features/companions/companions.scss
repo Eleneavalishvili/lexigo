@@ -1,0 +1,121 @@
+.companions-wrap {
+  max-width: 1100px;
+  margin: auto;
+  padding: 2rem;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+header > a:last-child {
+  font-size: 0.8rem;
+}
+main {
+  padding-block: 4rem;
+}
+h1 {
+  font-size: clamp(3rem, 6vw, 5.4rem);
+  line-height: 1.15;
+}
+.intro {
+  max-width: 570px;
+  color: var(--muted);
+  line-height: 1.9;
+}
+.companion-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.7rem;
+  margin: 3rem 0;
+}
+.companion-cards article {
+  border: 1px solid var(--ink);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.character-stage {
+  min-height: 290px;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: #e8ceb9;
+  color: #213e62;
+}
+.nico-card .character-stage {
+  background: #c2cccf;
+}
+.zara-card .character-stage {
+  background: #ead8a6;
+}
+.character-stage app-character-cue {
+  width: 260px;
+}
+.character-copy {
+  padding: 2rem;
+  background: var(--surface);
+}
+h2 {
+  font-size: 3.6rem;
+  margin: 0.5rem 0 1rem;
+}
+.character-copy p {
+  line-height: 1.9;
+}
+.character-quote {
+  font-family: var(--display-font);
+  font-size: 1.25rem;
+  color: var(--red);
+}
+.hello-controls {
+  border-block: 1px solid var(--line);
+  padding: 1.5rem 0;
+  margin-bottom: 2rem;
+}
+.reaction-buttons {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+.reaction-buttons button {
+  padding: 0.8rem 1.1rem;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  border-radius: 3px;
+}
+.reaction-buttons button[aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--paper);
+}
+.motion-note {
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.8;
+}
+footer {
+  border-top: 1px solid var(--line);
+  padding-block: 1.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+}
+@media (max-width: 850px) {
+  .companions-wrap {
+    padding: 1.25rem;
+  }
+  main {
+    padding-block: 3rem;
+  }
+  .companion-cards {
+    grid-template-columns: 1fr;
+  }
+  .character-stage {
+    min-height: 240px;
+  }
+  .character-copy {
+    padding: 1.5rem;
+  }
+}

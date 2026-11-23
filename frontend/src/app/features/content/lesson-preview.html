@@ -1,0 +1,163 @@
+<section aria-label="Learner preview">
+  <h3>Learner preview</h3>
+  <p>Try the lesson and check supported answers. Preview activity is never saved.</p>
+  @if (lesson().explanation) {
+    <p class="passage">{{ lesson().explanation }}</p>
+  }
+  @if (exercise(); as item) {
+    <p aria-live="polite">Exercise {{ index() + 1 }} of {{ lesson().exercises.length }}</p>
+    <article aria-label="Exercise preview">
+      @if (item.contextText) {
+        <p class="passage">{{ item.contextText }}</p>
+      }
+      <h4>{{ item.prompt }}</h4>
+      @if (item.audioMediaId; as audioId) {
+        <button
+          type="button"
+          [disabled]="speakingOpened()"
+          (click)="listen(audioId, 'Exercise recording')"
+        >
+          Listen to exercise
+        </button>
+      }
+      @if (sentence()) {
+        <app-sentence-builder
+          [options]="boardOptions()"
+          [order]="tokenOrder()"
+          [disabled]="checking()"
+          (orderChange)="tokenOrder.set($event); feedback.set(null)"
+          (spoken)="playTile($event)"
+        />
+      }
+      @if (matching()) {
+        <app-matching-board
+          [options]="boardOptions()"
+          [pairs]="pairs()"
+          [disabled]="checking()"
+          (pairsChange)="pairs.set($event); feedback.set(null)"
+        />
+      }
+      @if (options().length && !structured()) {
+        <ul aria-label="Answer choices">
+          @for (option of options(); track $index) {
+            <li>
+              @if (choice()) {
+                <button
+                  type="button"
+                  [attr.aria-pressed]="answer() === option.text"
+                  [disabled]="checking()"
+                  (click)="answer.set(option.text); feedback.set(null)"
+                >
+                  {{ option.text }}
+                </button>
+              } @else {
+                {{ option.text }}
+              }
+              @if (option.audioMediaId; as audioId) {
+                <button type="button" (click)="listen(audioId, option.text)">
+                  Listen to {{ option.text }}
+                </button>
+              }
+            </li>
+          }
+        </ul>
+      } @else {
+        @switch (item.type) {
+          @case ('Speaking') {
+            @if (speakingOpened()) {
+              <app-speaking-exercise
+                [exerciseId]="item.id"
+                [preview]="true"
+                (completed)="finishSpeaking()"
+              />
+              <button type="button" (click)="speakingOpened.set(false)">
+                Close speaking practice
+              </button>
+            } @else {
+              @if (speakingFinished()) {
+                <p role="status">Practice complete. Nothing was saved.</p>
+              }
+              <button type="button" (click)="openSpeaking()">Try speaking practice</button>
+            }
+          }
+          @case ('SpeakingCheck') {
+            @if (speakingOpened()) {
+              <app-spoken-check [exerciseId]="item.id" [preview]="speechPreview()" />
+              <button type="button" (click)="speakingOpened.set(false)">
+                Close speaking check
+              </button>
+            } @else {
+              <button type="button" (click)="openSpeaking()">Try speaking check</button>
+            }
+          }
+          @default {
+            @if (typed()) {
+              <label
+                >Preview answer
+                <input
+                  #typedAnswer
+                  maxlength="2000"
+                  [value]="answer()"
+                  [disabled]="checking()"
+                  (input)="answer.set(typedAnswer.value); feedback.set(null)"
+                  (keydown.enter)="check()"
+                />
+              </label>
+            }
+          }
+        }
+      }
+      @if (matching()) {
+        @for (option of options(); track $index) {
+          @if (option.audioMediaId; as audioId) {
+            <button type="button" (click)="listen(audioId, option.text)">
+              Listen to {{ option.text }}
+            </button>
+          }
+        }
+      }
+      @if (choice() || typed() || structured()) {
+        <button type="button" [disabled]="checking() || !canCheck()" (click)="check()">
+          {{ checking() ? 'Checking…' : 'Check preview answer' }}
+        </button>
+      }
+      @if (feedback(); as result) {
+        <p role="status">
+          <strong>{{ result.correct ? 'Correct' : 'Incorrect' }}.</strong> {{ result.explanation }}
+        </p>
+      }
+      @if (checkError()) {
+        <p role="alert">{{ checkError() }}</p>
+      }
+    </article>
+    @if (loadingAudio()) {
+      <p role="status">Opening recording…</p>
+    }
+    @if (audioError()) {
+      <p role="alert">{{ audioError() }}</p>
+    }
+    @if (playback(); as recording) {
+      <audio
+        controls
+        preload="none"
+        [src]="recording.url"
+        [attr.aria-label]="recording.label"
+        (error)="playbackFailed()"
+      ></audio>
+    }
+    <nav aria-label="Preview exercises">
+      <button type="button" [disabled]="checking() || index() === 0" (click)="move(-1)">
+        Previous exercise
+      </button>
+      <button
+        type="button"
+        [disabled]="checking() || index() + 1 >= lesson().exercises.length"
+        (click)="move(1)"
+      >
+        Next exercise
+      </button>
+    </nav>
+  } @else {
+    <p>This version has no exercises yet.</p>
+  }
+</section>

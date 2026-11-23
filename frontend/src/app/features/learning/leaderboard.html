@@ -1,0 +1,203 @@
+<div class="ranking-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/learn">Back to learning ↗</a>
+  </header>
+  <main>
+    <p class="eyebrow">A LITTLE FRIENDLY MOMENTUM</p>
+    <h1>Every word <em>counts.</em></h1>
+    <p class="intro">A weekly course ranking. Your pace, a little good company.</p>
+    @if (error()) {
+      <div role="alert">
+        <p>{{ error() }}</p>
+        <button
+          class="button button-secondary"
+          (click)="load()"
+          [disabled]="loading() || working()"
+        >
+          Refresh ranking
+        </button>
+      </div>
+    }
+    @if (courses().length) {
+      <label for="ranking-course">Your course</label
+      ><select
+        id="ranking-course"
+        (change)="chooseCourse($event)"
+        [disabled]="loading() || working()"
+      >
+        @for (course of courses(); track course.courseId) {
+          <option [value]="course.courseId" [selected]="course.courseId === courseId()">
+            {{ course.title }}
+          </option>
+        }
+      </select>
+    }
+    @if (loading()) {
+      <p role="status">Opening the weekly ranking…</p>
+    }
+    @if (board(); as data) {
+      <nav class="week-picker" aria-label="Ranking week">
+        <button
+          class="button button-secondary"
+          (click)="changeWeek(-1)"
+          [disabled]="loading() || working()"
+        >
+          ← Previous week</button
+        ><strong>Week of {{ data.week }}</strong
+        ><button
+          class="button button-secondary"
+          (click)="changeWeek(1)"
+          [disabled]="loading() || working() || data.week >= data.currentWeek"
+        >
+          Next week →
+        </button>
+      </nav>
+      <p class="small">
+        Weeks run Monday–Sunday in UTC.
+        <button
+          class="text-button"
+          (click)="currentWeek()"
+          [disabled]="loading() || working() || data.week === data.currentWeek"
+        >
+          This week
+        </button>
+      </p>
+      <section class="participation" aria-labelledby="participation-title">
+        <div>
+          <h2 id="participation-title">
+            {{ data.optedIn ? 'You’re in good company.' : 'Your choice. Your privacy.' }}
+          </h2>
+          <p>
+            Joining shares your display name and weekly XP with learners in your courses. Your email
+            and individual lesson results stay private. Your photo stays private unless you share
+            it. These choices apply to all course rankings, including previous weeks.
+          </p>
+          <p>
+            <strong>Your XP this week: {{ data.myXp }}</strong>
+            @if (data.me) {
+              · Your rank: {{ data.me.rank }}
+            }
+          </p>
+        </div>
+        <button
+          class="button"
+          [class.button-red]="!data.optedIn"
+          [class.button-secondary]="data.optedIn"
+          (click)="participate()"
+          [disabled]="loading() || working()"
+        >
+          {{
+            working() ? 'Saving choice…' : data.optedIn ? 'Leave ranking' : 'Join weekly ranking'
+          }}
+        </button>
+        @if (data.optedIn && (ownPhoto() || data.photoShared)) {
+          <button
+            class="button button-secondary"
+            [disabled]="loading() || working()"
+            (click)="participate(!data.photoShared)"
+          >
+            {{ data.photoShared ? 'Stop sharing profile photo' : 'Share profile photo' }}
+          </button>
+        }
+      </section>
+      @if (data.items.length) {
+        <ol
+          class="ranking"
+          aria-label="Weekly course ranking"
+          [attr.start]="(data.page - 1) * data.pageSize + 1"
+        >
+          @for (entry of data.items; track entry.rank) {
+            <li [class.me]="entry.isMe" [class.podium]="entry.rank <= 3">
+              <span class="rank">{{ entry.rank }}</span
+              ><span class="avatar" aria-hidden="true">
+                @if (entry.isMe && ownPhoto(); as photo) {
+                  <img
+                    [src]="photo"
+                    alt=""
+                    referrerpolicy="no-referrer"
+                    (error)="ownPhoto.set(null)"
+                  />
+                } @else {
+                  <span>{{ initials(entry.displayName) }}</span>
+                  @if (entry.photoUrl; as url) {
+                    <img
+                      #sharedPhoto
+                      [src]="url"
+                      alt=""
+                      referrerpolicy="no-referrer"
+                      (error)="sharedPhoto.hidden = true"
+                      (load)="sharedPhoto.hidden = false"
+                    />
+                  }
+                }</span
+              ><span class="name"
+                >{{ entry.displayName }}
+                @if (entry.isMe) {
+                  <small>You</small>
+                } @else {
+                  <a
+                    routerLink="/reports"
+                    [queryParams]="{
+                      rankingCourse: data.courseId,
+                      week: data.week,
+                      reportToken: entry.reportToken,
+                      name: entry.displayName,
+                    }"
+                    [attr.aria-label]="'Report public name ' + entry.displayName"
+                    >Report name</a
+                  >
+                }</span
+              ><strong>{{ entry.xp }} <small>XP</small></strong>
+            </li>
+          }
+        </ol>
+        <nav class="pagination" aria-label="Leaderboard pages">
+          <button
+            class="button button-secondary"
+            (click)="changePage(-1)"
+            [disabled]="loading() || working() || data.page === 1"
+          >
+            Previous</button
+          ><span>{{ data.totalCount }} participants · Page {{ data.page }}</span
+          ><button
+            class="button button-secondary"
+            (click)="changePage(1)"
+            [disabled]="loading() || working() || data.page * data.pageSize >= data.totalCount"
+          >
+            Next
+          </button>
+        </nav>
+      } @else {
+        <section class="empty">
+          <span aria-hidden="true">✦</span>
+          <h2>A new week of possibilities.</h2>
+          @if (!data.optedIn && data.myXp > 0) {
+            <p>You have saved XP for this week. Join the ranking to share your score.</p>
+          } @else {
+            <p>
+              No opted-in scores here yet. Finish a lesson that awards XP to take part. Repeating
+              completed lessons and free practice don’t add ranking XP.
+            </p>
+          }
+          <a class="button button-red" [routerLink]="['/learn', data.courseId]"
+            >Back to your course ↗</a
+          >
+        </section>
+      }
+      <p class="small">
+        Equal XP is ordered by when the total was reached, then a stable internal tie-break. Refresh
+        for the latest scores.
+      </p>
+      <button class="text-button" (click)="load()" [disabled]="loading() || working()">
+        Refresh scores
+      </button>
+    } @else if (!loading() && !error()) {
+      <section class="empty">
+        <h2>Start with a language.</h2>
+        <p>Join a course to see its weekly ranking.</p>
+        <a class="button button-red" routerLink="/courses">Find a course ↗</a>
+      </section>
+    }
+  </main>
+</div>

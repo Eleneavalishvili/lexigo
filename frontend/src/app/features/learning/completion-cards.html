@@ -1,0 +1,107 @@
+<div class="cards-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/learn">↖ Your learning path</a>
+  </header>
+  <main>
+    <div class="page-tools">
+      <p class="eyebrow">EVERY FINISHED CHAPTER COUNTS</p>
+      <h1>Your completion <em>cards.</em></h1>
+      <p>Private records of units completed on LexiGo. Sharing is your choice.</p>
+      <button
+        class="button button-outline"
+        (click)="load(page()?.page ?? 1)"
+        [disabled]="loading() || busy()"
+      >
+        Reload cards
+      </button>
+      @if (unitId()) {
+        <a routerLink="/completion-cards">View all my cards ↗</a>
+      }
+      @if (loading()) {
+        <p role="status">Opening your completed chapters…</p>
+      }
+      @if (error()) {
+        <p role="alert">{{ error() }}</p>
+      }
+      @if (notice()) {
+        <p role="status">{{ notice() }}</p>
+      }
+    </div>
+    @if (page(); as cards) {
+      <nav class="card-list" aria-label="Your completed units">
+        @for (card of cards.items; track card.id) {
+          <button
+            class="button button-outline"
+            [attr.aria-pressed]="selected()?.id === card.id"
+            [disabled]="busy() || !ready()"
+            (click)="select(card)"
+          >
+            {{ card.details.courseTitle }} · {{ card.details.unitTitle }}
+          </button>
+        } @empty {
+          <p>Complete every published lesson in a unit to earn its card.</p>
+          @if (unitId()) {
+            <button class="button button-red" (click)="claim()" [disabled]="busy() || !ready()">
+              Create my completed-unit card
+            </button>
+          }
+        }
+      </nav>
+      <div class="page-tools pages">
+        <button (click)="load(cards.page - 1)" [disabled]="loading() || busy() || cards.page === 1">
+          ← Previous
+        </button>
+        <span>Page {{ cards.page }} · {{ cards.totalCount }} cards</span>
+        <button
+          (click)="load(cards.page + 1)"
+          [disabled]="loading() || busy() || cards.page * cards.pageSize >= cards.totalCount"
+        >
+          Next →
+        </button>
+      </div>
+    }
+    @if (selected(); as card) {
+      <app-completion-card-art [details]="card.details" />
+      <section class="sharing page-tools" aria-labelledby="card-sharing-title">
+        <h2 id="card-sharing-title">Your card, your choice.</h2>
+        <p>
+          The card uses your current display name. Unit results are recorded when the card is
+          issued.
+        </p>
+        @if (busy()) {
+          <p role="status">Saving your card choice…</p>
+        } @else if (!ready()) {
+          <p>Reload your cards to confirm the latest sharing setting before making changes.</p>
+        } @else if (card.isShared) {
+          <p>Sharing is on. Anyone with this link can view your display name and unit result.</p>
+          <label for="card-share-link">Public card link</label>
+          <input id="card-share-link" type="text" readonly [value]="shareLink()" />
+          <button class="button button-outline" (click)="copy()" [disabled]="busy()">
+            Copy public link
+          </button>
+          <button class="button button-red" (click)="sharing(false)" [disabled]="busy()">
+            Turn sharing off
+          </button>
+          <p>Turning sharing off blocks future lookups. Enabling it again creates a new link.</p>
+        } @else {
+          <p>This card is private.</p>
+          <label class="consent"
+            ><input type="checkbox" [formControl]="confirmation" />I agree to make my current
+            display name and unit result visible to anyone with the public link.</label
+          >
+          <button
+            class="button button-red"
+            (click)="sharing(true)"
+            [disabled]="busy() || !confirmation.value"
+          >
+            Enable public sharing
+          </button>
+        }
+        <button class="button button-outline" (click)="print()" [disabled]="busy()">
+          Print this card
+        </button>
+      </section>
+    }
+  </main>
+</div>

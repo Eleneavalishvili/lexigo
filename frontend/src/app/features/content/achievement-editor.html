@@ -1,0 +1,63 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="reward-editor">
+  <h2>{{ value() ? 'Badge details' : 'Create a badge' }}</h2>
+  @if (value() && !value()!.canEdit) {
+    <p>
+      Earned or archived badges are protected from editing. You can retire an active badge while
+      preserving earned copies.
+    </p>
+  }
+  <fieldset [disabled]="busy() || (!!value() && !value()!.canEdit)">
+    <legend>Badge rule</legend>
+    <label for="badge-code">Permanent code</label>
+    <input
+      id="badge-code"
+      formControlName="code"
+      maxlength="60"
+      [readOnly]="!!value()"
+      placeholder="first-five-lessons"
+    />
+    <p>Lowercase letters, numbers and hyphens. Codes cannot be reused after retirement.</p>
+    <label for="badge-title">Title</label
+    ><input id="badge-title" formControlName="title" maxlength="120" />
+    <label for="badge-rule">Rule</label>
+    <select id="badge-rule" formControlName="ruleType">
+      <option value="CompletedLessons">Successfully completed lessons</option>
+      <option value="GoalStreak">Consecutive daily-goal days</option>
+      <option value="SavedWords">Saved words</option>
+      <option value="PerfectLesson">Perfect lesson</option>
+    </select>
+    <label for="badge-target">Target</label
+    ><input id="badge-target" type="number" min="1" max="10000" formControlName="threshold" />
+    <p>Perfect lesson uses a target of 1. Badges award no extra XP.</p>
+  </fieldset>
+  <label for="badge-reason">Reason for this change</label>
+  <textarea
+    id="badge-reason"
+    formControlName="reason"
+    minlength="10"
+    maxlength="500"
+    [readOnly]="busy()"
+  ></textarea>
+  @if (form.touched && form.invalid) {
+    <p role="alert">Complete the fields and enter a reason of 10–500 characters.</p>
+  }
+  <div class="actions">
+    <button
+      class="button button-ink"
+      type="submit"
+      [disabled]="busy() || form.invalid || (!!value() && !value()!.canEdit)"
+    >
+      Save badge
+    </button>
+    @if (value() && !value()!.isArchived) {
+      <button
+        class="button button-danger"
+        type="button"
+        (click)="retire()"
+        [disabled]="busy() || form.controls.reason.invalid"
+      >
+        Retire badge
+      </button>
+    }
+  </div>
+</form>

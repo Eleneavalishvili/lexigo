@@ -1,0 +1,47 @@
+name: lexigo-production
+
+services:
+  api:
+    image: ${LEXIGO_API_IMAGE:?Set the released API image reference}
+    restart: unless-stopped
+    env_file:
+      - ${LEXIGO_API_ENV_FILE:?Set the private API environment file}
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTPS_PORT: "443"
+      AllowedHosts: ${LEXIGO_HOST:?Set the public hostname}
+      AccountEmail__WebOrigin: https://${LEXIGO_HOST:?Set the public hostname}
+      DataProtection__KeyDirectory: /var/lib/lexigo/keys
+      ReverseProxy__Address: ${LEXIGO_EDGE_ADDRESS:?Set the Nginx private IP}
+    volumes:
+      - api-keys:/var/lib/lexigo/keys
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    networks: [app]
+
+  edge:
+    image: nginx:1.30.6-alpine@sha256:583b7f2fce1cdb8da5ad5c39ebd3c33b98b87d493190e548bdee1fa8c619c311
+    restart: unless-stopped
+    depends_on: [api]
+    environment:
+      LEXIGO_HOST: ${LEXIGO_HOST:?Set the public hostname}
+      NGINX_ENVSUBST_FILTER: ^LEXIGO_HOST$$
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ../nginx/lexigo.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ${LEXIGO_FRONTEND_DIR:?Set the built frontend directory}:/usr/share/nginx/html:ro
+      - ${LEXIGO_TLS_DIR:?Set the private TLS directory}:/etc/lexigo/tls:ro
+    networks:
+      app:
+        ipv4_address: ${LEXIGO_EDGE_ADDRESS:?Set the Nginx private IP}
+
+networks:
+  app:
+    ipam:
+      config:
+        - subnet: ${LEXIGO_APP_SUBNET:?Set a dedicated private subnet}
+
+volumes:
+  api-keys:

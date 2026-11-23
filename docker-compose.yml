@@ -1,0 +1,54 @@
+name: lexigo
+services:
+  database:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: lexigo
+      POSTGRES_USER: lexigo_dev
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - lexigo_database:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lexigo_dev -d lexigo"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  mail:
+    image: axllent/mailpit:v1.27
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:1025:1025"
+      - "127.0.0.1:8025:8025"
+  storage:
+    image: dxflrs/garage:v2.5.0@sha256:677e5b758e4425a325b811c425c026bf35a4bf42f7ddbaa773de3f4fd779a5a5
+    profiles: [storage]
+    restart: unless-stopped
+    command: ["/garage", "server", "--single-node", "--default-bucket"]
+    environment:
+      GARAGE_RPC_SECRET: ${LEXIGO_STORAGE_RPC_SECRET:-}
+      GARAGE_DEFAULT_ACCESS_KEY: ${LEXIGO_STORAGE_ACCESS_KEY:-}
+      GARAGE_DEFAULT_SECRET_KEY: ${LEXIGO_STORAGE_SECRET_KEY:-}
+      GARAGE_DEFAULT_BUCKET: lexigo-media
+    ports:
+      - "127.0.0.1:3900:3900"
+    volumes:
+      - ./work/storage/garage.toml:/etc/garage.toml:ro
+      - lexigo_storage_metadata:/var/lib/garage/meta
+      - lexigo_storage_data:/var/lib/garage/data
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: ["CMD", "/garage", "status"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 5s
+volumes:
+  lexigo_database:
+  lexigo_storage_metadata:
+  lexigo_storage_data:

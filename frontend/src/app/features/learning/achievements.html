@@ -1,0 +1,78 @@
+<div class="achievements-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a>
+    <a routerLink="/learn">↖ Back to learning</a>
+  </header>
+  <main>
+    <p class="eyebrow">LITTLE STEPS, LASTING MILESTONES</p>
+    <h1>Look how far<br /><em>you’ve come.</em></h1>
+    <p class="intro">
+      Every badge tells a story. Keep learning, collect words, and find your rhythm.
+    </p>
+    @if (loading()) {
+      <p role="status">Opening your badge collection…</p>
+    }
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+      <button class="button button-outline" type="button" (click)="load()" [disabled]="working()">
+        Refresh badges
+      </button>
+    }
+    <p class="announcement" role="status" aria-live="polite">{{ announcement() }}</p>
+    @if (badges().length) {
+      <div class="collection-summary">
+        <p>
+          <strong>{{ earned() }} / {{ badges().length }}</strong> badges earned
+        </p>
+        @if (ready()) {
+          <button
+            class="button button-ink"
+            type="button"
+            (click)="collect()"
+            [disabled]="working()"
+          >
+            {{ working() ? 'Collecting…' : 'Collect earned badges' }}
+          </button>
+        }
+      </div>
+      @if (ready()) {
+        <p>Your earlier progress counts too. Collect the milestones you have already reached.</p>
+      }
+      <ul class="badge-grid" aria-label="Your achievements">
+        @for (badge of badges(); track badge.id) {
+          <li class="badge-card" [class.earned]="!!badge.earnedAt" [class.ready]="badge.canCollect">
+            <span class="medallion" aria-hidden="true">{{ emblem(badge.code) }}</span>
+            <p class="eyebrow">
+              {{
+                badge.earnedAt ? 'EARNED' : badge.canCollect ? 'READY TO COLLECT' : 'IN PROGRESS'
+              }}
+            </p>
+            <h2>{{ badge.title }}</h2>
+            <p>{{ description(badge) }}</p>
+            @if (badge.earnedAt) {
+              <p>
+                Recognized
+                <time [attr.datetime]="badge.earnedAt">{{
+                  badge.earnedAt | date: 'mediumDate'
+                }}</time>
+              </p>
+            } @else {
+              <label [for]="'badge-' + badge.id"
+                >{{ badge.progress }} / {{ badge.threshold }}</label
+              >
+              <progress
+                [id]="'badge-' + badge.id"
+                [value]="badge.progress"
+                [max]="badge.threshold"
+              ></progress>
+            }
+          </li>
+        }
+      </ul>
+      <p class="footnote">
+        New milestones are recognized when you complete a lesson or save a word. Earned badges stay
+        yours. Badges do not add extra XP.
+      </p>
+    }
+  </main>
+</div>

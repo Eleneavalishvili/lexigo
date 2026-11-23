@@ -1,0 +1,159 @@
+.audio-library {
+  max-width: 1160px;
+  margin: auto;
+  padding: 2rem;
+}
+header,
+header nav,
+.section-heading,
+.actions,
+.pages {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+header {
+  justify-content: space-between;
+}
+header nav {
+  font-size: 0.8rem;
+}
+main {
+  margin-block: 4rem;
+}
+h1 {
+  font-size: clamp(2.8rem, 6vw, 4.8rem);
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-family: var(--display-font);
+  font-size: 1.5rem;
+}
+p {
+  line-height: 1.8;
+}
+.intro,
+.audio-facts {
+  color: var(--muted);
+}
+.upload-card,
+.audio-card {
+  padding: 1.7rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  min-width: 0;
+}
+.upload-card {
+  margin-block: 2rem 3rem;
+  border-top: 5px solid var(--gold);
+}
+form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+label {
+  display: grid;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+}
+input,
+select,
+textarea {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  padding: 0.8rem;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  border-radius: 0;
+}
+textarea {
+  resize: vertical;
+}
+form > button,
+form > .error {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+.section-heading {
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+.audio-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+.audio-card {
+  border-top: 3px solid var(--sage);
+  overflow-wrap: anywhere;
+}
+dt {
+  font-weight: 600;
+  font-size: 0.8rem;
+  margin-top: 1rem;
+}
+dd {
+  margin: 0.4rem 0 1rem;
+  white-space: pre-wrap;
+  line-height: 1.7;
+}
+audio {
+  display: block;
+  width: 100%;
+  margin-block: 1rem;
+}
+.review-controls {
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+  margin-top: 1.5rem;
+}
+.actions {
+  margin-top: 1rem;
+}
+.delete-link {
+  display: block;
+  margin-top: 1.5rem;
+  color: var(--red);
+  background: transparent;
+  border: 0;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.error {
+  color: var(--red);
+}
+.notice {
+  padding: 1rem;
+  border-left: 3px solid var(--sage);
+}
+.pages {
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+@media (max-width: 700px) {
+  .audio-library {
+    padding: 1.25rem;
+  }
+  main {
+    margin-block: 3rem;
+  }
+  form,
+  .audio-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .upload-card,
+  .audio-card {
+    padding: 1.25rem;
+  }
+}

@@ -1,0 +1,40 @@
+.chapters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr));
+  gap: 1rem;
+  padding: 0;
+  list-style: none;
+}
+.chapters h2 {
+  font-size: 1.6rem;
+}
+.chapters p {
+  overflow-wrap: anywhere;
+}
+.history-pages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+.updates {
+  margin-top: 3rem;
+}
+.timeline {
+  padding-inline-start: 1.5rem;
+}
+.timeline li {
+  padding: 0.5rem 0 1.5rem 0.5rem;
+  border-inline-start: 2px solid currentColor;
+}
+.timeline p {
+  overflow-wrap: anywhere;
+}
+.timeline h3 {
+  font-size: 1.3rem;
+}
+.timeline a {
+  display: inline-block;
+  margin: 0.35rem 1rem 0.35rem 0;
+}

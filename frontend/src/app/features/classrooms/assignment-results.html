@@ -1,0 +1,140 @@
+<section class="results" aria-labelledby="assignment-results-title">
+  <div class="actions">
+    <h4 id="assignment-results-title">Class results</h4>
+    <button
+      type="button"
+      class="text-button"
+      [disabled]="loading() || saving() || editing() !== null"
+      (click)="load(result()?.learners?.page ?? 1)"
+    >
+      Refresh results
+    </button>
+  </div>
+  @if (loading()) {
+    <p role="status">Loading class results…</p>
+  }
+  @if (error()) {
+    <p role="alert">{{ error() }}</p>
+  }
+  @if (notice()) {
+    <p role="status">{{ notice() }}</p>
+  }
+  @if (result(); as page) {
+    <p>
+      Completion requires {{ page.minimumScore }}% or higher on each of the
+      {{ page.requiredLessons }} assigned lessons.
+    </p>
+    <ul class="class-list">
+      @for (learner of page.learners.items; track learner.learnerId) {
+        <li class="result-card">
+          <h5>{{ learner.displayName }}</h5>
+          <p>
+            @switch (learner.status) {
+              @case ('Completed') {
+                Completed
+              }
+              @case ('InProgress') {
+                In progress
+              }
+              @default {
+                No submission
+              }
+            }
+            @if (learner.membershipStatus === 'Left') {
+              · Left class
+            }
+            @if (learner.membershipStatus === 'Removed') {
+              · Removed from class
+            }
+          </p>
+          @if (learner.lessons.length) {
+            <ul class="class-list">
+              @for (lesson of learner.lessons; track lesson.lessonId) {
+                <li>
+                  <strong>{{ lesson.title }}</strong>
+                  <p>{{ lesson.attemptCount }} submitted · Best score {{ lesson.bestScore }}%</p>
+                  <p>
+                    Latest: {{ lesson.latestScore }}% score · {{ lesson.latestAccuracy }}% accuracy
+                  </p>
+                  @if (lesson.feedback; as feedback) {
+                    <p class="feedback-message"><strong>Feedback</strong> {{ feedback.message }}</p>
+                  } @else if (editing() === lesson.latestSubmissionId) {
+                    <form (submit)="$event.preventDefault(); postFeedback()">
+                      <label for="feedback-message">Feedback for {{ learner.displayName }}</label>
+                      <textarea
+                        id="feedback-message"
+                        [formControl]="message"
+                        maxlength="1000"
+                        required
+                        [readOnly]="saving()"
+                      ></textarea>
+                      <div class="actions">
+                        <button
+                          class="button button-outline"
+                          type="button"
+                          (click)="editing.set(null)"
+                          [disabled]="saving()"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          class="button button-red"
+                          type="submit"
+                          [disabled]="saving() || message.invalid || !message.value.trim()"
+                        >
+                          {{ saving() ? 'Posting…' : 'Post feedback' }}
+                        </button>
+                      </div>
+                    </form>
+                  } @else if (!page.isArchived && learner.membershipStatus === 'Active') {
+                    <button
+                      class="text-button"
+                      type="button"
+                      (click)="openFeedback(lesson.latestSubmissionId)"
+                      [disabled]="loading() || editing() !== null"
+                    >
+                      Leave feedback
+                    </button>
+                  }
+                  <p>
+                    {{ lesson.submittedAt | date: 'medium' }}
+                    @if (lesson.isLate) {
+                      <strong> · Late</strong>
+                    }
+                  </p>
+                </li>
+              }
+            </ul>
+          }
+        </li>
+      } @empty {
+        <li>No learner results on this page.</li>
+      }
+    </ul>
+    @if (page.learners.totalCount > page.learners.pageSize || page.learners.page > 1) {
+      <div class="actions" aria-label="Result pagination">
+        <button
+          class="button button-outline"
+          type="button"
+          [disabled]="page.learners.page <= 1 || loading() || editing() !== null"
+          (click)="load(page.learners.page - 1)"
+        >
+          Previous
+        </button>
+        <span>Page {{ page.learners.page }}</span>
+        <button
+          class="button button-outline"
+          type="button"
+          [disabled]="
+            page.learners.page * page.learners.pageSize >= page.learners.totalCount ||
+            loading() ||
+            editing() !== null
+          "
+          (click)="load(page.learners.page + 1)"
+        >
+          Next
+        </button>
+      </div>
+    }
+  }
+</section>

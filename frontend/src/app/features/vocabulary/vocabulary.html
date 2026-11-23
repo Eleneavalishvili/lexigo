@@ -1,0 +1,316 @@
+<div class="library-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/account">↖ Your account</a>
+  </header>
+  <main>
+    <p class="eyebrow">LITTLE WORDS, WORTH KEEPING</p>
+    <h1>Your pocket<br /><em>of possibilities.</em></h1>
+    <p class="intro">
+      Find a word. Make it yours. Build a little library, one discovery at a time.
+    </p>
+    <nav class="library-tabs" aria-label="Word library">
+      <button
+        type="button"
+        [attr.aria-current]="store.filters().savedOnly ? 'page' : null"
+        [disabled]="store.working()"
+        (click)="tab(true)"
+      >
+        Your saved words
+      </button>
+      <button
+        type="button"
+        [attr.aria-current]="!store.filters().savedOnly ? 'page' : null"
+        [disabled]="store.working()"
+        (click)="tab(false)"
+      >
+        Discover words
+      </button>
+    </nav>
+    <form [formGroup]="form" (ngSubmit)="search()" class="filters">
+      <div>
+        <label for="word-search">Word or English translation</label
+        ><input
+          id="word-search"
+          formControlName="search"
+          type="search"
+          maxlength="160"
+          placeholder="A word you’re looking for…"
+        />
+      </div>
+      <div>
+        <label for="word-course">Language</label
+        ><select id="word-course" formControlName="courseId">
+          <option value="">All languages</option>
+          @for (course of courses(); track course.id) {
+            <option [value]="course.id">{{ course.title }}</option>
+          }
+        </select>
+      </div>
+      <div>
+        <label for="word-topic">Topic</label>
+        <select id="word-topic" formControlName="topic">
+          <option value="">All topics</option>
+          @for (topic of topics; track topic.id) {
+            <option [value]="topic.id">{{ topic.label }}</option>
+          }
+        </select>
+      </div>
+      @if (store.filters().savedOnly) {
+        <div>
+          <label for="word-status">Review schedule</label
+          ><select id="word-status" formControlName="status">
+            <option value="all">All saved words</option>
+            <option value="due">Due now</option>
+            <option value="scheduled">Scheduled for later</option>
+          </select>
+        </div>
+      }
+      <button
+        class="button button-ink"
+        [disabled]="store.working() || store.loading()"
+        type="submit"
+      >
+        Find words ↗
+      </button>
+    </form>
+    @if (store.filters().savedOnly) {
+      <button
+        type="button"
+        class="text-button"
+        (click)="collectionsOpen.set(!collectionsOpen()); collectionsOpen() && loadCollections()"
+      >
+        {{ collectionsOpen() ? 'Hide collections' : 'Manage collections' }}
+      </button>
+      @if (collectionsOpen()) {
+        <section class="collection-panel" aria-label="Your vocabulary collections">
+          @if (collectionError()) {
+            <p role="alert">{{ collectionError() }}</p>
+          }
+          <label for="word-collection">Collection</label>
+          <select
+            id="word-collection"
+            #chosen
+            [value]="collectionId()"
+            (change)="name.value = ''; selectCollection(chosen.value)"
+          >
+            <option value="">All saved words</option>
+            @for (collection of collections(); track collection.id) {
+              <option [value]="collection.id" [selected]="collectionId() === collection.id">
+                {{ collection.name }} ({{ collection.wordCount }})
+              </option>
+            }
+          </select>
+          <label for="collection-course">Course for new collection</label>
+          <select id="collection-course" #course [disabled]="!!collectionId()">
+            <option value="">Choose a course</option>
+            @for (item of courses(); track item.id) {
+              <option [value]="item.id">{{ item.title }}</option>
+            }
+          </select>
+          <label for="collection-name">{{ collectionId() ? 'New name' : 'Collection name' }}</label>
+          <input id="collection-name" #name maxlength="80" />
+          <button
+            class="button button-ink"
+            type="button"
+            [disabled]="collectionBusy()"
+            (click)="saveCollection(course.value, name.value)"
+          >
+            {{ collectionId() ? 'Rename collection' : 'Create collection' }}
+          </button>
+          @if (collectionId()) {
+            @if (confirmingDelete()) {
+              <p>Delete this collection? Its words will stay in your library.</p>
+              <button
+                class="button button-danger"
+                type="button"
+                [disabled]="collectionBusy()"
+                (click)="removeCollection()"
+              >
+                Confirm delete
+              </button>
+              <button class="text-button" type="button" (click)="confirmingDelete.set(false)">
+                Keep collection
+              </button>
+            } @else {
+              <button
+                class="text-button"
+                type="button"
+                [disabled]="collectionBusy()"
+                (click)="confirmingDelete.set(true)"
+              >
+                Delete collection
+              </button>
+            }
+          }
+        </section>
+      }
+    }
+    @if (store.notice()) {
+      <p role="status" class="notice">{{ store.notice() }}</p>
+    }
+    @if (store.error()) {
+      <p role="alert" class="error">{{ store.error() }}</p>
+      <button class="button button-outline" type="button" (click)="store.load()">
+        Try again ↗
+      </button>
+    }
+    @if (store.loading()) {
+      <p role="status">Opening your word collection…</p>
+    }
+    @if (store.result(); as result) {
+      <p class="eyebrow" role="status">
+        {{ result.totalCount }} {{ result.totalCount === 1 ? 'WORD' : 'WORDS' }} / PAGE
+        {{ result.page }}
+      </p>
+      <div class="word-grid">
+        @for (word of result.items; track word.id) {
+          <article>
+            <div class="word-heading">
+              <p class="eyebrow">{{ word.courseTitle }}</p>
+              <span class="stamp" aria-hidden="true">✦</span>
+            </div>
+            <h2 [attr.lang]="word.languageCode">{{ word.word }}</h2>
+            @if (word.hasAudio) {
+              <app-word-recording [wordId]="word.id" />
+            }
+            <app-vocabulary-reference [word]="word" />
+            @if (review()?.word?.id === word.id) {
+              @if (reviewResult(); as result) {
+                <p role="status">
+                  {{ result.isCorrect ? 'Correct!' : 'Not quite.' }}
+                  {{ word.englishTranslation }} · Next review {{ result.dueAt | date: 'medium' }}
+                </p>
+              } @else {
+                <form (submit)="$event.preventDefault(); gradeReview()">
+                  <label [for]="'review-' + word.id">Type the English translation</label>
+                  <input [id]="'review-' + word.id" [formControl]="reviewAnswer" maxlength="160" />
+                  <button
+                    type="submit"
+                    class="button button-ink"
+                    [disabled]="reviewing() || !reviewAnswer.value.trim()"
+                  >
+                    Check answer
+                  </button>
+                </form>
+                @if (reviewError()) {
+                  <p role="alert">{{ reviewError() }}</p>
+                }
+              }
+              <button
+                type="button"
+                class="text-button"
+                [disabled]="reviewing()"
+                (click)="finishReview()"
+              >
+                Close review
+              </button>
+            } @else {
+              <p class="translation">{{ word.englishTranslation }}</p>
+              @let topic = topicLabels.get(word.topic ?? '');
+              @if (word.partOfSpeech || topic) {
+                <p class="word-type">
+                  {{ word.partOfSpeech }}{{ word.partOfSpeech && topic ? ' · ' : '' }}{{ topic }}
+                </p>
+              }
+              @if (word.example) {
+                <blockquote [attr.lang]="word.languageCode">{{ word.example }}</blockquote>
+              }
+              @if (word.savedWordId && word.dueAt) {
+                <p class="due">Review from {{ word.dueAt | date: 'mediumDate' }}</p>
+                @if (store.filters().savedOnly && store.filters().status === 'due') {
+                  <button
+                    type="button"
+                    class="button button-ink"
+                    [disabled]="reviewing()"
+                    (click)="beginReview(word)"
+                  >
+                    Review word
+                  </button>
+                }
+              }
+              <button
+                class="button button-outline"
+                type="button"
+                [disabled]="store.working() || store.loading()"
+                [attr.aria-label]="(word.savedWordId ? 'Remove ' : 'Save ') + word.word"
+                (click)="toggleSavedWord(word)"
+              >
+                {{ word.savedWordId ? 'Remove from library −' : 'Keep this word +' }}
+              </button>
+            }
+            @if (word.savedWordId; as savedId) {
+              @if (collectionsOpen()) {
+                @if (collectionId(); as activeCollection) {
+                  <button
+                    type="button"
+                    class="text-button"
+                    [disabled]="collectionBusy()"
+                    (click)="setCollectionWord(activeCollection, savedId, false)"
+                  >
+                    Remove from collection
+                  </button>
+                } @else {
+                  <label [for]="'add-word-' + word.id">Add to collection</label>
+                  <select [id]="'add-word-' + word.id" #destination>
+                    <option value="">Choose a collection</option>
+                    @for (collection of collections(); track collection.id) {
+                      @if (collection.courseId === word.courseId) {
+                        <option [value]="collection.id">{{ collection.name }}</option>
+                      }
+                    }
+                  </select>
+                  <button
+                    class="text-button"
+                    type="button"
+                    [disabled]="collectionBusy()"
+                    (click)="
+                      destination.value && setCollectionWord(destination.value, savedId, true)
+                    "
+                  >
+                    Add word
+                  </button>
+                }
+              }
+            }
+          </article>
+        } @empty {
+          <section class="empty">
+            <p class="eyebrow">ROOM FOR SOMETHING NEW</p>
+            <h2>A little space<br /><em>for your next word.</em></h2>
+            <p>
+              {{
+                store.filters().savedOnly
+                  ? 'No saved words match these filters. Explore the word library to find your first one.'
+                  : 'No published words match these filters. Try another search or language.'
+              }}
+            </p>
+            @if (store.filters().savedOnly) {
+              <button class="button button-ink" type="button" (click)="tab(false)">
+                Discover words ↗
+              </button>
+            }
+          </section>
+        }
+      </div>
+      <nav class="pagination" aria-label="Word pages">
+        <button
+          class="button button-outline"
+          type="button"
+          [disabled]="result.page === 1 || store.working()"
+          (click)="store.load({ page: result.page - 1 })"
+        >
+          ← Previous</button
+        ><span>Page {{ result.page }}</span
+        ><button
+          class="button button-outline"
+          type="button"
+          [disabled]="!store.hasNext() || store.working()"
+          (click)="store.load({ page: result.page + 1 })"
+        >
+          Next →
+        </button>
+      </nav>
+    }
+  </main>
+</div>

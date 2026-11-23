@@ -1,0 +1,657 @@
+<div class="workbench">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/courses">Public catalog ↗</a><a routerLink="/manage/media">Audio library ↗</a
+    ><a routerLink="/account">My account ↗</a>
+    <a routerLink="/manage/vocabulary/revisions">Vocabulary drafts ↗</a>
+    @if (admin || auth.user()?.roles?.includes('ContentAuthor')) {
+      <a routerLink="/manage/imports">Import a lesson CSV ↗</a>
+    }
+    @if (admin) {
+      <a routerLink="/manage/vocabulary">Vocabulary recordings ↗</a>
+      <a routerLink="/manage/rewards">Rewards catalog ↗</a>
+      <a routerLink="/manage/skills">Course skills ↗</a>
+    }
+  </header>
+  <main>
+    <p class="eyebrow">WORDS WORTH SHARING</p>
+    <h1>The lesson <em>workshop.</em></h1>
+    <p class="intro">A thoughtful draft. A second pair of eyes. A little more possibility.</p>
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+    @if (notice()) {
+      <p class="notice" role="status">{{ notice() }}</p>
+    }
+    @if (loading()) {
+      <p role="status">Opening the workshop…</p>
+    }
+    <nav class="course-tabs" aria-label="Assigned courses">
+      @for (item of courses(); track item.id) {
+        <button
+          type="button"
+          (click)="chooseCourse(item)"
+          [disabled]="busy()"
+          [attr.aria-pressed]="course()?.id === item.id"
+        >
+          {{ item.title }}
+        </button>
+      } @empty {
+        @if (!loading()) {
+          <p>No courses are assigned to your current language access.</p>
+          <button type="button" class="button button-outline" (click)="load()">
+            Reload courses ↗
+          </button>
+        }
+      }
+    </nav>
+    @if (course(); as current) {
+      <div class="workshop-grid">
+        <aside>
+          <p class="eyebrow">{{ current.title }} · {{ total() }} VISIBLE LESSONS</p>
+          <ul class="lesson-list">
+            @for (row of lessons(); track row.id) {
+              <li>
+                <button type="button" (click)="chooseLesson(row.id)" [disabled]="busy()">
+                  <strong>{{ row.title }}</strong
+                  ><span>Version {{ row.versionNumber }} · {{ row.versionStatus }}</span>
+                </button>
+              </li>
+            } @empty {
+              <li>No lessons in your current work queue.</li>
+            }
+          </ul>
+          <nav class="pages" aria-label="Lesson pages">
+            <button
+              type="button"
+              (click)="chooseCourse(current, page() - 1)"
+              [disabled]="page() === 1 || busy()"
+            >
+              ← Previous</button
+            ><button
+              type="button"
+              (click)="chooseCourse(current, page() + 1)"
+              [disabled]="page() * 20 >= total() || busy()"
+            >
+              Next →
+            </button>
+          </nav>
+          @if (admin) {
+            <details>
+              <summary>Edit course details</summary>
+              <form [formGroup]="courseDetails" (ngSubmit)="saveCourseDetails()">
+                <label for="workshop-course-title">Course title</label>
+                <input id="workshop-course-title" formControlName="title" maxlength="120" />
+                <label for="workshop-course-description">Course description</label>
+                <textarea
+                  id="workshop-course-description"
+                  formControlName="description"
+                  maxlength="1000"
+                ></textarea>
+                <button
+                  type="submit"
+                  class="button button-outline"
+                  [disabled]="busy() || courseDetails.invalid || !courseDetails.dirty"
+                >
+                  Save course details
+                </button>
+              </form>
+            </details>
+            @if (current.orderNumber) {
+              <details>
+                <summary>Change course position</summary>
+                <form (submit)="$event.preventDefault(); moveCourse()">
+                  <p>An occupied catalog position swaps the two courses.</p>
+                  <label for="workshop-course-position">Position in catalog</label>
+                  <input
+                    id="workshop-course-position"
+                    type="number"
+                    min="1"
+                    max="10000"
+                    [formControl]="coursePosition"
+                  />
+                  <button
+                    type="submit"
+                    class="button button-outline"
+                    [disabled]="
+                      busy() ||
+                      coursePosition.invalid ||
+                      coursePosition.value === current.orderNumber
+                    "
+                  >
+                    Save course position
+                  </button>
+                </form>
+              </details>
+            }
+            <details>
+              <summary>{{ current.archivedAt ? 'Restore course' : 'Archive course' }}</summary>
+              <form (submit)="$event.preventDefault(); setCourseArchive()">
+                <p>
+                  {{
+                    current.archivedAt
+                      ? 'Restore this course so learners can access its published lessons.'
+                      : 'Hide this course from the catalog and stop new lessons. Existing sessions and progress are kept.'
+                  }}
+                </p>
+                <label for="course-archive-reason">Reason for changing course visibility</label>
+                <textarea
+                  id="course-archive-reason"
+                  [formControl]="courseArchiveReason"
+                  maxlength="500"
+                ></textarea>
+                <button
+                  class="button button-outline"
+                  type="submit"
+                  [disabled]="busy() || courseArchiveReason.value.trim().length < 3"
+                >
+                  {{ current.archivedAt ? 'Confirm course restore' : 'Confirm course archive' }}
+                </button>
+              </form>
+            </details>
+            <details>
+              <summary>Manage course units</summary>
+              <label for="workshop-unit-picker">Unit to edit</label>
+              <select
+                id="workshop-unit-picker"
+                #unitPicker
+                [value]="editingUnitId()"
+                [disabled]="busy() || loading()"
+                (change)="selectUnit(unitPicker.value)"
+              >
+                <option value="">Create a new unit</option>
+                @for (unit of units(); track unit.id) {
+                  <option [value]="unit.id">
+                    {{ unit.title }}{{ unit.archivedAt ? ' (archived)' : '' }}
+                  </option>
+                }
+              </select>
+              <form [formGroup]="unitForm" (ngSubmit)="saveUnit()">
+                <label for="unit-title">Unit title</label
+                ><input id="unit-title" formControlName="title" maxlength="160" /><label
+                  for="unit-description"
+                  >English description</label
+                ><textarea
+                  id="unit-description"
+                  formControlName="description"
+                  maxlength="3000"
+                ></textarea
+                ><label for="unit-difficulty">Difficulty</label
+                ><select id="unit-difficulty" formControlName="difficulty">
+                  <option>Beginner</option>
+                  <option>Intermediate</option>
+                  <option>Advanced</option>
+                  <option>A1</option>
+                  <option>A2</option>
+                  <option>B1</option>
+                  <option>B2</option>
+                  <option>C1</option>
+                  <option>C2</option></select
+                ><label for="unit-order">Position</label
+                ><input
+                  id="unit-order"
+                  formControlName="orderNumber"
+                  type="number"
+                  min="1"
+                  max="10000"
+                /><button class="button button-ink" type="submit" [disabled]="busy()">
+                  {{ editingUnitId() ? 'Save unit changes' : 'Create unit' }} ↗
+                </button>
+              </form>
+              @if (editingUnit(); as unit) {
+                <details>
+                  <summary>Change unit position</summary>
+                  <form (submit)="$event.preventDefault(); moveUnit()">
+                    <p>
+                      An occupied position swaps two units in this course. Lesson prerequisites
+                      still apply.
+                    </p>
+                    <label for="workshop-unit-position">Position in course</label>
+                    <input
+                      id="workshop-unit-position"
+                      type="number"
+                      min="1"
+                      max="10000"
+                      [formControl]="unitPosition"
+                    />
+                    <button
+                      type="submit"
+                      class="button button-outline"
+                      [disabled]="
+                        busy() || unitPosition.invalid || unitPosition.value === unit.orderNumber
+                      "
+                    >
+                      Save unit position
+                    </button>
+                  </form>
+                </details>
+                <details>
+                  <summary>{{ unit.archivedAt ? 'Restore unit' : 'Archive unit' }}</summary>
+                  <form (submit)="$event.preventDefault(); setUnitArchive()">
+                    <label for="unit-archive-reason">Reason for changing unit visibility</label>
+                    <textarea
+                      id="unit-archive-reason"
+                      [formControl]="unitArchiveReason"
+                      maxlength="500"
+                    ></textarea>
+                    <button
+                      type="submit"
+                      class="button button-outline"
+                      [disabled]="busy() || unitArchiveReason.value.trim().length < 3"
+                    >
+                      {{ unit.archivedAt ? 'Confirm unit restore' : 'Confirm unit archive' }}
+                    </button>
+                  </form>
+                </details>
+              }
+            </details>
+          }
+          @if (current.canAuthor) {
+            <details>
+              <summary>Create a lesson draft</summary>
+              @if (units().length) {
+                <form [formGroup]="createForm" (ngSubmit)="createLesson()">
+                  <label for="draft-unit">Unit</label
+                  ><select id="draft-unit" formControlName="unitId" (change)="setUnit()">
+                    @for (unit of units(); track unit.id) {
+                      <option [value]="unit.id">{{ unit.title }}</option>
+                    }</select
+                  ><label for="draft-title">Lesson title</label
+                  ><input id="draft-title" formControlName="title" maxlength="160" /><label
+                    for="draft-objective"
+                    >Learning objective</label
+                  ><textarea
+                    id="draft-objective"
+                    formControlName="objective"
+                    maxlength="1000"
+                  ></textarea
+                  ><label for="draft-explanation">English grammar explanation</label
+                  ><textarea
+                    id="draft-explanation"
+                    formControlName="explanation"
+                    maxlength="20000"
+                  ></textarea
+                  ><label for="draft-order">Position</label
+                  ><input
+                    id="draft-order"
+                    type="number"
+                    formControlName="orderNumber"
+                    min="1"
+                  /><button class="button button-ink" type="submit" [disabled]="busy()">
+                    Create draft ↗
+                  </button>
+                </form>
+              } @else {
+                <p class="help">
+                  An administrator needs to add a unit before lessons can be drafted.
+                </p>
+              }
+            </details>
+          }
+        </aside>
+        <section class="editor" aria-label="Lesson editor">
+          @if (lesson(); as selected) {
+            <p class="eyebrow">
+              VERSION {{ selected.versionNumber }} · {{ selected.versionStatus }}
+            </p>
+            <h2>{{ selected.title }}</h2>
+            <p>{{ selected.objective }}</p>
+            @if (admin && selected.orderNumber) {
+              <details>
+                <summary>Change lesson position</summary>
+                <form (submit)="$event.preventDefault(); moveLesson()">
+                  <p>
+                    Moving to an occupied position swaps the two lessons in this unit. Prerequisites
+                    still apply.
+                  </p>
+                  <label for="workshop-lesson-position">Position in unit</label>
+                  <input
+                    id="workshop-lesson-position"
+                    type="number"
+                    min="1"
+                    max="10000"
+                    [formControl]="lessonPosition"
+                  />
+                  <button
+                    type="submit"
+                    class="button button-outline"
+                    [disabled]="
+                      busy() ||
+                      lessonPosition.invalid ||
+                      lessonPosition.value === selected.orderNumber
+                    "
+                  >
+                    Save lesson position
+                  </button>
+                </form>
+              </details>
+            }
+            @if (!selected.privateTextErasedAt) {
+              <button
+                type="button"
+                class="button button-outline"
+                [attr.aria-expanded]="previewOpen()"
+                (click)="previewOpen.set(!previewOpen())"
+              >
+                {{ previewOpen() ? 'Close learner preview' : 'Preview as learner' }}
+              </button>
+              @if (previewOpen()) {
+                <app-lesson-preview [lesson]="selected" />
+              }
+            }
+            <button
+              type="button"
+              class="button button-outline"
+              [disabled]="busy() || loading()"
+              (click)="loadVersions(1)"
+            >
+              View version history
+            </button>
+            @if (versionRows().length || versionPage() > 1) {
+              <nav aria-label="Lesson version history">
+                @for (version of versionRows(); track version.id) {
+                  <button
+                    type="button"
+                    class="text-button"
+                    [disabled]="busy() || loading()"
+                    [attr.aria-current]="selected.versionId === version.id ? 'page' : null"
+                    (click)="chooseLesson(selected.id, version.id)"
+                  >
+                    Version {{ version.versionNumber }} · {{ version.status }}
+                  </button>
+                }
+                <button
+                  type="button"
+                  class="text-button"
+                  [disabled]="busy() || loading() || versionPage() === 1"
+                  (click)="loadVersions(versionPage() - 1)"
+                >
+                  Previous versions
+                </button>
+                <button
+                  type="button"
+                  class="text-button"
+                  [disabled]="busy() || loading() || versionRows().length < 20"
+                  (click)="loadVersions(versionPage() + 1)"
+                >
+                  More versions
+                </button>
+              </nav>
+            }
+            @if (admin && !selected.currentVersionId && !selected.versionPublishedAt) {
+              <app-draft-owner-transfer
+                [lessonId]="selected.id"
+                [ownerId]="selected.ownerId"
+                (changed)="
+                  notice.set('The lesson has a new owner.');
+                  chooseLesson(selected.id, selected.versionId)
+                "
+              />
+            }
+            @if (selected.privateTextErasedAt) {
+              <p role="status">This private draft's text has been erased.</p>
+            } @else if (
+              (admin || (canEdit && selected.versionCreatedBy === auth.user()?.id)) &&
+              selected.versionStatus !== 'Published' &&
+              !selected.versionPublishedAt &&
+              selected.currentVersionId !== selected.versionId
+            ) {
+              @if (confirmErasure()) {
+                <p>
+                  Erase this private version's wording, exercises and review notes? This action is
+                  permanent.
+                </p>
+                <button
+                  type="button"
+                  class="button button-danger"
+                  [disabled]="busy() || loading()"
+                  (click)="erasePrivateDraft()"
+                >
+                  Confirm private text erasure
+                </button>
+                <button
+                  type="button"
+                  class="text-button"
+                  [disabled]="busy()"
+                  (click)="confirmErasure.set(false)"
+                >
+                  Keep draft
+                </button>
+              } @else {
+                <button
+                  type="button"
+                  class="button button-outline"
+                  [disabled]="busy() || loading()"
+                  (click)="confirmErasure.set(true)"
+                >
+                  Erase private draft text
+                </button>
+              }
+            }
+            @if (canEdit && selected.versionStatus === 'Draft') {
+              <form [formGroup]="editForm" (ngSubmit)="saveDraft()">
+                <label for="edit-title">Title</label
+                ><input id="edit-title" formControlName="title" maxlength="160" /><label
+                  for="edit-objective"
+                  >Objective</label
+                ><textarea
+                  id="edit-objective"
+                  formControlName="objective"
+                  maxlength="1000"
+                ></textarea
+                ><label for="edit-explanation">English grammar explanation</label
+                ><textarea
+                  id="edit-explanation"
+                  formControlName="explanation"
+                  rows="5"
+                  maxlength="20000"
+                ></textarea
+                ><button class="button button-outline" type="submit" [disabled]="busy()">
+                  Save draft ↗
+                </button>
+              </form>
+            } @else {
+              <div class="explanation">{{ selected.explanation }}</div>
+            }
+            @if (selected.reviews.length) {
+              <section aria-label="Recent review notes">
+                <h3>Recent review notes</h3>
+                @for (review of selected.reviews; track $index) {
+                  <div class="review-note">
+                    <strong>{{ review.decision }}</strong>
+                    <p>{{ review.comment }}</p>
+                  </div>
+                }
+              </section>
+            }
+            <h3>Exercises · {{ selected.exercises.length }}</h3>
+            <ol class="exercise-list">
+              @for (exercise of selected.exercises; track exercise.id) {
+                <li>
+                  <p class="eyebrow">{{ exercise.type }}</p>
+                  @for (skill of selected.skills ?? []; track skill.id) {
+                    @if (exercise.skillIds?.includes(skill.id)) {
+                      <span>{{ skill.name }} </span>
+                    }
+                  }
+                  <p>{{ exercise.prompt }}</p>
+                  @if (exercise.contextText) {
+                    <div class="exercise-context-preview">{{ exercise.contextText }}</div>
+                  }
+                  <p class="help">{{ exercise.explanation }}</p>
+                  <p class="help">
+                    Options:
+                    @for (option of exercise.options; track $index) {
+                      <span>{{ option.text }} · </span>
+                    }
+                  </p>
+                  <p class="answer-key">
+                    Staff answer key:
+                    @for (answer of exercise.answers; track $index) {
+                      <span>{{ answer.answerText }} · </span>
+                    }
+                  </p>
+                  @if (canEdit && selected.versionStatus === 'Draft') {
+                    <div class="actions">
+                      <button
+                        type="button"
+                        class="button button-outline"
+                        [attr.aria-label]="'Move exercise ' + ($index + 1) + ' up'"
+                        [disabled]="busy() || !!editingExercise() || $first"
+                        (click)="moveExercise($index, -1)"
+                      >
+                        Move up ↑
+                      </button>
+                      <button
+                        type="button"
+                        class="button button-outline"
+                        [attr.aria-label]="'Move exercise ' + ($index + 1) + ' down'"
+                        [disabled]="busy() || !!editingExercise() || $last"
+                        (click)="moveExercise($index, 1)"
+                      >
+                        Move down ↓
+                      </button>
+                      <button
+                        class="button button-outline"
+                        type="button"
+                        (click)="editingExercise.set(exercise)"
+                        [disabled]="busy()"
+                      >
+                        Edit exercise ↗</button
+                      ><button
+                        class="button button-outline"
+                        type="button"
+                        (click)="removeExercise(exercise)"
+                        [disabled]="busy()"
+                      >
+                        Remove from draft ↗
+                      </button>
+                    </div>
+                  }
+                </li>
+              }
+            </ol>
+            @if (canEdit && selected.versionStatus === 'Draft') {
+              <app-exercise-composer
+                [languageId]="course()?.targetLanguageId ?? 0"
+                [nextOrder]="nextExercise"
+                [editing]="editingExercise()"
+                [skills]="selected.skills ?? []"
+                [busy]="busy()"
+                (add)="addExercise($event)"
+              /><button
+                class="button button-ink workflow-action"
+                type="button"
+                (click)="transition('submit')"
+                [disabled]="busy()"
+              >
+                Submit for independent review ↗
+              </button>
+            }
+            @if (canReview && selected.versionStatus === 'Submitted') {
+              <label for="review-comment">Review notes</label
+              ><textarea
+                id="review-comment"
+                [formControl]="reviewComment"
+                rows="4"
+                maxlength="3000"
+              ></textarea>
+              @if (reviewComment.touched && reviewComment.invalid) {
+                <p class="error">Write a review comment of 3–3,000 characters.</p>
+              }
+              <div class="actions">
+                <button
+                  class="button button-ink"
+                  type="button"
+                  (click)="transition('reviews', 'Approved')"
+                  [disabled]="busy()"
+                >
+                  Approve version ↗</button
+                ><button
+                  class="button button-outline"
+                  type="button"
+                  (click)="transition('reviews', 'ChangesRequested')"
+                  [disabled]="busy()"
+                >
+                  Request changes ↗
+                </button>
+              </div>
+            }
+            @if (admin && selected.versionStatus === 'Approved') {
+              <button
+                class="button button-ink workflow-action"
+                type="button"
+                (click)="transition('publish')"
+                [disabled]="busy()"
+              >
+                Publish reviewed version ↗
+              </button>
+            }
+            @if (
+              canEdit &&
+              selected.versionStatus === 'Draft' &&
+              selected.isLatestVersion !== false &&
+              !selected.privateTextErasedAt
+            ) {
+              <details class="workflow-action">
+                <summary>Duplicate draft</summary>
+                <label for="duplicate-lesson-title">New lesson title</label>
+                <input id="duplicate-lesson-title" [formControl]="duplicateTitle" maxlength="160" />
+                <button
+                  class="button button-outline"
+                  type="button"
+                  (click)="duplicateDraft()"
+                  [disabled]="busy() || !duplicateTitle.value.trim()"
+                >
+                  Create draft copy
+                </button>
+              </details>
+            }
+            @if (
+              admin &&
+              selected.versionStatus === 'Published' &&
+              selected.versionId === selected.currentVersionId
+            ) {
+              <details class="workflow-action">
+                <summary>Archive published lesson</summary>
+                <p>Archiving removes this lesson from the public course.</p>
+                <label for="archive-lesson-reason">Reason for archiving</label>
+                <input id="archive-lesson-reason" [formControl]="archiveReason" maxlength="500" />
+                <button
+                  class="button button-red"
+                  type="button"
+                  (click)="transition('archive')"
+                  [disabled]="busy() || archiveReason.value.trim().length < 3"
+                >
+                  Confirm archive
+                </button>
+              </details>
+            }
+            @if (
+              canEdit &&
+              selected.isLatestVersion !== false &&
+              (selected.versionStatus === 'Published' || selected.versionStatus === 'Archived') &&
+              (!selected.privateTextErasedAt || selected.currentVersionId)
+            ) {
+              <button
+                class="button button-outline workflow-action"
+                type="button"
+                (click)="transition('versions')"
+                [disabled]="busy()"
+              >
+                Start a separate revision ↗
+              </button>
+            }
+          } @else {
+            <p class="eyebrow">ONE THOUGHTFUL LESSON AT A TIME</p>
+            <h2>Make room for <em>a new hello.</em></h2>
+            <p>
+              Select a lesson to write, review or publish. Drafts and answer keys stay out of the
+              public catalog.
+            </p>
+          }
+        </section>
+      </div>
+    }
+  </main>
+</div>

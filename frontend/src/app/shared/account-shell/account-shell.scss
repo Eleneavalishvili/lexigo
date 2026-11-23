@@ -1,0 +1,95 @@
+:host {
+  display: block;
+}
+.account-page {
+  margin-inline: auto;
+  max-width: 1200px;
+  padding: 28px 40px;
+}
+header {
+  align-items: center;
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+}
+header > a:first-child {
+  text-decoration: none;
+}
+.back-link {
+  font-size: 0.75rem;
+  text-decoration: none;
+}
+.back-link:hover {
+  text-decoration: underline;
+}
+.account-layout {
+  align-items: center;
+  display: grid;
+  gap: 5rem;
+  grid-template-columns: 1fr 1fr;
+  padding-block: 3rem;
+}
+.account-poster {
+  border-right: 1px solid var(--line);
+  padding-right: 3rem;
+}
+h2 {
+  font-family: var(--display-font);
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  line-height: 1.05;
+  margin: 0;
+}
+h2 em {
+  color: var(--red);
+}
+.account-poster img {
+  display: block;
+  height: auto;
+  margin: -1rem auto;
+  max-width: 400px;
+  width: 100%;
+}
+.account-poster > p:last-child {
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.7;
+}
+.account-card {
+  max-width: 450px;
+  padding-block: 1rem;
+  width: 100%;
+}
+footer {
+  border-top: 1px solid var(--line);
+  font-size: 0.55rem;
+  letter-spacing: 0.13em;
+  padding-top: 1.4rem;
+}
+footer span {
+  color: var(--red);
+  margin-left: 0.6rem;
+}
+footer a {
+  float: right;
+  text-underline-offset: 4px;
+}
+@media (max-width: 760px) {
+  .account-page {
+    padding: 24px;
+  }
+  .back-link {
+    max-width: 100px;
+    text-align: right;
+  }
+  .account-layout {
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+    padding-block: 2rem;
+  }
+  .account-poster {
+    display: none;
+  }
+  .account-card {
+    margin-inline: auto;
+  }
+}

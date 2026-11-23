@@ -1,0 +1,122 @@
+@if (ownsView()) {
+  <main class="reports">
+    <a [routerLink]="sessionId ? ['/learn/session', sessionId] : ['/notifications']">
+      {{ sessionId ? '← Back to lesson' : '← Back to inbox' }}
+    </a>
+    <h1>{{ staff ? 'Content reports' : 'Your reports' }}</h1>
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+    }
+    @if (notice()) {
+      <p role="status">{{ notice() }}</p>
+    }
+    @if (busy()) {
+      <p role="status">Working…</p>
+    }
+
+    @if (!staff && (exerciseId || cardCode || rankingCourse)) {
+      <form class="panel" (submit)="$event.preventDefault(); submit()">
+        <h2>{{ cardCode || rankingCourse ? 'Report a public name' : 'Report this exercise' }}</h2>
+        @if (!cardCode && !rankingCourse) {
+          <label for="report-reason">Issue</label>
+          <select id="report-reason" [formControl]="reason">
+            <option value="Exercise">Exercise or answer</option>
+            <option value="Audio">Audio</option>
+            <option value="Text">Text</option>
+          </select>
+        }
+        <label for="report-comment">What happened?</label>
+        <textarea
+          id="report-comment"
+          [formControl]="comment"
+          [maxlength]="rankingCourse ? 800 : 1000"
+          required
+        ></textarea>
+        <button class="button button-red" type="submit" [disabled]="busy() || comment.invalid">
+          Send report
+        </button>
+      </form>
+    }
+
+    @for (item of reports(); track item.id) {
+      <article class="panel">
+        <h2>
+          {{ item.reason === 'PublicName' ? 'Public name' : item.reason }} ·
+          {{ item.status === 'InReview' ? 'In review' : item.status }}
+        </h2>
+        <p>{{ item.createdAt | date: 'medium' }}</p>
+        <p>{{ item.comment }}</p>
+        @if (item.resolution) {
+          <p><strong>Decision</strong> {{ item.resolution }}</p>
+        }
+        @if (staff) {
+          @if (item.resourceType === 'RankingName') {
+            <p>Weekly ranking name</p>
+          } @else if (item.resourceType === 'CompletionCard') {
+            <p>Completion card {{ item.resourceId }}</p>
+          } @else {
+            <p>Exercise {{ item.resourceId }} · Version {{ item.versionId }}</p>
+          }
+          @if (item.status === 'New' || item.status === 'InReview') {
+            <button class="text-button" type="button" [disabled]="busy()" (click)="select(item)">
+              Review report
+            </button>
+          }
+          @if (selected()?.id === item.id) {
+            <form (submit)="$event.preventDefault(); review()">
+              @if (item.reason === 'PublicName' && item.resourceType === 'CompletionCard') {
+                <p>Resolving this report makes the reported card private and notifies its owner.</p>
+              }
+              @if (item.resourceType === 'RankingName') {
+                <p>
+                  Resolving this report pauses this learner’s ranking participation and notifies
+                  them.
+                </p>
+              }
+              <label for="report-decision">Status</label>
+              <select id="report-decision" [formControl]="decision">
+                <option value="InReview">In review</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+              @if (decision.value !== 'InReview') {
+                <label for="report-resolution">Decision for the learner</label>
+                <textarea
+                  id="report-resolution"
+                  [formControl]="resolution"
+                  maxlength="1000"
+                  required
+                ></textarea>
+              }
+              <button class="button button-red" type="submit" [disabled]="busy()">
+                Save review
+              </button>
+            </form>
+          }
+        }
+      </article>
+    } @empty {
+      @if (!busy() && !error()) {
+        <p>No reports on this page.</p>
+      }
+    }
+    <div class="actions">
+      <button
+        class="button button-outline"
+        type="button"
+        (click)="load(page() - 1)"
+        [disabled]="busy() || page() === 1"
+      >
+        Previous
+      </button>
+      <button
+        class="button button-outline"
+        type="button"
+        (click)="load(page() + 1)"
+        [disabled]="busy() || reports().length < 20"
+      >
+        Next
+      </button>
+    </div>
+  </main>
+}

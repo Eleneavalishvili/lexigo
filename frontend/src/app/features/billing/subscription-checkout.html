@@ -1,0 +1,274 @@
+<div class="subscription-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/billing/history">Your history ↗</a
+    ><a routerLink="/notifications">Your inbox ↗</a><a routerLink="/pricing">↖ Compare plans</a>
+  </header>
+  <main>
+    <p class="eyebrow">A LITTLE EXTRA, ON YOUR TERMS</p>
+    <h1>Your next<br /><em>chapter.</em></h1>
+    <aside class="simulation">
+      <strong>TEST SUBSCRIPTION CHECKOUT</strong> Every charge below uses simulated card funds. No
+      real money is charged. Automatic renewal starts off.
+    </aside>
+    @if (store.error()) {
+      <p class="error" role="alert">{{ store.error() }}</p>
+    }
+    <button
+      class="text-button"
+      type="button"
+      (click)="store.load()"
+      [disabled]="store.busy() || store.loading()"
+    >
+      Reload saved state ↻
+    </button>
+    @if (store.loading()) {
+      <p role="status">Opening your subscription and test wallet…</p>
+    }
+    @if (store.subscription(); as subscription) {
+      <section class="current-plan" aria-labelledby="current-plan-title">
+        <p class="eyebrow">YOUR CURRENT PLAN</p>
+        <h2 id="current-plan-title">
+          {{ subscription.planCode === 'PREMIUM' ? 'Premium' : 'Free' }}
+        </h2>
+        @if (subscription.id) {
+          <dl>
+            <div>
+              <dt>Period</dt>
+              <dd>{{ subscription.period }}</dd>
+            </div>
+            <div>
+              <dt>Starts</dt>
+              <dd>{{ subscription.currentPeriodStart | date: 'medium' }}</dd>
+            </div>
+            <div>
+              <dt>Ends</dt>
+              <dd>{{ subscription.currentPeriodEnd | date: 'medium' }}</dd>
+            </div>
+            <div>
+              <dt>Renewal preference</dt>
+              <dd>{{ subscription.autoRenew ? 'Saved: on' : 'Saved: off' }}</dd>
+            </div>
+            <div>
+              <dt>Next simulated renewal</dt>
+              <dd>
+                @if (
+                  subscription.renewalProcessingAvailable &&
+                  subscription.autoRenew &&
+                  subscription.defaultTestCardId &&
+                  !subscription.cancelAtPeriodEnd &&
+                  !subscription.renewalConsentRequired
+                ) {
+                  {{ subscription.currentPeriodEnd | date: 'medium' }}
+                } @else {
+                  None scheduled
+                }
+              </dd>
+            </div>
+          </dl>
+          <a routerLink="/learn" class="button button-ink">Continue learning ↗</a>
+        } @else {
+          <p>Core lessons, listening and your saved progress remain Free.</p>
+        }
+      </section>
+    }
+    @if (store.subscription(); as subscription) {
+      @if (
+        subscription.id || (subscription.autoRenew && subscription.renewalTargetSubscriptionId)
+      ) {
+        <app-subscription-settings
+          [subscription]="subscription"
+          [plans]="store.plans()"
+          [cards]="store.cards()"
+          [disabled]="store.loading() || store.busy() || !store.ready() || !!store.pending()"
+          (changed)="store.load()"
+        />
+      }
+    }
+    @if (store.pending()) {
+      <section class="recovery">
+        <h2>Let’s find your saved result.</h2>
+        <p>A request is pending. Check its status before trying again.</p>
+        @if (!store.recoverySaved()) {
+          <p>
+            Keep this page open until the result is known; the browser could not save a recovery
+            reference.
+          </p>
+        }
+        <button
+          class="button button-outline"
+          type="button"
+          (click)="store.recover()"
+          [disabled]="store.busy() || store.loading()"
+        >
+          Check saved request ↗
+        </button>
+        @if (store.canRetry()) {
+          <button
+            class="button button-ink"
+            type="button"
+            (click)="store.retry()"
+            [disabled]="store.busy() || store.loading()"
+          >
+            Retry the same request ↗
+          </button>
+        }
+      </section>
+    }
+    @if (store.result(); as payment) {
+      <section class="payment-result" role="status">
+        <app-character-cue
+          character="nico"
+          [mood]="
+            payment.status === 'Succeeded'
+              ? 'celebration'
+              : payment.status === 'Pending'
+                ? 'checking'
+                : 'encouragement'
+          "
+        />
+        <div>
+          <p class="eyebrow">
+            {{
+              payment.status === 'Succeeded'
+                ? 'A NEW CHAPTER, SAVED'
+                : payment.status === 'Pending'
+                  ? 'CHECKING YOUR RESULT'
+                  : 'NO FUNDS MOVED'
+            }}
+          </p>
+          <h2>
+            {{
+              payment.status === 'Succeeded'
+                ? 'Your Premium period is active.'
+                : payment.status === 'Pending'
+                  ? 'Your payment is still processing.'
+                  : 'This payment was declined.'
+            }}
+          </h2>
+          @if (payment.status === 'Failed') {
+            <p>{{ failure(payment.failureCode) }}</p>
+          }
+          @if (payment.status !== 'Pending') {
+            <p>
+              Simulated charge:
+              <strong>{{
+                (payment.status === 'Succeeded' ? payment.amount : 0)
+                  | currency: payment.currency : 'code'
+              }}</strong>
+            </p>
+          }
+          @if (payment.receiptNumber) {
+            <a [routerLink]="['/billing/receipt', payment.id]">View your test receipt ↗</a>
+          }
+        </div>
+      </section>
+    }
+    @if (store.ready() && !store.subscription()?.id) {
+      <section class="panel" aria-labelledby="review-title">
+        <p class="eyebrow">1 · CHOOSE YOUR PERIOD</p>
+        <h2 id="review-title">Review a server-priced order.</h2>
+        <label for="subscription-price">Premium period</label
+        ><select
+          id="subscription-price"
+          [value]="selectedPrice()"
+          (change)="choosePrice($event)"
+          [disabled]="store.busy() || !!store.pending()"
+        >
+          <option value="">Choose a period</option>
+          @for (plan of store.plans(); track plan.id) {
+            @if (plan.code === 'PREMIUM') {
+              @for (price of plan.prices; track price.id) {
+                <option [value]="price.id">
+                  {{ price.period }} · {{ price.amount | currency: price.currency : 'code' }}
+                </option>
+              }
+            }
+          }
+        </select>
+        <p>Creating an order does not charge funds. Its saved price is valid for 30 minutes.</p>
+        <button
+          class="button button-outline"
+          type="button"
+          (click)="store.review(selectedPrice())"
+          [disabled]="!selectedPrice() || store.busy() || !!store.pending()"
+        >
+          Review order ↗
+        </button>
+      </section>
+    }
+    @if (store.order(); as order) {
+      <section class="panel" aria-labelledby="quote-title">
+        <p class="eyebrow">2 · CONFIRM YOUR TEST PAYMENT</p>
+        <h2 id="quote-title">{{ order.period }} Premium.</h2>
+        <p class="price">
+          {{ order.amount | currency: order.currency : 'code'
+          }}<small>saved simulated price · {{ order.status }}</small>
+        </p>
+        <p>Quote expires {{ order.expiresAt | date: 'medium' }}.</p>
+        @if (order.status === 'Created' && !store.subscription()?.id) {
+          <label for="subscription-card">Your {{ order.currency }} test card</label
+          ><select
+            id="subscription-card"
+            [value]="selectedCard()"
+            (change)="chooseCard($event)"
+            [disabled]="store.busy() || !!store.pending() || !store.ready()"
+          >
+            <option value="">Choose a test card</option>
+            @for (card of store.cards(); track card.id) {
+              <option
+                [value]="card.id"
+                [disabled]="card.status !== 'Active' || card.currency !== order.currency"
+              >
+                {{ card.nickname }} · {{ card.balance | currency: card.currency : 'code' }} ·
+                {{ card.status }}
+              </option>
+            }
+          </select>
+          <p><a routerLink="/billing/cards">Create a test card or add simulated funds ↗</a></p>
+          <label class="check"
+            ><input
+              type="checkbox"
+              [checked]="technical()"
+              (change)="technical.set(!technical())"
+              [disabled]="store.busy() || !!store.pending()"
+            />Simulate a technical decline for this test</label
+          >
+          <button
+            class="button button-red"
+            type="button"
+            (click)="store.pay(selectedCard(), technical())"
+            [disabled]="!selectedCard() || store.busy() || !!store.pending() || !store.ready()"
+          >
+            {{ store.busy() ? 'Processing…' : 'Confirm simulated payment ↗' }}
+          </button>
+          <button
+            class="button button-outline"
+            type="button"
+            (click)="store.cancelOrder()"
+            [disabled]="store.busy() || !!store.pending() || !store.ready()"
+          >
+            Cancel checkout
+          </button>
+        }
+      </section>
+    }
+    @if (store.entitlements(); as access) {
+      <section class="panel">
+        <p class="eyebrow">FROM YOUR CURRENT SERVER ACCESS</p>
+        <h2>Your included features.</h2>
+        <ul class="features">
+          @for (feature of access.features; track feature.code) {
+            <li>
+              {{ feature.description }}
+              @if (!feature.available) {
+                <small>Planned · not available yet</small>
+              }
+            </li>
+          }
+        </ul>
+      </section>
+    }
+  </main>
+  <footer>A LITTLE LANGUAGE. A BIGGER WORLD. ✦</footer>
+</div>

@@ -1,0 +1,85 @@
+<app-account-shell>
+  <p class="eyebrow">BACK FOR ANOTHER LITTLE ADVENTURE</p>
+  <h1>Hello <em>again.</em></h1>
+  <p class="form-description">Your little big world is right where you left it.</p>
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate [attr.aria-busy]="working()">
+    <div class="field">
+      <label for="login-email">Your email</label
+      ><input
+        id="login-email"
+        formControlName="email"
+        type="email"
+        autocomplete="username"
+        maxlength="256"
+        placeholder="you@example.com"
+        [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid"
+      />
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <p class="field-error">Enter a valid email address.</p>
+      }
+    </div>
+    <div class="field">
+      <label for="login-password">Your password</label>
+      <div class="password-field">
+        <input
+          id="login-password"
+          formControlName="password"
+          [type]="showPassword() ? 'text' : 'password'"
+          autocomplete="current-password"
+          maxlength="128"
+          [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid"
+        /><app-password-toggle inputId="login-password" [(visible)]="showPassword" />
+      </div>
+    </div>
+    @if (needsCode()) {
+      @if (useRecovery()) {
+        <div class="field">
+          <label for="login-recovery">Recovery code</label
+          ><input
+            id="login-recovery"
+            formControlName="recoveryCode"
+            autocomplete="off"
+            maxlength="32"
+          />
+          <p class="field-help">Each backup code works once. Keep your remaining codes private.</p>
+        </div>
+      } @else {
+        <div class="field">
+          <label for="authenticator-code">Authenticator code</label
+          ><input
+            id="authenticator-code"
+            formControlName="authenticatorCode"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            maxlength="6"
+            placeholder="Six-digit code"
+          />
+          <p class="field-help">Use the current code from your authenticator app.</p>
+        </div>
+      }
+      <button class="code-mode" type="button" (click)="setCodeMode(!useRecovery())">
+        {{ useRecovery() ? 'Use my authenticator instead' : 'Use a recovery code instead' }}
+      </button>
+    }
+    @if (error()) {
+      <p class="form-error" role="alert">{{ error() }}</p>
+    }
+    <p class="small-print">
+      <a routerLink="/forgot-password">Forgot your password?</a> ·
+      <a routerLink="/resend-confirmation">Confirm your email</a>
+    </p>
+    <button class="button button-red submit-button" type="submit" [disabled]="working()">
+      {{
+        working()
+          ? 'Opening your little big world…'
+          : needsCode()
+            ? 'Verify and sign in'
+            : 'Let me in'
+      }}
+      <span aria-hidden="true">↗</span>
+    </button>
+    <p class="small-print">
+      New around here? <a routerLink="/register">Make a little beginning.</a>
+    </p>
+  </form>
+</app-account-shell>

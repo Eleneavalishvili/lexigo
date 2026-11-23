@@ -1,0 +1,85 @@
+.tile-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-weight: 600;
+  flex-wrap: wrap;
+}
+.tile-heading span {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+.selected-tiles {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  padding: 1rem;
+  margin: 0;
+  min-height: 110px;
+  border: 1px dashed var(--ink);
+  background: var(--paper);
+}
+.selected-tiles li {
+  max-width: 100%;
+}
+.word-tile {
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  padding: 0.7rem 1rem;
+  min-height: 44px;
+  border: 1px solid var(--ink);
+  border-bottom-width: 3px;
+  border-radius: 5px;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+.word-tile span {
+  margin-left: 0.5rem;
+  font-size: 0.8rem;
+}
+.word-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  padding-block: 1rem;
+}
+.word-bank button:disabled {
+  opacity: 0.35;
+  border-style: dashed;
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.tile-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.25rem;
+}
+.tile-controls button {
+  min-width: 44px;
+  min-height: 36px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+.sentence-readout,
+.empty-sentence {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+.clear-tiles {
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  padding: 0.5rem 0;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+}

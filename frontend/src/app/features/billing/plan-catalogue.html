@@ -1,0 +1,104 @@
+<div class="subscription-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
+    ><a routerLink="/admin/billing">↖ The billing desk</a>
+  </header>
+  <main>
+    <p class="eyebrow">EVERY PLAN HAS A PAPER TRAIL</p>
+    <h1>The plan<br /><em>catalogue.</em></h1>
+    <p>
+      Browse plans, their included features and every recorded price period. All amounts below are
+      simulated.
+    </p>
+    <label for="catalogue-status">Show plans</label>
+    <select
+      id="catalogue-status"
+      #status
+      (change)="filter(status.value)"
+      [disabled]="store.loading()"
+    >
+      <option value="all">All plans</option>
+      <option value="active">Active plans</option>
+      <option value="inactive">Inactive plans</option>
+    </select>
+    @if (notice() && store.result()) {
+      <p role="status">{{ notice() }}</p>
+    }
+    @if (store.loading()) {
+      <p role="status">Opening the catalogue…</p>
+    }
+    @if (store.error()) {
+      <p role="alert">{{ store.error() }}</p>
+      <button class="button button-outline" type="button" (click)="store.load()">Try again</button>
+    }
+    @if (store.result(); as result) {
+      <p role="status">{{ result.total }} plans · Page {{ result.page }}</p>
+      <app-plan-metadata-editor (saved)="saved(1, true)" />
+      @for (plan of result.items; track plan.id) {
+        <article class="panel catalogue-plan">
+          <p class="eyebrow">{{ plan.code }} · {{ plan.isActive ? 'ACTIVE' : 'INACTIVE' }}</p>
+          <h2>{{ plan.name }}</h2>
+          <app-plan-metadata-editor [plan]="plan" (saved)="saved(result.page, false)" />
+          <p>
+            Created {{ plan.createdAt | date: 'medium' : 'UTC' }} ·
+            <span class="identifier">{{ plan.id }}</span>
+          </p>
+          <h3>Price history</h3>
+          @for (price of plan.prices; track price.id) {
+            <div class="price-entry">
+              <strong>{{ price.amount | currency: price.currency }} / {{ price.period }}</strong>
+              <span
+                >From {{ price.validFrom | date: 'medium' : 'UTC' }}<br />Until
+                {{
+                  price.validTo ? (price.validTo | date: 'medium' : 'UTC') : 'further notice'
+                }}</span
+              >
+              <small class="identifier">{{ price.id }}</small>
+              @if (plan.isActive && !price.validTo) {
+                <app-plan-price-schedule [priceId]="price.id" (saved)="store.load(result.page)" />
+              }
+            </div>
+          } @empty {
+            <p>No paid prices recorded.</p>
+          }
+          <h3>Included features</h3>
+          <ul>
+            @for (feature of plan.features; track feature.featureId) {
+              <li>
+                <strong>{{ feature.code }}</strong> — {{ feature.description }}
+                @if (!feature.available) {
+                  <span class="feature-note">Planned; currently unavailable</span>
+                }
+                @if (feature.limitValue !== null) {
+                  <span class="feature-note">Limit: {{ feature.limitValue }}</span>
+                }
+              </li>
+            } @empty {
+              <li>No features recorded.</li>
+            }
+          </ul>
+        </article>
+      } @empty {
+        <p>No plans match this filter.</p>
+      }
+      <nav class="catalogue-pages" aria-label="Catalogue pages">
+        <button
+          class="button button-outline"
+          type="button"
+          [disabled]="result.page <= 1"
+          (click)="store.load(result.page - 1)"
+        >
+          ← Previous
+        </button>
+        <button
+          class="button button-outline"
+          type="button"
+          [disabled]="result.page * result.pageSize >= result.total"
+          (click)="store.load(result.page + 1)"
+        >
+          Next →
+        </button>
+      </nav>
+    }
+  </main>
+</div>

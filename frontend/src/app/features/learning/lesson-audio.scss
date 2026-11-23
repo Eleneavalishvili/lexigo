@@ -1,0 +1,60 @@
+.listening-card {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--gold);
+  padding: 1.2rem;
+  margin-block: 1.5rem;
+  min-width: 0;
+}
+.listening-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.75rem;
+  margin-bottom: 1rem;
+}
+audio {
+  display: block;
+  width: 100%;
+  margin-block: 1rem;
+}
+label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.8rem;
+}
+select {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  padding: 0.6rem;
+  max-width: 100%;
+  font: inherit;
+}
+.close-audio {
+  margin-top: 1rem;
+  background: transparent;
+  border: 0;
+  text-decoration: underline;
+  padding: 0.5rem 0;
+  cursor: pointer;
+}
+details {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+summary {
+  cursor: pointer;
+}
+.error {
+  color: var(--red);
+  font-size: 0.85rem;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
