@@ -31,3 +31,5 @@ docs/PROJECT_MEMORY.md
 *.p12
 *.dump
 *.backup
+__pycache__/
+*.pyc

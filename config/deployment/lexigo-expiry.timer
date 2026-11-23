@@ -1,0 +1,11 @@
+[Unit]
+Description=Retry the LexiGo presentation expiry check every minute
+
+[Timer]
+OnCalendar=*-*-* *:*:00 UTC
+Persistent=true
+AccuracySec=1s
+Unit=lexigo-expiry.service
+
+[Install]
+WantedBy=timers.target

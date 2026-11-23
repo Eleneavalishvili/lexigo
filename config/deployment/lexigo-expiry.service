@@ -1,0 +1,15 @@
+[Unit]
+Description=Check the approved LexiGo presentation server expiry
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+LoadCredential=digitalocean-token:/etc/lexigo/private/expiry-token
+ExecStart=/usr/bin/python3 /opt/lexigo/tools/deployment/expire_droplet.py --config /etc/lexigo/private/expiry.json --token-file ${CREDENTIALS_DIRECTORY}/digitalocean-token
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX

@@ -87,3 +87,33 @@ A ten-day deployment must have a verified deletion mechanism before creation.
 A final invoice can arrive after deletion for previously accrued usage.
 Turning off the website or server is not cancellation. No automatic-deletion
 mechanism or paid server is currently configured by this preparation.
+
+## Presentation expiry guard
+
+`tools/deployment/expire_droplet.py` checks one configured DigitalOcean ID,
+the exact `lexigo-presentation` name, `lexigo-expiring` tag and creation
+timestamp before deletion. Its configured UTC deadline must be after
+creation and at most ten days later. Before the deadline it makes no API
+request; `--dry-run` verifies a due target without deleting it. Unit tests
+cover early execution, deadline boundaries, wrong targets and provider failure.
+
+The accompanying `lexigo-expiry.service` and `.timer` are installation
+templates, not an already scheduled deletion. Install them only on the
+approved server. Place the script at `/opt/lexigo/tools/deployment/`, the
+private provider token at `/etc/lexigo/private/expiry-token`, and a JSON file
+at `/etc/lexigo/private/expiry.json` containing `droplet_id`, `name`,
+`created_at` and `delete_after`. Both timestamps must explicitly include UTC.
+Use a root-owned directory with mode 0700 and private files with mode 0600.
+The token needs only `droplet:delete` and its required read scopes; it must
+remain valid beyond the deletion deadline. Never commit it or put it into
+startup metadata, shell arguments, logs or the application's environment.
+
+After identity checks, install and enable the timer, inspect its next run
+and run the service before the deadline to verify that it reports “Not due”.
+Use a separate synthetic configuration in local tests to exercise due
+deletion safely. The timer retries every minute, including after reboot.
+It depends on a functioning server clock, scheduler, network, credentials
+and provider API; it is not a provider-enforced spending cap. Arrange an
+independent deadline check and verify actual resource deletion. Deletion
+permanently takes the public website and its server data offline: export
+required data to protected local storage beforehand.

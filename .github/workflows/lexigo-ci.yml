@@ -31,6 +31,8 @@ jobs:
       - name: Scan source for secrets
         shell: pwsh
         run: ./scripts/Verify-Secrets.ps1
+      - name: Check presentation expiry safety
+        run: python3 -m unittest discover -s tools/deployment -p 'test_*.py'
       - name: Restore backend packages
         run: dotnet restore backend/LexiGo.slnx --locked-mode
       - name: Build backend
