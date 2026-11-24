@@ -51,7 +51,9 @@ account/MFA setup are tracked separately; this is not a full-scope completion cl
 ## Local HTTPS rehearsal
 
 Build Angular with `npm run build` in `frontend`. From the project root,
-run `./scripts/Verify-NginxEdge.ps1` with PowerShell 7, curl and Docker.
+build the patched edge image with
+`docker build --file config/deployment/Nginx.Dockerfile --tag lexigo-nginx:patched .`,
+then run `./scripts/Verify-NginxEdge.ps1` with PowerShell 7, curl and Docker.
 The script serves the production frontend output through Nginx with a
 temporary, explicitly trusted certificate for `lexigo.example.invalid`.
 It binds the edge to ephemeral loopback ports and uses a disposable upstream.

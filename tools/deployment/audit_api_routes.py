@@ -34,6 +34,18 @@ def audit(register, specification):
             matched.append(entry)
         else:
             missing.append(entry)
+    resource_matrix = {}
+    for resource in ("courses", "units", "lessons", "exercises", "vocabulary",
+                     "skills", "dialogues", "achievements", "challenges"):
+        collection = f"/api/v1/manage/{resource}"
+        resource_matrix[resource] = {
+            f"{method} {route}": (method, normalized(route)) in operations
+            for method, route in (
+                ("GET", collection), ("POST", collection),
+                ("GET", collection + "/{id}"), ("PUT", collection + "/{id}"),
+                ("DELETE", collection + "/{id}"),
+            )
+        }
     return {
         "register_entries": len(register),
         "actual_operations": len(operations),
@@ -41,6 +53,8 @@ def audit(register, specification):
         "unresolved_shorthand": unresolved,
         "separate_health_probes": probes,
         "missing_concrete_routes": missing,
+        "resource_exact_route_matrix": resource_matrix,
+        "resource_matrix_limit": "False means the literal shorthand expansion is absent. Nested routes and archive/revision workflows require explicit reconciliation; their presence does not silently amend the specification.",
         "limit": "Route presence only. No behavior, access rule or checklist completion is inferred.",
     }
 

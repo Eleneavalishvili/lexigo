@@ -38,7 +38,7 @@ The same stable teaching keys exist in all four source packs:
 | Numbers, time, dates, colours and objects | `numbers`, `time`, `calendar-dates`, `colours`, picture-first food/drinks and `home`. This establishes examples, not exhaustive vocabulary breadth. |
 | Family, people, professions and study | `family`, `picture-people`, `work-and-study`; profession range remains limited. |
 | Food, cafes, shopping, prices and ordering | `food`, `picture-food`, `picture-drinks`, `shopping`; broader menus and transactions remain a content-review task. |
-| City, transport, hotel and directions | `travel`, `directions`, `missed-connection`, `resolving-problem`; full hotel-specific coverage still needs explicit exercise-level reconciliation. |
+| City, transport, hotel and directions | `travel` teaches bus/station/ticket/hotel in all four languages; `directions`, `missed-connection` and `resolving-problem` add practical sentences. Hotel vocabulary exists; an extended hotel-booking conversation is not claimed. |
 | Routines, hobbies, weather and plans | `routines`, `hobbies`, `plans`, `future`; weather has written examples and comprehension. |
 
 The vocabulary library remains 88 entries, 22 per language. It covers all six

@@ -82,7 +82,7 @@ server {
     $httpPort = (docker port $edge 80).Split(':')[-1]
     $nullDevice = if ($IsWindows) { 'NUL' } else { '/dev/null' }
     $https = "https://${hostname}:${httpsPort}"
-    $connection = @('--noproxy', '*', '--resolve', "${hostname}:${httpsPort}:127.0.0.1", '--cacert', $certFile,
+    $connection = @('--noproxy', $hostname, '--resolve', "${hostname}:${httpsPort}:127.0.0.1", '--cacert', $certFile,
         '--silent', '--show-error', '--max-time', '5')
     $page = $null
     for ($attempt = 0; $attempt -lt 10; $attempt++) {
@@ -92,7 +92,7 @@ server {
     }
     if (($page -join '') -notmatch '<app-root') { throw 'TLS deep link did not serve the Angular app.' }
 
-    $redirect = & $curl --noproxy '*' --resolve "${hostname}:${httpPort}:127.0.0.1" --silent -I "http://${hostname}:${httpPort}/login"
+    $redirect = & $curl --noproxy $hostname --resolve "${hostname}:${httpPort}:127.0.0.1" --silent -I "http://${hostname}:${httpPort}/login"
     if (($redirect -join "`n") -notmatch "Location: https://$([regex]::Escape($hostname))/login") {
         throw 'HTTP did not redirect to the configured HTTPS origin.'
     }
@@ -109,6 +109,7 @@ server {
     else {
         $proxied = & $curl @connection -H 'X-Forwarded-For: synthetic-spoof' -H 'X-Forwarded-Proto: http' `
             -H 'Forwarded: for=synthetic-spoof' "$https/api/v1/edge-check?token=synthetic-query"
+        if ($LASTEXITCODE) { throw 'The proxy-header rehearsal request failed.' }
         if ($proxied -notmatch "^https\|$([regex]::Escape($hostname))\|[0-9a-f.:]+\|$") {
             throw 'The upstream did not receive the expected proxy headers.'
         }

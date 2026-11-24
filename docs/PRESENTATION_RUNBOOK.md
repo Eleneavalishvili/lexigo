@@ -1,7 +1,14 @@
 # LexiGo presentation walkthrough
 
-This guide is for the local presentation. It does not certify completion of
-the full specification or public deployment.
+The public presentation website is <https://206.189.25.5/>. Use your existing
+confirmed account and rehearse the exact course before presenting. The live
+server does not depend on Docker Desktop or this laptop staying open. Its
+scheduled deletion is December 4, 2026 at 00:15:26 Tbilisi time; verify actual
+deletion in DigitalOcean. This guide does not certify full-scope completion.
+
+The startup and local-inbox instructions below apply only to the local copy.
+Live account email uses the separately configured Brevo connection; local
+Mailpit messages do not arrive in Gmail. Staff MFA must be prepared separately.
 
 ## Start the application
 

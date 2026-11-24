@@ -23,3 +23,19 @@ and constraint counts. It uses a disposable container with no published ports.
 Run it locally with `./scripts/Verify-DatabaseRestore.ps1`. GitHub Actions
 invokes the same drill. Production recovery and object restoration require a
 separate exercise using the deployed configuration.
+
+## Presentation deployment recovery evidence — 2026-11-24
+
+The disposable SQL recovery drill passed again, including all 66 migrations.
+The initial live cutover separately restored six accounts, 161 lessons and
+88 dictionary entries, plus private storage metadata; public catalog and
+signed storage checks passed afterward. This does not replace a fresh,
+signed-in rehearsal of every user's state or an incident-response drill.
+
+The three local cutover archives are now Windows CurrentUser DPAPI-encrypted,
+restricted to the owner and SYSTEM, and verified by decrypting and comparing
+SHA256. Plaintext local archives and matching temporary server copies were
+removed after verification. Their protected location is under ignored
+`work/deployment/`. DPAPI recovery depends on the original Windows credentials
+and machine; a separately protected portable/offsite recovery copy and full
+operational rotation/revocation exercises remain required for long-term use.
