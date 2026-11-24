@@ -8,6 +8,9 @@ describe('Return to the requested page after sign-in', () => {
     ['/learn/course-id', '/learn/course-id'],
     ['/classes', '/classes'],
     ['/account/profile', '/account/profile'],
+    ['/billing/receipt/payment-id', '/billing/receipt/payment-id'],
+    ['/billing//untrusted.example', '/billing//untrusted.example'],
+    ['/billing\\untrusted.example', '/learn'],
     ['https://untrusted.example/learn', '/learn'],
     ['//untrusted.example/learn', '/learn'],
   ]) {

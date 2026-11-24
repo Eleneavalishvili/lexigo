@@ -52,7 +52,8 @@ export class Login {
         this.form.controls.password.reset();
         const destination = this.route.snapshot.queryParamMap.get('returnUrl') ?? '';
         await this.router.navigateByUrl(
-          /^\/(?:learn|classes|account)(?:\/|$|\?)/.test(destination) && !destination.includes('\\')
+          /^\/(?:learn|classes|account|billing)(?:\/|$|\?)/.test(destination) &&
+            !destination.includes('\\')
             ? destination
             : '/learn',
         );
