@@ -65,6 +65,11 @@ server {
     location = /api { return 404; }
     location ^~ /health/ { return 404; }
     location ^~ /swagger { return 404; }
+    location = /manifest.webmanifest {
+        default_type application/manifest+json;
+        expires -1;
+        try_files $uri =404;
+    }
     location = /index.html { expires -1; }
     location ~ (^|/)\. { return 404; }
     location ~ \.[^/]+$ { try_files $uri =404; }

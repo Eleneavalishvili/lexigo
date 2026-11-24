@@ -22,6 +22,13 @@ h2 {
 p {
   line-height: 1.8;
 }
+li {
+  line-height: 1.8;
+  margin-block: 0.6rem;
+}
+#install-app {
+  scroll-margin-top: 1rem;
+}
 details {
   padding: 1.3rem 0;
   border-bottom: 1px solid var(--line);

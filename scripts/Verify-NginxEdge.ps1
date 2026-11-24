@@ -98,6 +98,10 @@ server {
     }
     $headers = & $curl @connection -I "$https/login"
     if (($headers -join "`n") -notmatch 'Strict-Transport-Security: max-age=31536000') { throw 'Missing HSTS.' }
+    $manifestHeaders = & $curl @connection -I "$https/manifest.webmanifest"
+    if ($LASTEXITCODE -or ($manifestHeaders -join "`n") -notmatch 'Content-Type: application/manifest\+json') {
+        throw 'The Home Screen manifest did not use its required content type.'
+    }
 
     if ($ApiImage) {
         . (Join-Path $PSScriptRoot 'internal/Test-EdgeApiSession.ps1')
