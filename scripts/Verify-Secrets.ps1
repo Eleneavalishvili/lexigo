@@ -7,6 +7,15 @@ $taskConfiguration = Get-Content -LiteralPath (Join-Path $taskRoot 'config/secur
 $taskImage = $taskConfiguration.gitleaksImage
 $taskReports = Join-Path $taskRoot 'work/security'
 New-Item -ItemType Directory -Path $taskReports -Force | Out-Null
+$scannerIdentity = @()
+if ($IsLinux) {
+    $scannerUid = (& id -u).Trim()
+    $scannerGid = (& id -g).Trim()
+    if ($LASTEXITCODE -ne 0 -or $scannerUid -notmatch '^\d+$' -or $scannerGid -notmatch '^\d+$') {
+        throw 'Could not determine the report directory owner for the secret scanner.'
+    }
+    $scannerIdentity = @('--user', "${scannerUid}:${scannerGid}")
+}
 
 & docker image inspect $taskImage --format '{{.Id}}' *> $null
 if ($LASTEXITCODE -ne 0) {
@@ -16,7 +25,7 @@ if ($LASTEXITCODE -ne 0) {
 
 # Scan source offline, with no container privileges, read-only source and fully redacted reports.
 # Ignored runtime data is excluded; the deliverable .env.example remains in scope.
-& docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges `
+& docker run --rm @scannerIdentity --network none --read-only --cap-drop ALL --security-opt no-new-privileges `
     --mount "type=bind,source=$taskRoot,target=/src,readonly" `
     --mount "type=bind,source=$taskReports,target=/reports" `
     $taskImage dir /src --config /src/.gitleaks.toml --redact=100 --report-format json --report-path /reports/gitleaks.json
