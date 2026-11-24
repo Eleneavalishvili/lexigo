@@ -33,3 +33,4 @@ docs/PROJECT_MEMORY.md
 *.backup
 __pycache__/
 *.pyc
+/output/pdf/

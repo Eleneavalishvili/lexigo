@@ -6,6 +6,10 @@ $root = Split-Path -Parent $PSScriptRoot
 $frontend = Join-Path $root 'frontend/dist/lexigo/browser'
 $template = Join-Path $root 'config/nginx/lexigo.conf.template'
 if (!(Test-Path (Join-Path $frontend 'index.html'))) { throw 'Build the Angular frontend first.' }
+$entryHtml = Get-Content -LiteralPath (Join-Path $frontend 'index.html') -Raw
+if ($entryHtml -match '<link\b[^>]*\bonload\s*=') {
+    throw 'The production stylesheet must load without an inline event handler under the strict script policy.'
+}
 
 $image = 'lexigo-nginx:patched'
 $runId = [Guid]::NewGuid().ToString('N')

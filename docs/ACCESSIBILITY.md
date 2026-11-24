@@ -75,3 +75,7 @@ the visual identity. The local desktop/phone public rerun passed both cases;
 the initial failed run is not a pass. Published rerun evidence is recorded in
 the release report when complete. Physical audio/microphone and screen-reader
 checks remain separate.
+
+## Production stylesheet/CSP correction — 2026-11-24
+
+The owner reported edge-aligned content on the live site. Actual computed styles showed shared .wrap containers had max-width:none and no side margins. Angular critical-CSS optimization generated a print-media stylesheet link with an inline onload handler, which the strict script-src self policy blocked. Disabling production styles.inlineCritical restored a normal blocking stylesheet link without weakening CSP. The production rehearsal now uses the same script policy and rejects stylesheet onload handlers. The new shared-layout browser regression asserts max-width1280, centered wrappers, side gutters and no CSP console errors. Published rechecks passed6 Chromium and6 WebKit cases, including public accessibility and Home Screen metadata. Earlier contrast/overflow-only checks did not establish correct shared-style loading.
