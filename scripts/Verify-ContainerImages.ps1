@@ -12,14 +12,19 @@ $scanner = $configuration.trivyImage
 $cache = Join-Path $projectRoot 'work/security/trivy-cache'
 $reports = Join-Path $projectRoot 'work/security/images'
 New-Item -ItemType Directory -Path $cache, $reports -Force | Out-Null
+. (Join-Path $PSScriptRoot 'internal/Get-ScannerUserArguments.ps1')
+$scannerIdentity = @(Get-ScannerUserArguments)
 
 if (!$Offline) {
     # Only public vulnerability definitions are downloaded; no source or secrets are mounted.
-    & docker run --rm --read-only --tmpfs /tmp:rw,nosuid,nodev,size=512m `
+    & docker run --rm @scannerIdentity --env HOME=/tmp --read-only --tmpfs /tmp:rw,nosuid,nodev,size=512m `
         --cap-drop ALL --security-opt no-new-privileges `
         --mount "type=bind,source=$cache,target=/cache" `
         $scanner image --cache-dir /cache --download-db-only *> (Join-Path $reports 'database-download.log')
-    if ($LASTEXITCODE) { throw 'Container vulnerability definitions could not be downloaded.' }
+    if ($LASTEXITCODE) {
+        Get-Content -LiteralPath (Join-Path $reports 'database-download.log') -Tail 15 | Write-Output
+        throw 'Container vulnerability definitions could not be downloaded.'
+    }
 }
 elseif (!(Test-Path -LiteralPath (Join-Path $cache 'db/metadata.json'))) {
     throw 'Offline scanning requires a previously downloaded vulnerability database.'
@@ -38,7 +43,7 @@ foreach ($entry in $Images.GetEnumerator()) {
 
     # Scan a single image archive offline. Never expose Docker's socket, the
     # repository, private configuration or the surrounding artifact directory.
-    & docker run --rm --network none --read-only --tmpfs /tmp:rw,nosuid,nodev,size=1024m `
+    & docker run --rm @scannerIdentity --env HOME=/tmp --network none --read-only --tmpfs /tmp:rw,nosuid,nodev,size=1024m `
         --cap-drop ALL --security-opt no-new-privileges `
         --mount "type=bind,source=$cache,target=/cache" `
         --mount "type=bind,source=$archive,target=/image.tar,readonly" `
@@ -48,6 +53,7 @@ foreach ($entry in $Images.GetEnumerator()) {
         --output ("/reports/" + $entry.Key + '.json') *> $logPath
     $scanExit = $LASTEXITCODE
     if (!(Test-Path -LiteralPath $reportPath) -or $scanExit -notin @(0, 1)) {
+        Get-Content -LiteralPath $logPath -Tail 15 | Write-Output
         throw "Container scan failed for $($entry.Key); inspect its private log."
     }
     $report = Get-Content -LiteralPath $reportPath -Raw | ConvertFrom-Json

@@ -7,15 +7,8 @@ $taskConfiguration = Get-Content -LiteralPath (Join-Path $taskRoot 'config/secur
 $taskImage = $taskConfiguration.gitleaksImage
 $taskReports = Join-Path $taskRoot 'work/security'
 New-Item -ItemType Directory -Path $taskReports -Force | Out-Null
-$scannerIdentity = @()
-if ($IsLinux) {
-    $scannerUid = (& id -u).Trim()
-    $scannerGid = (& id -g).Trim()
-    if ($LASTEXITCODE -ne 0 -or $scannerUid -notmatch '^\d+$' -or $scannerGid -notmatch '^\d+$') {
-        throw 'Could not determine the report directory owner for the secret scanner.'
-    }
-    $scannerIdentity = @('--user', "${scannerUid}:${scannerGid}")
-}
+. (Join-Path $PSScriptRoot 'internal/Get-ScannerUserArguments.ps1')
+$scannerIdentity = @(Get-ScannerUserArguments)
 
 & docker image inspect $taskImage --format '{{.Id}}' *> $null
 if ($LASTEXITCODE -ne 0) {
