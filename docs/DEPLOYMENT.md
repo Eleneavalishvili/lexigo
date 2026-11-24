@@ -1,4 +1,54 @@
-# Local HTTPS deployment rehearsal
+# Deployment and HTTPS verification
+
+## Live presentation deployment — 2026-11-24
+
+Public URL: **https://206.189.25.5/**. This is the existing Angular/.NET
+application, hosted on the approved DigitalOcean Ubuntu 24.04 server with
+1 GiB RAM and one CPU at the $6/month rate. No paid backup, managed database,
+volume, domain or other paid add-on was enabled. DigitalOcean meters usage
+until deletion; switching the server off does not stop billing, and accrued
+usage can be invoiced afterward.
+
+The server's scheduled deletion deadline is 2026-12-03 20:15:26 UTC
+(December 4, 00:15:26 Asia/Tbilisi), ten days after creation. The root-owned
+expiry service passed an authenticated nondeleting identity check and its
+enabled minute timer has completed successful early runs. This is a
+best-effort deletion schedule, not a provider-enforced spending cap; verify
+actual deletion in DigitalOcean. Earlier manual deletion is possible.
+
+The release passed these checks:
+
+- Current container scans found no known high/critical findings in the API,
+  patched PostgreSQL/Nginx/certificate-tool images and private Garage image.
+  Cached vulnerable images were blocked and replaced. Scanner availability
+  and database freshness remain release requirements; scans are not a full audit.
+- The corrected Nginx image passed the real production-mode HTTPS sign-in,
+  refresh/restart and saved-lesson rehearsal before public startup.
+- Existing SQL data and private-storage metadata were restored. The server
+  contains six accounts, 161 lessons and 88 vocabulary entries. Old refresh
+  sessions were revoked; obsolete queued local email bodies were suppressed
+  without claiming delivery. The original local database was not reset.
+- PostgreSQL requires TLS on its private network. The application uses a
+  separate non-superuser role; database and Garage ports are not published.
+- Public HTTPS returned 200 for the homepage, catalog, login, learn deep
+  link and Russian reference; the catalog shows 40/40/40/41 lessons.
+  Public health/Swagger returned 404; unsigned private storage returned 403.
+- Signed private upload/download/delete and unsigned denial passed through
+  the actual HTTPS gateway. Brevo STARTTLS authentication and NOOP passed on
+  port 2525; no test email was sent. Port 587 is blocked by DigitalOcean.
+  This verifies connection/authentication, not a new inbox-delivery test.
+- Let's Encrypt issued a trusted IP-address certificate. A real staging
+  renewal rehearsal succeeded; the twice-daily renewal timer is enabled.
+- Source secret scanning found no leaks. Private runtime files, screenshots,
+  working notes and local key/backup files are excluded from GitHub.
+
+Evidence is retained privately under `work/deployment/`, particularly
+`final-images-security.log`, `patched-nginx-rehearsal.log`,
+`private-services-final.log`, `certificate-renewal-check.log` and
+`expiry-activation-verified.log`. Remaining baseline requirements and staff
+account/MFA setup are tracked separately; this is not a full-scope completion claim.
+
+## Local HTTPS rehearsal
 
 Build Angular with `npm run build` in `frontend`. From the project root,
 run `./scripts/Verify-NginxEdge.ps1` with PowerShell 7, curl and Docker.
@@ -86,16 +136,21 @@ DigitalOcean is metered while a Droplet exists, including while powered off.
 A ten-day deployment must have a verified deletion mechanism before creation.
 A final invoice can arrive after deletion for previously accrued usage.
 Turning off the website or server is not cancellation. No automatic-deletion
-mechanism or paid server is currently configured by this preparation.
+mechanism is established by these templates alone; the verified live state
+is recorded above.
 
 ## Presentation expiry guard
 
 `tools/deployment/expire_droplet.py` checks one configured DigitalOcean ID,
-the exact `lexigo-presentation` name, `lexigo-expiring` tag and creation
+the exact `lexigo-presentation` name and creation
 timestamp before deletion. Its configured UTC deadline must be after
 creation and at most ten days later. Before the deadline it makes no API
-request; `--dry-run` verifies a due target without deleting it. Unit tests
+request unless `--dry-run` is selected to verify identity without deletion. Unit tests
 cover early execution, deadline boundaries, wrong targets and provider failure.
+The human-visible `lexigo-expiring` tag is not an API identity check: the
+minimum token lacks `tag:read`, so DigitalOcean hides tags in its response.
+The guard uses the immutable numeric ID and expected creation timestamp
+alongside the name, without expanding the token's permissions.
 
 The accompanying `lexigo-expiry.service` and `.timer` are installation
 templates, not an already scheduled deletion. Install them only on the

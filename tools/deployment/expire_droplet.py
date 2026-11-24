@@ -12,7 +12,6 @@ from urllib.request import Request, urlopen
 
 API_ORIGIN = "https://api.digitalocean.com/v2/droplets"
 EXPECTED_NAME = "lexigo-presentation"
-REQUIRED_TAG = "lexigo-expiring"
 
 
 def timestamp(value):
@@ -55,7 +54,7 @@ def expire(configuration, token, now, *, dry_run=False, api=request_api):
     identifier, created, deadline = validate_configuration(configuration)
     if now.tzinfo is None:
         raise ValueError("The current time must include its timezone.")
-    if now < deadline:
+    if now < deadline and not dry_run:
         return "Not due; no provider request made."
     if not isinstance(token, str) or not re.fullmatch(r"[A-Za-z0-9_]{32,256}", token):
         raise ValueError("A private provider token is required.")
@@ -64,12 +63,12 @@ def expire(configuration, token, now, *, dry_run=False, api=request_api):
     if (
         droplet.get("id") != identifier
         or droplet.get("name") != EXPECTED_NAME
-        or REQUIRED_TAG not in droplet.get("tags", [])
         or timestamp(droplet.get("created_at")) != created
     ):
         raise ValueError("Provider identity does not match the approved expiry target.")
     if dry_run:
-        return "Dry run: target identity and due deadline verified; nothing deleted."
+        timing = "due" if now >= deadline else "not yet due"
+        return f"Dry run: target identity verified, deletion {timing}; nothing deleted."
     api("DELETE", identifier, token)
     return "Provider accepted deletion of the configured LexiGo server."
 

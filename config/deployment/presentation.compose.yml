@@ -1,0 +1,130 @@
+name: lexigo-presentation
+
+x-logging: &bounded-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  database:
+    image: ${LEXIGO_DATABASE_IMAGE:?Set the tested PostgreSQL image digest}
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: lexigo
+      POSTGRES_USER: lexigo_owner
+      POSTGRES_PASSWORD: ${LEXIGO_DATABASE_PASSWORD:?Set the private database owner password}
+    command:
+      - postgres
+      - -c
+      - shared_buffers=32MB
+      - -c
+      - max_connections=30
+      - -c
+      - ssl=on
+      - -c
+      - ssl_cert_file=/run/lexigo/database.crt
+      - -c
+      - ssl_key_file=/run/lexigo/database.key
+      - -c
+      - hba_file=/etc/lexigo/pg_hba.conf
+    volumes:
+      - database:/var/lib/postgresql/data
+      - /etc/lexigo/private/database.crt:/run/lexigo/database.crt:ro
+      - /etc/lexigo/private/database.key:/run/lexigo/database.key:ro
+      - ./pg_hba.conf:/etc/lexigo/pg_hba.conf:ro
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U lexigo_owner -d lexigo"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    mem_limit: 192m
+    pids_limit: 64
+    logging: *bounded-logging
+    networks: [app]
+
+  storage:
+    image: dxflrs/garage:v2.5.0@sha256:677e5b758e4425a325b811c425c026bf35a4bf42f7ddbaa773de3f4fd779a5a5
+    restart: unless-stopped
+    command: [/garage, server, --single-node, --default-bucket]
+    environment:
+      GARAGE_RPC_SECRET: ${LEXIGO_STORAGE_RPC_SECRET:?Set the private storage RPC key}
+      GARAGE_DEFAULT_ACCESS_KEY: ${LEXIGO_STORAGE_ACCESS_KEY:?Set the private bucket access key}
+      GARAGE_DEFAULT_SECRET_KEY: ${LEXIGO_STORAGE_SECRET_KEY:?Set the private bucket secret}
+      GARAGE_DEFAULT_BUCKET: lexigo-media
+    volumes:
+      - ./garage.toml:/etc/garage.toml:ro
+      - storage-metadata:/var/lib/garage/meta
+      - storage-data:/var/lib/garage/data
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: [CMD, /garage, status]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    mem_limit: 96m
+    pids_limit: 64
+    logging: *bounded-logging
+    networks: [app]
+
+  api:
+    image: ${LEXIGO_API_IMAGE:?Set the tested API release}
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTPS_PORT: "443"
+      AllowedHosts: ${LEXIGO_HOST:?Set the public IP address}
+      AccountEmail__WebOrigin: https://${LEXIGO_HOST}
+      DataProtection__KeyDirectory: /var/lib/lexigo/keys
+      ReverseProxy__Address: 172.28.80.10
+    volumes:
+      - /etc/lexigo/private/appsettings.Production.json:/app/appsettings.Production.json:ro
+      - /etc/lexigo/private/database-ca.crt:/run/lexigo/database-ca.crt:ro
+      - api-keys:/var/lib/lexigo/keys
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    depends_on:
+      database:
+        condition: service_healthy
+      storage:
+        condition: service_healthy
+    mem_limit: 384m
+    pids_limit: 256
+    logging: *bounded-logging
+    networks: [app]
+
+  edge:
+    image: lexigo-nginx:patched
+    restart: unless-stopped
+    environment:
+      LEXIGO_HOST: ${LEXIGO_HOST}
+      NGINX_ENVSUBST_FILTER: ^LEXIGO_HOST$$
+      NGINX_ENTRYPOINT_WORKER_PROCESSES_AUTOTUNE: "1"
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ../nginx/lexigo-ip.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - /opt/lexigo/frontend:/usr/share/nginx/html:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/lexigo-acme:/var/www/acme:ro
+    depends_on: [api]
+    mem_limit: 64m
+    pids_limit: 64
+    logging: *bounded-logging
+    networks:
+      app:
+        ipv4_address: 172.28.80.10
+
+networks:
+  app:
+    ipam:
+      config:
+        - subnet: 172.28.80.0/24
+
+volumes:
+  database:
+  storage-metadata:
+  storage-data:
+  api-keys:

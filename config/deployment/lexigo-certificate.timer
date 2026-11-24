@@ -1,0 +1,11 @@
+[Unit]
+Description=Check LexiGo HTTPS certificate renewal twice daily
+
+[Timer]
+OnCalendar=*-*-* 00,12:00:00 UTC
+RandomizedDelaySec=30m
+Persistent=true
+Unit=lexigo-certificate.service
+
+[Install]
+WantedBy=timers.target

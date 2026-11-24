@@ -2,6 +2,18 @@
 
 An English-language learning platform for Spanish, Italian, German and Russian.
 
+## Live presentation
+
+Open [LexiGo](https://206.189.25.5/) from any device. Existing accounts and
+learning progress were migrated; sign in with the account's existing credentials.
+The temporary server is scheduled for deletion on **December 4, 2026 at
+00:15 Tbilisi time**. The public link stops working when the server is deleted.
+Payments inside LexiGo use simulated cards and balances.
+
+See [deployment verification](docs/DEPLOYMENT.md) for the current release,
+private-service checks, certificate renewal and shutdown procedure. Public
+hosting does not mean every outstanding requirement is complete.
+
 ## Repository structure
 
 | Path | Responsibility |

@@ -1,0 +1,72 @@
+log_format lexigo escape=json
+    '{"time":"$time_iso8601","status":$status,"seconds":$request_time,"bytes":$body_bytes_sent}';
+server_tokens off;
+ssl_protocols TLSv1.2 TLSv1.3;
+
+server {
+    listen 80 default_server;
+    server_name ${LEXIGO_HOST};
+    access_log /dev/stdout lexigo;
+    error_log /dev/stderr crit;
+    if ($host != "${LEXIGO_HOST}") { return 421; }
+
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/acme;
+        try_files $uri =404;
+    }
+    location / { return 308 https://${LEXIGO_HOST}$request_uri; }
+}
+
+# IP-address clients normally omit SNI, so the approved IP certificate must
+# be the default TLS certificate. Reject unrelated HTTP hosts after TLS.
+server {
+    listen 443 ssl default_server;
+    server_name ${LEXIGO_HOST};
+    ssl_certificate /etc/letsencrypt/live/${LEXIGO_HOST}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${LEXIGO_HOST}/privkey.pem;
+    access_log /dev/stdout lexigo;
+    error_log /dev/stderr crit;
+    if ($host != "${LEXIGO_HOST}") { return 421; }
+
+    root /usr/share/nginx/html;
+    index index.html;
+    client_max_body_size 11m;
+    add_header Strict-Transport-Security "max-age=31536000" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "no-referrer" always;
+    add_header Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; worker-src 'self' blob:" always;
+    add_header Permissions-Policy "camera=(self), microphone=(self), geolocation=()" always;
+
+    location ^~ /api/ {
+        proxy_pass http://api:8080;
+        proxy_http_version 1.1;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 60s;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header Forwarded "";
+        proxy_hide_header Strict-Transport-Security;
+        proxy_hide_header X-Content-Type-Options;
+        proxy_hide_header Referrer-Policy;
+    }
+
+    # Garage still requires signed, expiring S3 requests. Its administration
+    # and RPC ports are never published. Preserve Host for signature checks.
+    location ^~ /lexigo-media/ {
+        proxy_pass http://storage:3900;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_buffering off;
+        proxy_request_buffering off;
+    }
+
+    location = /api { return 404; }
+    location ^~ /health/ { return 404; }
+    location ^~ /swagger { return 404; }
+    location = /index.html { expires -1; }
+    location ~ (^|/)\. { return 404; }
+    location ~ \.[^/]+$ { try_files $uri =404; }
+    location / { try_files $uri /index.html; }
+}

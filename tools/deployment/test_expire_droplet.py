@@ -38,9 +38,14 @@ class ExpiryTests(unittest.TestCase):
         expire(self.configuration, self.token, self.deadline, dry_run=True, api=self.api)
         self.api.assert_called_once_with("GET", 123456, self.token)
 
+    def test_dry_run_checks_real_identity_before_deadline_without_deleting(self):
+        result = expire(self.configuration, self.token, self.created, dry_run=True, api=self.api)
+        self.api.assert_called_once_with("GET", 123456, self.token)
+        self.assertIn("not yet due", result)
+
     def test_mismatched_server_is_never_deleted(self):
         for field, value in [
-            ("id", 654321), ("name", "vacay"), ("tags", []),
+            ("id", 654321), ("name", "vacay"),
             ("created_at", (self.created - timedelta(days=1)).isoformat()),
         ]:
             with self.subTest(field=field):
@@ -49,6 +54,11 @@ class ExpiryTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     expire(self.configuration, self.token, self.deadline, api=self.api)
                 self.assertEqual(self.api.call_count, 1)
+
+    def test_limited_read_scope_does_not_need_resource_tag_access(self):
+        self.api.return_value = {**self.droplet, "tags": []}
+        expire(self.configuration, self.token, self.deadline, api=self.api)
+        self.assertEqual(self.api.call_args_list[-1].args[:2], ("DELETE", 123456))
 
     def test_invalid_expiry_configuration_never_contacts_provider(self):
         for field, value in [
