@@ -5,6 +5,13 @@ import { firstValueFrom } from 'rxjs';
 export interface ExtraStudyTeacher {
   id: string;
   displayName: string;
+  pricePerLesson?: number;
+  levelFrom?: string;
+  levelTo?: string;
+  biography?: string;
+  portraitKey?: string;
+  courseTitle?: string;
+  courseId?: string;
 }
 
 export interface ExtraStudyRequest {
@@ -19,6 +26,11 @@ export interface ExtraStudyRequest {
 export interface SharedStudyLesson {
   id: string;
   title: string;
+  scheduledAt?: string | null;
+  durationMinutes?: number | null;
+  status?: string;
+  bestScore?: number | null;
+  completedAt?: string | null;
 }
 
 export interface ExtraStudySpaceView {
@@ -26,6 +38,19 @@ export interface ExtraStudySpaceView {
   courseTitle: string;
   canShare: boolean;
   lessons: SharedStudyLesson[];
+  partnerName?: string;
+}
+
+export interface StudyMessage {
+  id: string;
+  senderName: string;
+  body: string;
+  createdAt: string;
+  isMine: boolean;
+}
+export interface StudyMessagePage {
+  items: StudyMessage[];
+  nextBefore: string | null;
 }
 
 interface ExtraStudyAvailability {
@@ -37,6 +62,34 @@ interface ExtraStudyAvailability {
 export class ExtraStudyApi {
   private readonly http = inject(HttpClient);
   private readonly base = '/api/v1/extra-study';
+
+  messages(requestId: string, before?: string): Promise<StudyMessagePage> {
+    return firstValueFrom(
+      this.http.get<StudyMessagePage>(
+        `${this.base}/requests/${encodeURIComponent(requestId)}/messages`,
+        { params: before ? { before } : {} },
+      ),
+    );
+  }
+  sendMessage(requestId: string, message: { id: string; body: string }): Promise<unknown> {
+    return firstValueFrom(
+      this.http.post(`${this.base}/requests/${encodeURIComponent(requestId)}/messages`, message),
+    );
+  }
+
+  schedule(
+    requestId: string,
+    lessonId: string,
+    scheduledAt: string | null,
+    durationMinutes: number | null,
+  ): Promise<unknown> {
+    return firstValueFrom(
+      this.http.put(
+        `${this.base}/requests/${encodeURIComponent(requestId)}/space/lessons/${encodeURIComponent(lessonId)}/schedule`,
+        { scheduledAt, durationMinutes },
+      ),
+    );
+  }
 
   close(id: string): Promise<unknown> {
     return firstValueFrom(this.http.delete(this.base + '/requests/' + encodeURIComponent(id)));
@@ -86,7 +139,9 @@ export class ExtraStudyApi {
   teachers(courseId: string, after?: string): Promise<ExtraStudyTeacher[]> {
     return firstValueFrom(
       this.http.get<ExtraStudyTeacher[]>(
-        this.base + '/courses/' + encodeURIComponent(courseId) + '/teachers',
+        courseId
+          ? this.base + '/courses/' + encodeURIComponent(courseId) + '/teachers'
+          : this.base + '/teachers',
         { params: after ? { after } : {} },
       ),
     );

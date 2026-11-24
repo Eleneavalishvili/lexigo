@@ -475,7 +475,8 @@
     "evidence": [
       "2026-11-09: AddDialogueFoundation defines persisted fields and relational constraints.",
       "2026-11-12: AddPremiumDialogues adds an access flag defaulting to Free. PostgreSQL tests verify four Free scenarios and one Premium scenario per course.",
-      "2026-11-16: DocumentedModelSchemaTests verified migrated PostgreSQL columns, nullability and validated keys. checklist-models.trx."
+      "2026-11-16: DocumentedModelSchemaTests verified migrated PostgreSQL columns, nullability and validated keys. checklist-models.trx.",
+      "2026-11-25: AddDialogueAuthoring adds owner/reviewer/review timestamp/comment/edit token. PostgreSQL graph validation, independent review, revision retention, stale writes, scoped access and deletion checks passed in authoring-verified-full.trx and foundations-authoring-final.trx. Public migration applied without deleting existing progress."
     ],
     "notes": "Course ownership, scenario version and Premium flag were checked. Starter dialogue tests cover Free and Premium access."
   },

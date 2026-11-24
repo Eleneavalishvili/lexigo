@@ -6,6 +6,7 @@ import { PreferenceStore } from '../../core/accounts/preference-store';
 import { LearningApi } from '../../core/learning/learning-api';
 import { CharacterCue, courseCompanion } from '../../shared/character-cue/character-cue';
 import { BrandLogo } from '../../shared/brand-logo/brand-logo';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-course-start',
@@ -97,9 +98,13 @@ export class CourseStart {
         const session = await this.api.start(first.id);
         if (this.current(generation)) await this.router.navigate(['/learn/session', session.id]);
       }
-    } catch {
+    } catch (error) {
       if (this.current(generation))
-        this.error.set('We couldn’t open your first step. Your saved progress is kept; try again.');
+        this.error.set(
+          error instanceof HttpErrorResponse && typeof error.error?.title === 'string'
+            ? error.error.title + ' Your saved progress is kept.'
+            : 'We couldn’t open your first step. Your saved progress is kept; try again.',
+        );
     } finally {
       if (this.current(generation)) this.busy.set(false);
     }

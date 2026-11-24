@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LanguageLearning.Infrastructure.Billing;
 
-public sealed class SubscriptionPaymentService(LexiGoDbContext database, BillingAccountAccess access, SubscriptionQueries queries, TimeProvider clock, SubscriptionPaymentRecorder recorder)
+public sealed class SubscriptionPaymentService(LexiGoDbContext database, BillingAccountAccess access, SubscriptionQueries queries, TimeProvider clock, SubscriptionPaymentRecorder recorder, PurchaseReceiptNotice notices)
 {
     public async Task<PaymentOutcome> PayAsync(Guid userId, Guid familyId, Guid orderId, Guid cardId, Guid key, bool technicalFailure, CancellationToken cancellationToken)
     {
@@ -76,6 +76,8 @@ public sealed class SubscriptionPaymentService(LexiGoDbContext database, Billing
             }
         }
         var receiptNumber = recorder.Record(payment, order, card, subscription, "Activated", userId);
+        if (payment.Status == "Succeeded" && subscription is not null && receiptNumber is not null)
+            await notices.QueueAsync(payment, subscription, receiptNumber, cancellationToken);
         await database.SaveChangesAsync(cancellationToken);
         await transaction.CommitAsync(cancellationToken);
         return new(SubscriptionQueries.View(payment, order.SubscriptionId, receiptNumber));

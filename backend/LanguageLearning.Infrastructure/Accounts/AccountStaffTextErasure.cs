@@ -11,10 +11,26 @@ internal static class AccountStaffTextErasure
     // Decisions, dates and published authorship remain; free-text notes do not.
     internal static async Task EraseAsync(LexiGoDbContext database, Guid userId, CancellationToken token)
     {
+        await database.ExtraStudyMessages.Where(item => item.SenderId == userId)
+            .ExecuteUpdateAsync(update => update.SetProperty(item => item.Body, RemovedNote), token);
         await database.ContentReviews.Where(item => item.ReviewerId == userId)
             .ExecuteUpdateAsync(update => update.SetProperty(item => item.Comment, RemovedNote), token);
         await database.VocabularyRevisions.Where(item => item.ReviewerId == userId)
             .ExecuteUpdateAsync(update => update.SetProperty(item => item.ReviewComment, (string?)null), token);
+        await database.Dialogues.Where(item => item.ReviewerId == userId)
+            .ExecuteUpdateAsync(update => update.SetProperty(item => item.ReviewComment, (string?)null), token);
+        var privateDialogues = database.Dialogues.Where(item => item.OwnerId == userId && item.Status == "Archived"
+            && !database.AuditLogs.Any(log => log.EntityType == "Dialogue" && log.EntityId == item.Id.ToString()
+                && log.Action == "Dialogue.publish"));
+        await database.DialogueChoices.Where(choice => privateDialogues.Any(item => item.Id == choice.DialogueId))
+            .ExecuteUpdateAsync(update => update.SetProperty(choice => choice.Text, RemovedNote)
+                .SetProperty(choice => choice.Feedback, RemovedNote), token);
+        await database.DialogueNodes.Where(node => privateDialogues.Any(item => item.Id == node.DialogueId))
+            .ExecuteUpdateAsync(update => update.SetProperty(node => node.Text, RemovedNote)
+                .SetProperty(node => node.AudioMediaId, (Guid?)null), token);
+        await privateDialogues.ExecuteUpdateAsync(update => update.SetProperty(item => item.Title, "Archived dialogue")
+            .SetProperty(item => item.Scenario, item => "gone" + item.Id.ToString())
+            .SetProperty(item => item.ReviewComment, (string?)null), token);
         await database.ContentReports.Where(item => item.ResolvedBy == userId)
             .ExecuteUpdateAsync(update => update.SetProperty(item => item.Resolution, RemovedNote), token);
         await database.TeacherFeedback.Where(item => item.TeacherId == userId)

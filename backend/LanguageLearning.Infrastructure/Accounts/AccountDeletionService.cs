@@ -81,6 +81,7 @@ public sealed class AccountDeletionService(LexiGoDbContext database, UserManager
             && item.MimeType == "image/png" && item.Source == ProfileAvatarService.MediaSource)
             .ExecuteUpdateAsync(update => update.SetProperty(item => item.StorageState, "Deleting"), cancellationToken);
         user.PasswordHash = null;
+        user.TeacherAccessCodeHash = null;
         user.TwoFactorEnabled = false;
         user.SecurityStamp = Guid.NewGuid().ToString();
         user.ConcurrencyStamp = Guid.NewGuid().ToString();

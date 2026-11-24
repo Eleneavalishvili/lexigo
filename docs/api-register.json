@@ -1641,5 +1641,122 @@
       "2026-10-27: backend RegistrationTests, browser registration/Mailpit/verification check, Development Swagger and health endpoints"
     ],
     "notes": "Applies to this operation only; see individual entries for remaining account and authorization operations."
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/courses",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-25: CourseCreationTests/DialogueAuthoringTests in authoring-verified-full.trx (698 passing backend cases); desktop/phone authoring journeys. Installed on the existing public server. STAFF_AUTHORING.md."
+    ]
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/manage/courses/{id}",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-25: CourseCreationTests/DialogueAuthoringTests in authoring-verified-full.trx (698 passing backend cases); desktop/phone authoring journeys. Installed on the existing public server. STAFF_AUTHORING.md."
+    ]
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/manage/courses/languages",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-25: CourseCreationTests/DialogueAuthoringTests in authoring-verified-full.trx (698 passing backend cases); desktop/phone authoring journeys. Installed on the existing public server. STAFF_AUTHORING.md."
+    ]
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/manage/dialogues",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-25: CourseCreationTests/DialogueAuthoringTests in authoring-verified-full.trx (698 passing backend cases); desktop/phone authoring journeys. Installed on the existing public server. STAFF_AUTHORING.md."
+    ]
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/dialogues",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-25: CourseCreationTests/DialogueAuthoringTests in authoring-verified-full.trx (698 passing backend cases); desktop/phone authoring journeys. Installed on the existing public server. STAFF_AUTHORING.md."
+    ]
+  },
+  {
+    "method": "GET",
+    "document_route": "/api/v1/manage/dialogues/{id}",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-25: CourseCreationTests/DialogueAuthoringTests in authoring-verified-full.trx (698 passing backend cases); desktop/phone authoring journeys. Installed on the existing public server. STAFF_AUTHORING.md."
+    ]
+  },
+  {
+    "method": "PUT",
+    "document_route": "/api/v1/manage/dialogues/{id}",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-25: CourseCreationTests/DialogueAuthoringTests in authoring-verified-full.trx (698 passing backend cases); desktop/phone authoring journeys. Installed on the existing public server. STAFF_AUTHORING.md."
+    ]
+  },
+  {
+    "method": "DELETE",
+    "document_route": "/api/v1/manage/dialogues/{id}",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-25: CourseCreationTests/DialogueAuthoringTests in authoring-verified-full.trx (698 passing backend cases); desktop/phone authoring journeys. Installed on the existing public server. STAFF_AUTHORING.md."
+    ]
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/dialogues/{id}/submit",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-25: CourseCreationTests/DialogueAuthoringTests in authoring-verified-full.trx (698 passing backend cases); desktop/phone authoring journeys. Installed on the existing public server. STAFF_AUTHORING.md."
+    ]
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/dialogues/{id}/approve",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-25: CourseCreationTests/DialogueAuthoringTests in authoring-verified-full.trx (698 passing backend cases); desktop/phone authoring journeys. Installed on the existing public server. STAFF_AUTHORING.md."
+    ]
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/dialogues/{id}/return",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-25: CourseCreationTests/DialogueAuthoringTests in authoring-verified-full.trx (698 passing backend cases); desktop/phone authoring journeys. Installed on the existing public server. STAFF_AUTHORING.md."
+    ]
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/dialogues/{id}/publish",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-25: CourseCreationTests/DialogueAuthoringTests in authoring-verified-full.trx (698 passing backend cases); desktop/phone authoring journeys. Installed on the existing public server. STAFF_AUTHORING.md."
+    ]
+  },
+  {
+    "method": "POST",
+    "document_route": "/api/v1/manage/dialogues/{id}/versions",
+    "page": 9,
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-25: CourseCreationTests/DialogueAuthoringTests in authoring-verified-full.trx (698 passing backend cases); desktop/phone authoring journeys. Installed on the existing public server. STAFF_AUTHORING.md."
+    ]
   }
 ]

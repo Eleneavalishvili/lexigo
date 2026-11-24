@@ -61,6 +61,17 @@ export class AuthStore {
     });
   }
 
+  async teacherLogin(accessCode: string, authenticatorCode: string): Promise<void> {
+    await this.lock(async () => {
+      const response = await this.authPost<AuthResponse>('/teacher-login', {
+        accessCode,
+        authenticatorCode,
+      });
+      this.accept(response);
+      this.channel?.postMessage('account-changed');
+    });
+  }
+
   refresh(): Promise<AuthResponse | null> {
     if (this.pendingRefresh) return this.pendingRefresh;
     this.pendingRefresh = this.lock(async () => {

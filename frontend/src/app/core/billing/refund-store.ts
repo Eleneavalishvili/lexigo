@@ -118,7 +118,7 @@ export class RefundStore {
     this.pending.set(null);
     this.phase.set('idle');
     this.error.set('');
-    this.notice.set('The simulated refund is recorded. No real money was used.');
+    this.notice.set('The refund is recorded in the card balance and payment history.');
     try {
       sessionStorage.removeItem(this.storageKey);
     } catch {

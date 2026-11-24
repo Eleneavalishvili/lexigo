@@ -48,10 +48,9 @@
         }
         @if (subscription().renewalProcessingAvailable) {
           <p class="simulation">
-            Saving renewal ON authorizes a simulated debit at period end using your selected
-            next-period price, or your existing price. Failed renewals stop and require a manual
-            purchase. Processing more than 15 minutes late also stops without charging. No real
-            money is used.
+            Saving renewal ON authorizes a debit at period end using your selected next-period
+            price, or your existing price. Failed renewals stop and require a manual purchase.
+            Processing more than 15 minutes late also stops without charging.
           </p>
         }
         @if (subscription().renewalConsentRequired && subscription().renewalProcessingAvailable) {
@@ -61,10 +60,10 @@
           </p>
         }
         <label class="check"
-          ><input type="checkbox" formControlName="autoRenew" />Save an automatic test-renewal
+          ><input type="checkbox" formControlName="autoRenew" />Save an automatic renewal
           preference</label
         >
-        <label for="renewal-card">Default test card</label
+        <label for="renewal-card">Default card</label
         ><select id="renewal-card" formControlName="cardId">
           <option value="">No renewal card</option>
           @for (card of cards(); track card.id) {
@@ -87,7 +86,7 @@
         @if (subscription().scheduledPlanPrice; as price) {
           <p class="notice">
             Selected for the next period: {{ price.period }} ·
-            {{ price.amount | currency: price.currency : 'code' }} simulated funds.
+            {{ price.amount | currency: price.currency : 'code' }} card balance.
           </p>
         }
         <label for="scheduled-plan">Next-period selection</label
@@ -104,8 +103,8 @@
           }
         </select>
         <p>
-          This selects the price for your next renewal if automatic test-renewal is enabled. Saving
-          the choice does not charge funds now.
+          This selects the price for your next renewal if automatic renewal is enabled. Saving the
+          choice does not charge funds now.
         </p>
         <button class="button button-outline" type="submit">Save next-period choice ↗</button>
       </fieldset>

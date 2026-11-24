@@ -33,7 +33,9 @@ def collect():
     texts = {language: {} for language in ["en", "es", "it", "de", "ru"]}
 
     def add(language, text):
-        if text and len(text) <= 1000:
+        if language == "ru" and canonical(text) in {"ъ", "ь"}:
+            return  # These signs have names but no independent sound.
+        if text and len(text) <= 1000 and re.search(r"\w", text, flags=re.UNICODE):
             texts[language].setdefault(canonical(text), text)
             if language != "en":
                 for word in re.findall(r"[\w’']+", text, flags=re.UNICODE):
@@ -123,8 +125,16 @@ def main():
             stem = hashlib.sha256((language + "\n" + key).encode("utf-8")).hexdigest()[:24]
             target = OUTPUT / (stem + ".wav")
             if not target.exists():
-                with wave.open(str(target), "wb") as recording:
-                    voice.synthesize_wav(text, recording)
+                temporary_clip = target.with_suffix(".wav.tmp")
+                try:
+                    with wave.open(str(temporary_clip), "wb") as recording:
+                        voice.synthesize_wav(text, recording)
+                    with wave.open(str(temporary_clip), "rb") as recording:
+                        if recording.getnframes() == 0:
+                            raise ValueError(f"No audio generated for {language}: {text!r}")
+                    temporary_clip.replace(target)
+                finally:
+                    temporary_clip.unlink(missing_ok=True)
             with wave.open(str(target), "rb") as recording:
                 if recording.getnframes() == 0:
                     raise ValueError("A pronunciation clip is empty.")

@@ -12,6 +12,12 @@ public sealed record ClassroomOutcome(Guid? Id = null, string? Error = null, boo
 
 public sealed class ClassroomAccess(LexiGoDbContext database, LearningAccess learning, TimeProvider clock)
 {
+    internal static async Task LockParticipantsAsync(LexiGoDbContext context, Guid first, Guid second, CancellationToken token)
+    {
+        _ = await context.Users.FromSqlInterpolated($"SELECT * FROM \"Users\" WHERE \"Id\" = {first} OR \"Id\" = {second} ORDER BY \"Id\" FOR UPDATE")
+            .ToArrayAsync(token);
+    }
+
     public async Task<ClassActor?> ActorAsync(Guid userId, Guid familyId, bool forUpdate, CancellationToken cancellationToken)
     {
         if (forUpdate && !await learning.LockAsync(userId, familyId, cancellationToken)) return null;
@@ -36,8 +42,13 @@ public sealed class ClassroomAccess(LexiGoDbContext database, LearningAccess lea
     {
         database.AuditLogs.Add(new AuditLog
         {
-            ActorId = actorId, EntityType = "Classroom", EntityId = classroomId.ToString(), Action = action,
-            Reason = reason, TraceId = traceId, OccurredAt = clock.GetUtcNow()
+            ActorId = actorId,
+            EntityType = "Classroom",
+            EntityId = classroomId.ToString(),
+            Action = action,
+            Reason = reason,
+            TraceId = traceId,
+            OccurredAt = clock.GetUtcNow()
         });
     }
 

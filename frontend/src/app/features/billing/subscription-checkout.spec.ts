@@ -94,7 +94,7 @@ describe('Plan comparison and subscription confirmation', () => {
     expect(host.textContent).toContain('GEL9.99');
     expect(host.textContent).toContain('GEL79.99');
     expect(host.textContent).toContain('Planned');
-    expect(host.textContent).toContain('SIMULATED BILLING ONLY');
+    expect(host.textContent).not.toContain('SIMULATED BILLING ONLY');
   });
 
   it.each([
@@ -123,7 +123,7 @@ describe('Plan comparison and subscription confirmation', () => {
       await fixture.whenStable();
       const host: HTMLElement = fixture.nativeElement;
       const date = Array.from(host.querySelectorAll('dt')).find(
-        (item) => item.textContent?.trim() === 'Next simulated renewal',
+        (item) => item.textContent?.trim() === 'Next renewal',
       );
       expect(date?.nextElementSibling?.textContent?.trim()).toBe(expected);
       expect(host.querySelector('a[href="/billing/history"]')).not.toBeNull();
@@ -134,14 +134,14 @@ describe('Plan comparison and subscription confirmation', () => {
     await fixture.whenStable();
     const host: HTMLElement = fixture.nativeElement;
     expect(api.pay).not.toHaveBeenCalled();
-    expect(host.textContent).not.toContain('Confirm simulated payment');
+    expect(host.textContent).not.toContain('Confirm payment');
     Array.from(host.querySelectorAll<HTMLButtonElement>('button'))
       .find((item) => item.textContent?.includes('Review order'))!
       .click();
     await fixture.whenStable();
     expect(api.create).toHaveBeenCalledExactlyOnceWith(priceId, expect.any(String));
     expect(api.pay).not.toHaveBeenCalled();
-    expect(host.textContent).toContain('Confirm simulated payment');
+    expect(host.textContent).toContain('Confirm payment');
     expect(host.textContent).toContain('<img src=x>');
     expect(host.querySelector('img')).toBeNull();
   });

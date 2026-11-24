@@ -62,7 +62,7 @@ describe('Heart checkout screen', () => {
     const fixture = TestBed.createComponent(HeartCheckout);
     await fixture.whenStable();
     const host: HTMLElement = fixture.nativeElement;
-    expect(host.textContent).toContain('SIMULATED CHECKOUT ONLY');
+    expect(host.textContent).not.toContain('SIMULATED CHECKOUT ONLY');
     expect(host.textContent).toContain('GEL5.00');
     expect(host.textContent).toContain('2 / 5');
     expect(host.textContent).toContain('<img src=x>');
@@ -75,13 +75,13 @@ describe('Heart checkout screen', () => {
     const host: HTMLElement = fixture.nativeElement;
     expect(api.purchase).not.toHaveBeenCalled();
     const button = Array.from(host.querySelectorAll<HTMLButtonElement>('button')).find((item) =>
-      item.textContent?.includes('Confirm test purchase'),
+      item.textContent?.includes('Confirm purchase'),
     )!;
     button.click();
     await fixture.whenStable();
     expect(api.purchase).toHaveBeenCalledOnce();
     expect(host.textContent).toContain('NO FUNDS MOVED');
-    expect(host.textContent).toContain('Add simulated funds');
+    expect(host.textContent).toContain('Add card balance');
     expect(host.textContent).toContain('GEL0.00');
   });
 });

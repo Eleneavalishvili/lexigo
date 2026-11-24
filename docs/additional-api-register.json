@@ -1233,5 +1233,55 @@
     "evidence": [
       "2026-11-22: confirmed archived 2026-11-20 result. creation-and-import-restoration-verified.trx: 36 passed, including private status, foreign-account denial and committed-job restoration. Current Release API rebuilt successfully."
     ]
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/auth/teacher-login",
+    "scope": "User-approved teacher presentation and private study additions",
+    "status": "implemented_verified",
+    "permissions": "Private six-digit code plus replay-protected authenticator; active confirmed MFA Teacher only.",
+    "evidence": [
+      "2026-11-25: presentation-current-full.trx 706 backend tests passed; tutor-messages-final.trx 25 final classroom/export/code-login tests passed; frontend394 passed; desktop/phone extra-study browser2 passed. Actual public walkthrough verified all8 protected teacher logins, directory portraits/levels/rates, persisted Premium, learner request/teacher notification, acceptance, shared lesson,45-minute appointment and two-way private messages. TUTOR_STUDY_FLOW.md."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/extra-study/teachers",
+    "scope": "User-approved teacher presentation and private study additions",
+    "status": "implemented_verified",
+    "permissions": "Active Premium learner; only active opted-in confirmed MFA teachers.",
+    "evidence": [
+      "2026-11-25: presentation-current-full.trx 706 backend tests passed; tutor-messages-final.trx 25 final classroom/export/code-login tests passed; frontend394 passed; desktop/phone extra-study browser2 passed. Actual public walkthrough verified all8 protected teacher logins, directory portraits/levels/rates, persisted Premium, learner request/teacher notification, acceptance, shared lesson,45-minute appointment and two-way private messages. TUTOR_STUDY_FLOW.md."
+    ]
+  },
+  {
+    "method": "PUT",
+    "route": "/api/v1/extra-study/requests/{requestId}/space/lessons/{lessonId}/schedule",
+    "scope": "User-approved teacher presentation and private study additions",
+    "status": "implemented_verified",
+    "permissions": "Owning MFA teacher and accepted Premium learner; shared published lesson; overlap and UTC constraints.",
+    "evidence": [
+      "2026-11-25: presentation-current-full.trx 706 backend tests passed; tutor-messages-final.trx 25 final classroom/export/code-login tests passed; frontend394 passed; desktop/phone extra-study browser2 passed. Actual public walkthrough verified all8 protected teacher logins, directory portraits/levels/rates, persisted Premium, learner request/teacher notification, acceptance, shared lesson,45-minute appointment and two-way private messages. TUTOR_STUDY_FLOW.md."
+    ]
+  },
+  {
+    "method": "GET",
+    "route": "/api/v1/extra-study/requests/{requestId}/messages",
+    "scope": "User-approved teacher presentation and private study additions",
+    "status": "implemented_verified",
+    "permissions": "Only accepted request participants with active access; bounded private paging.",
+    "evidence": [
+      "2026-11-25: presentation-current-full.trx 706 backend tests passed; tutor-messages-final.trx 25 final classroom/export/code-login tests passed; frontend394 passed; desktop/phone extra-study browser2 passed. Actual public walkthrough verified all8 protected teacher logins, directory portraits/levels/rates, persisted Premium, learner request/teacher notification, acceptance, shared lesson,45-minute appointment and two-way private messages. TUTOR_STUDY_FLOW.md."
+    ]
+  },
+  {
+    "method": "POST",
+    "route": "/api/v1/extra-study/requests/{requestId}/messages",
+    "scope": "User-approved teacher presentation and private study additions",
+    "status": "implemented_verified",
+    "permissions": "Only accepted request participants; stable retry reference, quota and send rate limit.",
+    "evidence": [
+      "2026-11-25: presentation-current-full.trx 706 backend tests passed; tutor-messages-final.trx 25 final classroom/export/code-login tests passed; frontend394 passed; desktop/phone extra-study browser2 passed. Actual public walkthrough verified all8 protected teacher logins, directory portraits/levels/rates, persisted Premium, learner request/teacher notification, acceptance, shared lesson,45-minute appointment and two-way private messages. TUTOR_STUDY_FLOW.md."
+    ]
   }
 ]

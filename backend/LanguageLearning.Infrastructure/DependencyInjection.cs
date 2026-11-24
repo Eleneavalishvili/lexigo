@@ -167,6 +167,11 @@ public static class DependencyInjection
         services.AddScoped<MediaQueries>();
         services.AddScoped<ContentTransactions>();
         services.AddScoped<ContentStructureService>();
+        services.AddScoped<CourseCreation>();
+        services.AddScoped<PurchaseReceiptNotice>();
+        services.AddScoped<PresentationAccountProvisioner>();
+        services.AddScoped<DialogueDrafts>();
+        services.AddScoped<DialogueWorkflow>();
         services.AddScoped<SkillManagement>();
         services.AddScoped<ManagedExerciseQueries>();
         services.AddScoped<ContentQueries>();
@@ -184,6 +189,7 @@ public static class DependencyInjection
         services.AddScoped<ProfileAvatarService>();
         services.AddScoped<EmailChangeService>();
         services.AddScoped<LoginService>();
+        services.AddScoped<TeacherAccessHasher>();
         services.AddScoped<PasswordRecoveryService>();
         services.AddScoped<RegistrationService>();
         services.AddScoped<RoleSeeder>();

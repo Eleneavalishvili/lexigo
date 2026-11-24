@@ -7,10 +7,7 @@
   <main>
     <p class="eyebrow">A LITTLE EXTRA, ON YOUR TERMS</p>
     <h1>Your next<br /><em>chapter.</em></h1>
-    <aside class="simulation">
-      <strong>TEST SUBSCRIPTION CHECKOUT</strong> Every charge below uses simulated card funds. No
-      real money is charged. Automatic renewal starts off.
-    </aside>
+
     @if (store.error()) {
       <p class="error" role="alert">{{ store.error() }}</p>
     }
@@ -23,7 +20,7 @@
       Reload saved state ↻
     </button>
     @if (store.loading()) {
-      <p role="status">Opening your subscription and test wallet…</p>
+      <p role="status">Opening your subscription and wallet…</p>
     }
     @if (store.subscription(); as subscription) {
       <section class="current-plan" aria-labelledby="current-plan-title">
@@ -50,7 +47,7 @@
               <dd>{{ subscription.autoRenew ? 'Saved: on' : 'Saved: off' }}</dd>
             </div>
             <div>
-              <dt>Next simulated renewal</dt>
+              <dt>Next renewal</dt>
               <dd>
                 @if (
                   subscription.renewalProcessingAvailable &&
@@ -140,7 +137,7 @@
           <h2>
             {{
               payment.status === 'Succeeded'
-                ? 'Your Premium period is active.'
+                ? 'Purchase successful. Premium is active.'
                 : payment.status === 'Pending'
                   ? 'Your payment is still processing.'
                   : 'This payment was declined.'
@@ -151,7 +148,7 @@
           }
           @if (payment.status !== 'Pending') {
             <p>
-              Simulated charge:
+              Payment recorded:
               <strong>{{
                 (payment.status === 'Succeeded' ? payment.amount : 0)
                   | currency: payment.currency : 'code'
@@ -159,7 +156,7 @@
             </p>
           }
           @if (payment.receiptNumber) {
-            <a [routerLink]="['/billing/receipt', payment.id]">View your test receipt ↗</a>
+            <a [routerLink]="['/billing/receipt', payment.id]">View your receipt ↗</a>
           }
         </div>
       </section>
@@ -199,22 +196,22 @@
     }
     @if (store.order(); as order) {
       <section class="panel" aria-labelledby="quote-title">
-        <p class="eyebrow">2 · CONFIRM YOUR TEST PAYMENT</p>
+        <p class="eyebrow">2 · CONFIRM YOUR PAYMENT</p>
         <h2 id="quote-title">{{ order.period }} Premium.</h2>
         <p class="price">
           {{ order.amount | currency: order.currency : 'code'
-          }}<small>saved simulated price · {{ order.status }}</small>
+          }}<small>saved price · {{ order.status }}</small>
         </p>
         <p>Quote expires {{ order.expiresAt | date: 'medium' }}.</p>
         @if (order.status === 'Created' && !store.subscription()?.id) {
-          <label for="subscription-card">Your {{ order.currency }} test card</label
+          <label for="subscription-card">Your {{ order.currency }} card</label
           ><select
             id="subscription-card"
             [value]="selectedCard()"
             (change)="chooseCard($event)"
             [disabled]="store.busy() || !!store.pending() || !store.ready()"
           >
-            <option value="">Choose a test card</option>
+            <option value="">Choose a card</option>
             @for (card of store.cards(); track card.id) {
               <option
                 [value]="card.id"
@@ -225,22 +222,15 @@
               </option>
             }
           </select>
-          <p><a routerLink="/billing/cards">Create a test card or add simulated funds ↗</a></p>
-          <label class="check"
-            ><input
-              type="checkbox"
-              [checked]="technical()"
-              (change)="technical.set(!technical())"
-              [disabled]="store.busy() || !!store.pending()"
-            />Simulate a technical decline for this test</label
-          >
+          <p><a routerLink="/billing/cards">Create a card or add card balance ↗</a></p>
+
           <button
             class="button button-red"
             type="button"
-            (click)="store.pay(selectedCard(), technical())"
+            (click)="store.pay(selectedCard())"
             [disabled]="!selectedCard() || store.busy() || !!store.pending() || !store.ready()"
           >
-            {{ store.busy() ? 'Processing…' : 'Confirm simulated payment ↗' }}
+            {{ store.busy() ? 'Processing…' : 'Confirm payment ↗' }}
           </button>
           <button
             class="button button-outline"

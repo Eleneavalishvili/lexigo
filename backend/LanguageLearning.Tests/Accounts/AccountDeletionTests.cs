@@ -32,6 +32,25 @@ public sealed class AccountDeletionTests(RegistrationFixture fixture) : IClassFi
         db.Classrooms.Add(classroom);
         db.ExtraStudyOffers.Add(offer);
         db.ExtraStudyRequests.Add(request);
+        var teacherMessage = new ExtraStudyMessage
+        {
+            Id = Guid.NewGuid(),
+            RequestId = request.Id,
+            SenderId = teacher.Id,
+            Body = "Private teacher message",
+            CreatedAt = DateTimeOffset.UtcNow
+        };
+        var learnerMessage = new ExtraStudyMessage
+        {
+            Id = Guid.NewGuid(),
+            RequestId = request.Id,
+            SenderId = other.Id,
+            Body = "Retained learner message",
+            CreatedAt = DateTimeOffset.UtcNow
+        };
+        db.ExtraStudyMessages.AddRange(teacherMessage, learnerMessage);
+        var teacherAccount = await db.Users.SingleAsync(item => item.Id == teacher.Id);
+        teacherAccount.TeacherAccessCodeHash = new string('A', 64);
         await db.SaveChangesAsync();
         string token = await teacher.LoginAsync(browser);
         string otherToken = await other.LoginAsync(otherBrowser);
@@ -56,6 +75,11 @@ public sealed class AccountDeletionTests(RegistrationFixture fixture) : IClassFi
         Assert.Equal(HttpStatusCode.NoContent, (await browser.SendAsync(HttpMethod.Delete, "/api/v1/me", confirmation, token, csrf: true)).StatusCode);
         Assert.Equal("Closed", await db.ExtraStudyRequests.Where(item => item.Id == request.Id).Select(item => item.Status).SingleAsync());
         Assert.True(await db.Classrooms.Where(item => item.Id == classroom.Id).Select(item => item.IsArchived).SingleAsync());
+        Assert.Equal("Private note erased after account deletion.", await db.ExtraStudyMessages
+            .Where(item => item.Id == teacherMessage.Id).Select(item => item.Body).SingleAsync());
+        Assert.Equal("Retained learner message", await db.ExtraStudyMessages
+            .Where(item => item.Id == learnerMessage.Id).Select(item => item.Body).SingleAsync());
+        Assert.Null(await db.Users.Where(item => item.Id == teacher.Id).Select(item => item.TeacherAccessCodeHash).SingleAsync());
     }
 
     [Fact]

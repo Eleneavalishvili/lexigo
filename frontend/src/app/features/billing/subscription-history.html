@@ -7,9 +7,7 @@
   <main>
     <p class="eyebrow">EVERY CHAPTER, KEPT</p>
     <h1>Your little<br /><em>paper trail.</em></h1>
-    <p class="simulation">
-      All payments here use simulated funds. Your history stays available on the Free plan.
-    </p>
+
     <button type="button" class="text-button" (click)="store.load()" [disabled]="store.loading()">
       Refresh history ↻
     </button>
@@ -92,7 +90,7 @@
                 </p>
                 @if (item.amount !== null && item.currency) {
                   <p>
-                    {{ item.amount | currency: item.currency : 'code' }} simulated ·
+                    {{ item.amount | currency: item.currency : 'code' }}
                     {{ item.period }}
                   </p>
                 }
@@ -110,9 +108,7 @@
                   <a routerLink="/notifications">Open your inbox ↗</a>
                 }
                 @if (item.paymentId) {
-                  <a [routerLink]="['/billing/receipt', item.paymentId]"
-                    >View this test receipt ↗</a
-                  >
+                  <a [routerLink]="['/billing/receipt', item.paymentId]">View this receipt ↗</a>
                 }
               </li>
             } @empty {

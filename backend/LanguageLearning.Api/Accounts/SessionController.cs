@@ -30,6 +30,16 @@ public sealed class SessionController(LoginService login, SessionService session
         return Complete(result.Ticket);
     }
 
+    [HttpPost("teacher-login")]
+    [RequireCsrf]
+    [EnableRateLimiting("account-entry")]
+    public async Task<IActionResult> TeacherLogin(TeacherLoginRequest request, CancellationToken token)
+    {
+        var result = await login.SignInTeacherAsync(request.AccessCode, request.AuthenticatorCode,
+            Request.Headers.UserAgent.ToString(), token);
+        return result.Ticket is null ? InvalidCredentials() : Complete(result.Ticket);
+    }
+
     [HttpPost("refresh")]
     [RequireCsrf]
     [EnableRateLimiting("session-refresh")]

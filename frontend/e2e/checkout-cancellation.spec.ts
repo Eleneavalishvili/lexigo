@@ -19,7 +19,7 @@ test('a learner can cancel an unpaid Premium checkout and start a fresh one', as
 
   await page.getByRole('button', { name: 'Cancel checkout' }).click();
   await expect(page.getByText('saved simulated price · Cancelled')).toBeVisible();
-  await expect(page.getByRole('button', { name: /Confirm simulated payment/ })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: /Confirm payment/ })).toHaveCount(0);
 
   await review.click();
   await expect(page.getByText('saved simulated price · Created')).toBeVisible();

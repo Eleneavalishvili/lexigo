@@ -49,9 +49,9 @@ export class HeartCheckout {
     return (
       (
         {
-          CardBlocked: 'The test card is blocked.',
-          CurrencyMismatch: 'Choose a GEL test card.',
-          InsufficientBalance: 'Add simulated funds to your test card.',
+          CardBlocked: 'The card is blocked.',
+          CurrencyMismatch: 'Choose a GEL card.',
+          InsufficientBalance: 'Add card balance to your card.',
           HeartsAlreadyFull: 'Your hearts are already full. No refill was needed.',
         } as Record<string, string>
       )[code ?? ''] ?? 'The purchase did not complete.'

@@ -18,6 +18,7 @@ public sealed class LexiGoDbContext(DbContextOptions<LexiGoDbContext> options)
     : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>(options)
 {
     public DbSet<Classroom> Classrooms => Set<Classroom>();
+    public DbSet<ExtraStudyMessage> ExtraStudyMessages => Set<ExtraStudyMessage>();
     public DbSet<ClassMembership> ClassMemberships => Set<ClassMembership>();
     public DbSet<ClassInvitation> ClassInvitations => Set<ClassInvitation>();
     public DbSet<Assignment> Assignments => Set<Assignment>();

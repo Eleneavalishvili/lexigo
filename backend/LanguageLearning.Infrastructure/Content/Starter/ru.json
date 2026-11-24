@@ -2204,6 +2204,453 @@
       ]
     },
     {
+      "unitKey": "grammar-foundations",
+      "unitTitle": "How the language works",
+      "unitDescription": "Use articles, noun forms, sentence patterns and the language's special letters.",
+      "difficulty": "A1",
+      "contentVersion": 1,
+      "key": "grammar-forms",
+      "title": "Cyrillic, gender and first cases",
+      "objective": "Recognize and use the grammatical forms taught in these examples.",
+      "explanation": "New words and phrases\n\nЭто книга. — This is a book.\nЯ читаю книгу. — I read a book.\nУ меня нет книги. — I do not have a book.\nЯ говорю о книге. — I talk about a book.\nЯ учу русский язык. — I learn Russian.\nЭто окно. — This is a window.\n\nRussian uses Cyrillic; do not replace Russian letters with similar-looking Latin letters. Книга is feminine and стол masculine; окно is neuter. There are no articles. The present-tense equivalent of am/is/are is normally omitted: Я студент. Учить changes to учу after я. Compare nominative книга, accusative книгу, genitive книги and prepositional книге in the examples. Ь and ъ are signs, not independent vowel sounds. Ё and е remain distinct in Russian grading.",
+      "prerequisiteKeys": [
+        "greetings"
+      ],
+      "exercises": [
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"This is a book.\".",
+          "answers": [
+            "Это книга."
+          ],
+          "options": [
+            "Это книга.",
+            "Я читаю книгу.",
+            "У меня нет книги.",
+            "Я говорю о книге.",
+            "Я учу русский язык.",
+            "Это окно."
+          ],
+          "explanation": "Это книга. — This is a book.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: This is a book.",
+          "answers": [
+            "Это книга."
+          ],
+          "options": [],
+          "explanation": "Use Это книга.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: Это книга.",
+          "answers": [
+            "This is a book."
+          ],
+          "options": [],
+          "explanation": "Это книга. — This is a book.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"I read a book.\".",
+          "answers": [
+            "Я читаю книгу."
+          ],
+          "options": [
+            "Это книга.",
+            "Я читаю книгу.",
+            "У меня нет книги.",
+            "Я говорю о книге.",
+            "Я учу русский язык.",
+            "Это окно."
+          ],
+          "explanation": "Я читаю книгу. — I read a book.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I read a book.",
+          "answers": [
+            "Я читаю книгу."
+          ],
+          "options": [],
+          "explanation": "Use Я читаю книгу.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: Я читаю книгу.",
+          "answers": [
+            "I read a book."
+          ],
+          "options": [],
+          "explanation": "Я читаю книгу. — I read a book.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"I do not have a book.\".",
+          "answers": [
+            "У меня нет книги."
+          ],
+          "options": [
+            "Это книга.",
+            "Я читаю книгу.",
+            "У меня нет книги.",
+            "Я говорю о книге.",
+            "Я учу русский язык.",
+            "Это окно."
+          ],
+          "explanation": "У меня нет книги. — I do not have a book.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I do not have a book.",
+          "answers": [
+            "У меня нет книги."
+          ],
+          "options": [],
+          "explanation": "Use У меня нет книги.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: У меня нет книги.",
+          "answers": [
+            "I do not have a book."
+          ],
+          "options": [],
+          "explanation": "У меня нет книги. — I do not have a book.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"I talk about a book.\".",
+          "answers": [
+            "Я говорю о книге."
+          ],
+          "options": [
+            "Это книга.",
+            "Я читаю книгу.",
+            "У меня нет книги.",
+            "Я говорю о книге.",
+            "Я учу русский язык.",
+            "Это окно."
+          ],
+          "explanation": "Я говорю о книге. — I talk about a book.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I talk about a book.",
+          "answers": [
+            "Я говорю о книге."
+          ],
+          "options": [],
+          "explanation": "Use Я говорю о книге.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: Я говорю о книге.",
+          "answers": [
+            "I talk about a book."
+          ],
+          "options": [],
+          "explanation": "Я говорю о книге. — I talk about a book.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"I learn Russian.\".",
+          "answers": [
+            "Я учу русский язык."
+          ],
+          "options": [
+            "Это книга.",
+            "Я читаю книгу.",
+            "У меня нет книги.",
+            "Я говорю о книге.",
+            "Я учу русский язык.",
+            "Это окно."
+          ],
+          "explanation": "Я учу русский язык. — I learn Russian.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I learn Russian.",
+          "answers": [
+            "Я учу русский язык."
+          ],
+          "options": [],
+          "explanation": "Use Я учу русский язык.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: Я учу русский язык.",
+          "answers": [
+            "I learn Russian."
+          ],
+          "options": [],
+          "explanation": "Я учу русский язык. — I learn Russian.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"This is a window.\".",
+          "answers": [
+            "Это окно."
+          ],
+          "options": [
+            "Это книга.",
+            "Я читаю книгу.",
+            "У меня нет книги.",
+            "Я говорю о книге.",
+            "Я учу русский язык.",
+            "Это окно."
+          ],
+          "explanation": "Это окно. — This is a window.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: This is a window.",
+          "answers": [
+            "Это окно."
+          ],
+          "options": [],
+          "explanation": "Use Это окно.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: Это окно.",
+          "answers": [
+            "This is a window."
+          ],
+          "options": [],
+          "explanation": "Это окно. — This is a window.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which Cyrillic letter has two dots?",
+          "answers": [
+            "ё"
+          ],
+          "options": [
+            "ё",
+            "е",
+            "э"
+          ],
+          "explanation": "Russian uses Cyrillic; do not replace Russian letters with similar-looking Latin letters. Книга is feminine and стол masculine; окно is neuter. There are no articles. The present-tense equivalent of am/is/are is normally omitted: Я студент. Учить changes to учу after я. Compare nominative книга, accusative книгу, genitive книги and prepositional книге in the examples. Ь and ъ are signs, not independent vowel sounds. Ё and е remain distinct in Russian grading.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which noun is feminine?",
+          "answers": [
+            "книга"
+          ],
+          "options": [
+            "книга",
+            "стол",
+            "окно"
+          ],
+          "explanation": "Russian uses Cyrillic; do not replace Russian letters with similar-looking Latin letters. Книга is feminine and стол masculine; окно is neuter. There are no articles. The present-tense equivalent of am/is/are is normally omitted: Я студент. Учить changes to учу after я. Compare nominative книга, accusative книгу, genitive книги and prepositional книге in the examples. Ь and ъ are signs, not independent vowel sounds. Ё and е remain distinct in Russian grading.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which form is the direct object after читаю?",
+          "answers": [
+            "книгу"
+          ],
+          "options": [
+            "книгу",
+            "книга",
+            "книге"
+          ],
+          "explanation": "Russian uses Cyrillic; do not replace Russian letters with similar-looking Latin letters. Книга is feminine and стол masculine; окно is neuter. There are no articles. The present-tense equivalent of am/is/are is normally omitted: Я студент. Учить changes to учу after я. Compare nominative книга, accusative книгу, genitive книги and prepositional книге in the examples. Ь and ъ are signs, not independent vowel sounds. Ё and е remain distinct in Russian grading.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which form follows о when discussing a book?",
+          "answers": [
+            "книге"
+          ],
+          "options": [
+            "книге",
+            "книга",
+            "книгу"
+          ],
+          "explanation": "Russian uses Cyrillic; do not replace Russian letters with similar-looking Latin letters. Книга is feminine and стол masculine; окно is neuter. There are no articles. The present-tense equivalent of am/is/are is normally omitted: Я студент. Учить changes to учу after я. Compare nominative книга, accusative книгу, genitive книги and prepositional книге in the examples. Ь and ъ are signs, not independent vowel sounds. Ё and е remain distinct in Russian grading.",
+          "contextText": null
+        }
+      ]
+    },
+    {
+      "unitKey": "grammar-foundations",
+      "unitTitle": "How the language works",
+      "unitDescription": "Use articles, noun forms, sentence patterns and the language's special letters.",
+      "difficulty": "A1",
+      "contentVersion": 1,
+      "key": "check-grammar-foundations",
+      "title": "Unit check · Language foundations",
+      "objective": "Apply the grammar and spelling distinctions from this unit.",
+      "explanation": "Review the teaching lesson before taking this check.",
+      "prerequisiteKeys": [
+        "grammar-forms"
+      ],
+      "isCheckpoint": true,
+      "exercises": [
+        {
+          "type": "Translation",
+          "prompt": "Translate: This is a book.",
+          "answers": [
+            "Это книга."
+          ],
+          "options": [],
+          "explanation": "Use Это книга.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I read a book.",
+          "answers": [
+            "Я читаю книгу."
+          ],
+          "options": [],
+          "explanation": "Use Я читаю книгу.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I do not have a book.",
+          "answers": [
+            "У меня нет книги."
+          ],
+          "options": [],
+          "explanation": "Use У меня нет книги.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I talk about a book.",
+          "answers": [
+            "Я говорю о книге."
+          ],
+          "options": [],
+          "explanation": "Use Я говорю о книге.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I learn Russian.",
+          "answers": [
+            "Я учу русский язык."
+          ],
+          "options": [],
+          "explanation": "Use Я учу русский язык.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: This is a window.",
+          "answers": [
+            "Это окно."
+          ],
+          "options": [],
+          "explanation": "Use Это окно.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which Cyrillic letter has two dots?",
+          "answers": [
+            "ё"
+          ],
+          "options": [
+            "ё",
+            "е",
+            "э"
+          ],
+          "explanation": "Russian uses Cyrillic; do not replace Russian letters with similar-looking Latin letters. Книга is feminine and стол masculine; окно is neuter. There are no articles. The present-tense equivalent of am/is/are is normally omitted: Я студент. Учить changes to учу after я. Compare nominative книга, accusative книгу, genitive книги and prepositional книге in the examples. Ь and ъ are signs, not independent vowel sounds. Ё and е remain distinct in Russian grading.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which noun is feminine?",
+          "answers": [
+            "книга"
+          ],
+          "options": [
+            "книга",
+            "стол",
+            "окно"
+          ],
+          "explanation": "Russian uses Cyrillic; do not replace Russian letters with similar-looking Latin letters. Книга is feminine and стол masculine; окно is neuter. There are no articles. The present-tense equivalent of am/is/are is normally omitted: Я студент. Учить changes to учу after я. Compare nominative книга, accusative книгу, genitive книги and prepositional книге in the examples. Ь and ъ are signs, not independent vowel sounds. Ё and е remain distinct in Russian grading.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which form is the direct object after читаю?",
+          "answers": [
+            "книгу"
+          ],
+          "options": [
+            "книгу",
+            "книга",
+            "книге"
+          ],
+          "explanation": "Russian uses Cyrillic; do not replace Russian letters with similar-looking Latin letters. Книга is feminine and стол masculine; окно is neuter. There are no articles. The present-tense equivalent of am/is/are is normally omitted: Я студент. Учить changes to учу after я. Compare nominative книга, accusative книгу, genitive книги and prepositional книге in the examples. Ь and ъ are signs, not independent vowel sounds. Ё and е remain distinct in Russian grading.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which form follows о when discussing a book?",
+          "answers": [
+            "книге"
+          ],
+          "options": [
+            "книге",
+            "книга",
+            "книгу"
+          ],
+          "explanation": "Russian uses Cyrillic; do not replace Russian letters with similar-looking Latin letters. Книга is feminine and стол masculine; окно is neuter. There are no articles. The present-tense equivalent of am/is/are is normally omitted: Я студент. Учить changes to учу after я. Compare nominative книга, accusative книгу, genitive книги and prepositional книге in the examples. Ь and ъ are signs, not independent vowel sounds. Ё and е remain distinct in Russian grading.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: Это книга.",
+          "answers": [
+            "This is a book."
+          ],
+          "options": [],
+          "explanation": "Это книга. — This is a book.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: Я читаю книгу.",
+          "answers": [
+            "I read a book."
+          ],
+          "options": [],
+          "explanation": "Я читаю книгу. — I read a book.",
+          "contextText": null
+        }
+      ]
+    },
+    {
       "key": "directions",
       "title": "Finding your way",
       "objective": "Understand and use expressions for finding your way.",
@@ -7528,6 +7975,1287 @@
       "unitDescription": "A beginner practice unit for reading Cyrillic letters. Open it at any point in your Russian course.",
       "contentVersion": 2,
       "prerequisiteKeys": []
+    },
+    {
+      "key": "cyrillic-written-1",
+      "title": "Read the Russian alphabet · Part 1",
+      "objective": "Match capital and lowercase Cyrillic letters and recognize their written names.",
+      "explanation": "Your new letters\n\nА а — letter name: а; example: арбуз (watermelon)\nБ б — letter name: бэ; example: банк (bank)\nВ в — letter name: вэ; example: вода (water)\nГ г — letter name: гэ; example: город (city)\nД д — letter name: дэ; example: дом (house)\nЕ е — letter name: е; example: ель (spruce tree)\nЁ ё — letter name: ё; example: ёлка (Christmas tree)\nЖ ж — letter name: жэ; example: жук (beetle)\nЗ з — letter name: зэ; example: зима (winter)\nИ и — letter name: и; example: игра (game)\nЙ й — letter name: и краткое; example: йогурт (yogurt)\n\nThese are letter names, not a claim that each letter has one fixed sound. Ь and Ъ are signs; they have no independent vowel sound. Russian spelling stays Cyrillic, and Е and Ё are distinct. Read the examples before checking your recognition.",
+      "exercises": [
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of А.",
+          "answers": [
+            "а"
+          ],
+          "options": [
+            "а",
+            "б",
+            "з",
+            "п"
+          ],
+          "contextText": null,
+          "explanation": "А а is named а. Example: арбуз (watermelon)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «а»?",
+          "answers": [
+            "а"
+          ],
+          "options": [
+            "а",
+            "б",
+            "з",
+            "п"
+          ],
+          "contextText": null,
+          "explanation": "А а is named а. Example: арбуз (watermelon)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Б.",
+          "answers": [
+            "б"
+          ],
+          "options": [
+            "б",
+            "в",
+            "и",
+            "р"
+          ],
+          "contextText": null,
+          "explanation": "Б б is named бэ. Example: банк (bank)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «бэ»?",
+          "answers": [
+            "б"
+          ],
+          "options": [
+            "б",
+            "в",
+            "и",
+            "р"
+          ],
+          "contextText": null,
+          "explanation": "Б б is named бэ. Example: банк (bank)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of В.",
+          "answers": [
+            "в"
+          ],
+          "options": [
+            "в",
+            "г",
+            "й",
+            "с"
+          ],
+          "contextText": null,
+          "explanation": "В в is named вэ. Example: вода (water)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «вэ»?",
+          "answers": [
+            "в"
+          ],
+          "options": [
+            "в",
+            "г",
+            "й",
+            "с"
+          ],
+          "contextText": null,
+          "explanation": "В в is named вэ. Example: вода (water)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Г.",
+          "answers": [
+            "г"
+          ],
+          "options": [
+            "г",
+            "д",
+            "к",
+            "т"
+          ],
+          "contextText": null,
+          "explanation": "Г г is named гэ. Example: город (city)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «гэ»?",
+          "answers": [
+            "г"
+          ],
+          "options": [
+            "г",
+            "д",
+            "к",
+            "т"
+          ],
+          "contextText": null,
+          "explanation": "Г г is named гэ. Example: город (city)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Д.",
+          "answers": [
+            "д"
+          ],
+          "options": [
+            "д",
+            "е",
+            "л",
+            "у"
+          ],
+          "contextText": null,
+          "explanation": "Д д is named дэ. Example: дом (house)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «дэ»?",
+          "answers": [
+            "д"
+          ],
+          "options": [
+            "д",
+            "е",
+            "л",
+            "у"
+          ],
+          "contextText": null,
+          "explanation": "Д д is named дэ. Example: дом (house)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Е.",
+          "answers": [
+            "е"
+          ],
+          "options": [
+            "е",
+            "ё",
+            "м",
+            "ф"
+          ],
+          "contextText": null,
+          "explanation": "Е е is named е. Example: ель (spruce tree)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «е»?",
+          "answers": [
+            "е"
+          ],
+          "options": [
+            "е",
+            "ё",
+            "м",
+            "ф"
+          ],
+          "contextText": null,
+          "explanation": "Е е is named е. Example: ель (spruce tree)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Ё.",
+          "answers": [
+            "ё"
+          ],
+          "options": [
+            "ё",
+            "ж",
+            "н",
+            "х"
+          ],
+          "contextText": null,
+          "explanation": "Ё ё is named ё. Example: ёлка (Christmas tree)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «ё»?",
+          "answers": [
+            "ё"
+          ],
+          "options": [
+            "ё",
+            "ж",
+            "н",
+            "х"
+          ],
+          "contextText": null,
+          "explanation": "Ё ё is named ё. Example: ёлка (Christmas tree)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Ж.",
+          "answers": [
+            "ж"
+          ],
+          "options": [
+            "ж",
+            "з",
+            "о",
+            "ц"
+          ],
+          "contextText": null,
+          "explanation": "Ж ж is named жэ. Example: жук (beetle)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «жэ»?",
+          "answers": [
+            "ж"
+          ],
+          "options": [
+            "ж",
+            "з",
+            "о",
+            "ц"
+          ],
+          "contextText": null,
+          "explanation": "Ж ж is named жэ. Example: жук (beetle)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of З.",
+          "answers": [
+            "з"
+          ],
+          "options": [
+            "з",
+            "и",
+            "п",
+            "ч"
+          ],
+          "contextText": null,
+          "explanation": "З з is named зэ. Example: зима (winter)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «зэ»?",
+          "answers": [
+            "з"
+          ],
+          "options": [
+            "з",
+            "и",
+            "п",
+            "ч"
+          ],
+          "contextText": null,
+          "explanation": "З з is named зэ. Example: зима (winter)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of И.",
+          "answers": [
+            "и"
+          ],
+          "options": [
+            "и",
+            "й",
+            "р",
+            "ш"
+          ],
+          "contextText": null,
+          "explanation": "И и is named и. Example: игра (game)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «и»?",
+          "answers": [
+            "и"
+          ],
+          "options": [
+            "и",
+            "й",
+            "р",
+            "ш"
+          ],
+          "contextText": null,
+          "explanation": "И и is named и. Example: игра (game)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Й.",
+          "answers": [
+            "й"
+          ],
+          "options": [
+            "й",
+            "к",
+            "с",
+            "щ"
+          ],
+          "contextText": null,
+          "explanation": "Й й is named и краткое. Example: йогурт (yogurt)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «и краткое»?",
+          "answers": [
+            "й"
+          ],
+          "options": [
+            "й",
+            "к",
+            "с",
+            "щ"
+          ],
+          "contextText": null,
+          "explanation": "Й й is named и краткое. Example: йогурт (yogurt)."
+        }
+      ],
+      "unitKey": "cyrillic-basics",
+      "unitTitle": "Cyrillic basics",
+      "unitDescription": "Recognize Russian letters and connect reviewed recordings with written forms.",
+      "difficulty": "A1",
+      "contentVersion": 1,
+      "prerequisiteKeys": [
+        "cyrillic-first-letters"
+      ]
+    },
+    {
+      "key": "cyrillic-written-2",
+      "title": "Read the Russian alphabet · Part 2",
+      "objective": "Match capital and lowercase Cyrillic letters and recognize their written names.",
+      "explanation": "Your new letters\n\nК к — letter name: ка; example: кот (cat)\nЛ л — letter name: эль; example: лампа (lamp)\nМ м — letter name: эм; example: мама (mother)\nН н — letter name: эн; example: нос (nose)\nО о — letter name: о; example: окно (window)\nП п — letter name: пэ; example: парк (park)\nР р — letter name: эр; example: рыба (fish)\nС с — letter name: эс; example: суп (soup)\nТ т — letter name: тэ; example: три (three)\nУ у — letter name: у; example: утка (duck)\nФ ф — letter name: эф; example: фото (photo)\n\nThese are letter names, not a claim that each letter has one fixed sound. Ь and Ъ are signs; they have no independent vowel sound. Russian spelling stays Cyrillic, and Е and Ё are distinct. Read the examples before checking your recognition.",
+      "exercises": [
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of К.",
+          "answers": [
+            "к"
+          ],
+          "options": [
+            "к",
+            "л",
+            "т",
+            "ъ"
+          ],
+          "contextText": null,
+          "explanation": "К к is named ка. Example: кот (cat)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «ка»?",
+          "answers": [
+            "к"
+          ],
+          "options": [
+            "к",
+            "л",
+            "т",
+            "ъ"
+          ],
+          "contextText": null,
+          "explanation": "К к is named ка. Example: кот (cat)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Л.",
+          "answers": [
+            "л"
+          ],
+          "options": [
+            "л",
+            "м",
+            "у",
+            "ы"
+          ],
+          "contextText": null,
+          "explanation": "Л л is named эль. Example: лампа (lamp)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «эль»?",
+          "answers": [
+            "л"
+          ],
+          "options": [
+            "л",
+            "м",
+            "у",
+            "ы"
+          ],
+          "contextText": null,
+          "explanation": "Л л is named эль. Example: лампа (lamp)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of М.",
+          "answers": [
+            "м"
+          ],
+          "options": [
+            "м",
+            "н",
+            "ф",
+            "ь"
+          ],
+          "contextText": null,
+          "explanation": "М м is named эм. Example: мама (mother)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «эм»?",
+          "answers": [
+            "м"
+          ],
+          "options": [
+            "м",
+            "н",
+            "ф",
+            "ь"
+          ],
+          "contextText": null,
+          "explanation": "М м is named эм. Example: мама (mother)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Н.",
+          "answers": [
+            "н"
+          ],
+          "options": [
+            "н",
+            "о",
+            "х",
+            "э"
+          ],
+          "contextText": null,
+          "explanation": "Н н is named эн. Example: нос (nose)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «эн»?",
+          "answers": [
+            "н"
+          ],
+          "options": [
+            "н",
+            "о",
+            "х",
+            "э"
+          ],
+          "contextText": null,
+          "explanation": "Н н is named эн. Example: нос (nose)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of О.",
+          "answers": [
+            "о"
+          ],
+          "options": [
+            "о",
+            "п",
+            "ц",
+            "ю"
+          ],
+          "contextText": null,
+          "explanation": "О о is named о. Example: окно (window)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «о»?",
+          "answers": [
+            "о"
+          ],
+          "options": [
+            "о",
+            "п",
+            "ц",
+            "ю"
+          ],
+          "contextText": null,
+          "explanation": "О о is named о. Example: окно (window)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of П.",
+          "answers": [
+            "п"
+          ],
+          "options": [
+            "п",
+            "р",
+            "ч",
+            "я"
+          ],
+          "contextText": null,
+          "explanation": "П п is named пэ. Example: парк (park)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «пэ»?",
+          "answers": [
+            "п"
+          ],
+          "options": [
+            "п",
+            "р",
+            "ч",
+            "я"
+          ],
+          "contextText": null,
+          "explanation": "П п is named пэ. Example: парк (park)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Р.",
+          "answers": [
+            "р"
+          ],
+          "options": [
+            "р",
+            "с",
+            "ш",
+            "а"
+          ],
+          "contextText": null,
+          "explanation": "Р р is named эр. Example: рыба (fish)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «эр»?",
+          "answers": [
+            "р"
+          ],
+          "options": [
+            "р",
+            "с",
+            "ш",
+            "а"
+          ],
+          "contextText": null,
+          "explanation": "Р р is named эр. Example: рыба (fish)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of С.",
+          "answers": [
+            "с"
+          ],
+          "options": [
+            "с",
+            "т",
+            "щ",
+            "б"
+          ],
+          "contextText": null,
+          "explanation": "С с is named эс. Example: суп (soup)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «эс»?",
+          "answers": [
+            "с"
+          ],
+          "options": [
+            "с",
+            "т",
+            "щ",
+            "б"
+          ],
+          "contextText": null,
+          "explanation": "С с is named эс. Example: суп (soup)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Т.",
+          "answers": [
+            "т"
+          ],
+          "options": [
+            "т",
+            "у",
+            "ъ",
+            "в"
+          ],
+          "contextText": null,
+          "explanation": "Т т is named тэ. Example: три (three)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «тэ»?",
+          "answers": [
+            "т"
+          ],
+          "options": [
+            "т",
+            "у",
+            "ъ",
+            "в"
+          ],
+          "contextText": null,
+          "explanation": "Т т is named тэ. Example: три (three)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of У.",
+          "answers": [
+            "у"
+          ],
+          "options": [
+            "у",
+            "ф",
+            "ы",
+            "г"
+          ],
+          "contextText": null,
+          "explanation": "У у is named у. Example: утка (duck)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «у»?",
+          "answers": [
+            "у"
+          ],
+          "options": [
+            "у",
+            "ф",
+            "ы",
+            "г"
+          ],
+          "contextText": null,
+          "explanation": "У у is named у. Example: утка (duck)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Ф.",
+          "answers": [
+            "ф"
+          ],
+          "options": [
+            "ф",
+            "х",
+            "ь",
+            "д"
+          ],
+          "contextText": null,
+          "explanation": "Ф ф is named эф. Example: фото (photo)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «эф»?",
+          "answers": [
+            "ф"
+          ],
+          "options": [
+            "ф",
+            "х",
+            "ь",
+            "д"
+          ],
+          "contextText": null,
+          "explanation": "Ф ф is named эф. Example: фото (photo)."
+        }
+      ],
+      "unitKey": "cyrillic-basics",
+      "unitTitle": "Cyrillic basics",
+      "unitDescription": "Recognize Russian letters and connect reviewed recordings with written forms.",
+      "difficulty": "A1",
+      "contentVersion": 1,
+      "prerequisiteKeys": [
+        "cyrillic-written-1"
+      ]
+    },
+    {
+      "key": "cyrillic-written-3",
+      "title": "Read the Russian alphabet · Part 3",
+      "objective": "Match capital and lowercase Cyrillic letters and recognize their written names.",
+      "explanation": "Your new letters\n\nХ х — letter name: ха; example: хлеб (bread)\nЦ ц — letter name: цэ; example: цветок (flower)\nЧ ч — letter name: че; example: чай (tea)\nШ ш — letter name: ша; example: школа (school)\nЩ щ — letter name: ща; example: щётка (brush)\nЪ ъ — letter name: твёрдый знак; example: подъезд (building entrance)\nЫ ы — letter name: ы; example: сыр (cheese)\nЬ ь — letter name: мягкий знак; example: день (day)\nЭ э — letter name: э; example: это (this)\nЮ ю — letter name: ю; example: юг (south)\nЯ я — letter name: я; example: яблоко (apple)\n\nThese are letter names, not a claim that each letter has one fixed sound. Ь and Ъ are signs; they have no independent vowel sound. Russian spelling stays Cyrillic, and Е and Ё are distinct. Read the examples before checking your recognition.",
+      "exercises": [
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Х.",
+          "answers": [
+            "х"
+          ],
+          "options": [
+            "х",
+            "ц",
+            "э",
+            "е"
+          ],
+          "contextText": null,
+          "explanation": "Х х is named ха. Example: хлеб (bread)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «ха»?",
+          "answers": [
+            "х"
+          ],
+          "options": [
+            "х",
+            "ц",
+            "э",
+            "е"
+          ],
+          "contextText": null,
+          "explanation": "Х х is named ха. Example: хлеб (bread)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Ц.",
+          "answers": [
+            "ц"
+          ],
+          "options": [
+            "ц",
+            "ч",
+            "ю",
+            "ё"
+          ],
+          "contextText": null,
+          "explanation": "Ц ц is named цэ. Example: цветок (flower)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «цэ»?",
+          "answers": [
+            "ц"
+          ],
+          "options": [
+            "ц",
+            "ч",
+            "ю",
+            "ё"
+          ],
+          "contextText": null,
+          "explanation": "Ц ц is named цэ. Example: цветок (flower)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Ч.",
+          "answers": [
+            "ч"
+          ],
+          "options": [
+            "ч",
+            "ш",
+            "я",
+            "ж"
+          ],
+          "contextText": null,
+          "explanation": "Ч ч is named че. Example: чай (tea)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «че»?",
+          "answers": [
+            "ч"
+          ],
+          "options": [
+            "ч",
+            "ш",
+            "я",
+            "ж"
+          ],
+          "contextText": null,
+          "explanation": "Ч ч is named че. Example: чай (tea)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Ш.",
+          "answers": [
+            "ш"
+          ],
+          "options": [
+            "ш",
+            "щ",
+            "а",
+            "з"
+          ],
+          "contextText": null,
+          "explanation": "Ш ш is named ша. Example: школа (school)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «ша»?",
+          "answers": [
+            "ш"
+          ],
+          "options": [
+            "ш",
+            "щ",
+            "а",
+            "з"
+          ],
+          "contextText": null,
+          "explanation": "Ш ш is named ша. Example: школа (school)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Щ.",
+          "answers": [
+            "щ"
+          ],
+          "options": [
+            "щ",
+            "ъ",
+            "б",
+            "и"
+          ],
+          "contextText": null,
+          "explanation": "Щ щ is named ща. Example: щётка (brush)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «ща»?",
+          "answers": [
+            "щ"
+          ],
+          "options": [
+            "щ",
+            "ъ",
+            "б",
+            "и"
+          ],
+          "contextText": null,
+          "explanation": "Щ щ is named ща. Example: щётка (brush)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Ъ.",
+          "answers": [
+            "ъ"
+          ],
+          "options": [
+            "ъ",
+            "ы",
+            "в",
+            "й"
+          ],
+          "contextText": null,
+          "explanation": "Ъ ъ is named твёрдый знак. Example: подъезд (building entrance)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «твёрдый знак»?",
+          "answers": [
+            "ъ"
+          ],
+          "options": [
+            "ъ",
+            "ы",
+            "в",
+            "й"
+          ],
+          "contextText": null,
+          "explanation": "Ъ ъ is named твёрдый знак. Example: подъезд (building entrance)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Ы.",
+          "answers": [
+            "ы"
+          ],
+          "options": [
+            "ы",
+            "ь",
+            "г",
+            "к"
+          ],
+          "contextText": null,
+          "explanation": "Ы ы is named ы. Example: сыр (cheese)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «ы»?",
+          "answers": [
+            "ы"
+          ],
+          "options": [
+            "ы",
+            "ь",
+            "г",
+            "к"
+          ],
+          "contextText": null,
+          "explanation": "Ы ы is named ы. Example: сыр (cheese)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Ь.",
+          "answers": [
+            "ь"
+          ],
+          "options": [
+            "ь",
+            "э",
+            "д",
+            "л"
+          ],
+          "contextText": null,
+          "explanation": "Ь ь is named мягкий знак. Example: день (day)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «мягкий знак»?",
+          "answers": [
+            "ь"
+          ],
+          "options": [
+            "ь",
+            "э",
+            "д",
+            "л"
+          ],
+          "contextText": null,
+          "explanation": "Ь ь is named мягкий знак. Example: день (day)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Э.",
+          "answers": [
+            "э"
+          ],
+          "options": [
+            "э",
+            "ю",
+            "е",
+            "м"
+          ],
+          "contextText": null,
+          "explanation": "Э э is named э. Example: это (this)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «э»?",
+          "answers": [
+            "э"
+          ],
+          "options": [
+            "э",
+            "ю",
+            "е",
+            "м"
+          ],
+          "contextText": null,
+          "explanation": "Э э is named э. Example: это (this)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Ю.",
+          "answers": [
+            "ю"
+          ],
+          "options": [
+            "ю",
+            "я",
+            "ё",
+            "н"
+          ],
+          "contextText": null,
+          "explanation": "Ю ю is named ю. Example: юг (south)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «ю»?",
+          "answers": [
+            "ю"
+          ],
+          "options": [
+            "ю",
+            "я",
+            "ё",
+            "н"
+          ],
+          "contextText": null,
+          "explanation": "Ю ю is named ю. Example: юг (south)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Я.",
+          "answers": [
+            "я"
+          ],
+          "options": [
+            "я",
+            "а",
+            "ж",
+            "о"
+          ],
+          "contextText": null,
+          "explanation": "Я я is named я. Example: яблоко (apple)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «я»?",
+          "answers": [
+            "я"
+          ],
+          "options": [
+            "я",
+            "а",
+            "ж",
+            "о"
+          ],
+          "contextText": null,
+          "explanation": "Я я is named я. Example: яблоко (apple)."
+        }
+      ],
+      "unitKey": "cyrillic-basics",
+      "unitTitle": "Cyrillic basics",
+      "unitDescription": "Recognize Russian letters and connect reviewed recordings with written forms.",
+      "difficulty": "A1",
+      "contentVersion": 1,
+      "prerequisiteKeys": [
+        "cyrillic-written-2"
+      ]
+    },
+    {
+      "key": "check-cyrillic-written",
+      "title": "Unit check · Written Cyrillic",
+      "objective": "Review letter shapes and names across the complete Russian alphabet.",
+      "explanation": "Complete all three written-letter lessons before this check. Graded sound associations are a separate activity.",
+      "exercises": [
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of А.",
+          "answers": [
+            "а"
+          ],
+          "options": [
+            "а",
+            "б",
+            "з",
+            "п"
+          ],
+          "contextText": null,
+          "explanation": "А а is named а. Example: арбуз (watermelon)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «вэ»?",
+          "answers": [
+            "в"
+          ],
+          "options": [
+            "в",
+            "г",
+            "й",
+            "с"
+          ],
+          "contextText": null,
+          "explanation": "В в is named вэ. Example: вода (water)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Е.",
+          "answers": [
+            "е"
+          ],
+          "options": [
+            "е",
+            "ё",
+            "м",
+            "ф"
+          ],
+          "contextText": null,
+          "explanation": "Е е is named е. Example: ель (spruce tree)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «жэ»?",
+          "answers": [
+            "ж"
+          ],
+          "options": [
+            "ж",
+            "з",
+            "о",
+            "ц"
+          ],
+          "contextText": null,
+          "explanation": "Ж ж is named жэ. Example: жук (beetle)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Й.",
+          "answers": [
+            "й"
+          ],
+          "options": [
+            "й",
+            "к",
+            "с",
+            "щ"
+          ],
+          "contextText": null,
+          "explanation": "Й й is named и краткое. Example: йогурт (yogurt)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of К.",
+          "answers": [
+            "к"
+          ],
+          "options": [
+            "к",
+            "л",
+            "т",
+            "ъ"
+          ],
+          "contextText": null,
+          "explanation": "К к is named ка. Example: кот (cat)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «эм»?",
+          "answers": [
+            "м"
+          ],
+          "options": [
+            "м",
+            "н",
+            "ф",
+            "ь"
+          ],
+          "contextText": null,
+          "explanation": "М м is named эм. Example: мама (mother)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of П.",
+          "answers": [
+            "п"
+          ],
+          "options": [
+            "п",
+            "р",
+            "ч",
+            "я"
+          ],
+          "contextText": null,
+          "explanation": "П п is named пэ. Example: парк (park)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «эс»?",
+          "answers": [
+            "с"
+          ],
+          "options": [
+            "с",
+            "т",
+            "щ",
+            "б"
+          ],
+          "contextText": null,
+          "explanation": "С с is named эс. Example: суп (soup)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Ф.",
+          "answers": [
+            "ф"
+          ],
+          "options": [
+            "ф",
+            "х",
+            "ь",
+            "д"
+          ],
+          "contextText": null,
+          "explanation": "Ф ф is named эф. Example: фото (photo)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Х.",
+          "answers": [
+            "х"
+          ],
+          "options": [
+            "х",
+            "ц",
+            "э",
+            "е"
+          ],
+          "contextText": null,
+          "explanation": "Х х is named ха. Example: хлеб (bread)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «че»?",
+          "answers": [
+            "ч"
+          ],
+          "options": [
+            "ч",
+            "ш",
+            "я",
+            "ж"
+          ],
+          "contextText": null,
+          "explanation": "Ч ч is named че. Example: чай (tea)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Ъ.",
+          "answers": [
+            "ъ"
+          ],
+          "options": [
+            "ъ",
+            "ы",
+            "в",
+            "й"
+          ],
+          "contextText": null,
+          "explanation": "Ъ ъ is named твёрдый знак. Example: подъезд (building entrance)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Which letter has the Russian name «мягкий знак»?",
+          "answers": [
+            "ь"
+          ],
+          "options": [
+            "ь",
+            "э",
+            "д",
+            "л"
+          ],
+          "contextText": null,
+          "explanation": "Ь ь is named мягкий знак. Example: день (day)."
+        },
+        {
+          "type": "Alphabet",
+          "prompt": "Choose the lowercase form of Я.",
+          "answers": [
+            "я"
+          ],
+          "options": [
+            "я",
+            "а",
+            "ж",
+            "о"
+          ],
+          "contextText": null,
+          "explanation": "Я я is named я. Example: яблоко (apple)."
+        }
+      ],
+      "unitKey": "cyrillic-basics",
+      "unitTitle": "Cyrillic basics",
+      "difficulty": "A1",
+      "contentVersion": 1,
+      "isCheckpoint": true,
+      "prerequisiteKeys": [
+        "cyrillic-written-1",
+        "cyrillic-written-2",
+        "cyrillic-written-3"
+      ]
     }
   ]
 }

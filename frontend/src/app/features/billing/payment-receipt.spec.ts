@@ -118,7 +118,7 @@ describe('Private simulated payment receipt', () => {
     await fixture.whenStable();
     const host: HTMLElement = fixture.nativeElement;
     expect(host.textContent).toContain('TEST-first');
-    expect(button(host, 'Download test receipt')?.disabled).toBe(false);
+    expect(button(host, 'Download receipt')?.disabled).toBe(false);
     expect(host.textContent).toContain('saved order details could not load');
     button(host, 'Retry order details')!.click();
     await fixture.whenStable();
@@ -193,10 +193,10 @@ describe('Private simulated payment receipt', () => {
     const fixture = TestBed.createComponent(PaymentReceipt);
     await fixture.whenStable();
     const host: HTMLElement = fixture.nativeElement;
-    expect(button(host, 'Download test receipt')).toBeUndefined();
+    expect(button(host, 'Download receipt')).toBeUndefined();
     button(host, 'Refresh payment status')!.click();
     await fixture.whenStable();
-    expect(button(host, 'Download test receipt')).toBeDefined();
+    expect(button(host, 'Download receipt')).toBeDefined();
     expect(host.textContent).toContain('TEST-first');
     expect(api.payment).toHaveBeenCalledTimes(2);
     expect(api.receipt).not.toHaveBeenCalled();

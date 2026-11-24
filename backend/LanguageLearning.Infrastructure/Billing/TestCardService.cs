@@ -9,12 +9,15 @@ namespace LanguageLearning.Infrastructure.Billing;
 
 public sealed class TestCardService(LexiGoDbContext database, TimeProvider clock, BillingAccountAccess access)
 {
-    public Task<CardOutcome> CreateAsync(Guid userId, Guid familyId, string nickname, string currency, Guid key, CancellationToken cancellationToken)
+    public Task<CardOutcome> CreateAsync(Guid userId, Guid familyId, string nickname, string currency, Guid key, CancellationToken cancellationToken, string? displayLastFour = null)
     {
         nickname = nickname.Trim();
         if (!ValidName(nickname) || currency is not ("GEL" or "USD" or "EUR"))
             return Task.FromResult(new CardOutcome(Error: "Use a short card name and GEL, USD or EUR."));
-        return ApplyAsync(userId, familyId, "CreateCard", key, new { nickname, currency }, async () =>
+        if (displayLastFour is not null && (displayLastFour.Length != 4 || displayLastFour.Any(character => character is < '0' or > '9')))
+            return Task.FromResult(new CardOutcome(Error: "Use four digits for the card ending."));
+        object details = displayLastFour is null ? new { nickname, currency } : new { nickname, currency, displayLastFour };
+        return ApplyAsync(userId, familyId, "CreateCard", key, details, async () =>
         {
             if (await database.TestCards.CountAsync(item => item.UserId == userId, cancellationToken) >= 10)
                 return new(Error: "You can have up to ten test cards.");
@@ -23,7 +26,7 @@ public sealed class TestCardService(LexiGoDbContext database, TimeProvider clock
                 UserId = userId,
                 Nickname = nickname,
                 Currency = currency,
-                DisplayLastFour = RandomNumberGenerator.GetInt32(10000).ToString("D4"),
+                DisplayLastFour = displayLastFour ?? RandomNumberGenerator.GetInt32(10000).ToString("D4"),
                 CreatedAt = clock.GetUtcNow()
             };
             database.TestCards.Add(card);

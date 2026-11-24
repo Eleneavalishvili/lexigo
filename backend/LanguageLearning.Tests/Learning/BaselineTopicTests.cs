@@ -27,15 +27,22 @@ public sealed class BaselineTopicTests(RegistrationFixture fixture) : IClassFixt
                 Guid id = StarterLessonInstaller.ContentId(pack.Code + (key is null ? "/unit" : "/unit/" + key));
                 database.Units.Add(new Unit
                 {
-                    Id = id, CourseId = pack.CourseId, Title = "Existing " + (key ?? "basics"),
-                    Description = "Existing description", OrderNumber = index + 1, Difficulty = "A1"
+                    Id = id,
+                    CourseId = pack.CourseId,
+                    Title = "Existing " + (key ?? "basics"),
+                    Description = "Existing description",
+                    OrderNumber = index + 1,
+                    Difficulty = "A1"
                 });
                 originalUnits.Add(id, index + 1);
             }
             var staffUnit = new Unit
             {
-                CourseId = pack.CourseId, Title = "Staff-created extension",
-                Description = "Keep this material", OrderNumber = keys.Length + 1, Difficulty = "B1"
+                CourseId = pack.CourseId,
+                Title = "Staff-created extension",
+                Description = "Keep this material",
+                OrderNumber = keys.Length + 1,
+                Difficulty = "B1"
             };
             database.Units.Add(staffUnit);
             staffUnits.Add(pack.CourseId, staffUnit.Id);
@@ -49,7 +56,10 @@ public sealed class BaselineTopicTests(RegistrationFixture fixture) : IClassFixt
             var added = await database.Units.SingleAsync(item => item.Id == newUnitId);
             var next = await database.Units.SingleAsync(item => item.Id ==
                 StarterLessonInstaller.ContentId(pack.Code + "/unit/everyday"));
-            Assert.Equal(next.OrderNumber - 1, added.OrderNumber);
+            var grammar = await database.Units.SingleAsync(item => item.Id ==
+                StarterLessonInstaller.ContentId(pack.Code + "/unit/grammar-foundations"));
+            Assert.Equal(added.OrderNumber + 1, grammar.OrderNumber);
+            Assert.True(grammar.OrderNumber < next.OrderNumber);
             foreach (var existing in await database.Units.Where(item => item.CourseId == pack.CourseId).ToArrayAsync())
             {
                 if (!originalUnits.TryGetValue(existing.Id, out int oldOrder)) continue;

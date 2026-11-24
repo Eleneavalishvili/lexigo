@@ -9,8 +9,8 @@
     <p class="eyebrow">CARE WITH EVERY LITTLE NUMBER</p>
     <h1>The billing<br /><em>desk.</em></h1>
     <p class="simulation">
-      SIMULATION ONLY · No real money or payment provider. Financial access requires Super Admin or
-      explicitly delegated Admin, with two-factor authentication.
+      Financial access requires Super Admin or explicitly delegated Admin, with two-factor
+      authentication.
     </p>
     <nav class="admin-tabs" aria-label="Billing sections">
       <button
@@ -117,16 +117,16 @@
     @if (store.selected(); as payment) {
       <section class="panel" aria-labelledby="refund-title">
         <p class="eyebrow">A REASON, A RECORD, A RETURN</p>
-        <h2 id="refund-title">Refund this test payment.</h2>
+        <h2 id="refund-title">Refund this payment.</h2>
         <p>
           {{ payment.customer }} ·
           {{ payment.amount | currency: payment.currency : 'code' }} originally paid ·
           {{ payment.refundedAmount | currency: payment.currency : 'code' }} already refunded.
         </p>
         <p>
-          Credit returns to the original test card, including when blocked. Partial refunds keep
-          paid access. A full current-period refund stops Premium and renewal; an earlier period's
-          refund does not end a newer paid period.
+          Credit returns to the original card, including when blocked. Partial refunds keep paid
+          access. A full current-period refund stops Premium and renewal; an earlier period's refund
+          does not end a newer paid period.
         </p>
         @if (
           payment.status === 'Succeeded' &&
@@ -171,7 +171,7 @@
               </p>
               <label
                 ><input type="checkbox" formControlName="confirm" />I confirm this reasoned
-                simulated refund.</label
+                refund.</label
               >
               @if (refundForm.touched && refundForm.invalid) {
                 <p class="error" role="alert">
@@ -179,11 +179,7 @@
                 </p>
               }
               <button class="button button-ink" type="submit">
-                {{
-                  refunds.pending()
-                    ? 'Retry with the same request key ↗'
-                    : 'Confirm simulated refund ↗'
-                }}
+                {{ refunds.pending() ? 'Retry with the same request key ↗' : 'Confirm refund ↗' }}
               </button>
             </fieldset>
           </form>

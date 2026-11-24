@@ -6,6 +6,13 @@ import { billingGuard } from './core/billing/billing-guard';
 
 export const routes: Routes = [
   {
+    path: 'manage/dialogues',
+    canActivate: [contentGuard],
+    loadComponent: () =>
+      import('./features/content/dialogue-workshop').then((module) => module.DialogueWorkshop),
+    title: 'Dialogue workshop — LexiGo',
+  },
+  {
     path: 'manage/skills',
     canActivate: [administrationGuard],
     loadComponent: () =>
@@ -190,7 +197,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () =>
       import('./features/billing/payment-receipt').then((module) => module.PaymentReceipt),
-    title: 'Your test receipt — LexiGo',
+    title: 'Your receipt — LexiGo',
   },
   {
     path: 'billing/hearts',
@@ -203,7 +210,7 @@ export const routes: Routes = [
     path: 'billing/cards',
     canActivate: [authGuard],
     loadComponent: () => import('./features/billing/test-cards').then((module) => module.TestCards),
-    title: 'Your little test wallet — LexiGo',
+    title: 'Your wallet — LexiGo',
   },
   {
     path: 'vocabulary',
@@ -415,6 +422,10 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./features/accounts/account').then((module) => module.Account),
     title: 'Your little big world — LexiGo',
+  },
+  {
+    path: 'teacher-login',
+    loadComponent: () => import('./features/accounts/teacher-login').then((m) => m.TeacherLogin),
   },
   {
     path: 'login',

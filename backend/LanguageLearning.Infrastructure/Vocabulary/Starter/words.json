@@ -177,6 +177,102 @@
         "example": "La lluvia moja las calles.",
         "partOfSpeech": "noun",
         "topic": "routines"
+      },
+      {
+        "key": "book",
+        "word": "el libro",
+        "example": "Leo un libro.",
+        "englishTranslation": "book",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "house",
+        "word": "la casa",
+        "example": "La casa es blanca.",
+        "englishTranslation": "house",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "city",
+        "word": "la ciudad",
+        "example": "La ciudad es grande.",
+        "englishTranslation": "city",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "bus",
+        "word": "el autobús",
+        "example": "El autobús llega hoy.",
+        "englishTranslation": "bus",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "hotel",
+        "word": "el hotel",
+        "example": "El hotel está cerca.",
+        "englishTranslation": "hotel",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "room",
+        "word": "la habitación",
+        "example": "La habitación es pequeña.",
+        "englishTranslation": "room",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "shop",
+        "word": "la tienda",
+        "example": "La tienda está abierta.",
+        "englishTranslation": "shop",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "street",
+        "word": "la calle",
+        "example": "La calle es larga.",
+        "englishTranslation": "street",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "table",
+        "word": "la mesa",
+        "example": "El libro está en la mesa.",
+        "englishTranslation": "table",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "chair",
+        "word": "la silla",
+        "example": "La silla es azul.",
+        "englishTranslation": "chair",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "train",
+        "word": "el tren",
+        "example": "El tren llega mañana.",
+        "englishTranslation": "train",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "airport",
+        "word": "el aeropuerto",
+        "example": "El aeropuerto está lejos.",
+        "englishTranslation": "airport",
+        "partOfSpeech": "noun",
+        "topic": "travel"
       }
     ]
   },
@@ -358,6 +454,102 @@
         "example": "La pioggia bagna le strade.",
         "partOfSpeech": "noun",
         "topic": "routines"
+      },
+      {
+        "key": "book",
+        "word": "il libro",
+        "example": "Leggo un libro.",
+        "englishTranslation": "book",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "house",
+        "word": "la casa",
+        "example": "La casa è bianca.",
+        "englishTranslation": "house",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "city",
+        "word": "la città",
+        "example": "La città è grande.",
+        "englishTranslation": "city",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "bus",
+        "word": "l'autobus",
+        "example": "L'autobus arriva oggi.",
+        "englishTranslation": "bus",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "hotel",
+        "word": "l'albergo",
+        "example": "L'albergo è vicino.",
+        "englishTranslation": "hotel",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "room",
+        "word": "la camera",
+        "example": "La camera è piccola.",
+        "englishTranslation": "room",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "shop",
+        "word": "il negozio",
+        "example": "Il negozio è aperto.",
+        "englishTranslation": "shop",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "street",
+        "word": "la strada",
+        "example": "La strada è lunga.",
+        "englishTranslation": "street",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "table",
+        "word": "il tavolo",
+        "example": "Il libro è sul tavolo.",
+        "englishTranslation": "table",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "chair",
+        "word": "la sedia",
+        "example": "La sedia è blu.",
+        "englishTranslation": "chair",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "train",
+        "word": "il treno",
+        "example": "Il treno arriva domani.",
+        "englishTranslation": "train",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "airport",
+        "word": "l'aeroporto",
+        "example": "L'aeroporto è lontano.",
+        "englishTranslation": "airport",
+        "partOfSpeech": "noun",
+        "topic": "travel"
       }
     ]
   },
@@ -539,6 +731,102 @@
         "example": "Der Regen macht die Straßen nass.",
         "partOfSpeech": "noun",
         "topic": "routines"
+      },
+      {
+        "key": "book",
+        "word": "das Buch",
+        "example": "Ich lese ein Buch.",
+        "englishTranslation": "book",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "house",
+        "word": "das Haus",
+        "example": "Das Haus ist weiß.",
+        "englishTranslation": "house",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "city",
+        "word": "die Stadt",
+        "example": "Die Stadt ist groß.",
+        "englishTranslation": "city",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "bus",
+        "word": "der Bus",
+        "example": "Der Bus kommt heute.",
+        "englishTranslation": "bus",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "hotel",
+        "word": "das Hotel",
+        "example": "Das Hotel ist in der Nähe.",
+        "englishTranslation": "hotel",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "room",
+        "word": "das Zimmer",
+        "example": "Das Zimmer ist klein.",
+        "englishTranslation": "room",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "shop",
+        "word": "das Geschäft",
+        "example": "Das Geschäft ist geöffnet.",
+        "englishTranslation": "shop",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "street",
+        "word": "die Straße",
+        "example": "Die Straße ist lang.",
+        "englishTranslation": "street",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "table",
+        "word": "der Tisch",
+        "example": "Das Buch liegt auf dem Tisch.",
+        "englishTranslation": "table",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "chair",
+        "word": "der Stuhl",
+        "example": "Der Stuhl ist blau.",
+        "englishTranslation": "chair",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "train",
+        "word": "der Zug",
+        "example": "Der Zug kommt morgen.",
+        "englishTranslation": "train",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "airport",
+        "word": "der Flughafen",
+        "example": "Der Flughafen ist weit weg.",
+        "englishTranslation": "airport",
+        "partOfSpeech": "noun",
+        "topic": "travel"
       }
     ]
   },
@@ -720,6 +1008,102 @@
         "example": "На улице идёт дождь.",
         "partOfSpeech": "noun",
         "topic": "routines"
+      },
+      {
+        "key": "book",
+        "word": "книга",
+        "example": "Я читаю книгу.",
+        "englishTranslation": "book",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "house",
+        "word": "дом",
+        "example": "Дом белый.",
+        "englishTranslation": "house",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "city",
+        "word": "город",
+        "example": "Город большой.",
+        "englishTranslation": "city",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "bus",
+        "word": "автобус",
+        "example": "Автобус приезжает сегодня.",
+        "englishTranslation": "bus",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "hotel",
+        "word": "гостиница",
+        "example": "Гостиница рядом.",
+        "englishTranslation": "hotel",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "room",
+        "word": "комната",
+        "example": "Комната маленькая.",
+        "englishTranslation": "room",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "shop",
+        "word": "магазин",
+        "example": "Магазин открыт.",
+        "englishTranslation": "shop",
+        "partOfSpeech": "noun",
+        "topic": "food"
+      },
+      {
+        "key": "street",
+        "word": "улица",
+        "example": "Улица длинная.",
+        "englishTranslation": "street",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "table",
+        "word": "стол",
+        "example": "Книга на столе.",
+        "englishTranslation": "table",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "chair",
+        "word": "стул",
+        "example": "Стул синий.",
+        "englishTranslation": "chair",
+        "partOfSpeech": "noun",
+        "topic": "routines"
+      },
+      {
+        "key": "train",
+        "word": "поезд",
+        "example": "Поезд приезжает завтра.",
+        "englishTranslation": "train",
+        "partOfSpeech": "noun",
+        "topic": "travel"
+      },
+      {
+        "key": "airport",
+        "word": "аэропорт",
+        "example": "Аэропорт далеко.",
+        "englishTranslation": "airport",
+        "partOfSpeech": "noun",
+        "topic": "travel"
       }
     ]
   }

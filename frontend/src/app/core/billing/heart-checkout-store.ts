@@ -72,7 +72,7 @@ export class HeartCheckoutStore {
       return;
     }
     if (!card || card.status !== 'Active' || card.currency !== offer.currency) {
-      this.error.set('Choose an active test card in the offer currency.');
+      this.error.set('Choose an active card in the offer currency.');
       return;
     }
     const request = {

@@ -86,7 +86,7 @@ public sealed class SubscriptionRenewalTests(RegistrationFixture fixture) : ICla
         Assert.Single(await db.CardTransactions.Where(item => item.PaymentId == payment.Id).ToArrayAsync());
         Assert.Single(await db.PaymentReceipts.Where(item => item.PaymentId == payment.Id).ToArrayAsync());
         Assert.Single(await db.SubscriptionEvents.Where(item => item.RelatedPaymentId == payment.Id && item.EventType == "Renewed").ToArrayAsync());
-        Assert.Single(await db.Notifications.Where(item => item.UserId == state.User.Id).ToArrayAsync());
+        Assert.Single(await db.Notifications.Where(item => item.UserId == state.User.Id && item.Type == "SubscriptionRenewed").ToArrayAsync());
         await Run(end.AddMinutes(1)); db.ChangeTracker.Clear();
         Assert.Equal(80.02m, (await db.TestCards.SingleAsync(item => item.Id == state.CardId)).Balance);
         Assert.True((await db.BillingPreferences.SingleAsync(item => item.UserId == state.User.Id)).AutoRenew);
@@ -129,7 +129,7 @@ public sealed class SubscriptionRenewalTests(RegistrationFixture fixture) : ICla
         Assert.Equal("Failed", job.Status); Assert.Equal(failure, job.FailureCode); Assert.Null(job.NextAttemptAt);
         Assert.Equal("Expired", (await db.Subscriptions.SingleAsync(item => item.Id == state.Subscription.Id)).Status);
         Assert.Equal(state.Subscription.CurrentPeriodEnd, (await db.Subscriptions.SingleAsync(item => item.Id == state.Subscription.Id)).CurrentPeriodEnd);
-        var notice = await db.Notifications.SingleAsync(item => item.UserId == state.User.Id);
+        var notice = await db.Notifications.SingleAsync(item => item.UserId == state.User.Id && item.Type == "SubscriptionEnded");
         Assert.Equal("SubscriptionEnded", notice.Type); Assert.Contains("No funds were charged", notice.Body); Assert.Null(notice.ReadAt);
         var order = await db.BillingOrders.SingleAsync(item => item.SubscriptionId == state.Subscription.Id && item.OrderType == "Renewal");
         var payment = await db.PaymentAttempts.SingleAsync(item => item.OrderId == order.Id);

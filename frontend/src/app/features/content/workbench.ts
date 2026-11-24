@@ -17,6 +17,7 @@ import { BrandLogo } from '../../shared/brand-logo/brand-logo';
 import { ExerciseComposer } from './exercise-composer';
 import { LessonPreview } from './lesson-preview';
 import { DraftOwnerTransfer } from './draft-owner-transfer';
+import { CourseCreator } from './course-creator';
 
 @Component({
   selector: 'app-content-workbench',
@@ -27,6 +28,7 @@ import { DraftOwnerTransfer } from './draft-owner-transfer';
     ExerciseComposer,
     LessonPreview,
     DraftOwnerTransfer,
+    CourseCreator,
   ],
   templateUrl: './workbench.html',
   styleUrls: ['./workbench.scss', './workbench-fields.scss'],

@@ -1,4 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { CurrencyPipe } from '@angular/common';
+import { TutorPortrait } from '../../shared/tutor-portrait';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthStore } from '../../core/accounts/auth-store';
@@ -11,7 +13,7 @@ import { CatalogApi, CatalogCourse } from '../../core/content/catalog-api';
 
 @Component({
   selector: 'app-extra-study',
-  imports: [RouterLink],
+  imports: [RouterLink, CurrencyPipe, TutorPortrait],
   templateUrl: './extra-study.html',
   styleUrl: './classrooms.scss',
 })
@@ -140,6 +142,8 @@ export class ExtraStudy {
       const courses = await this.catalog.courses();
       if (this.auth.user()?.id !== owner) return;
       this.courses.set(courses);
+      await this.showTeachers('');
+      if (this.auth.user()?.id !== owner) return;
       if (!canTeach) return;
       const offers = await this.api.availability();
       if (this.auth.user()?.id !== owner || !this.canTeach()) return;
@@ -160,8 +164,8 @@ export class ExtraStudy {
     this.courseId.set(courseId);
     if (!after) this.teachers.set([]);
     this.cursor.set(undefined);
-    this.directoryState.set(courseId ? 'loading' : 'idle');
-    if (!courseId || !owner) return;
+    this.directoryState.set('loading');
+    if (!owner) return;
     try {
       const teachers = await this.api.teachers(courseId, after);
       if (!isCurrent()) return;

@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LanguageLearning.Tests.Learning;
 
-public sealed class StarterLessonTests(RegistrationFixture fixture) : IClassFixture<RegistrationFixture>
+public sealed partial class StarterLessonTests(RegistrationFixture fixture) : IClassFixture<RegistrationFixture>
 {
     [Theory]
     [InlineData("es")]
@@ -27,8 +27,11 @@ public sealed class StarterLessonTests(RegistrationFixture fixture) : IClassFixt
         // Prerequisite setup only; the complete-course test separately verifies its actual learning path.
         database.LessonProgress.Add(new LanguageLearning.Core.Learning.LessonProgress
         {
-            UserId = account.Id, LessonId = StarterLessonInstaller.ContentId(code + "/greetings"),
-            Status = "Completed", BestScore = 100, CompletedAt = DateTimeOffset.UtcNow
+            UserId = account.Id,
+            LessonId = StarterLessonInstaller.ContentId(code + "/greetings"),
+            Status = "Completed",
+            BestScore = 100,
+            CompletedAt = DateTimeOffset.UtcNow
         });
         await database.SaveChangesAsync();
         var pack = StarterLessonInstaller.Read(code);
@@ -142,10 +145,13 @@ public sealed class StarterLessonTests(RegistrationFixture fixture) : IClassFixt
         using var json = System.Text.Json.JsonDocument.Parse(await start.Content.ReadAsStringAsync());
         Assert.False(json.RootElement.GetProperty("currentExercise").TryGetProperty("correctAnswer", out _));
         var response = await browser.SendAsync(HttpMethod.Post, $"/api/v1/me/learning-sessions/{session.Id}/answers",
-            new { sessionExerciseId = session.CurrentExercise!.Id,
+            new
+            {
+                sessionExerciseId = session.CurrentExercise!.Id,
                 answerText = session.CurrentExercise.Options.Length == 0 ? "An incorrect answer" : null,
                 selectedOptionIds = session.CurrentExercise.Options.Where(item => item.Text != firstSource.Exercises[0].Answers[0]).Take(1).Select(item => item.Id).ToArray(),
-                idempotencyKey = Guid.NewGuid() }, token);
+                idempotencyKey = Guid.NewGuid()
+            }, token);
         response.EnsureSuccessStatusCode();
         var feedback = (await response.Content.ReadFromJsonAsync<AnswerFeedback>())!;
         Assert.False(feedback.IsCorrect);

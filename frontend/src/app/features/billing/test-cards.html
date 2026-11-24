@@ -4,23 +4,19 @@
     ><a routerLink="/account">↖ Your account</a>
   </header>
   <main>
-    <p class="eyebrow">A LITTLE WALLET. ALL MAKE-BELIEVE.</p>
+    <p class="eyebrow">A LITTLE WALLET. READY FOR YOUR NEXT CHAPTER.</p>
     <h1>A pocketful<br /><em>of possibilities.</em></h1>
     <p class="intro">
-      Your test cards, in one place. Create a card, add a simulated balance and keep track of every
-      change.
+      Your cards, in one place. Create a card, add a balance and keep track of every change.
     </p>
-    <aside class="simulation">
-      <strong>SIMULATION ONLY ✦</strong> No real bank card is issued. These balances have no
-      monetary value. Never enter a real card number or security code.
-    </aside>
+
     @if (store.notice()) {
       <p class="notice" role="status">{{ store.notice() }}</p>
     }
     @if (store.error()) {
       <p class="error" role="alert">{{ store.error() }}</p>
     }
-    <p><a routerLink="/billing/hearts">Refill your hearts with a test card ↗</a></p>
+    <p><a routerLink="/billing/hearts">Refill your hearts with a card ↗</a></p>
     <p><a routerLink="/billing/history">Your subscription paper trail ↗</a></p>
     <div class="wallet-actions">
       <button
@@ -43,18 +39,18 @@
       }
     </div>
     @if (store.loading()) {
-      <p role="status">Opening your test wallet…</p>
+      <p role="status">Opening your wallet…</p>
     }
-    <section aria-label="Your test cards" class="card-grid">
+    <section aria-label="Your cards" class="card-grid">
       @for (card of store.cards(); track card.id) {
-        <article class="test-card" [class.blocked]="card.status === 'Blocked'">
+        <article class="card" [class.blocked]="card.status === 'Blocked'">
           <div class="card-heading">
-            <span>LEXIGO · TEST CARD</span><span aria-hidden="true">✦</span>
+            <span>LEXIGO · CARD</span><span aria-hidden="true">✦</span>
           </div>
           <h2>{{ card.nickname }}</h2>
-          <p class="masked">TEST · •••• {{ card.displayLastFour }}</p>
+          <p class="masked">•••• •••• •••• {{ card.displayLastFour }}</p>
           <p class="balance">
-            {{ card.balance | currency: card.currency : 'code' }} <small>simulated balance</small>
+            {{ card.balance | currency: card.currency : 'code' }} <small>balance</small>
           </p>
           <p>
             {{ card.status }}
@@ -83,14 +79,14 @@
         </article>
       } @empty {
         @if (!store.loading()) {
-          <p class="empty">Your wallet is waiting for its first test card.</p>
+          <p class="empty">Your wallet is waiting for its first card.</p>
         }
       }
     </section>
     <div class="wallet-forms">
       <section class="paper-panel" aria-labelledby="create-card-title">
         <p class="eyebrow">START SOMETHING LITTLE</p>
-        <h2 id="create-card-title">Make a test card.</h2>
+        <h2 id="create-card-title">Make a card.</h2>
         <form [formGroup]="createForm" (ngSubmit)="create()" novalidate>
           <fieldset [disabled]="unavailable()">
             <label for="card-name">Card nickname</label
@@ -100,7 +96,18 @@
               maxlength="40"
               placeholder="My next adventure"
             />
-            <label for="card-currency">Simulated currency</label
+            <label for="card-number">Card number (optional)</label>
+            <input
+              id="card-number"
+              formControlName="cardNumber"
+              inputmode="numeric"
+              autocomplete="off"
+              maxlength="23"
+              placeholder="1234 5678 9012 3456"
+              aria-describedby="card-number-note"
+            />
+            <p id="card-number-note">Only the last four digits are saved.</p>
+            <label for="card-currency">Currency</label
             ><select id="card-currency" formControlName="currency">
               <option value="GEL">GEL</option>
               <option value="USD">USD</option>
@@ -109,17 +116,17 @@
             @if (createForm.invalid && createForm.touched) {
               <p class="error" role="alert">Add a name of 1–40 characters and choose a currency.</p>
             }
-            <p>Starts at zero. Up to ten test cards.</p>
-            <button class="button button-ink" type="submit">Create test card ↗</button>
+            <p>Starts at zero. Up to ten cards.</p>
+            <button class="button button-ink" type="submit">Create card ↗</button>
           </fieldset>
         </form>
       </section>
       <section class="paper-panel" aria-labelledby="topup-title">
-        <p class="eyebrow">PRETEND FUNDS, REAL RECORDS</p>
-        <h2 id="topup-title">Add a test balance.</h2>
+        <p class="eyebrow">YOUR CARD BALANCE</p>
+        <h2 id="topup-title">Add balance.</h2>
         <form [formGroup]="topUpForm" (ngSubmit)="topUp()" novalidate>
           <fieldset [disabled]="unavailable()">
-            <label for="topup-card">Test card</label
+            <label for="topup-card">Card</label
             ><select id="topup-card" formControlName="cardId">
               <option value="">Choose a card</option>
               @for (card of store.cards(); track card.id) {
@@ -128,7 +135,7 @@
                 </option>
               }
             </select>
-            <label for="topup-amount">Simulated amount</label
+            <label for="topup-amount">Amount</label
             ><input
               id="topup-amount"
               type="number"
@@ -139,14 +146,14 @@
             />
             <p>
               1–1000 per top-up. Top-up ceiling: 10000 in the card’s currency; refund credits may
-              restore a higher balance. No real money is added.
+              restore a higher balance.
             </p>
             @if (topUpForm.invalid && topUpForm.touched) {
               <p class="error" role="alert">
                 Choose an active card and an amount from 1 to 1000 with at most two decimal places.
               </p>
             }
-            <button class="button button-red" type="submit">Add simulated balance ↗</button>
+            <button class="button button-red" type="submit">Add balance ↗</button>
           </fieldset>
         </form>
       </section>
@@ -159,7 +166,7 @@
             <label for="edit-card-name">Card nickname</label
             ><input id="edit-card-name" formControlName="nickname" maxlength="40" />
             <label class="check"
-              ><input type="checkbox" formControlName="makeDefault" />Make this the default test
+              ><input type="checkbox" formControlName="makeDefault" />Make this the default
               card</label
             >
             @if (editForm.invalid && editForm.touched) {
@@ -174,7 +181,7 @@
     <section class="history" aria-labelledby="history-title">
       <p class="eyebrow">EVERY LITTLE CHANGE</p>
       <h2 id="history-title">Your transaction trail.</h2>
-      <label for="history-card">Filter by test card</label
+      <label for="history-card">Filter by card</label
       ><select
         id="history-card"
         [value]="store.selectedCard()"
@@ -192,7 +199,7 @@
           <label for="history-type">Operation type</label>
           <select id="history-type" formControlName="type">
             <option value="">All operations</option>
-            <option value="TopUp">Test top-ups</option>
+            <option value="TopUp">Balance top-ups</option>
             <option value="Debit">Payment and heart-refill attempts</option>
             <option value="Refund">Refund credits</option>
           </select>
@@ -230,7 +237,7 @@
                         ? entry.paymentId
                           ? 'Premium payment'
                           : 'Heart refill'
-                        : 'Test top-up'
+                        : 'Balance top-up'
                   }}
                   · {{ entry.status }}</strong
                 >
@@ -248,10 +255,7 @@
                 @if (entry.paymentId && entry.status === 'Succeeded') {
                   <p>
                     <a [routerLink]="['/billing/receipt', entry.paymentId]"
-                      >{{
-                        entry.type === 'Refund' ? 'View original test receipt' : 'View test receipt'
-                      }}
-                      ↗</a
+                      >{{ entry.type === 'Refund' ? 'View original receipt' : 'View receipt' }} ↗</a
                     >
                   </p>
                 }
@@ -272,7 +276,7 @@
               </div>
             </li>
           } @empty {
-            <li>No simulated transactions yet.</li>
+            <li>No transactions yet.</li>
           }
         </ul>
         <nav class="pagination" aria-label="Transaction pages">

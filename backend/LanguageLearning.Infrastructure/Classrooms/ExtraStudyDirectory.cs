@@ -6,7 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LanguageLearning.Infrastructure.Classrooms;
 
-public sealed record ExtraStudyTeacher(Guid Id, string DisplayName);
+public sealed record ExtraStudyTeacher(Guid Id, string DisplayName, decimal PricePerLesson = 0,
+    string LevelFrom = "A1", string LevelTo = "B2", string Biography = "", string PortraitKey = "default",
+    string CourseTitle = "", Guid CourseId = default);
 public sealed record ExtraStudyAvailability(Guid CourseId, string CourseTitle, bool Enabled);
 public enum ExtraStudyWriteResult { Saved, Forbidden, CourseUnavailable }
 
@@ -20,10 +22,12 @@ public sealed class ExtraStudyDirectory(
             (await subscriptions.CurrentAsync(learnerId, cancellationToken))?.PlanId != BillingCatalogSeed.Premium)
             return null;
 
-        var query = VisibleOffers(learnerId).Where(offer => offer.CourseId == courseId);
+        var query = VisibleOffers(learnerId);
+        if (courseId != Guid.Empty) query = query.Where(offer => offer.CourseId == courseId);
         if (after is { } cursor) query = query.Where(offer => offer.Id.CompareTo(cursor) > 0);
         return await query.OrderBy(offer => offer.Id).Take(24)
-            .Select(offer => new ExtraStudyTeacher(offer.Id, offer.DisplayName)).ToArrayAsync(cancellationToken);
+            .Select(offer => new ExtraStudyTeacher(offer.Id, offer.DisplayName, offer.PricePerLesson,
+                offer.LevelFrom, offer.LevelTo, offer.Biography, offer.PortraitKey, offer.CourseTitle, offer.CourseId)).ToArrayAsync(cancellationToken);
     }
 
     internal IQueryable<VisibleExtraStudyOffer> VisibleOffers(Guid learnerId) =>
@@ -37,13 +41,30 @@ public sealed class ExtraStudyDirectory(
                     join role in database.Roles on membership.RoleId equals role.Id
                     where membership.UserId == teacher.Id && role.Name == RoleNames.Teacher
                     select membership.UserId).Any()
-            select new VisibleExtraStudyOffer { Id = offer.Id, CourseId = offer.CourseId, DisplayName = teacher.DisplayName };
+            select new VisibleExtraStudyOffer
+            {
+                Id = offer.Id,
+                CourseId = offer.CourseId,
+                DisplayName = teacher.DisplayName,
+                PricePerLesson = offer.PricePerLesson,
+                LevelFrom = offer.LevelFrom,
+                LevelTo = offer.LevelTo,
+                Biography = offer.Biography,
+                PortraitKey = offer.PortraitKey,
+                CourseTitle = course.Title
+            };
 
     internal sealed class VisibleExtraStudyOffer
     {
         public Guid Id { get; init; }
         public Guid CourseId { get; init; }
         public required string DisplayName { get; init; }
+        public decimal PricePerLesson { get; init; }
+        public required string LevelFrom { get; init; }
+        public required string LevelTo { get; init; }
+        public required string Biography { get; init; }
+        public required string PortraitKey { get; init; }
+        public required string CourseTitle { get; init; }
     }
 
     public async Task<ExtraStudyAvailability[]?> OwnAsync(

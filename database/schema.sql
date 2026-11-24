@@ -5270,3 +5270,227 @@ BEGIN
 END $EF$;
 COMMIT;
 
+START TRANSACTION;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124134822_AddDialogueAuthoring') THEN
+    ALTER TABLE "Dialogues" DROP CONSTRAINT "CK_Dialogues_VersionStatus";
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124134822_AddDialogueAuthoring') THEN
+    ALTER TABLE "Dialogues" ADD "EditToken" uuid NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000';
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124134822_AddDialogueAuthoring') THEN
+    ALTER TABLE "Dialogues" ADD "OwnerId" uuid;
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124134822_AddDialogueAuthoring') THEN
+    ALTER TABLE "Dialogues" ADD "ReviewComment" character varying(2000);
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124134822_AddDialogueAuthoring') THEN
+    ALTER TABLE "Dialogues" ADD "ReviewedAt" timestamp with time zone;
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124134822_AddDialogueAuthoring') THEN
+    ALTER TABLE "Dialogues" ADD "ReviewerId" uuid;
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124134822_AddDialogueAuthoring') THEN
+    CREATE INDEX "IX_Dialogues_OwnerId" ON "Dialogues" ("OwnerId");
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124134822_AddDialogueAuthoring') THEN
+    CREATE INDEX "IX_Dialogues_ReviewerId" ON "Dialogues" ("ReviewerId");
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124134822_AddDialogueAuthoring') THEN
+    ALTER TABLE "Dialogues" ADD CONSTRAINT "CK_Dialogues_VersionStatus" CHECK ( "VersionNumber" > 0 AND "Status" IN ('Draft', 'Submitted', 'Approved', 'Published', 'Archived') );
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124134822_AddDialogueAuthoring') THEN
+    ALTER TABLE "Dialogues" ADD CONSTRAINT "FK_Dialogues_Users_OwnerId" FOREIGN KEY ("OwnerId") REFERENCES "Users" ("Id") ON DELETE RESTRICT;
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124134822_AddDialogueAuthoring') THEN
+    ALTER TABLE "Dialogues" ADD CONSTRAINT "FK_Dialogues_Users_ReviewerId" FOREIGN KEY ("ReviewerId") REFERENCES "Users" ("Id") ON DELETE RESTRICT;
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124134822_AddDialogueAuthoring') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20261124134822_AddDialogueAuthoring', '10.0.14');
+    END IF;
+END $EF$;
+COMMIT;
+
+START TRANSACTION;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124215413_AddExtraStudyAppointments') THEN
+    ALTER TABLE "ExtraStudyLessons" ADD "DurationMinutes" integer;
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124215413_AddExtraStudyAppointments') THEN
+    ALTER TABLE "ExtraStudyLessons" ADD "ScheduledAt" timestamp with time zone;
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124215413_AddExtraStudyAppointments') THEN
+    CREATE INDEX "IX_ExtraStudyLessons_ScheduledAt" ON "ExtraStudyLessons" ("ScheduledAt");
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124215413_AddExtraStudyAppointments') THEN
+    ALTER TABLE "ExtraStudyLessons" ADD CONSTRAINT "CK_ExtraStudyLessons_Schedule" CHECK (("ScheduledAt" IS NULL AND "DurationMinutes" IS NULL) OR ("ScheduledAt" IS NOT NULL AND "DurationMinutes" IS NOT NULL AND "DurationMinutes" BETWEEN 15 AND 120));
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124215413_AddExtraStudyAppointments') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20261124215413_AddExtraStudyAppointments', '10.0.14');
+    END IF;
+END $EF$;
+COMMIT;
+
+START TRANSACTION;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124221000_AddTutorProfilesAndPrivateMessages') THEN
+    ALTER TABLE "Users" ADD "TeacherAccessCodeHash" character varying(64);
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124221000_AddTutorProfilesAndPrivateMessages') THEN
+    ALTER TABLE "ExtraStudyOffers" ADD "Biography" character varying(1000) NOT NULL DEFAULT '';
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124221000_AddTutorProfilesAndPrivateMessages') THEN
+    ALTER TABLE "ExtraStudyOffers" ADD "LevelFrom" character varying(2) NOT NULL DEFAULT 'A1';
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124221000_AddTutorProfilesAndPrivateMessages') THEN
+    ALTER TABLE "ExtraStudyOffers" ADD "LevelTo" character varying(2) NOT NULL DEFAULT 'B2';
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124221000_AddTutorProfilesAndPrivateMessages') THEN
+    ALTER TABLE "ExtraStudyOffers" ADD "PortraitKey" character varying(32) NOT NULL DEFAULT 'default';
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124221000_AddTutorProfilesAndPrivateMessages') THEN
+    ALTER TABLE "ExtraStudyOffers" ADD "PricePerLesson" numeric(10,2) NOT NULL DEFAULT 0.0;
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124221000_AddTutorProfilesAndPrivateMessages') THEN
+    CREATE TABLE "ExtraStudyMessages" (
+        "Id" uuid NOT NULL,
+        "RequestId" uuid NOT NULL,
+        "SenderId" uuid NOT NULL,
+        "Body" character varying(2000) NOT NULL,
+        "CreatedAt" timestamp with time zone NOT NULL,
+        CONSTRAINT "PK_ExtraStudyMessages" PRIMARY KEY ("Id"),
+        CONSTRAINT "FK_ExtraStudyMessages_ExtraStudyRequests_RequestId" FOREIGN KEY ("RequestId") REFERENCES "ExtraStudyRequests" ("Id") ON DELETE CASCADE,
+        CONSTRAINT "FK_ExtraStudyMessages_Users_SenderId" FOREIGN KEY ("SenderId") REFERENCES "Users" ("Id") ON DELETE RESTRICT
+    );
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124221000_AddTutorProfilesAndPrivateMessages') THEN
+    CREATE UNIQUE INDEX "IX_Users_TeacherAccessCodeHash" ON "Users" ("TeacherAccessCodeHash");
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124221000_AddTutorProfilesAndPrivateMessages') THEN
+    ALTER TABLE "ExtraStudyOffers" ADD CONSTRAINT "CK_ExtraStudyOffers_Profile" CHECK ("PricePerLesson" BETWEEN 0 AND 1000 AND "LevelFrom" IN ('A1','A2','B1','B2','C1','C2') AND "LevelTo" IN ('A1','A2','B1','B2','C1','C2'));
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124221000_AddTutorProfilesAndPrivateMessages') THEN
+    CREATE INDEX "IX_ExtraStudyMessages_RequestId_CreatedAt_Id" ON "ExtraStudyMessages" ("RequestId", "CreatedAt", "Id");
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124221000_AddTutorProfilesAndPrivateMessages') THEN
+    CREATE INDEX "IX_ExtraStudyMessages_SenderId" ON "ExtraStudyMessages" ("SenderId");
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261124221000_AddTutorProfilesAndPrivateMessages') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20261124221000_AddTutorProfilesAndPrivateMessages', '10.0.14');
+    END IF;
+END $EF$;
+COMMIT;
+

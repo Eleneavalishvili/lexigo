@@ -19,6 +19,9 @@ public sealed class AccountDeletionResponsibilities(LexiGoDbContext database, Le
     internal async Task<DeletionResponsibility[]> InspectAsync(Guid userId, CancellationToken cancellationToken)
     {
         var pending = new List<DeletionResponsibility>();
+        if (await database.Dialogues.AnyAsync(item => item.OwnerId == userId
+            && item.Status != "Published" && item.Status != "Archived", cancellationToken))
+            pending.Add(new("dialogue-drafts", "Publish or archive your unfinished dialogue revisions before deleting your account."));
         if (await database.Classrooms.AnyAsync(item => item.TeacherId == userId && !item.IsArchived, cancellationToken))
             pending.Add(new("classes", "Hand over or archive your active classes before deleting your account."));
         if (await database.ExtraStudyOffers.AnyAsync(item => item.TeacherId == userId && item.Enabled, cancellationToken)

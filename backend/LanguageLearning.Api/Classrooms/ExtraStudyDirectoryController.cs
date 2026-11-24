@@ -28,6 +28,12 @@ public sealed class ExtraStudyDirectoryController(
     public async Task<IActionResult> ShareLesson(Guid requestId, Guid lessonId, CancellationToken cancellationToken) =>
         WriteResult(await spaces.ShareAsync(UserId, FamilyId, requestId, lessonId, cancellationToken));
 
+    [HttpPut("requests/{requestId:guid}/space/lessons/{lessonId:guid}/schedule")]
+    [RequestSizeLimit(1024)]
+    public async Task<IActionResult> ScheduleLesson(Guid requestId, Guid lessonId,
+        ExtraStudyScheduleInput input, CancellationToken cancellationToken) =>
+        WriteResult(await spaces.ScheduleAsync(UserId, FamilyId, requestId, lessonId, input, cancellationToken));
+
     [HttpGet("requests")]
     [ProducesResponseType<ExtraStudyRequestView[]>(200)]
     public async Task<IActionResult> ListRequests(Guid? after, CancellationToken cancellationToken)
@@ -52,6 +58,14 @@ public sealed class ExtraStudyDirectoryController(
     private IActionResult WriteResult(ClassroomOutcome result) =>
         result.Forbidden ? Forbid() : result.Missing ? NotFound() : result.Error is { } error
             ? Problem(statusCode: 409, title: error) : Ok(new { id = result.Id });
+
+    [HttpGet("teachers")]
+    [ProducesResponseType<ExtraStudyTeacher[]>(200)]
+    public async Task<IActionResult> AllTeachers(Guid? after, CancellationToken token)
+    {
+        var teachers = await directory.FindAsync(UserId, FamilyId, Guid.Empty, after, token);
+        return teachers is null ? Forbid() : Ok(teachers);
+    }
 
     [HttpGet("courses/{courseId:guid}/teachers")]
     [ProducesResponseType<ExtraStudyTeacher[]>(200)]

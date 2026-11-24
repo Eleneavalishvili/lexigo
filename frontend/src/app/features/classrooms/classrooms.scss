@@ -76,3 +76,25 @@ textarea {
     grid-template-columns: 1fr;
   }
 }
+.tutor-directory {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 1.25rem;
+}
+.tutor-directory .tutor-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  box-shadow: 0 5px 0 rgb(38 55 70 / 8%);
+}
+.tutor-card h3,
+.tutor-card p {
+  margin: 0;
+}
+.tutor-card button {
+  margin-top: auto;
+}

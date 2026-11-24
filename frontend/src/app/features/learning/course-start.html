@@ -13,6 +13,7 @@
   }
   @if (error()) {
     <p role="alert">{{ error() }}</p>
+    <a [routerLink]="['/learn', courseId()]">Open your saved course progress ↗</a>
     @if (!courseReady()) {
       <button
         class="button button-outline"

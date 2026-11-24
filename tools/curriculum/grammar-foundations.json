@@ -1,0 +1,26 @@
+{
+  "es": {
+    "title": "Articles, identity and location",
+    "note": "El and la mark singular noun gender: el libro, la casa. Soy is the yo form of ser for identity; estoy is the yo form of estar for location. Hablo is the yo present form of hablar. Adjectives may agree in gender: la casa blanca. Spanish ñ is a separate letter, and ¿ opens a question. Missing accents may be accepted when typing, but read and learn the written accents shown in the examples.",
+    "pairs": [["el libro", "the book"], ["la casa", "the house"], ["Soy estudiante.", "I am a student."], ["Estoy en casa.", "I am at home."], ["Hablo español.", "I speak Spanish."], ["La casa es blanca.", "The house is white."]],
+    "symbols": [["Which letter is a separate Spanish letter?", "ñ", ["ñ", "n", "u"]], ["Which mark opens a Spanish question?", "¿", ["¿", "¡", "."]], ["Which article accompanies casa?", "la", ["la", "el", "los"]], ["Which form describes my current location?", "Estoy en casa.", ["Estoy en casa.", "Soy estudiante.", "Hablo español."]]]
+  },
+  "it": {
+    "title": "Articles, agreement and everyday verbs",
+    "note": "Il libro is masculine and la casa feminine. Lo is used before s plus a consonant, as in lo studente; l' is used before a vowel, as in l'amica. Sono is the io form of essere. Parlo is the io present form of parlare. An adjective agrees with its noun: la casa bianca. È means is; e means and. Learn accented forms even when the keyboard-friendly scoring accepts plain vowels.",
+    "pairs": [["il libro", "the book"], ["la casa", "the house"], ["Sono uno studente.", "I am a student."], ["Sono a casa.", "I am at home."], ["Parlo italiano.", "I speak Italian."], ["La casa è bianca.", "The house is white."]],
+    "symbols": [["Which article goes before studente?", "lo", ["lo", "la", "le"]], ["Which word means is?", "è", ["è", "e", "o"]], ["Which phrase means the female friend?", "l'amica", ["l'amica", "il libro", "lo studente"]], ["Which adjective agrees with la casa?", "bianca", ["bianca", "bianco", "bianchi"]]]
+  },
+  "de": {
+    "title": "Articles, word order and cases",
+    "note": "Learn nouns with their articles: der Mann, die Frau, das Buch. German nouns begin with a capital. In a statement the finite verb takes the second position: Heute lerne ich Deutsch. A direct masculine object changes der to den: Ich sehe den Mann. After mit use dative: mit dem Mann. Ä, ö and ü have umlauts; ß is a separate spelling character. Keyboard-friendly answers may accept plain Latin forms, but the written model remains standard German.",
+    "pairs": [["der Mann", "the man"], ["die Frau", "the woman"], ["das Buch", "the book"], ["Ich sehe den Mann.", "I see the man."], ["Ich spreche mit dem Mann.", "I speak with the man."], ["Heute lerne ich Deutsch.", "Today I learn German."]],
+    "symbols": [["Which letter has an umlaut?", "ü", ["ü", "u", "n"]], ["Which article marks a masculine direct object?", "den", ["den", "der", "dem"]], ["Which phrase uses dative after mit?", "mit dem Mann", ["mit dem Mann", "mit den Mann", "mit der Mann"]], ["Which sentence has the verb in second position?", "Heute lerne ich Deutsch.", ["Heute lerne ich Deutsch.", "Heute ich lerne Deutsch.", "Heute ich Deutsch lerne."]]]
+  },
+  "ru": {
+    "title": "Cyrillic, gender and first cases",
+    "note": "Russian uses Cyrillic; do not replace Russian letters with similar-looking Latin letters. Книга is feminine and стол masculine; окно is neuter. There are no articles. The present-tense equivalent of am/is/are is normally omitted: Я студент. Учить changes to учу after я. Compare nominative книга, accusative книгу, genitive книги and prepositional книге in the examples. Ь and ъ are signs, not independent vowel sounds. Ё and е remain distinct in Russian grading.",
+    "pairs": [["Это книга.", "This is a book."], ["Я читаю книгу.", "I read a book."], ["У меня нет книги.", "I do not have a book."], ["Я говорю о книге.", "I talk about a book."], ["Я учу русский язык.", "I learn Russian."], ["Это окно.", "This is a window."]],
+    "symbols": [["Which Cyrillic letter has two dots?", "ё", ["ё", "е", "э"]], ["Which noun is feminine?", "книга", ["книга", "стол", "окно"]], ["Which form is the direct object after читаю?", "книгу", ["книгу", "книга", "книге"]], ["Which form follows о when discussing a book?", "книге", ["книге", "книга", "книгу"]]]
+  }
+}

@@ -40,7 +40,7 @@ describe('Test wallet state', () => {
     await store.retry();
     expect(api.apply.mock.calls[1][0]).toBe(original);
     expect(store.pending()).toBeNull();
-    expect(store.notice()).toContain('No real money');
+    expect(store.notice()).toContain('Your wallet is updated.');
   });
   it('shows a known rejection and does not retain a pending operation', async () => {
     api.apply.mockRejectedValue(

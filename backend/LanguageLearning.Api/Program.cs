@@ -39,6 +39,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks().AddCheck<DatabaseReadinessCheck>("database", tags: ["ready"]);
 builder.Services.AddRateLimiter(options =>
 {
+    options.AddPolicy("message-send", context => RateLimitPartition.GetFixedWindowLimiter(
+        context.User.FindFirst("sub")?.Value ?? context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+        _ => new FixedWindowRateLimiterOptions
+        {
+            PermitLimit = builder.Configuration.GetValue("MessageRateLimit", 30),
+            Window = TimeSpan.FromMinutes(1),
+            QueueLimit = 0
+        }));
     options.AddPolicy("speech-check", context => RateLimitPartition.GetFixedWindowLimiter(
         context.Connection.RemoteIpAddress?.ToString() ?? "unknown", _ => new FixedWindowRateLimiterOptions
         { PermitLimit = builder.Configuration.GetValue("SpeechCheckRateLimit", 12), Window = TimeSpan.FromMinutes(1), QueueLimit = 0 }));
@@ -82,8 +90,11 @@ builder.Services.AddRateLimiter(options =>
     };
     options.AddPolicy("session-refresh", context => RateLimitPartition.GetFixedWindowLimiter(
         context.Connection.RemoteIpAddress?.ToString() ?? "unknown", _ => new FixedWindowRateLimiterOptions
-        { PermitLimit = builder.Environment.IsDevelopment() ? builder.Configuration.GetValue("SessionRefreshRateLimit", 120) : 120,
-            Window = TimeSpan.FromMinutes(10), QueueLimit = 0 }));
+        {
+            PermitLimit = builder.Environment.IsDevelopment() ? builder.Configuration.GetValue("SessionRefreshRateLimit", 120) : 120,
+            Window = TimeSpan.FromMinutes(10),
+            QueueLimit = 0
+        }));
     options.AddPolicy("account-entry", context => RateLimitPartition.GetFixedWindowLimiter(
         context.Connection.RemoteIpAddress?.ToString() ?? "unknown", _ => new FixedWindowRateLimiterOptions
         {
@@ -91,9 +102,57 @@ builder.Services.AddRateLimiter(options =>
             Window = TimeSpan.FromMinutes(10),
             QueueLimit = 0
         }));
+    options.AddPolicy("account-settings", context => RateLimitPartition.GetFixedWindowLimiter(
+        context.User.FindFirst("sub")?.Value ?? context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+        _ => new FixedWindowRateLimiterOptions
+        {
+            PermitLimit = builder.Configuration.GetValue("AccountSettingsRateLimit", 30),
+            Window = TimeSpan.FromMinutes(1),
+            QueueLimit = 0
+        }));
 });
 
 var app = builder.Build();
+
+if (args.Contains("--extend-presentation-tutors"))
+{
+    var request = await System.Text.Json.JsonSerializer.DeserializeAsync<PresentationAccountRequest>(Console.OpenStandardInput());
+    if (request is null || string.IsNullOrWhiteSpace(request.PublicKeyPem))
+        throw new InvalidOperationException("Provide the operator's public encryption key on standard input.");
+    await using var scope = app.Services.CreateAsyncScope();
+    var envelope = await scope.ServiceProvider.GetRequiredService<LanguageLearning.Infrastructure.Accounts.PresentationAccountProvisioner>()
+        .ExtendTutorsAsync(request.PublicKeyPem, CancellationToken.None);
+    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(envelope));
+    return;
+}
+
+if (args.Contains("--create-presentation-accounts"))
+{
+    var request = await System.Text.Json.JsonSerializer.DeserializeAsync<PresentationAccountRequest>(Console.OpenStandardInput());
+    if (request is null || string.IsNullOrWhiteSpace(request.PublicKeyPem))
+        throw new InvalidOperationException("Provide the operator's public encryption key on standard input.");
+    await using var scope = app.Services.CreateAsyncScope();
+    var envelope = await scope.ServiceProvider.GetRequiredService<LanguageLearning.Infrastructure.Accounts.PresentationAccountProvisioner>()
+        .CreateAsync(request.PublicKeyPem, CancellationToken.None);
+    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(envelope));
+    return;
+}
+
+if (args.Contains("--install-bundled-content"))
+{
+    // Operator-only maintenance command: no HTTP listener or background workers
+    // are started, and schema migrations remain a separate reviewed release step.
+    await using var scope = app.Services.CreateAsyncScope();
+    var database = scope.ServiceProvider.GetRequiredService<LexiGoDbContext>();
+    if ((await database.Database.GetPendingMigrationsAsync()).Any())
+        throw new InvalidOperationException("Apply the reviewed database migration before installing bundled content.");
+    int lessons = await scope.ServiceProvider.GetRequiredService<LanguageLearning.Infrastructure.Content.StarterLessonInstaller>()
+        .InstallAsync(CancellationToken.None);
+    int words = await scope.ServiceProvider.GetRequiredService<LanguageLearning.Infrastructure.Vocabulary.StarterVocabularyInstaller>()
+        .InstallAsync(CancellationToken.None);
+    Console.WriteLine($"Installed {lessons} bundled lessons and {words} vocabulary entries. Existing versions and progress were preserved.");
+    return;
+}
 
 if (args.Contains("--initialize-database"))
 {
@@ -194,3 +253,4 @@ app.Run();
 
 public partial class Program;
 internal sealed record BootstrapProof(string? Email, string? Password, string? Code);
+internal sealed record PresentationAccountRequest(string? PublicKeyPem);

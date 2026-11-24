@@ -29,6 +29,7 @@ export class TestCards {
   protected readonly createForm = this.builder.group({
     nickname: ['', [Validators.required, Validators.maxLength(40)]],
     currency: ['GEL', Validators.required],
+    cardNumber: ['', [Validators.pattern(/^[0-9 ]{4,23}$/)]],
   });
   protected readonly editForm = this.builder.group({
     nickname: ['', [Validators.required, Validators.maxLength(40)]],
@@ -54,7 +55,7 @@ export class TestCards {
       this.editing.set(null);
       this.filterForm.reset({ type: '', status: '', from: '', to: '' });
       this.filterError.set('');
-      this.createForm.reset({ nickname: '', currency: 'GEL' });
+      this.createForm.reset({ nickname: '', currency: 'GEL', cardNumber: '' });
       this.editForm.reset({ nickname: '', makeDefault: false });
       this.topUpForm.reset({ cardId: '', amount: 10 });
     });
@@ -83,10 +84,14 @@ export class TestCards {
       this.createForm.markAllAsTouched();
       return;
     }
+    const { cardNumber, ...card } = this.createForm.getRawValue();
+    const digits = cardNumber.replaceAll(' ', '');
+    if (digits && digits.length < 4) return;
+    this.createForm.controls.cardNumber.reset('');
     void this.store.change({
       method: 'POST',
       path: '/api/v1/me/test-cards',
-      body: this.createForm.getRawValue(),
+      body: { ...card, ...(digits ? { displayLastFour: digits.slice(-4) } : {}) },
     });
   }
   protected select(card: TestCard): void {

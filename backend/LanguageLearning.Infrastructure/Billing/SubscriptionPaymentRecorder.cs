@@ -41,7 +41,7 @@ public sealed class SubscriptionPaymentRecorder(LexiGoDbContext database)
                 OccurredAt = payment.CreatedAt,
                 ActorId = actorId
             });
-            receiptNumber = "TEST-" + payment.Id.ToString("N");
+            receiptNumber = "LXG-" + payment.Id.ToString("N");
             database.PaymentReceipts.Add(new PaymentReceipt { PaymentId = payment.Id, ReceiptNumber = receiptNumber, IssuedAt = payment.CreatedAt });
         }
         database.PaymentAttempts.Add(payment);

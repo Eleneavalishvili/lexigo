@@ -5,10 +5,8 @@
   </header>
   <main>
     <p class="eyebrow">A LITTLE RECORD TO KEEP</p>
-    <h1>Your test<br /><em>receipt.</em></h1>
-    <p class="simulation">
-      Simulated payment only. No real funds moved. This is not a tax invoice.
-    </p>
+    <h1>Your<br /><em>receipt.</em></h1>
+
     @if (error()) {
       <p class="error" role="alert">{{ error() }}</p>
       @if (canRetry()) {
@@ -26,7 +24,7 @@
       <section class="panel">
         <h2>{{ payment.status }}</h2>
         <p class="reference">{{ payment.receiptNumber }}</p>
-        <p>{{ payment.amount | currency: payment.currency : 'code' }} simulated funds</p>
+        <p>{{ payment.amount | currency: payment.currency : 'code' }} card balance</p>
         <p>{{ payment.completedAt | date: 'medium' }}</p>
         <dl>
           <dt>Payment reference</dt>
@@ -44,7 +42,7 @@
             <dt>Purchased period</dt>
             <dd>{{ quote.period }}</dd>
             <dt>Quoted total</dt>
-            <dd>{{ quote.amount | currency: quote.currency : 'code' }} simulated funds</dd>
+            <dd>{{ quote.amount | currency: quote.currency : 'code' }} card balance</dd>
           </dl>
         }
         @if (orderError()) {
@@ -60,10 +58,10 @@
         }
         @if (payment.status === 'Failed') {
           <p>
-            This payment was declined. No simulated funds moved. Review your test card before making
-            a new attempt.
+            This payment was declined. No card balance moved. Review your card before making a new
+            attempt.
           </p>
-          <a routerLink="/billing/cards">Open test cards ↗</a>
+          <a routerLink="/billing/cards">Open cards ↗</a>
         } @else if (payment.status === 'Pending') {
           <p role="status">
             The result is pending. Refresh this payment before making another attempt.
@@ -79,7 +77,7 @@
         }
         @if (payment.status === 'Succeeded' && payment.receiptNumber) {
           <button class="button button-ink" type="button" (click)="download()" [disabled]="busy()">
-            Download test receipt (.txt) ↗
+            Download receipt (.txt) ↗
           </button>
         }
       </section>

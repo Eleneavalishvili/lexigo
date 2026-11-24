@@ -61,9 +61,39 @@ test('a Premium learner opens a lesson shared by their chosen teacher', async ({
       teacher.getByRole('region', { name: 'Shared lessons' }).getByText('Your first drinks'),
     ).toBeVisible();
 
+    await teacher.getByText('Schedule or change appointment', { exact: true }).click();
+    await teacher
+      .getByLabel(/Lesson time \(/)
+      .fill(new Date(Date.now() + 86_400_000).toISOString().slice(0, 16));
+    await teacher.getByLabel('Duration in minutes').fill('45');
+    await teacher.getByRole('button', { name: 'Save appointment', exact: true }).click();
+    await expect(teacher.getByText(/45 minutes/)).toBeVisible();
+
     await page.getByRole('button', { name: 'Refresh requests' }).click();
     await page.getByRole('link', { name: /Open study space/ }).click();
     await expect(page.getByText('Your first drinks')).toBeVisible();
+    await expect(page.getByText(/45 minutes/)).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Save appointment', exact: true })).toHaveCount(
+      0,
+    );
+    await page.getByLabel('Your message').fill('Can we practise ordering coffee?');
+    await page.getByRole('button', { name: 'Send message', exact: true }).click();
+    await expect(page.getByRole('list', { name: 'Study conversation' })).toContainText(
+      'Can we practise ordering coffee?',
+    );
+    await teacher.getByRole('button', { name: 'Refresh messages', exact: true }).click();
+    await expect(teacher.getByRole('list', { name: 'Study conversation' })).toContainText(
+      'Can we practise ordering coffee?',
+    );
+    await teacher.getByLabel('Your message').fill('Yes! We will practise a café conversation.');
+    await teacher.getByRole('button', { name: 'Send message', exact: true }).click();
+    await expect(teacher.getByRole('list', { name: 'Study conversation' })).toContainText(
+      'Yes! We will practise a café conversation.',
+    );
+    await page.getByRole('button', { name: 'Refresh messages', exact: true }).click();
+    await expect(page.getByRole('list', { name: 'Study conversation' })).toContainText(
+      'Yes! We will practise a café conversation.',
+    );
     await page.getByRole('button', { name: 'Start lesson' }).click();
     await expect(page).toHaveURL(/\/learn\/session\//);
   } finally {

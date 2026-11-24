@@ -1363,6 +1363,12 @@ namespace LanguageLearning.Infrastructure.Data.Migrations
                     b.Property<Guid>("LessonId")
                         .HasColumnType("uuid");
 
+                    b.Property<int?>("DurationMinutes")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset?>("ScheduledAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<DateTimeOffset>("SharedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -1370,7 +1376,41 @@ namespace LanguageLearning.Infrastructure.Data.Migrations
 
                     b.HasIndex("LessonId");
 
-                    b.ToTable("ExtraStudyLessons");
+                    b.HasIndex("ScheduledAt");
+
+                    b.ToTable("ExtraStudyLessons", t =>
+                        {
+                            t.HasCheckConstraint("CK_ExtraStudyLessons_Schedule", "(\"ScheduledAt\" IS NULL AND \"DurationMinutes\" IS NULL) OR (\"ScheduledAt\" IS NOT NULL AND \"DurationMinutes\" IS NOT NULL AND \"DurationMinutes\" BETWEEN 15 AND 120)");
+                        });
+                });
+
+            modelBuilder.Entity("LanguageLearning.Core.Classrooms.ExtraStudyMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("RequestId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SenderId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SenderId");
+
+                    b.HasIndex("RequestId", "CreatedAt", "Id");
+
+                    b.ToTable("ExtraStudyMessages");
                 });
 
             modelBuilder.Entity("LanguageLearning.Core.Classrooms.ExtraStudyOffer", b =>
@@ -1379,11 +1419,43 @@ namespace LanguageLearning.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Biography")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
+                        .HasDefaultValue("");
+
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("Enabled")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("LevelFrom")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)")
+                        .HasDefaultValue("A1");
+
+                    b.Property<string>("LevelTo")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)")
+                        .HasDefaultValue("B2");
+
+                    b.Property<string>("PortraitKey")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasDefaultValue("default");
+
+                    b.Property<decimal>("PricePerLesson")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)");
 
                     b.Property<Guid>("TeacherId")
                         .HasColumnType("uuid");
@@ -1395,7 +1467,10 @@ namespace LanguageLearning.Infrastructure.Data.Migrations
 
                     b.HasIndex("CourseId", "Enabled", "Id");
 
-                    b.ToTable("ExtraStudyOffers");
+                    b.ToTable("ExtraStudyOffers", t =>
+                        {
+                            t.HasCheckConstraint("CK_ExtraStudyOffers_Profile", "\"PricePerLesson\" BETWEEN 0 AND 1000 AND \"LevelFrom\" IN ('A1','A2','B1','B2','C1','C2') AND \"LevelTo\" IN ('A1','A2','B1','B2','C1','C2')");
+                        });
                 });
 
             modelBuilder.Entity("LanguageLearning.Core.Classrooms.ExtraStudyRequest", b =>
@@ -2441,8 +2516,24 @@ namespace LanguageLearning.Infrastructure.Data.Migrations
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("EditToken")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("OwnerId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("RequiresPremium")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("ReviewComment")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<DateTimeOffset?>("ReviewedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ReviewerId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Scenario")
                         .IsRequired()
@@ -2464,12 +2555,16 @@ namespace LanguageLearning.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("ReviewerId");
+
                     b.HasIndex("CourseId", "Scenario", "VersionNumber")
                         .IsUnique();
 
                     b.ToTable("Dialogues", null, t =>
                         {
-                            t.HasCheckConstraint("CK_Dialogues_VersionStatus", " \"VersionNumber\" > 0 AND \"Status\" IN ('Draft', 'Published', 'Archived') ");
+                            t.HasCheckConstraint("CK_Dialogues_VersionStatus", " \"VersionNumber\" > 0 AND \"Status\" IN ('Draft', 'Submitted', 'Approved', 'Published', 'Archived') ");
                         });
                 });
 
@@ -3450,6 +3545,10 @@ namespace LanguageLearning.Infrastructure.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
+                    b.Property<string>("TeacherAccessCodeHash")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
@@ -3466,6 +3565,9 @@ namespace LanguageLearning.Infrastructure.Data.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex("TeacherAccessCodeHash")
+                        .IsUnique();
 
                     b.HasIndex("Id", "AvatarMediaId");
 
@@ -4095,6 +4197,21 @@ namespace LanguageLearning.Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("LanguageLearning.Core.Classrooms.ExtraStudyMessage", b =>
+                {
+                    b.HasOne("LanguageLearning.Core.Classrooms.ExtraStudyRequest", null)
+                        .WithMany()
+                        .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LanguageLearning.Infrastructure.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("LanguageLearning.Core.Classrooms.ExtraStudyOffer", b =>
                 {
                     b.HasOne("LanguageLearning.Core.Courses.Course", null)
@@ -4377,6 +4494,16 @@ namespace LanguageLearning.Infrastructure.Data.Migrations
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("LanguageLearning.Infrastructure.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("LanguageLearning.Infrastructure.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("ReviewerId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("LanguageLearning.Core.Learning.DialogueAttempt", b =>

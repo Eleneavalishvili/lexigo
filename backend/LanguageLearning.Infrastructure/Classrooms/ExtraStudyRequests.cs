@@ -26,8 +26,16 @@ public sealed class ExtraStudyRequests(
             join learner in database.Users on request.LearnerId equals learner.Id
             where (actor.CanTeach && offer.TeacherId == userId) ||
                   (actor.CanLearn && request.LearnerId == userId)
-            select new { request.Id, request.OfferId, course.Title, Teacher = teacher.DisplayName,
-                Learner = learner.DisplayName, Incoming = offer.TeacherId == userId, request.Status };
+            select new
+            {
+                request.Id,
+                request.OfferId,
+                course.Title,
+                Teacher = teacher.DisplayName,
+                Learner = learner.DisplayName,
+                Incoming = offer.TeacherId == userId,
+                request.Status
+            };
         if (after is { } cursor) query = query.Where(item => item.Id.CompareTo(cursor) > 0);
         return await query.OrderBy(item => item.Id).Take(24).Select(item => new ExtraStudyRequestView(
             item.Id, item.OfferId, item.Title, item.Incoming ? item.Learner : item.Teacher,
@@ -38,11 +46,16 @@ public sealed class ExtraStudyRequests(
         Guid learnerId, Guid familyId, Guid offerId, CancellationToken cancellationToken)
     {
         await using var transaction = await database.Database.BeginTransactionAsync(cancellationToken);
+        var recipient = await database.ExtraStudyOffers.AsNoTracking().Where(item => item.Id == offerId)
+            .Select(item => (Guid?)item.TeacherId).SingleOrDefaultAsync(cancellationToken);
+        if (recipient is null) return new(Missing: true);
+        await ClassroomAccess.LockParticipantsAsync(database, learnerId, recipient.Value, cancellationToken);
         if (await access.ActorAsync(learnerId, familyId, true, cancellationToken) is not { CanLearn: true } ||
             !await HasPremiumAsync(learnerId, cancellationToken))
             return new(Forbidden: true);
 
-        if (await LockOfferAsync(offerId, cancellationToken) is null) return new(Missing: true);
+        var selectedOffer = await LockOfferAsync(offerId, cancellationToken);
+        if (selectedOffer is null) return new(Missing: true);
         var existing = await database.ExtraStudyRequests.AsNoTracking().SingleOrDefaultAsync(
             item => item.OfferId == offerId && item.LearnerId == learnerId, cancellationToken);
         if (existing is not null) return new(existing.Id);
@@ -51,6 +64,14 @@ public sealed class ExtraStudyRequests(
 
         var request = new ExtraStudyRequest { OfferId = offerId, LearnerId = learnerId, CreatedAt = clock.GetUtcNow() };
         database.ExtraStudyRequests.Add(request);
+        database.Notifications.Add(new LanguageLearning.Core.Accounts.Notification
+        {
+            UserId = selectedOffer.TeacherId,
+            Type = "ExtraStudyRequested",
+            Title = "New extra-study request",
+            Body = "A learner requested your course. Open Extra study to view the learner and accept or decline the request.",
+            CreatedAt = clock.GetUtcNow()
+        });
         await database.SaveChangesAsync(cancellationToken);
         await transaction.CommitAsync(cancellationToken);
         return new(request.Id);

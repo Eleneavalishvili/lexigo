@@ -2197,6 +2197,453 @@
       ]
     },
     {
+      "unitKey": "grammar-foundations",
+      "unitTitle": "How the language works",
+      "unitDescription": "Use articles, noun forms, sentence patterns and the language's special letters.",
+      "difficulty": "A1",
+      "contentVersion": 1,
+      "key": "grammar-forms",
+      "title": "Articles, agreement and everyday verbs",
+      "objective": "Recognize and use the grammatical forms taught in these examples.",
+      "explanation": "New words and phrases\n\nil libro — the book\nla casa — the house\nSono uno studente. — I am a student.\nSono a casa. — I am at home.\nParlo italiano. — I speak Italian.\nLa casa è bianca. — The house is white.\n\nIl libro is masculine and la casa feminine. Lo is used before s plus a consonant, as in lo studente; l' is used before a vowel, as in l'amica. Sono is the io form of essere. Parlo is the io present form of parlare. An adjective agrees with its noun: la casa bianca. È means is; e means and. Learn accented forms even when the keyboard-friendly scoring accepts plain vowels.",
+      "prerequisiteKeys": [
+        "greetings"
+      ],
+      "exercises": [
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"the book\".",
+          "answers": [
+            "il libro"
+          ],
+          "options": [
+            "il libro",
+            "la casa",
+            "Sono uno studente.",
+            "Sono a casa.",
+            "Parlo italiano.",
+            "La casa è bianca."
+          ],
+          "explanation": "il libro — the book",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: the book",
+          "answers": [
+            "il libro"
+          ],
+          "options": [],
+          "explanation": "Use il libro",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: il libro",
+          "answers": [
+            "the book"
+          ],
+          "options": [],
+          "explanation": "il libro — the book",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"the house\".",
+          "answers": [
+            "la casa"
+          ],
+          "options": [
+            "il libro",
+            "la casa",
+            "Sono uno studente.",
+            "Sono a casa.",
+            "Parlo italiano.",
+            "La casa è bianca."
+          ],
+          "explanation": "la casa — the house",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: the house",
+          "answers": [
+            "la casa"
+          ],
+          "options": [],
+          "explanation": "Use la casa",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: la casa",
+          "answers": [
+            "the house"
+          ],
+          "options": [],
+          "explanation": "la casa — the house",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"I am a student.\".",
+          "answers": [
+            "Sono uno studente."
+          ],
+          "options": [
+            "il libro",
+            "la casa",
+            "Sono uno studente.",
+            "Sono a casa.",
+            "Parlo italiano.",
+            "La casa è bianca."
+          ],
+          "explanation": "Sono uno studente. — I am a student.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I am a student.",
+          "answers": [
+            "Sono uno studente."
+          ],
+          "options": [],
+          "explanation": "Use Sono uno studente.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: Sono uno studente.",
+          "answers": [
+            "I am a student."
+          ],
+          "options": [],
+          "explanation": "Sono uno studente. — I am a student.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"I am at home.\".",
+          "answers": [
+            "Sono a casa."
+          ],
+          "options": [
+            "il libro",
+            "la casa",
+            "Sono uno studente.",
+            "Sono a casa.",
+            "Parlo italiano.",
+            "La casa è bianca."
+          ],
+          "explanation": "Sono a casa. — I am at home.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I am at home.",
+          "answers": [
+            "Sono a casa."
+          ],
+          "options": [],
+          "explanation": "Use Sono a casa.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: Sono a casa.",
+          "answers": [
+            "I am at home."
+          ],
+          "options": [],
+          "explanation": "Sono a casa. — I am at home.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"I speak Italian.\".",
+          "answers": [
+            "Parlo italiano."
+          ],
+          "options": [
+            "il libro",
+            "la casa",
+            "Sono uno studente.",
+            "Sono a casa.",
+            "Parlo italiano.",
+            "La casa è bianca."
+          ],
+          "explanation": "Parlo italiano. — I speak Italian.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I speak Italian.",
+          "answers": [
+            "Parlo italiano."
+          ],
+          "options": [],
+          "explanation": "Use Parlo italiano.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: Parlo italiano.",
+          "answers": [
+            "I speak Italian."
+          ],
+          "options": [],
+          "explanation": "Parlo italiano. — I speak Italian.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"The house is white.\".",
+          "answers": [
+            "La casa è bianca."
+          ],
+          "options": [
+            "il libro",
+            "la casa",
+            "Sono uno studente.",
+            "Sono a casa.",
+            "Parlo italiano.",
+            "La casa è bianca."
+          ],
+          "explanation": "La casa è bianca. — The house is white.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: The house is white.",
+          "answers": [
+            "La casa è bianca."
+          ],
+          "options": [],
+          "explanation": "Use La casa è bianca.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: La casa è bianca.",
+          "answers": [
+            "The house is white."
+          ],
+          "options": [],
+          "explanation": "La casa è bianca. — The house is white.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which article goes before studente?",
+          "answers": [
+            "lo"
+          ],
+          "options": [
+            "lo",
+            "la",
+            "le"
+          ],
+          "explanation": "Il libro is masculine and la casa feminine. Lo is used before s plus a consonant, as in lo studente; l' is used before a vowel, as in l'amica. Sono is the io form of essere. Parlo is the io present form of parlare. An adjective agrees with its noun: la casa bianca. È means is; e means and. Learn accented forms even when the keyboard-friendly scoring accepts plain vowels.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which word means is?",
+          "answers": [
+            "è"
+          ],
+          "options": [
+            "è",
+            "e",
+            "o"
+          ],
+          "explanation": "Il libro is masculine and la casa feminine. Lo is used before s plus a consonant, as in lo studente; l' is used before a vowel, as in l'amica. Sono is the io form of essere. Parlo is the io present form of parlare. An adjective agrees with its noun: la casa bianca. È means is; e means and. Learn accented forms even when the keyboard-friendly scoring accepts plain vowels.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which phrase means the female friend?",
+          "answers": [
+            "l'amica"
+          ],
+          "options": [
+            "l'amica",
+            "il libro",
+            "lo studente"
+          ],
+          "explanation": "Il libro is masculine and la casa feminine. Lo is used before s plus a consonant, as in lo studente; l' is used before a vowel, as in l'amica. Sono is the io form of essere. Parlo is the io present form of parlare. An adjective agrees with its noun: la casa bianca. È means is; e means and. Learn accented forms even when the keyboard-friendly scoring accepts plain vowels.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which adjective agrees with la casa?",
+          "answers": [
+            "bianca"
+          ],
+          "options": [
+            "bianca",
+            "bianco",
+            "bianchi"
+          ],
+          "explanation": "Il libro is masculine and la casa feminine. Lo is used before s plus a consonant, as in lo studente; l' is used before a vowel, as in l'amica. Sono is the io form of essere. Parlo is the io present form of parlare. An adjective agrees with its noun: la casa bianca. È means is; e means and. Learn accented forms even when the keyboard-friendly scoring accepts plain vowels.",
+          "contextText": null
+        }
+      ]
+    },
+    {
+      "unitKey": "grammar-foundations",
+      "unitTitle": "How the language works",
+      "unitDescription": "Use articles, noun forms, sentence patterns and the language's special letters.",
+      "difficulty": "A1",
+      "contentVersion": 1,
+      "key": "check-grammar-foundations",
+      "title": "Unit check · Language foundations",
+      "objective": "Apply the grammar and spelling distinctions from this unit.",
+      "explanation": "Review the teaching lesson before taking this check.",
+      "prerequisiteKeys": [
+        "grammar-forms"
+      ],
+      "isCheckpoint": true,
+      "exercises": [
+        {
+          "type": "Translation",
+          "prompt": "Translate: the book",
+          "answers": [
+            "il libro"
+          ],
+          "options": [],
+          "explanation": "Use il libro",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: the house",
+          "answers": [
+            "la casa"
+          ],
+          "options": [],
+          "explanation": "Use la casa",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I am a student.",
+          "answers": [
+            "Sono uno studente."
+          ],
+          "options": [],
+          "explanation": "Use Sono uno studente.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I am at home.",
+          "answers": [
+            "Sono a casa."
+          ],
+          "options": [],
+          "explanation": "Use Sono a casa.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I speak Italian.",
+          "answers": [
+            "Parlo italiano."
+          ],
+          "options": [],
+          "explanation": "Use Parlo italiano.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: The house is white.",
+          "answers": [
+            "La casa è bianca."
+          ],
+          "options": [],
+          "explanation": "Use La casa è bianca.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which article goes before studente?",
+          "answers": [
+            "lo"
+          ],
+          "options": [
+            "lo",
+            "la",
+            "le"
+          ],
+          "explanation": "Il libro is masculine and la casa feminine. Lo is used before s plus a consonant, as in lo studente; l' is used before a vowel, as in l'amica. Sono is the io form of essere. Parlo is the io present form of parlare. An adjective agrees with its noun: la casa bianca. È means is; e means and. Learn accented forms even when the keyboard-friendly scoring accepts plain vowels.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which word means is?",
+          "answers": [
+            "è"
+          ],
+          "options": [
+            "è",
+            "e",
+            "o"
+          ],
+          "explanation": "Il libro is masculine and la casa feminine. Lo is used before s plus a consonant, as in lo studente; l' is used before a vowel, as in l'amica. Sono is the io form of essere. Parlo is the io present form of parlare. An adjective agrees with its noun: la casa bianca. È means is; e means and. Learn accented forms even when the keyboard-friendly scoring accepts plain vowels.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which phrase means the female friend?",
+          "answers": [
+            "l'amica"
+          ],
+          "options": [
+            "l'amica",
+            "il libro",
+            "lo studente"
+          ],
+          "explanation": "Il libro is masculine and la casa feminine. Lo is used before s plus a consonant, as in lo studente; l' is used before a vowel, as in l'amica. Sono is the io form of essere. Parlo is the io present form of parlare. An adjective agrees with its noun: la casa bianca. È means is; e means and. Learn accented forms even when the keyboard-friendly scoring accepts plain vowels.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which adjective agrees with la casa?",
+          "answers": [
+            "bianca"
+          ],
+          "options": [
+            "bianca",
+            "bianco",
+            "bianchi"
+          ],
+          "explanation": "Il libro is masculine and la casa feminine. Lo is used before s plus a consonant, as in lo studente; l' is used before a vowel, as in l'amica. Sono is the io form of essere. Parlo is the io present form of parlare. An adjective agrees with its noun: la casa bianca. È means is; e means and. Learn accented forms even when the keyboard-friendly scoring accepts plain vowels.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: il libro",
+          "answers": [
+            "the book"
+          ],
+          "options": [],
+          "explanation": "il libro — the book",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: la casa",
+          "answers": [
+            "the house"
+          ],
+          "options": [],
+          "explanation": "la casa — the house",
+          "contextText": null
+        }
+      ]
+    },
+    {
       "key": "directions",
       "title": "Finding your way",
       "objective": "Understand and use expressions for finding your way.",

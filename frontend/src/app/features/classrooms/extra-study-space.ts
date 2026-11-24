@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -6,10 +7,11 @@ import { AuthStore } from '../../core/accounts/auth-store';
 import { ExtraStudyApi, ExtraStudySpaceView } from '../../core/classrooms/extra-study-api';
 import { CatalogApi, CatalogLesson, CatalogUnit } from '../../core/content/catalog-api';
 import { LearningApi } from '../../core/learning/learning-api';
+import { StudyMessages } from './study-messages';
 
 @Component({
   selector: 'app-extra-study-space',
-  imports: [RouterLink],
+  imports: [RouterLink, DatePipe, StudyMessages],
   templateUrl: './extra-study-space.html',
   styleUrl: './classrooms.scss',
 })
@@ -32,6 +34,55 @@ export class ExtraStudySpace {
   protected readonly error = signal('');
   protected readonly loading = signal(false);
   protected readonly busy = signal(false);
+  protected readonly timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  protected studyRequestId(): string {
+    return this.params().get('requestId') ?? '';
+  }
+
+  protected async schedule(
+    lessonId: string,
+    localTime: string | null,
+    duration: string | null,
+  ): Promise<void> {
+    const requestId = this.params().get('requestId');
+    if (!requestId || this.busy()) return;
+    if (
+      localTime === '' ||
+      (duration !== null &&
+        (!Number.isInteger(Number(duration)) || Number(duration) < 15 || Number(duration) > 120))
+    ) {
+      this.error.set('Choose a lesson time and a duration between 15 and 120 minutes.');
+      return;
+    }
+    const date = localTime ? new Date(localTime) : null;
+    if (date && Number.isNaN(date.getTime())) {
+      this.error.set('Choose a valid lesson date and time.');
+      return;
+    }
+    const generation = this.generation;
+    this.busy.set(true);
+    this.error.set('');
+    try {
+      await this.api.schedule(
+        requestId,
+        lessonId,
+        date?.toISOString() ?? null,
+        duration ? Number(duration) : null,
+      );
+      if (!this.current(generation)) return;
+      const space = await this.api.space(requestId);
+      if (this.current(generation)) this.space.set(space);
+    } catch (error) {
+      if (this.current(generation))
+        this.error.set(
+          error instanceof HttpErrorResponse && typeof error.error?.title === 'string'
+            ? error.error.title
+            : 'The appointment could not be saved. Refresh and try again.',
+        );
+    } finally {
+      if (this.current(generation)) this.busy.set(false);
+    }
+  }
 
   constructor() {
     effect(() => {

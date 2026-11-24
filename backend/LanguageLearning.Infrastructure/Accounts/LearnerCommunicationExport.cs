@@ -19,8 +19,13 @@ public sealed class LearnerCommunicationExport(LexiGoDbContext database)
                           orderby submission.SubmittedAt, submission.Id
                           select new
                           {
-                              submission.Id, submission.AssignmentId, assignment.ClassroomId, assignment.Title,
-                              submission.SessionId, submission.SubmittedAt, submission.IsLate
+                              submission.Id,
+                              submission.AssignmentId,
+                              assignment.ClassroomId,
+                              assignment.Title,
+                              submission.SessionId,
+                              submission.SubmittedAt,
+                              submission.IsLate
                           };
         var feedback = from item in database.TeacherFeedback.AsNoTracking()
                        join submission in submissions on item.SubmissionId equals submission.Id
@@ -31,6 +36,17 @@ public sealed class LearnerCommunicationExport(LexiGoDbContext database)
                          where request.LearnerId == userId
                          orderby request.CreatedAt, request.Id
                          select new { request.Id, offer.CourseId, request.Status, request.CreatedAt };
+        var studyLessons = from lesson in database.ExtraStudyLessons.AsNoTracking()
+                           join request in database.ExtraStudyRequests on lesson.RequestId equals request.Id
+                           where request.LearnerId == userId
+                           orderby lesson.SharedAt, lesson.RequestId, lesson.LessonId
+                           select new { lesson.RequestId, lesson.LessonId, lesson.SharedAt, lesson.ScheduledAt, lesson.DurationMinutes };
+        var messages = from message in database.ExtraStudyMessages.AsNoTracking()
+                       join request in database.ExtraStudyRequests on message.RequestId equals request.Id
+                       join offer in database.ExtraStudyOffers on request.OfferId equals offer.Id
+                       where request.LearnerId == userId || offer.TeacherId == userId
+                       orderby message.CreatedAt, message.Id
+                       select new { message.Id, message.RequestId, message.SenderId, message.Body, message.CreatedAt };
         var notifications = database.Notifications.AsNoTracking().Where(item => item.UserId == userId)
             .OrderBy(item => item.CreatedAt).ThenBy(item => item.Id)
             .Select(item => new { item.Id, item.AssignmentId, item.Type, item.Title, item.Body, item.ReadAt, item.CreatedAt });
@@ -38,16 +54,24 @@ public sealed class LearnerCommunicationExport(LexiGoDbContext database)
             .OrderBy(item => item.CreatedAt).ThenBy(item => item.Id)
             .Select(item => new
             {
-                item.Id, item.LanguageId, item.ResourceType,
+                item.Id,
+                item.LanguageId,
+                item.ResourceType,
                 ResourceId = item.ResourceType == "RankingName" ? Guid.Empty : item.ResourceId,
                 item.VersionId,
-                item.Reason, item.Comment, item.Status, item.Resolution, item.CreatedAt
+                item.Reason,
+                item.Comment,
+                item.Status,
+                item.Resolution,
+                item.CreatedAt
             });
 
         await WriteSectionAsync(destination, ",\"classMemberships\":"u8.ToArray(), memberships, cancellationToken);
         await WriteSectionAsync(destination, ",\"assignmentSubmissions\":"u8.ToArray(), assignments, cancellationToken);
         await WriteSectionAsync(destination, ",\"assignmentFeedback\":"u8.ToArray(), feedback, cancellationToken);
         await WriteSectionAsync(destination, ",\"extraStudyRequests\":"u8.ToArray(), extraStudy, cancellationToken);
+        await WriteSectionAsync(destination, ",\"extraStudyLessons\":"u8.ToArray(), studyLessons, cancellationToken);
+        await WriteSectionAsync(destination, ",\"extraStudyMessages\":"u8.ToArray(), messages, cancellationToken);
         await WriteSectionAsync(destination, ",\"notifications\":"u8.ToArray(), notifications, cancellationToken);
         await WriteSectionAsync(destination, ",\"contentReports\":"u8.ToArray(), reports, cancellationToken);
     }

@@ -137,8 +137,8 @@ public sealed class SubscriptionRenewalProcessor(LexiGoDbContext database, Subsc
         {
             UserId = userId,
             Type = reason is null ? "SubscriptionRenewed" : "SubscriptionEnded",
-            Title = reason is null ? "Your test Premium plan renewed" : "Your Premium period has ended",
-            Body = reason is null ? "Your simulated card was charged for the next period. View your payment and test receipt in Billing. No real money was used."
+            Title = reason is null ? "Your Premium plan renewed" : "Your Premium period has ended",
+            Body = reason is null ? "Your card balance covered the next period. View your payment and receipt in Billing."
                 : $"{EndReason(reason)} No funds were charged. Your learning progress is saved. You can purchase a new test period manually in Billing.",
             CreatedAt = now
         });

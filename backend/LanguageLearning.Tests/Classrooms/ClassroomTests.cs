@@ -73,8 +73,13 @@ public sealed partial class ClassroomTests(RegistrationFixture fixture) : IClass
         var now = DateTimeOffset.UtcNow;
         var subscription = new LanguageLearning.Core.Billing.Subscription
         {
-            UserId = learner.User.Id, PlanId = premium, CurrentPlanPriceId = priceId, Status = "Active",
-            CreatedAt = now, CurrentPeriodStart = now.AddMinutes(-2), CurrentPeriodEnd = now.AddDays(1),
+            UserId = learner.User.Id,
+            PlanId = premium,
+            CurrentPlanPriceId = priceId,
+            Status = "Active",
+            CreatedAt = now,
+            CurrentPeriodStart = now.AddMinutes(-2),
+            CurrentPeriodEnd = now.AddDays(1),
         };
         database.Subscriptions.Add(subscription);
         await database.SaveChangesAsync();
@@ -82,7 +87,8 @@ public sealed partial class ClassroomTests(RegistrationFixture fixture) : IClass
         var entries = await Read<System.Text.Json.JsonElement>(
             await learnerBrowser.SendAsync(HttpMethod.Get, directory, bearer: learner.Token));
         var entry = Assert.Single(entries.EnumerateArray());
-        entry.EnumerateObject().Select(property => property.Name).Should().BeEquivalentTo("id", "displayName");
+        entry.EnumerateObject().Select(property => property.Name).Should().BeEquivalentTo(
+            "id", "displayName", "pricePerLesson", "levelFrom", "levelTo", "biography", "portraitKey", "courseTitle", "courseId");
         entry.GetProperty("id").GetGuid().Should().NotBe(teacher.User.Id);
         var offerId = entry.GetProperty("id").GetGuid();
         var requestPath = $"/api/v1/extra-study/offers/{offerId}/requests";
@@ -502,8 +508,13 @@ public sealed partial class ClassroomTests(RegistrationFixture fixture) : IClass
             $"/api/v1/lessons/{lesson.LessonId}/sessions", bearer: learner.Token));
         const string privateAnswer = "private incorrect response";
         (await learnerBrowser.SendAsync(HttpMethod.Post, $"/api/v1/me/learning-sessions/{session.Id}/answers",
-            new { sessionExerciseId = session.CurrentExercise!.Id, answerText = privateAnswer,
-                selectedOptionIds = Array.Empty<Guid>(), idempotencyKey = Guid.NewGuid() }, learner.Token))
+            new
+            {
+                sessionExerciseId = session.CurrentExercise!.Id,
+                answerText = privateAnswer,
+                selectedOptionIds = Array.Empty<Guid>(),
+                idempotencyKey = Guid.NewGuid()
+            }, learner.Token))
             .EnsureSuccessStatusCode();
         var today = DateTimeOffset.UtcNow;
         var path = $"/api/v1/admin/analytics?from={today.AddDays(-1):yyyy-MM-dd}&through={today:yyyy-MM-dd}";

@@ -1,0 +1,31 @@
+fieldset {
+  min-width: 0;
+  border: 1px solid var(--line);
+  padding: 1rem;
+}
+.dialogue-node {
+  border-block-start: 2px solid var(--line);
+  margin-block: 1.5rem;
+  padding-block: 1rem;
+}
+.dialogue-choice {
+  margin-block: 1rem;
+}
+.check {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.check input {
+  width: 1.25rem;
+  min-height: 1.25rem;
+}
+.dialogue-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-block: 1rem;
+}
+button {
+  cursor: pointer;
+}

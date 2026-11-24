@@ -1,4 +1,5 @@
 using LanguageLearning.Core.Accounts;
+using LanguageLearning.Infrastructure.Accounts;
 using LanguageLearning.Infrastructure.Data;
 using MailKit.Net.Smtp;
 using MailKit.Security;
@@ -44,6 +45,17 @@ public sealed class EmailDeliveryWorker(
             .ToListAsync(cancellationToken);
         var message = messages.SingleOrDefault();
         if (message is null) return;
+        if (message.Recipient.EndsWith(PresentationAccountProvisioner.Domain, StringComparison.OrdinalIgnoreCase))
+        {
+            // Explicitly fictional operator-created accounts have no deliverable mailbox.
+            // Never send their security notices or recovery links to an external service.
+            message.Attempts = 8;
+            message.Recipient = "";
+            message.HtmlBody = "";
+            await database.SaveChangesAsync(cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
+            return;
+        }
 
         var reminder = message.Purpose == StudyReminderQueue.Purpose
             ? await database.ReminderDeliveries.FindAsync([message.Id], cancellationToken)

@@ -55,8 +55,7 @@ export class TestCardsStore {
     try {
       await this.refresh(generation);
     } catch {
-      if (this.current(generation))
-        this.error.set('Your test wallet could not be loaded. Try again.');
+      if (this.current(generation)) this.error.set('Your wallet could not be loaded. Try again.');
     } finally {
       if (this.current(generation)) this.loading.set(false);
     }
@@ -91,7 +90,7 @@ export class TestCardsStore {
       if (!this.current(generation)) return;
       saved = true;
       this.pending.set(null);
-      this.notice.set('Saved to your test wallet. No real money was moved.');
+      this.notice.set('Your wallet is updated. Review your card balance and transaction history.');
       await this.refresh(generation);
     } catch (error) {
       if (!this.current(generation)) return;

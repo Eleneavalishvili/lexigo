@@ -18,8 +18,9 @@
       <p><a routerLink="/classes">Open your classes ↗</a></p>
       <p><a routerLink="/speaking">Practise speaking ↗</a></p>
       <p><a routerLink="/billing/subscription">Your plan and subscription ↗</a></p>
-      <p><a routerLink="/billing/cards">Open your test wallet ↗</a></p>
+      <p><a routerLink="/billing/cards">Open your wallet ↗</a></p>
       <p><a routerLink="/billing/history">Your subscription paper trail ↗</a></p>
+      <app-account-plan />
       @if (
         auth.user()?.roles?.includes('SuperAdmin') ||
         (auth.user()?.roles?.includes('Admin') &&

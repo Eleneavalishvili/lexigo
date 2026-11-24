@@ -7,12 +7,9 @@
     <p class="eyebrow">A LITTLE MORE HEART</p>
     <h1>Ready for<br /><em>another little step?</em></h1>
     <p class="intro">
-      Restore all five hearts with a one-time test purchase, or let your free recovery finish.
+      Restore all five hearts with a one-time purchase, or let your free recovery finish.
     </p>
-    <aside class="simulation">
-      <strong>SIMULATED CHECKOUT ONLY</strong> This uses your test-card balance. No real money or
-      bank card is involved.
-    </aside>
+
     @if (store.error()) {
       <p class="error" role="alert">{{ store.error() }}</p>
     }
@@ -25,7 +22,7 @@
       Reload checkout ↻
     </button>
     @if (store.loading()) {
-      <p role="status">Opening your saved hearts and test wallet…</p>
+      <p role="status">Opening your saved hearts and wallet…</p>
     }
     @if (store.pending()) {
       <section class="recovery" aria-labelledby="pending-title">
@@ -80,7 +77,7 @@
           <p>
             Charged:
             <strong>{{ result.chargedAmount | currency: result.currency : 'code' }}</strong>
-            simulated funds.
+            card balance.
           </p>
           <p class="reference">{{ result.reference }}</p>
           <p>{{ result.createdAt | date: 'medium' }}</p>
@@ -100,7 +97,7 @@
           </p>
           <p class="price">
             {{ offer.amount | currency: offer.currency : 'code' }}
-            <small>simulated funds · one-time refill</small>
+            <small>card balance · one-time refill</small>
           </p>
           <p>
             The same price restores your balance to five. It adds no XP and starts no subscription.
@@ -108,21 +105,21 @@
         </section>
         <section class="payment-panel" aria-labelledby="payment-title">
           <p class="eyebrow">YOUR CHOICE, YOUR PACE</p>
-          <h2 id="payment-title">Choose a test card.</h2>
+          <h2 id="payment-title">Choose a card.</h2>
           @if (offer.hearts.count >= offer.maximumHearts) {
             <p class="notice" role="status">Your hearts are full. No purchase is needed.</p>
           }
           @if (offer.hearts.unlimited) {
             <p>Premium has unlimited hearts. You can keep learning without a refill.</p>
           }
-          <label for="heart-card">Test card · {{ offer.currency }} only</label>
+          <label for="heart-card">Card · {{ offer.currency }} only</label>
           <select
             id="heart-card"
             [value]="selected()"
             (change)="choose($event)"
             [disabled]="store.busy() || store.loading() || !!store.pending()"
           >
-            <option value="">Choose your test card</option>
+            <option value="">Choose your card</option>
             @for (card of store.cards(); track card.id) {
               <option
                 [value]="card.id"
@@ -133,10 +130,10 @@
               </option>
             }
           </select>
-          <p><a routerLink="/billing/cards">Create a card or add simulated funds ↗</a></p>
+          <p><a routerLink="/billing/cards">Create a card or add card balance ↗</a></p>
           <p>
-            Confirming spends {{ offer.amount | currency: offer.currency : 'code' }} from this test
-            card if the refill succeeds. A declined purchase costs nothing.
+            Confirming spends {{ offer.amount | currency: offer.currency : 'code' }} from this card
+            if the refill succeeds. A declined purchase costs nothing.
           </p>
           <button
             type="button"
@@ -150,7 +147,7 @@
               offer.hearts.count >= offer.maximumHearts
             "
           >
-            {{ store.busy() ? 'Processing…' : 'Confirm test purchase ↗' }}
+            {{ store.busy() ? 'Processing…' : 'Confirm purchase ↗' }}
           </button>
         </section>
       </div>
@@ -181,7 +178,7 @@
               </div>
               <strong
                 >{{ purchase.chargedAmount | currency: purchase.currency : 'code'
-                }}<small>simulated charge</small></strong
+                }}<small>payment</small></strong
               >
             </li>
           } @empty {

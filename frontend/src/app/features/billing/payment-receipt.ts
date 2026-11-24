@@ -122,7 +122,7 @@ export class PaymentReceipt {
       URL.revokeObjectURL(url);
     } catch {
       if (this.current(generation))
-        this.error.set('The test receipt could not be downloaded. Try again.');
+        this.error.set('The receipt could not be downloaded. Try again.');
     } finally {
       if (this.current(generation)) this.busy.set(false);
     }

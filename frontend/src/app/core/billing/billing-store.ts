@@ -142,7 +142,7 @@ export class BillingStore {
           card.id === cardId && card.status === 'Active' && card.currency === order.currency,
       )
     ) {
-      this.error.set('Choose an active test card in the order currency.');
+      this.error.set('Choose an active card in the order currency.');
       return;
     }
     this.result.set(null);

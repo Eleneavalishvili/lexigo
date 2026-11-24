@@ -14,12 +14,69 @@
     }
     @if (space(); as data) {
       <p>{{ data.courseTitle }}</p>
+      @if (data.partnerName) {
+        <p>
+          Studying with <strong>{{ data.partnerName }}</strong>
+        </p>
+      }
+      <app-study-messages [requestId]="studyRequestId()" />
       <section class="panel" aria-labelledby="shared-title">
         <h2 id="shared-title">Shared lessons</h2>
         <ul class="class-list">
           @for (lesson of data.lessons; track lesson.id) {
             <li>
               <p>{{ lesson.title }}</p>
+              <p>Learning status: {{ lesson.status ?? 'NotStarted' }}</p>
+              @if (lesson.bestScore !== null && lesson.bestScore !== undefined) {
+                <p>Best score: {{ lesson.bestScore }}%</p>
+              }
+              @if (lesson.completedAt) {
+                <p>Completed {{ lesson.completedAt | date: 'medium' }}</p>
+              }
+              @if (lesson.scheduledAt) {
+                <p>
+                  <strong>{{ lesson.scheduledAt | date: 'medium' }}</strong> ·
+                  {{ lesson.durationMinutes }} minutes · {{ timeZone }}
+                </p>
+                @if (data.canShare) {
+                  <button
+                    type="button"
+                    [disabled]="busy()"
+                    (click)="schedule(lesson.id, null, null)"
+                  >
+                    Cancel appointment
+                  </button>
+                }
+              } @else {
+                <p>No appointment scheduled. You can study the shared lesson at any time.</p>
+              }
+              @if (data.canShare) {
+                <details>
+                  <summary>Schedule or change appointment</summary>
+                  <label [for]="'time-' + lesson.id">Lesson time ({{ timeZone }})</label>
+                  <input [id]="'time-' + lesson.id" type="datetime-local" #time />
+                  <label [for]="'duration-' + lesson.id">Duration in minutes</label>
+                  <input
+                    [id]="'duration-' + lesson.id"
+                    type="number"
+                    min="15"
+                    max="120"
+                    value="30"
+                    #duration
+                  />
+                  <button
+                    type="button"
+                    [disabled]="busy()"
+                    (click)="schedule(lesson.id, time.value, duration.value)"
+                  >
+                    Save appointment
+                  </button>
+                  <p>
+                    Both accounts will see the saved time. Overlapping teacher or learner
+                    appointments are prevented.
+                  </p>
+                </details>
+              }
               @if (!data.canShare) {
                 <button
                   class="button button-ink"

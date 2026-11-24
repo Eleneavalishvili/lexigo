@@ -9,4 +9,9 @@ public sealed class Dialogue
     public int VersionNumber { get; set; } = 1;
     public string Status { get; set; } = "Draft";
     public bool RequiresPremium { get; set; }
+    public Guid? OwnerId { get; set; }
+    public Guid? ReviewerId { get; set; }
+    public DateTimeOffset? ReviewedAt { get; set; }
+    public string? ReviewComment { get; set; }
+    public Guid EditToken { get; set; } = Guid.NewGuid();
 }

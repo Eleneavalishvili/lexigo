@@ -85,5 +85,11 @@ for language, rows in ROWS.items():
     packs.append({"code": language, "items": items})
 path = ROOT / "backend/LanguageLearning.Infrastructure/Vocabulary/Starter/words.json"
 path.parent.mkdir(parents=True, exist_ok=True)
+# Preserve separately authored additions when rebuilding the original resource.
+if path.exists():
+    previous = {pack["code"]: pack["items"] for pack in json.loads(path.read_text(encoding="utf-8"))}
+    for pack in packs:
+        keys = {item["key"] for item in pack["items"]}
+        pack["items"].extend(item for item in previous.get(pack["code"], []) if item["key"] not in keys)
 path.write_text(json.dumps(packs, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 print("Wrote 88 vocabulary entries: 24 existing starter words and 64 additions.")

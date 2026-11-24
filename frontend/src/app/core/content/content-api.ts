@@ -3,6 +3,17 @@ import { inject, Injectable } from '@angular/core';
 import { firstValueFrom, fromEvent, takeUntil } from 'rxjs';
 import type { MatchedPair, SpeechCheckFeedback } from '../learning/learning-api';
 export type PreviewSpeechFeedback = Pick<SpeechCheckFeedback, 'status' | 'message'>;
+export interface CourseLanguage {
+  id: number;
+  code: string;
+  englishName: string;
+}
+export interface NewCourse {
+  sourceLanguageId: number;
+  targetLanguageId: number;
+  title: string;
+  description: string;
+}
 export interface StaffCourse {
   archivedAt?: string | null;
   orderNumber?: number;
@@ -136,6 +147,12 @@ export class ContentApi {
   private readonly url = '/api/v1/manage';
   courses(): Promise<readonly StaffCourse[]> {
     return firstValueFrom(this.http.get<StaffCourse[]>(this.url + '/courses'));
+  }
+  courseLanguages(): Promise<readonly CourseLanguage[]> {
+    return firstValueFrom(this.http.get<CourseLanguage[]>(this.url + '/courses/languages'));
+  }
+  createCourse(course: NewCourse): Promise<{ id: string }> {
+    return firstValueFrom(this.http.post<{ id: string }>(this.url + '/courses', course));
   }
   checkPreviewSpeech(
     lessonId: string,

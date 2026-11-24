@@ -8,4 +8,5 @@ public sealed class ApplicationUser : IdentityUser<Guid>
     public Guid? AvatarMediaId { get; set; }
     public string Status { get; set; } = "Active";
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
+    public string? TeacherAccessCodeHash { get; set; }
 }

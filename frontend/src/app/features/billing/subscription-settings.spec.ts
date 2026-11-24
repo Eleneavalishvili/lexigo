@@ -84,7 +84,7 @@ describe('Subscription management controls', () => {
     });
     await fixture.whenStable();
     expect(fixture.nativeElement.textContent).toContain('cannot renew until you confirm');
-    expect(fixture.nativeElement.textContent).toContain('authorizes a simulated debit');
+    expect(fixture.nativeElement.textContent).toContain('authorizes a debit');
     expect(api.manage).not.toHaveBeenCalled();
   });
   it('allows an expired Free account to stop the explicitly targeted pending renewal', async () => {

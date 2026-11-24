@@ -18,7 +18,6 @@ export class SubscriptionCheckout {
   protected readonly store = inject(BillingStore);
   protected readonly selectedPrice = signal('');
   protected readonly selectedCard = signal('');
-  protected readonly technical = signal(false);
   constructor() {
     const price = inject(ActivatedRoute).snapshot.queryParamMap.get('price') ?? '';
     const auth = inject(AuthStore);
@@ -27,7 +26,6 @@ export class SubscriptionCheckout {
       if (auth.user()?.id !== owner) {
         this.selectedPrice.set('');
         this.selectedCard.set('');
-        this.technical.set(false);
       }
     });
     effect(() => {
@@ -59,10 +57,10 @@ export class SubscriptionCheckout {
     return (
       (
         {
-          CardBlocked: 'The test card is blocked.',
-          CurrencyMismatch: 'The test card currency does not match this order.',
-          InsufficientBalance: 'Add simulated funds to this test card.',
-          TechnicalFailure: 'A technical decline was simulated. No funds moved.',
+          CardBlocked: 'The card is blocked.',
+          CurrencyMismatch: 'The card currency does not match this order.',
+          InsufficientBalance: 'Add card balance to this card.',
+          TechnicalFailure: 'The payment could not be processed. Your balance was not charged.',
           AlreadySubscribed: 'You already have an active subscription.',
           OrderExpired: 'This quote expired. Review a fresh order.',
         } as Record<string, string>

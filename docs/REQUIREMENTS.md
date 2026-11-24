@@ -589,3 +589,14 @@ Weekly ranking follow-up2026-11-03: original GET/leaderboards operation is verif
 Reward catalog management follow-up2026-11-03: REWARD_CATALOG_MANAGEMENT.md records all10expanded GET/list/POST/GETbyID/PUT/DELETE-as-archive operations for achievements and challenges, Admin/SuperAdmin liveMFA access, reason/revision/audit rules, award/edit locking and protected earned/started definitions. API071–076 resource macros remain unchecked/partial for other unfinished resources; per-resource operation evidence is in api-register.json. Original70models/122APIs and supporting5models/46APIs unchanged. Archive/revision metadata added to originalAchievement/Challenge models. Local migration28 preserves4badges/2challenges and existing1XP/8sessions/27answers; full445backendtests/274frontendtests and build/format passed. Live learner route guard verified; no fake staff session or real account promotion.
 
 
+
+## Approved presentation teacher additions — 2026-11-25
+
+These additions do not change the original 335-item baseline count.
+
+- [x] TUTOR-001: Eight fictional presentation tutors, four women/four men represented by original portraits, two per course, with teaching levels and GEL rates. Public walkthrough verified all8 cards, filtering, profile fields and enabled offers. Rates are shown on request cards; requesting a teacher does not itself charge that displayed rate.
+- [x] TUTOR-002: Private unique six-digit teacher access code PLUS authenticator verification, approved by user. HMAC lookup key kept in private configuration; roles/confirmed/active/MFA checks, lockout and replay protection remain enforced. TeacherCodeLoginTests passed and all8 actual public teacher logins succeeded. No six-digit-only privileged access.
+- [x] TUTOR-003: New learner course request creates exactly one teacher notification; accepted space shares lessons, scoped learner progress, local-time appointment and cancellation. Real PostgreSQL overlap/concurrency/privacy checks and desktop/phone browser journeys passed. Public walkthrough verified request, teacher inbox, acceptance, shared lesson and saved45-minute appointment.
+- [x] TUTOR-004: Private teacher-learner messages in accepted Premium study spaces, recipient notification, safe retry IDs, bounded pages and quotas, escaping, export and erasure. PostgreSQL participant/closed-space/concurrent retry/paging checks passed; frontend retry/account-change privacy test passed; desktop/phone and actual public two-way message walkthrough passed. Refresh retrieves new messages; no WebSocket claim.
+
+Release evidence: full706 backend run plus25 final focused cases;394 frontend tests; production build/lint; image0high/critical; source-secret scan; production HTTPS rehearsal. See TUTOR_STUDY_FLOW.md. Original pronunciation/hardware/independent content and remaining release-review gates are not completed by this slice.

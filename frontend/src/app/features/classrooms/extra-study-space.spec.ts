@@ -11,7 +11,7 @@ import { ExtraStudySpace } from './extra-study-space';
 
 describe('Private extra-study space', () => {
   const user = signal<{ id: string } | null>({ id: 'learner' });
-  const api = { space: vi.fn(), share: vi.fn() };
+  const api = { space: vi.fn(), share: vi.fn(), messages: vi.fn() };
   const catalog = { units: vi.fn(), lessons: vi.fn() };
   const learning = { start: vi.fn() };
   const lesson = { id: 'lesson', title: 'Greetings' };
@@ -23,6 +23,7 @@ describe('Private extra-study space', () => {
     user.set({ id: 'learner' });
     api.space.mockResolvedValue(space);
     api.share.mockResolvedValue({});
+    api.messages.mockResolvedValue({ items: [], nextBefore: null });
     catalog.units.mockResolvedValue([{ id: 'unit', title: 'Unit one' }]);
     catalog.lessons.mockResolvedValue([lesson]);
     learning.start.mockResolvedValue({ id: 'session' });
@@ -69,7 +70,7 @@ describe('Private extra-study space', () => {
     unit.dispatchEvent(new Event('change'));
     await fixture.whenStable();
     host.querySelector<HTMLSelectElement>('#study-lesson')!.value = 'lesson';
-    host.querySelector<HTMLButtonElement>('section:last-child button')!.click();
+    host.querySelector<HTMLButtonElement>('[aria-labelledby="share-title"] > button')!.click();
     await fixture.whenStable();
     expect(api.share).toHaveBeenCalledWith('request', 'lesson');
     expect(host.querySelector('.class-list')?.textContent).toContain('Greetings');

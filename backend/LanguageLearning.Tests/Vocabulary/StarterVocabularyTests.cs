@@ -22,8 +22,11 @@ public sealed class StarterVocabularyTests(RegistrationFixture fixture) : IClass
         existing.Example = "Staff-edited example retained.";
         var saved = new SavedWord
         {
-            UserId = learner.Id, VocabularyItemId = existing.Id,
-            DueAt = DateTimeOffset.UtcNow.AddDays(7), IntervalDays = 7, CorrectStreak = 3
+            UserId = learner.Id,
+            VocabularyItemId = existing.Id,
+            DueAt = DateTimeOffset.UtcNow.AddDays(7),
+            IntervalDays = 7,
+            CorrectStreak = 3
         };
         database.SavedWords.Add(saved);
         await database.SaveChangesAsync();
@@ -31,16 +34,16 @@ public sealed class StarterVocabularyTests(RegistrationFixture fixture) : IClass
         var results = await Task.WhenAll(
             firstScope.ServiceProvider.GetRequiredService<StarterVocabularyInstaller>().InstallAsync(default),
             secondScope.ServiceProvider.GetRequiredService<StarterVocabularyInstaller>().InstallAsync(default));
-        Assert.Equal(64, results.Sum());
+        Assert.Equal(112, results.Sum());
         Assert.Contains(0, results);
-        Assert.Equal(88, await database.VocabularyItems.CountAsync());
+        Assert.Equal(136, await database.VocabularyItems.CountAsync());
         Assert.Equal("Staff-edited example retained.", (await database.VocabularyItems.AsNoTracking()
             .SingleAsync(item => item.Id == existing.Id)).Example);
         foreach (var pack in StarterVocabularyInstaller.Read())
         {
             Guid courseId = StarterLessonInstaller.Read(pack.Code).CourseId;
             var words = await database.VocabularyItems.AsNoTracking().Where(item => item.CourseId == courseId).ToArrayAsync();
-            Assert.Equal(22, words.Length);
+            Assert.Equal(34, words.Length);
             Assert.All(words, word =>
             {
                 Assert.False(string.IsNullOrWhiteSpace(word.Example));
@@ -64,7 +67,7 @@ public sealed class StarterVocabularyTests(RegistrationFixture fixture) : IClass
         Assert.Equal(savedBefore.DueAt, savedAfter.DueAt);
         Assert.Equal(savedBefore.IntervalDays, savedAfter.IntervalDays);
         Assert.Equal(savedBefore.CorrectStreak, savedAfter.CorrectStreak);
-        Assert.Equal(64, await database.AuditLogs.CountAsync(item => item.Action == "Vocabulary.BuiltInInstalled"));
+        Assert.Equal(112, await database.AuditLogs.CountAsync(item => item.Action == "Vocabulary.BuiltInInstalled"));
         Assert.False(await database.XpTransactions.AnyAsync(item => item.UserId == learner.Id));
     }
 }

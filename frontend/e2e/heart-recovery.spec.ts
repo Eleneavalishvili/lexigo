@@ -87,7 +87,7 @@ test('a learner can open free practice after losing their last heart', async ({
   );
   await page.goto('/billing/hearts');
   await expect(page.locator('.current-hearts')).toContainText('5 / 5');
-  await expect(page.getByRole('button', { name: /Confirm test purchase/ })).toBeDisabled();
+  await expect(page.getByRole('button', { name: /Confirm purchase/ })).toBeDisabled();
   await page.goto(practice);
   await expect(page.getByRole('progressbar', { name: '1 of 12 answers saved' })).toBeVisible();
 });
@@ -112,21 +112,21 @@ test('a five-GEL simulated refill resumes the same unfinished lesson', async ({
   await page.getByRole('radio', { name: / leche$/ }).press('Space');
   await page.getByRole('button', { name: 'Check', exact: true }).click();
   await page.getByRole('button', { name: /Continue/ }).click();
-  await page.getByRole('link', { name: /Explore a simulated heart refill/ }).click();
-  const card = page.getByLabel(/Test card · GEL only/);
+  await page.getByRole('link', { name: /Refill your hearts/ }).click();
+  const card = page.getByLabel(/Card · GEL only/);
   await expect(card.locator('option').filter({ hasText: 'Study test card' })).toContainText(
     '20.00',
   );
   await card.selectOption({ index: 1 });
-  await page.getByRole('button', { name: /Confirm test purchase/ }).click();
+  await page.getByRole('button', { name: /Confirm purchase/ }).click();
   const result = page.getByRole('status', { name: 'Your refill is saved.' });
   await expect(page.getByRole('heading', { name: 'Your refill is saved.' })).toBeVisible();
-  await expect(page.getByText(/Charged:.*5\.00.*simulated funds/)).toBeVisible();
+  await expect(page.getByText(/Charged:.*5\.00/)).toBeVisible();
   await expect(page.locator('.current-hearts')).toContainText('5 / 5');
   await expect(card.locator('option').filter({ hasText: 'Study test card' })).toContainText(
     '15.00',
   );
-  await expect(page.getByRole('button', { name: /Confirm test purchase/ })).toBeDisabled();
+  await expect(page.getByRole('button', { name: /Confirm purchase/ })).toBeDisabled();
   await result.getByRole('link', { name: /Return to your saved learning/ }).click();
   await expect(page).toHaveURL(lesson);
   await expect(page.getByRole('progressbar', { name: '1 of 12 answers saved' })).toBeVisible();

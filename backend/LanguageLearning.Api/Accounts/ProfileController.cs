@@ -14,7 +14,7 @@ public sealed class ProfileController(ProfileService profiles) : ControllerBase
     private Guid UserId => Guid.Parse(User.FindFirst("sub")!.Value);
 
     [HttpPatch]
-    [EnableRateLimiting("account-entry")]
+    [EnableRateLimiting("account-settings")]
     [ProducesResponseType<RenamedProfile>(200)]
     [ProducesResponseType<ProblemDetails>(400)]
     [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
@@ -34,7 +34,7 @@ public sealed class ProfileController(ProfileService profiles) : ControllerBase
     }
 
     [HttpPut("preferences")]
-    [EnableRateLimiting("account-entry")]
+    [EnableRateLimiting("account-settings")]
     public async Task<IActionResult> Save(PreferenceDetails request, CancellationToken cancellationToken) =>
         await profiles.SaveAsync(UserId, request, cancellationToken)
             ? NoContent() : Problem(statusCode: 400, title: "Check your time zone, goal, study days and course selection.");
@@ -43,7 +43,7 @@ public sealed class ProfileController(ProfileService profiles) : ControllerBase
     public async Task<IActionResult> Courses(CancellationToken cancellationToken) => Ok(await profiles.CoursesAsync(cancellationToken));
 
     [HttpPut("study-goal")]
-    [EnableRateLimiting("account-entry")]
+    [EnableRateLimiting("account-settings")]
     public async Task<IActionResult> StudyGoal(StudyGoalRequest request, CancellationToken cancellationToken) =>
         await profiles.SetStudyGoalAsync(UserId, request.DailyGoalXp, cancellationToken)
             ? NoContent() : Problem(statusCode: 400, title: "Choose a daily goal between 1 and 1000 XP.");

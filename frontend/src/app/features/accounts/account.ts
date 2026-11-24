@@ -8,10 +8,11 @@ import { AccountApi } from '../../core/accounts/account-api';
 import { ActiveSession } from '../../core/accounts/auth-models';
 import { AuthStore } from '../../core/accounts/auth-store';
 import { BrandLogo } from '../../shared/brand-logo/brand-logo';
+import { AccountPlan } from './account-plan';
 
 @Component({
   selector: 'app-account',
-  imports: [PasswordToggle, RouterLink, DatePipe, ReactiveFormsModule, BrandLogo],
+  imports: [PasswordToggle, RouterLink, DatePipe, ReactiveFormsModule, BrandLogo, AccountPlan],
   templateUrl: './account.html',
   styleUrl: './account.scss',
 })

@@ -947,6 +947,146 @@
       "text": "Translate: I work in a school.",
       "language": "en"
     },
+    "en|choose the expression for \"the man\"": {
+      "file": "6272a58eba3a1d6c579e8335.wav",
+      "text": "Choose the expression for \"the man\".",
+      "language": "en"
+    },
+    "en|translate: the man": {
+      "file": "f18dddeec83a505adb1ef5e5.wav",
+      "text": "Translate: the man",
+      "language": "en"
+    },
+    "en|translate into english: der mann": {
+      "file": "d8c8ff6185d0a904f4b6216b.wav",
+      "text": "Translate into English: der Mann",
+      "language": "en"
+    },
+    "en|the man": {
+      "file": "eba6773656781256b2467085.wav",
+      "text": "the man",
+      "language": "en"
+    },
+    "en|choose the expression for \"the woman\"": {
+      "file": "18935842e76e0eba6668bdad.wav",
+      "text": "Choose the expression for \"the woman\".",
+      "language": "en"
+    },
+    "en|translate: the woman": {
+      "file": "8722cb782fba6b9d66ad4678.wav",
+      "text": "Translate: the woman",
+      "language": "en"
+    },
+    "en|translate into english: die frau": {
+      "file": "d2b31cae90e327e9d94f10bc.wav",
+      "text": "Translate into English: die Frau",
+      "language": "en"
+    },
+    "en|the woman": {
+      "file": "8bbd8d6221c98854776571f8.wav",
+      "text": "the woman",
+      "language": "en"
+    },
+    "en|choose the expression for \"the book\"": {
+      "file": "31c8a607c46e31c865deca3b.wav",
+      "text": "Choose the expression for \"the book\".",
+      "language": "en"
+    },
+    "en|translate: the book": {
+      "file": "d7c0202200dfff057151214b.wav",
+      "text": "Translate: the book",
+      "language": "en"
+    },
+    "en|translate into english: das buch": {
+      "file": "e8b4ee1db8701fa47cc36333.wav",
+      "text": "Translate into English: das Buch",
+      "language": "en"
+    },
+    "en|the book": {
+      "file": "ad7cda629ed518b1a851a653.wav",
+      "text": "the book",
+      "language": "en"
+    },
+    "en|choose the expression for \"i see the man.\"": {
+      "file": "0f61522d71b82ddd7750bb50.wav",
+      "text": "Choose the expression for \"I see the man.\".",
+      "language": "en"
+    },
+    "en|translate: i see the man": {
+      "file": "c31e49baee08a8989d6c4857.wav",
+      "text": "Translate: I see the man.",
+      "language": "en"
+    },
+    "en|translate into english: ich sehe den mann": {
+      "file": "614e5dfcce5546d3f7173fdc.wav",
+      "text": "Translate into English: Ich sehe den Mann.",
+      "language": "en"
+    },
+    "en|i see the man": {
+      "file": "31f9cd3669476c871e996a91.wav",
+      "text": "I see the man.",
+      "language": "en"
+    },
+    "en|choose the expression for \"i speak with the man.\"": {
+      "file": "2c919782052a40c42b029a7d.wav",
+      "text": "Choose the expression for \"I speak with the man.\".",
+      "language": "en"
+    },
+    "en|translate: i speak with the man": {
+      "file": "dd947ff7b498a430064527fa.wav",
+      "text": "Translate: I speak with the man.",
+      "language": "en"
+    },
+    "en|translate into english: ich spreche mit dem mann": {
+      "file": "d1bdd002fd81e84c9670a143.wav",
+      "text": "Translate into English: Ich spreche mit dem Mann.",
+      "language": "en"
+    },
+    "en|i speak with the man": {
+      "file": "41b9b9637372fa79c5bc2255.wav",
+      "text": "I speak with the man.",
+      "language": "en"
+    },
+    "en|choose the expression for \"today i learn german.\"": {
+      "file": "eb63812ccbc04ac61c416ae2.wav",
+      "text": "Choose the expression for \"Today I learn German.\".",
+      "language": "en"
+    },
+    "en|translate: today i learn german": {
+      "file": "62974217142d44ed989c6809.wav",
+      "text": "Translate: Today I learn German.",
+      "language": "en"
+    },
+    "en|translate into english: heute lerne ich deutsch": {
+      "file": "9717d98129a0dc88732b06b3.wav",
+      "text": "Translate into English: Heute lerne ich Deutsch.",
+      "language": "en"
+    },
+    "en|today i learn german": {
+      "file": "277b7cad74247dc169f2663c.wav",
+      "text": "Today I learn German.",
+      "language": "en"
+    },
+    "en|which letter has an umlaut": {
+      "file": "c96a92fca2ceb2fed7a1f60e.wav",
+      "text": "Which letter has an umlaut?",
+      "language": "en"
+    },
+    "en|which article marks a masculine direct object": {
+      "file": "73b57a7296613e9e00bdebb8.wav",
+      "text": "Which article marks a masculine direct object?",
+      "language": "en"
+    },
+    "en|which phrase uses dative after mit": {
+      "file": "7ad7bed529384a7b248d0a14.wav",
+      "text": "Which phrase uses dative after mit?",
+      "language": "en"
+    },
+    "en|which sentence has the verb in second position": {
+      "file": "4a3089f0c7549783d2249059.wav",
+      "text": "Which sentence has the verb in second position?",
+      "language": "en"
+    },
     "en|translate into german: where is the station": {
       "file": "1d766d9281f3e270708b105d.wav",
       "text": "Translate into German: Where is the station?",
@@ -3442,6 +3582,131 @@
       "text": "Translate into English: Trabajo en una escuela.",
       "language": "en"
     },
+    "en|translate into english: el libro": {
+      "file": "5af8558eeb3186e76f51a584.wav",
+      "text": "Translate into English: el libro",
+      "language": "en"
+    },
+    "en|choose the expression for \"the house\"": {
+      "file": "22ec9bd3b5dc74f258883f1c.wav",
+      "text": "Choose the expression for \"the house\".",
+      "language": "en"
+    },
+    "en|translate: the house": {
+      "file": "14f9f1b447d9fc95073801c9.wav",
+      "text": "Translate: the house",
+      "language": "en"
+    },
+    "en|translate into english: la casa": {
+      "file": "221afd28b2c7e3dfe12b64af.wav",
+      "text": "Translate into English: la casa",
+      "language": "en"
+    },
+    "en|the house": {
+      "file": "9fff1e850ed603376145b639.wav",
+      "text": "the house",
+      "language": "en"
+    },
+    "en|choose the expression for \"i am a student.\"": {
+      "file": "451f7d54a58aa70c3aa63bec.wav",
+      "text": "Choose the expression for \"I am a student.\".",
+      "language": "en"
+    },
+    "en|translate: i am a student": {
+      "file": "58b61508ecea27c4e1aaa212.wav",
+      "text": "Translate: I am a student.",
+      "language": "en"
+    },
+    "en|translate into english: soy estudiante": {
+      "file": "a6047644aacf14d9bbb8c6bc.wav",
+      "text": "Translate into English: Soy estudiante.",
+      "language": "en"
+    },
+    "en|i am a student": {
+      "file": "d64768db629cda287d40514d.wav",
+      "text": "I am a student.",
+      "language": "en"
+    },
+    "en|choose the expression for \"i am at home.\"": {
+      "file": "e78c266483511b2427b21c41.wav",
+      "text": "Choose the expression for \"I am at home.\".",
+      "language": "en"
+    },
+    "en|translate: i am at home": {
+      "file": "bdf02f95f03761eab4b0aeb7.wav",
+      "text": "Translate: I am at home.",
+      "language": "en"
+    },
+    "en|translate into english: estoy en casa": {
+      "file": "b3ee0c9e19c04b37eb089518.wav",
+      "text": "Translate into English: Estoy en casa.",
+      "language": "en"
+    },
+    "en|i am at home": {
+      "file": "1bfbc07e9bfbe8d256142b87.wav",
+      "text": "I am at home.",
+      "language": "en"
+    },
+    "en|choose the expression for \"i speak spanish.\"": {
+      "file": "dfd747729810da22a6a4ebdd.wav",
+      "text": "Choose the expression for \"I speak Spanish.\".",
+      "language": "en"
+    },
+    "en|translate: i speak spanish": {
+      "file": "13eda3a093d12ea3dee71da1.wav",
+      "text": "Translate: I speak Spanish.",
+      "language": "en"
+    },
+    "en|translate into english: hablo español": {
+      "file": "bf2b235170de8c47c067a73c.wav",
+      "text": "Translate into English: Hablo español.",
+      "language": "en"
+    },
+    "en|i speak spanish": {
+      "file": "fadd04fe227c6b11e972ad7d.wav",
+      "text": "I speak Spanish.",
+      "language": "en"
+    },
+    "en|choose the expression for \"the house is white.\"": {
+      "file": "e7de63c26902e5335702dece.wav",
+      "text": "Choose the expression for \"The house is white.\".",
+      "language": "en"
+    },
+    "en|translate: the house is white": {
+      "file": "276b7d3afe1268655ee6951a.wav",
+      "text": "Translate: The house is white.",
+      "language": "en"
+    },
+    "en|translate into english: la casa es blanca": {
+      "file": "bd3c7a0d499d91cfa676215e.wav",
+      "text": "Translate into English: La casa es blanca.",
+      "language": "en"
+    },
+    "en|the house is white": {
+      "file": "9aebb097fe57f58aa8a60ac4.wav",
+      "text": "The house is white.",
+      "language": "en"
+    },
+    "en|which letter is a separate spanish letter": {
+      "file": "a21bec3dffda9f3c02c8ae46.wav",
+      "text": "Which letter is a separate Spanish letter?",
+      "language": "en"
+    },
+    "en|which mark opens a spanish question": {
+      "file": "1f717b1aedf838c7a639adaa.wav",
+      "text": "Which mark opens a Spanish question?",
+      "language": "en"
+    },
+    "en|which article accompanies casa": {
+      "file": "93766f42d69c4abbfee6d7f5.wav",
+      "text": "Which article accompanies casa?",
+      "language": "en"
+    },
+    "en|which form describes my current location": {
+      "file": "92d301b0d46b337414c5ced6.wav",
+      "text": "Which form describes my current location?",
+      "language": "en"
+    },
     "en|translate into spanish: where is the station": {
       "file": "c63ce903db6ac72612232e0b.wav",
       "text": "Translate into Spanish: Where is the station?",
@@ -4475,6 +4740,66 @@
     "en|translate into english: lavoro in una scuola": {
       "file": "59eb52dde28d516638a4c881.wav",
       "text": "Translate into English: Lavoro in una scuola.",
+      "language": "en"
+    },
+    "en|translate into english: il libro": {
+      "file": "6619b7f8043d3b2a243da825.wav",
+      "text": "Translate into English: il libro",
+      "language": "en"
+    },
+    "en|translate into english: sono uno studente": {
+      "file": "05f1ccf5d84d4a7c18ab2ed3.wav",
+      "text": "Translate into English: Sono uno studente.",
+      "language": "en"
+    },
+    "en|translate into english: sono a casa": {
+      "file": "a084509d57395a3946d5fdcc.wav",
+      "text": "Translate into English: Sono a casa.",
+      "language": "en"
+    },
+    "en|choose the expression for \"i speak italian.\"": {
+      "file": "cd28af2126c2eb5397859000.wav",
+      "text": "Choose the expression for \"I speak Italian.\".",
+      "language": "en"
+    },
+    "en|translate: i speak italian": {
+      "file": "d7310821a66d8d00d48d2458.wav",
+      "text": "Translate: I speak Italian.",
+      "language": "en"
+    },
+    "en|translate into english: parlo italiano": {
+      "file": "6746e4f73714ff850031494c.wav",
+      "text": "Translate into English: Parlo italiano.",
+      "language": "en"
+    },
+    "en|i speak italian": {
+      "file": "6c211badbcfba1316404c572.wav",
+      "text": "I speak Italian.",
+      "language": "en"
+    },
+    "en|translate into english: la casa è bianca": {
+      "file": "9386d0705ab66bf22edc49ee.wav",
+      "text": "Translate into English: La casa è bianca.",
+      "language": "en"
+    },
+    "en|which article goes before studente": {
+      "file": "49826a345af2406169e5cc12.wav",
+      "text": "Which article goes before studente?",
+      "language": "en"
+    },
+    "en|which word means is": {
+      "file": "7ff88d153636616c0e0681e6.wav",
+      "text": "Which word means is?",
+      "language": "en"
+    },
+    "en|which phrase means the female friend": {
+      "file": "ea12011cbf533ea3188bc597.wav",
+      "text": "Which phrase means the female friend?",
+      "language": "en"
+    },
+    "en|which adjective agrees with la casa": {
+      "file": "099b9ff1a06a41841b356a78.wav",
+      "text": "Which adjective agrees with la casa?",
       "language": "en"
     },
     "en|translate into italian: where is the station": {
@@ -5607,6 +5932,146 @@
       "text": "Translate into English: Я работаю в школе.",
       "language": "en"
     },
+    "en|choose the expression for \"this is a book.\"": {
+      "file": "ef9ef7056f1dd538640deee8.wav",
+      "text": "Choose the expression for \"This is a book.\".",
+      "language": "en"
+    },
+    "en|translate: this is a book": {
+      "file": "113f1c374b8ab5ba1dafa1ca.wav",
+      "text": "Translate: This is a book.",
+      "language": "en"
+    },
+    "en|translate into english: это книга": {
+      "file": "f237dbfda56372309e6681b5.wav",
+      "text": "Translate into English: Это книга.",
+      "language": "en"
+    },
+    "en|this is a book": {
+      "file": "fc89e21bd5756e9b8484a43c.wav",
+      "text": "This is a book.",
+      "language": "en"
+    },
+    "en|choose the expression for \"i read a book.\"": {
+      "file": "1063a11e495c681c260011c3.wav",
+      "text": "Choose the expression for \"I read a book.\".",
+      "language": "en"
+    },
+    "en|translate: i read a book": {
+      "file": "9b98968a9d4c834a58dfa34a.wav",
+      "text": "Translate: I read a book.",
+      "language": "en"
+    },
+    "en|translate into english: я читаю книгу": {
+      "file": "a1f3b831d160fba38bf6878a.wav",
+      "text": "Translate into English: Я читаю книгу.",
+      "language": "en"
+    },
+    "en|i read a book": {
+      "file": "2ed72ecd24f288b34f22d009.wav",
+      "text": "I read a book.",
+      "language": "en"
+    },
+    "en|choose the expression for \"i do not have a book.\"": {
+      "file": "bc76059bfa16fbf4a41d7579.wav",
+      "text": "Choose the expression for \"I do not have a book.\".",
+      "language": "en"
+    },
+    "en|translate: i do not have a book": {
+      "file": "b87931dacaef52731d5ac276.wav",
+      "text": "Translate: I do not have a book.",
+      "language": "en"
+    },
+    "en|translate into english: у меня нет книги": {
+      "file": "8e71edecae1a6462a9c3f174.wav",
+      "text": "Translate into English: У меня нет книги.",
+      "language": "en"
+    },
+    "en|i do not have a book": {
+      "file": "16d0c9d6a09e9dc60b78a794.wav",
+      "text": "I do not have a book.",
+      "language": "en"
+    },
+    "en|choose the expression for \"i talk about a book.\"": {
+      "file": "030246eace26ce04edb69604.wav",
+      "text": "Choose the expression for \"I talk about a book.\".",
+      "language": "en"
+    },
+    "en|translate: i talk about a book": {
+      "file": "d47e569b9c6852bcc93e49ff.wav",
+      "text": "Translate: I talk about a book.",
+      "language": "en"
+    },
+    "en|translate into english: я говорю о книге": {
+      "file": "b9d6d2d0105fc4726a9380ae.wav",
+      "text": "Translate into English: Я говорю о книге.",
+      "language": "en"
+    },
+    "en|i talk about a book": {
+      "file": "8d265212ce191cb590fda645.wav",
+      "text": "I talk about a book.",
+      "language": "en"
+    },
+    "en|choose the expression for \"i learn russian.\"": {
+      "file": "8d8a6e2a79452e6b095d35f1.wav",
+      "text": "Choose the expression for \"I learn Russian.\".",
+      "language": "en"
+    },
+    "en|translate: i learn russian": {
+      "file": "8f6ba8b4c7c6ca80b283eadf.wav",
+      "text": "Translate: I learn Russian.",
+      "language": "en"
+    },
+    "en|translate into english: я учу русский язык": {
+      "file": "3990b4a0f06fda53363fd319.wav",
+      "text": "Translate into English: Я учу русский язык.",
+      "language": "en"
+    },
+    "en|i learn russian": {
+      "file": "9ddc00ed99a055a173b29e2a.wav",
+      "text": "I learn Russian.",
+      "language": "en"
+    },
+    "en|choose the expression for \"this is a window.\"": {
+      "file": "9d697f4e13a4bfcca5c86eba.wav",
+      "text": "Choose the expression for \"This is a window.\".",
+      "language": "en"
+    },
+    "en|translate: this is a window": {
+      "file": "5224599764c63209a1f6be31.wav",
+      "text": "Translate: This is a window.",
+      "language": "en"
+    },
+    "en|translate into english: это окно": {
+      "file": "3f0f81c0ebb8cd23dc106464.wav",
+      "text": "Translate into English: Это окно.",
+      "language": "en"
+    },
+    "en|this is a window": {
+      "file": "5747846175ce2de667317684.wav",
+      "text": "This is a window.",
+      "language": "en"
+    },
+    "en|which cyrillic letter has two dots": {
+      "file": "95a6b5f5a8f0592b2bbacfa0.wav",
+      "text": "Which Cyrillic letter has two dots?",
+      "language": "en"
+    },
+    "en|which noun is feminine": {
+      "file": "36036769c4090d5651bed9b0.wav",
+      "text": "Which noun is feminine?",
+      "language": "en"
+    },
+    "en|which form is the direct object after читаю": {
+      "file": "e3b91e1d5ce8e29091f981b0.wav",
+      "text": "Which form is the direct object after читаю?",
+      "language": "en"
+    },
+    "en|which form follows о when discussing a book": {
+      "file": "4590f9407908f6a7c1fa94af.wav",
+      "text": "Which form follows о when discussing a book?",
+      "language": "en"
+    },
     "en|translate into russian: where is the station": {
       "file": "96b262eb00bc91964f739f76.wav",
       "text": "Translate into Russian: Where is the station?",
@@ -6497,6 +6962,501 @@
       "text": "two dots",
       "language": "en"
     },
+    "en|choose the lowercase form of а": {
+      "file": "78a0ac7b7dd9999ca2d2ab77.wav",
+      "text": "Choose the lowercase form of А.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «а»": {
+      "file": "42f07fcccdb7f358aee5b113.wav",
+      "text": "Which letter has the Russian name «а»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of б": {
+      "file": "3b4bbdffff2e572052b721f2.wav",
+      "text": "Choose the lowercase form of Б.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «бэ»": {
+      "file": "7474ad9fa404c0de14f33f36.wav",
+      "text": "Which letter has the Russian name «бэ»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of в": {
+      "file": "c6592cbaabeeda6e9843c7a0.wav",
+      "text": "Choose the lowercase form of В.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «вэ»": {
+      "file": "4a2797e4c68cd4cba8c96d70.wav",
+      "text": "Which letter has the Russian name «вэ»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of г": {
+      "file": "b60b195f369842145204458c.wav",
+      "text": "Choose the lowercase form of Г.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «гэ»": {
+      "file": "8e06612ede5d988fb1a2efd1.wav",
+      "text": "Which letter has the Russian name «гэ»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of д": {
+      "file": "1c2052745778e3797c035ae8.wav",
+      "text": "Choose the lowercase form of Д.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «дэ»": {
+      "file": "35e2c54458bc02ee709e28b5.wav",
+      "text": "Which letter has the Russian name «дэ»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of е": {
+      "file": "97b972bbf5bba348d80fd88f.wav",
+      "text": "Choose the lowercase form of Е.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «е»": {
+      "file": "177704274320df2fcfcdba1f.wav",
+      "text": "Which letter has the Russian name «е»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of ё": {
+      "file": "4713b9d03846979e7272dcda.wav",
+      "text": "Choose the lowercase form of Ё.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «ё»": {
+      "file": "da6c7c4425392c55c1c7fc41.wav",
+      "text": "Which letter has the Russian name «ё»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of ж": {
+      "file": "2edd0139fccc2ceb30baea21.wav",
+      "text": "Choose the lowercase form of Ж.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «жэ»": {
+      "file": "931b5aacba8f65ea0788a74c.wav",
+      "text": "Which letter has the Russian name «жэ»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of з": {
+      "file": "6c70a053f646773caeceba47.wav",
+      "text": "Choose the lowercase form of З.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «зэ»": {
+      "file": "5e10e62580304d7d9be7a37e.wav",
+      "text": "Which letter has the Russian name «зэ»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of и": {
+      "file": "7cd2d5f458fcf6edd6fc6075.wav",
+      "text": "Choose the lowercase form of И.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «и»": {
+      "file": "5353d0e353d3bb4ad0ece9c1.wav",
+      "text": "Which letter has the Russian name «и»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of й": {
+      "file": "98cb5f0ee7682042ffc22602.wav",
+      "text": "Choose the lowercase form of Й.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «и краткое»": {
+      "file": "38f77419feb6c0b832cf482c.wav",
+      "text": "Which letter has the Russian name «и краткое»?",
+      "language": "en"
+    },
+    "en|letter name: а; example: арбуз (watermelon)": {
+      "file": "21bbdf4cc0ff14f2bf76ca2f.wav",
+      "text": "letter name: а; example: арбуз (watermelon)",
+      "language": "en"
+    },
+    "en|letter name: бэ; example: банк (bank)": {
+      "file": "e99dfd2a0a8d6be6ab24e990.wav",
+      "text": "letter name: бэ; example: банк (bank)",
+      "language": "en"
+    },
+    "en|letter name: вэ; example: вода (water)": {
+      "file": "75315d70e9b712450d326094.wav",
+      "text": "letter name: вэ; example: вода (water)",
+      "language": "en"
+    },
+    "en|letter name: гэ; example: город (city)": {
+      "file": "5d8f14f075b5de1074d5e97e.wav",
+      "text": "letter name: гэ; example: город (city)",
+      "language": "en"
+    },
+    "en|letter name: дэ; example: дом (house)": {
+      "file": "1d9a82397f626eb20fa5abc8.wav",
+      "text": "letter name: дэ; example: дом (house)",
+      "language": "en"
+    },
+    "en|letter name: е; example: ель (spruce tree)": {
+      "file": "be680777f3a2cff3b85e9e56.wav",
+      "text": "letter name: е; example: ель (spruce tree)",
+      "language": "en"
+    },
+    "en|letter name: ё; example: ёлка (christmas tree)": {
+      "file": "b4f537504dc4f43d494b55e6.wav",
+      "text": "letter name: ё; example: ёлка (Christmas tree)",
+      "language": "en"
+    },
+    "en|letter name: жэ; example: жук (beetle)": {
+      "file": "8d1e728b3d50d297666d3f65.wav",
+      "text": "letter name: жэ; example: жук (beetle)",
+      "language": "en"
+    },
+    "en|letter name: зэ; example: зима (winter)": {
+      "file": "51cf3bb9e1e96898222fd90c.wav",
+      "text": "letter name: зэ; example: зима (winter)",
+      "language": "en"
+    },
+    "en|letter name: и; example: игра (game)": {
+      "file": "99c7d297ac3798bbe5367458.wav",
+      "text": "letter name: и; example: игра (game)",
+      "language": "en"
+    },
+    "en|letter name: и краткое; example: йогурт (yogurt)": {
+      "file": "8117e6eebf79dc0437225fa9.wav",
+      "text": "letter name: и краткое; example: йогурт (yogurt)",
+      "language": "en"
+    },
+    "en|choose the lowercase form of к": {
+      "file": "9dff4c08dc3a0d4126b44e58.wav",
+      "text": "Choose the lowercase form of К.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «ка»": {
+      "file": "44f6af8dc8cee177057d7474.wav",
+      "text": "Which letter has the Russian name «ка»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of л": {
+      "file": "58d9e14cc2867117bf773640.wav",
+      "text": "Choose the lowercase form of Л.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «эль»": {
+      "file": "93fbb2487cf225fafb2a237e.wav",
+      "text": "Which letter has the Russian name «эль»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of м": {
+      "file": "e777bf004153b58dfa2768fd.wav",
+      "text": "Choose the lowercase form of М.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «эм»": {
+      "file": "57d615b46d1c30946e98d646.wav",
+      "text": "Which letter has the Russian name «эм»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of н": {
+      "file": "38c47743c7b5902456f70939.wav",
+      "text": "Choose the lowercase form of Н.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «эн»": {
+      "file": "22c83cf6db2dd4addb9914ab.wav",
+      "text": "Which letter has the Russian name «эн»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of о": {
+      "file": "c4ae522fd80679e9ff7ca294.wav",
+      "text": "Choose the lowercase form of О.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «о»": {
+      "file": "6234734f18236a69b2826de9.wav",
+      "text": "Which letter has the Russian name «о»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of п": {
+      "file": "ec51b2da0a3ad8e38b1a27c7.wav",
+      "text": "Choose the lowercase form of П.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «пэ»": {
+      "file": "d4cd619ad9d32005bb78cdd3.wav",
+      "text": "Which letter has the Russian name «пэ»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of р": {
+      "file": "3f8691bd29abf526d5f6dc71.wav",
+      "text": "Choose the lowercase form of Р.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «эр»": {
+      "file": "3d5fb2a70216a327282be9dc.wav",
+      "text": "Which letter has the Russian name «эр»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of с": {
+      "file": "8d90e2cf80dde1f1265ce222.wav",
+      "text": "Choose the lowercase form of С.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «эс»": {
+      "file": "00e5758abaf6fdb3c0eb7954.wav",
+      "text": "Which letter has the Russian name «эс»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of т": {
+      "file": "dc70f0a2c09cbed59daeb3ab.wav",
+      "text": "Choose the lowercase form of Т.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «тэ»": {
+      "file": "a9c069c0b3a2db76a2404d1c.wav",
+      "text": "Which letter has the Russian name «тэ»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of у": {
+      "file": "f0afe9a257c5b540b271bb3e.wav",
+      "text": "Choose the lowercase form of У.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «у»": {
+      "file": "72089e6942cf568a518cb0cd.wav",
+      "text": "Which letter has the Russian name «у»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of ф": {
+      "file": "0479975f28536d129c9fd194.wav",
+      "text": "Choose the lowercase form of Ф.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «эф»": {
+      "file": "8f6ac4ab3ccd53cca2fc9747.wav",
+      "text": "Which letter has the Russian name «эф»?",
+      "language": "en"
+    },
+    "en|letter name: ка; example: кот (cat)": {
+      "file": "f1f7b7258898ca634bf61458.wav",
+      "text": "letter name: ка; example: кот (cat)",
+      "language": "en"
+    },
+    "en|letter name: эль; example: лампа (lamp)": {
+      "file": "6aa5607f0fb246f00131d510.wav",
+      "text": "letter name: эль; example: лампа (lamp)",
+      "language": "en"
+    },
+    "en|letter name: эм; example: мама (mother)": {
+      "file": "d9ab24b9791a5822b14467eb.wav",
+      "text": "letter name: эм; example: мама (mother)",
+      "language": "en"
+    },
+    "en|letter name: эн; example: нос (nose)": {
+      "file": "20419a5736bf18f7d862932b.wav",
+      "text": "letter name: эн; example: нос (nose)",
+      "language": "en"
+    },
+    "en|letter name: о; example: окно (window)": {
+      "file": "f02da24b258ce1f256f8d404.wav",
+      "text": "letter name: о; example: окно (window)",
+      "language": "en"
+    },
+    "en|letter name: пэ; example: парк (park)": {
+      "file": "734db20d68124bd0966e8128.wav",
+      "text": "letter name: пэ; example: парк (park)",
+      "language": "en"
+    },
+    "en|letter name: эр; example: рыба (fish)": {
+      "file": "fc4aecfad2a3d8d6be63391a.wav",
+      "text": "letter name: эр; example: рыба (fish)",
+      "language": "en"
+    },
+    "en|letter name: эс; example: суп (soup)": {
+      "file": "2078995b06c41cfc0e02fc6f.wav",
+      "text": "letter name: эс; example: суп (soup)",
+      "language": "en"
+    },
+    "en|letter name: тэ; example: три (three)": {
+      "file": "159c07ca8c2f2d06695ec224.wav",
+      "text": "letter name: тэ; example: три (three)",
+      "language": "en"
+    },
+    "en|letter name: у; example: утка (duck)": {
+      "file": "4fd16156121134b44fd7ffc5.wav",
+      "text": "letter name: у; example: утка (duck)",
+      "language": "en"
+    },
+    "en|letter name: эф; example: фото (photo)": {
+      "file": "2b25d066f3bda4db6ed3b888.wav",
+      "text": "letter name: эф; example: фото (photo)",
+      "language": "en"
+    },
+    "en|choose the lowercase form of х": {
+      "file": "49032bd4c0116d7f9554b458.wav",
+      "text": "Choose the lowercase form of Х.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «ха»": {
+      "file": "17289b8e668f1ae79411c96f.wav",
+      "text": "Which letter has the Russian name «ха»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of ц": {
+      "file": "75431eaeeab902448c9a3db4.wav",
+      "text": "Choose the lowercase form of Ц.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «цэ»": {
+      "file": "2f734f6639c09db584b05d03.wav",
+      "text": "Which letter has the Russian name «цэ»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of ч": {
+      "file": "a09e08f779ca92bd3dbf9db4.wav",
+      "text": "Choose the lowercase form of Ч.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «че»": {
+      "file": "096e61a26ed177488ecd5c3d.wav",
+      "text": "Which letter has the Russian name «че»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of ш": {
+      "file": "d104efea0dacd60bbc3080a1.wav",
+      "text": "Choose the lowercase form of Ш.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «ша»": {
+      "file": "89a7d176ddb56a46e68c77a3.wav",
+      "text": "Which letter has the Russian name «ша»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of щ": {
+      "file": "a582f339bd86695fc6b40182.wav",
+      "text": "Choose the lowercase form of Щ.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «ща»": {
+      "file": "6830910af66265ca813e9541.wav",
+      "text": "Which letter has the Russian name «ща»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of ъ": {
+      "file": "a982b7230260c51efee2b97f.wav",
+      "text": "Choose the lowercase form of Ъ.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «твёрдый знак»": {
+      "file": "71939ecb4144686a943d891f.wav",
+      "text": "Which letter has the Russian name «твёрдый знак»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of ы": {
+      "file": "f82e1221abfd7e47700cec2d.wav",
+      "text": "Choose the lowercase form of Ы.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «ы»": {
+      "file": "20abcbefbfe284e2177a7d58.wav",
+      "text": "Which letter has the Russian name «ы»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of ь": {
+      "file": "e2dc68ee6080c68ec21a8ddf.wav",
+      "text": "Choose the lowercase form of Ь.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «мягкий знак»": {
+      "file": "e9f13444971a7fab1a909ddc.wav",
+      "text": "Which letter has the Russian name «мягкий знак»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of э": {
+      "file": "55b67f3afad3f146821fd20f.wav",
+      "text": "Choose the lowercase form of Э.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «э»": {
+      "file": "141b93cd860b83fa1bc2110c.wav",
+      "text": "Which letter has the Russian name «э»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of ю": {
+      "file": "6d0fb02a430d2bba406f5485.wav",
+      "text": "Choose the lowercase form of Ю.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «ю»": {
+      "file": "1c2d59fa6bbf9cc8a982ba28.wav",
+      "text": "Which letter has the Russian name «ю»?",
+      "language": "en"
+    },
+    "en|choose the lowercase form of я": {
+      "file": "71f1e9ef650970f1e986c17e.wav",
+      "text": "Choose the lowercase form of Я.",
+      "language": "en"
+    },
+    "en|which letter has the russian name «я»": {
+      "file": "908e69e209e8cce6817668f0.wav",
+      "text": "Which letter has the Russian name «я»?",
+      "language": "en"
+    },
+    "en|letter name: ха; example: хлеб (bread)": {
+      "file": "5f1a723832e78cbfff9d3d04.wav",
+      "text": "letter name: ха; example: хлеб (bread)",
+      "language": "en"
+    },
+    "en|letter name: цэ; example: цветок (flower)": {
+      "file": "0d1ae7edd4af6067e2ac4f3c.wav",
+      "text": "letter name: цэ; example: цветок (flower)",
+      "language": "en"
+    },
+    "en|letter name: че; example: чай (tea)": {
+      "file": "e75c90a93411f194a5a2f015.wav",
+      "text": "letter name: че; example: чай (tea)",
+      "language": "en"
+    },
+    "en|letter name: ша; example: школа (school)": {
+      "file": "799dbea9f00e4fc15f0e48a8.wav",
+      "text": "letter name: ша; example: школа (school)",
+      "language": "en"
+    },
+    "en|letter name: ща; example: щётка (brush)": {
+      "file": "2b282b22292b9c6b344531ef.wav",
+      "text": "letter name: ща; example: щётка (brush)",
+      "language": "en"
+    },
+    "en|letter name: твёрдый знак; example: подъезд (building entrance)": {
+      "file": "00b5740ae37439f46a1cddc3.wav",
+      "text": "letter name: твёрдый знак; example: подъезд (building entrance)",
+      "language": "en"
+    },
+    "en|letter name: ы; example: сыр (cheese)": {
+      "file": "32fdde436f7ad94c8a69f2f2.wav",
+      "text": "letter name: ы; example: сыр (cheese)",
+      "language": "en"
+    },
+    "en|letter name: мягкий знак; example: день (day)": {
+      "file": "71d27e4bdeb8f33e088a811e.wav",
+      "text": "letter name: мягкий знак; example: день (day)",
+      "language": "en"
+    },
+    "en|letter name: э; example: это (this)": {
+      "file": "2b09170d908e88f2ee165f28.wav",
+      "text": "letter name: э; example: это (this)",
+      "language": "en"
+    },
+    "en|letter name: ю; example: юг (south)": {
+      "file": "dc08fb2d4833649198832fef.wav",
+      "text": "letter name: ю; example: юг (south)",
+      "language": "en"
+    },
+    "en|letter name: я; example: яблоко (apple)": {
+      "file": "247fc16fad920f92af881f83.wav",
+      "text": "letter name: я; example: яблоко (apple)",
+      "language": "en"
+    },
     "en|school": {
       "file": "e5981e90ea987ce7c5da08ff.wav",
       "text": "school",
@@ -6505,6 +7465,56 @@
     "en|sister": {
       "file": "e7a98dad092f76c5263fc179.wav",
       "text": "sister",
+      "language": "en"
+    },
+    "en|book": {
+      "file": "2d8aca1fedf6a3034cf523d0.wav",
+      "text": "book",
+      "language": "en"
+    },
+    "en|house": {
+      "file": "49688b4b844a3c64fe39ea02.wav",
+      "text": "house",
+      "language": "en"
+    },
+    "en|city": {
+      "file": "b236e51e3a8344e8bf7ef106.wav",
+      "text": "city",
+      "language": "en"
+    },
+    "en|room": {
+      "file": "addafa913ce712a8e529a524.wav",
+      "text": "room",
+      "language": "en"
+    },
+    "en|shop": {
+      "file": "5a3cf258cfa6f593ecfa98e0.wav",
+      "text": "shop",
+      "language": "en"
+    },
+    "en|street": {
+      "file": "b6c44b8129f19f1dbc383f2d.wav",
+      "text": "street",
+      "language": "en"
+    },
+    "en|table": {
+      "file": "1b94360b3a3025ab7927ef72.wav",
+      "text": "table",
+      "language": "en"
+    },
+    "en|chair": {
+      "file": "f360ebd86953cc72b70feb71.wav",
+      "text": "chair",
+      "language": "en"
+    },
+    "en|train": {
+      "file": "bb374b96438f272d151af0b9.wav",
+      "text": "train",
+      "language": "en"
+    },
+    "en|airport": {
+      "file": "326ec5811e7080116d399231.wav",
+      "text": "airport",
       "language": "en"
     },
     "en|train station": {
@@ -7022,6 +8032,81 @@
       "text": "escuela",
       "language": "es"
     },
+    "es|el libro": {
+      "file": "cd4231291cb82ad17b5530c0.wav",
+      "text": "el libro",
+      "language": "es"
+    },
+    "es|la casa": {
+      "file": "bb0962d9a3a3a5a886e94fd6.wav",
+      "text": "la casa",
+      "language": "es"
+    },
+    "es|soy estudiante": {
+      "file": "9d24b99f95d6b1a41bed408c.wav",
+      "text": "Soy estudiante.",
+      "language": "es"
+    },
+    "es|soy": {
+      "file": "429edcf424754934e576827a.wav",
+      "text": "Soy",
+      "language": "es"
+    },
+    "es|estoy en casa": {
+      "file": "f5f70dedb8c75cc8700b582e.wav",
+      "text": "Estoy en casa.",
+      "language": "es"
+    },
+    "es|estoy": {
+      "file": "95679015de41f31d3882b5d0.wav",
+      "text": "Estoy",
+      "language": "es"
+    },
+    "es|hablo español": {
+      "file": "225e0bb7887f032fef4b7825.wav",
+      "text": "Hablo español.",
+      "language": "es"
+    },
+    "es|hablo": {
+      "file": "7ea255ad05830b6c47e0871f.wav",
+      "text": "Hablo",
+      "language": "es"
+    },
+    "es|español": {
+      "file": "f9adc7062f50d039e382d6c4.wav",
+      "text": "español",
+      "language": "es"
+    },
+    "es|la casa es blanca": {
+      "file": "73e855160c2aa0800b4ffb63.wav",
+      "text": "La casa es blanca.",
+      "language": "es"
+    },
+    "es|blanca": {
+      "file": "7cff00205a3f3ab6f45c928d.wav",
+      "text": "blanca",
+      "language": "es"
+    },
+    "es|ñ": {
+      "file": "4b77acf930da20b0d1eb0058.wav",
+      "text": "ñ",
+      "language": "es"
+    },
+    "es|n": {
+      "file": "76a8f61b8375d31976b14ae9.wav",
+      "text": "n",
+      "language": "es"
+    },
+    "es|u": {
+      "file": "5446ebc6d875ee2ea5c33cf7.wav",
+      "text": "u",
+      "language": "es"
+    },
+    "es|los": {
+      "file": "e27d366eb3e417f618177230.wav",
+      "text": "los",
+      "language": "es"
+    },
     "es|gira a la izquierda": {
       "file": "bf4c0a48668475f5a968211f.wav",
       "text": "Gira a la izquierda.",
@@ -7412,11 +8497,6 @@
       "text": "Estoy cansado porque trabajo mucho.",
       "language": "es"
     },
-    "es|estoy": {
-      "file": "95679015de41f31d3882b5d0.wav",
-      "text": "Estoy",
-      "language": "es"
-    },
     "es|cansado": {
       "file": "7942572a649beb4f6a34288f.wav",
       "text": "cansado",
@@ -7475,11 +8555,6 @@
     "es|todos": {
       "file": "7f0917053176698e75d8ac48.wav",
       "text": "todos",
-      "language": "es"
-    },
-    "es|los": {
-      "file": "e27d366eb3e417f618177230.wav",
-      "text": "los",
       "language": "es"
     },
     "es|estoy cansado porque trabajo mucho. quiero aprender este idioma. es difícil pero interesante. practico todos los días": {
@@ -7605,11 +8680,6 @@
     "es|mesa": {
       "file": "ffcf9fee55267afef69900ea.wav",
       "text": "mesa",
-      "language": "es"
-    },
-    "es|blanca": {
-      "file": "7cff00205a3f3ab6f45c928d.wav",
-      "text": "blanca",
       "language": "es"
     },
     "es|la bolsa es roja. la camisa es azul. la mesa es blanca. el coche es negro": {
@@ -8707,6 +9777,146 @@
       "text": "calles",
       "language": "es"
     },
+    "es|la ciudad": {
+      "file": "20666d4551d6525dfae6a12b.wav",
+      "text": "la ciudad",
+      "language": "es"
+    },
+    "es|ciudad": {
+      "file": "f309a51e39d7cd2baa18c182.wav",
+      "text": "ciudad",
+      "language": "es"
+    },
+    "es|la ciudad es grande": {
+      "file": "afc68c196f32a4c885486bde.wav",
+      "text": "La ciudad es grande.",
+      "language": "es"
+    },
+    "es|el autobús": {
+      "file": "90ade45f567c3b60d94c4d94.wav",
+      "text": "el autobús",
+      "language": "es"
+    },
+    "es|el autobús llega hoy": {
+      "file": "7b13f57c681c8b136e58e380.wav",
+      "text": "El autobús llega hoy.",
+      "language": "es"
+    },
+    "es|llega": {
+      "file": "e2b8e1e9d79e18b6f093b352.wav",
+      "text": "llega",
+      "language": "es"
+    },
+    "es|el hotel": {
+      "file": "5eab40e4af9cdcc125ac0a1d.wav",
+      "text": "el hotel",
+      "language": "es"
+    },
+    "es|el hotel está cerca": {
+      "file": "b66073d03d81bea7f2c7b5c5.wav",
+      "text": "El hotel está cerca.",
+      "language": "es"
+    },
+    "es|la habitación": {
+      "file": "1fdb2853f45b57d2e0a5875b.wav",
+      "text": "la habitación",
+      "language": "es"
+    },
+    "es|la habitación es pequeña": {
+      "file": "f87d29487a36f7fb447384ed.wav",
+      "text": "La habitación es pequeña.",
+      "language": "es"
+    },
+    "es|la tienda": {
+      "file": "f5597690ded913085fb561ab.wav",
+      "text": "la tienda",
+      "language": "es"
+    },
+    "es|tienda": {
+      "file": "982c5960e895c2212a80faa9.wav",
+      "text": "tienda",
+      "language": "es"
+    },
+    "es|la tienda está abierta": {
+      "file": "6351d0261206351808f1c84e.wav",
+      "text": "La tienda está abierta.",
+      "language": "es"
+    },
+    "es|la calle": {
+      "file": "7de02cc0cd03c3a3da082ae3.wav",
+      "text": "la calle",
+      "language": "es"
+    },
+    "es|calle": {
+      "file": "b5b86f94b071f724582addc9.wav",
+      "text": "calle",
+      "language": "es"
+    },
+    "es|la calle es larga": {
+      "file": "68883cd31d346714e764dfad.wav",
+      "text": "La calle es larga.",
+      "language": "es"
+    },
+    "es|larga": {
+      "file": "4e3a6d3d2e3b4dec50989067.wav",
+      "text": "larga",
+      "language": "es"
+    },
+    "es|la mesa": {
+      "file": "5edee25e5cdf99b21a8e4166.wav",
+      "text": "la mesa",
+      "language": "es"
+    },
+    "es|el libro está en la mesa": {
+      "file": "e89c483fc4277c0318bfa423.wav",
+      "text": "El libro está en la mesa.",
+      "language": "es"
+    },
+    "es|la silla": {
+      "file": "245727a10c7d622a4f480656.wav",
+      "text": "la silla",
+      "language": "es"
+    },
+    "es|silla": {
+      "file": "a3845ac6d83240abb32ca743.wav",
+      "text": "silla",
+      "language": "es"
+    },
+    "es|la silla es azul": {
+      "file": "352c8fc39c0929cd95118887.wav",
+      "text": "La silla es azul.",
+      "language": "es"
+    },
+    "es|el tren": {
+      "file": "229ed49a0644c0b2a4c400b1.wav",
+      "text": "el tren",
+      "language": "es"
+    },
+    "es|el tren llega mañana": {
+      "file": "acdeb6db245aad4fc7897cc9.wav",
+      "text": "El tren llega mañana.",
+      "language": "es"
+    },
+    "es|el aeropuerto": {
+      "file": "b1123b871389bdd6997dacb8.wav",
+      "text": "el aeropuerto",
+      "language": "es"
+    },
+    "es|aeropuerto": {
+      "file": "b45bf523c67b7d001a375fec.wav",
+      "text": "aeropuerto",
+      "language": "es"
+    },
+    "es|el aeropuerto está lejos": {
+      "file": "1c2679732a68d17366d1063a.wav",
+      "text": "El aeropuerto está lejos.",
+      "language": "es"
+    },
+    "es|lejos": {
+      "file": "4d2a09ba9c58303f269dae67.wav",
+      "text": "lejos",
+      "language": "es"
+    },
     "es|buenos días. ¿qué desea": {
       "file": "b8b253925b9c07c814edfcec.wav",
       "text": "Buenos días. ¿Qué desea?",
@@ -9010,11 +10220,6 @@
     "es|está lejos": {
       "file": "be4428272313a1c14dfd39ff.wav",
       "text": "¿Está lejos?",
-      "language": "es"
-    },
-    "es|lejos": {
-      "file": "4d2a09ba9c58303f269dae67.wav",
-      "text": "lejos",
       "language": "es"
     },
     "es|no, está a cinco minutos a pie": {
@@ -9707,6 +10912,76 @@
       "text": "scuola",
       "language": "it"
     },
+    "it|il libro": {
+      "file": "0c045387b08bafc918e50d6b.wav",
+      "text": "il libro",
+      "language": "it"
+    },
+    "it|la casa": {
+      "file": "25b64de84a863d2e44012672.wav",
+      "text": "la casa",
+      "language": "it"
+    },
+    "it|sono uno studente": {
+      "file": "c5569b1546d615c792d57378.wav",
+      "text": "Sono uno studente.",
+      "language": "it"
+    },
+    "it|sono a casa": {
+      "file": "b45b1ca0cddefdfe12edae74.wav",
+      "text": "Sono a casa.",
+      "language": "it"
+    },
+    "it|parlo italiano": {
+      "file": "6af362587e4c8fa07028ceec.wav",
+      "text": "Parlo italiano.",
+      "language": "it"
+    },
+    "it|parlo": {
+      "file": "13ee333f0ec8e28d2d802d09.wav",
+      "text": "Parlo",
+      "language": "it"
+    },
+    "it|italiano": {
+      "file": "3d53a00f3c2bfd88d009b5ee.wav",
+      "text": "italiano",
+      "language": "it"
+    },
+    "it|la casa è bianca": {
+      "file": "7d7ff3c19b11243b9783cb30.wav",
+      "text": "La casa è bianca.",
+      "language": "it"
+    },
+    "it|bianca": {
+      "file": "b7ae290a1e56262dd64e6af6.wav",
+      "text": "bianca",
+      "language": "it"
+    },
+    "it|le": {
+      "file": "2c5dea4098334aeed401d062.wav",
+      "text": "le",
+      "language": "it"
+    },
+    "it|o": {
+      "file": "0bb4c0badc64953218085eec.wav",
+      "text": "o",
+      "language": "it"
+    },
+    "it|l'amica": {
+      "file": "612df28a3ee57252d5ffc0dc.wav",
+      "text": "l'amica",
+      "language": "it"
+    },
+    "it|bianco": {
+      "file": "8e34c5c5457e25c4b85cd422.wav",
+      "text": "bianco",
+      "language": "it"
+    },
+    "it|bianchi": {
+      "file": "823cfe830071272445040311.wav",
+      "text": "bianchi",
+      "language": "it"
+    },
     "it|gira a sinistra": {
       "file": "23a920bb267ce268f58a8b32.wav",
       "text": "Gira a sinistra.",
@@ -10282,11 +11557,6 @@
       "text": "tavolo",
       "language": "it"
     },
-    "it|bianco": {
-      "file": "8e34c5c5457e25c4b85cd422.wav",
-      "text": "bianco",
-      "language": "it"
-    },
     "it|la borsa è rossa. la camicia è blu. il tavolo è bianco. la macchina è nera": {
       "file": "4fc445d72bab4162b64cc384.wav",
       "text": "La borsa è rossa. La camicia è blu. Il tavolo è bianco. La macchina è nera.",
@@ -10320,11 +11590,6 @@
     "it|sono le due e mezza": {
       "file": "ed1ad8fe77c0fbfde4e2a10a.wav",
       "text": "Sono le due e mezza.",
-      "language": "it"
-    },
-    "it|le": {
-      "file": "2c5dea4098334aeed401d062.wav",
-      "text": "le",
       "language": "it"
     },
     "it|mezza": {
@@ -11437,6 +12702,151 @@
       "text": "strade",
       "language": "it"
     },
+    "it|la città": {
+      "file": "0a2c06c68e8cbb81ce9d9dd8.wav",
+      "text": "la città",
+      "language": "it"
+    },
+    "it|città": {
+      "file": "86957b511a2c975ebe9c0f34.wav",
+      "text": "città",
+      "language": "it"
+    },
+    "it|la città è grande": {
+      "file": "3998c89e4c0e6926cbeeb831.wav",
+      "text": "La città è grande.",
+      "language": "it"
+    },
+    "it|l'autobus": {
+      "file": "1a280ab98232a0f04a6a100d.wav",
+      "text": "l'autobus",
+      "language": "it"
+    },
+    "it|l'autobus arriva oggi": {
+      "file": "28996a5bbbe7790d32801db1.wav",
+      "text": "L'autobus arriva oggi.",
+      "language": "it"
+    },
+    "it|arriva": {
+      "file": "6bb9a4818f395f6047db339f.wav",
+      "text": "arriva",
+      "language": "it"
+    },
+    "it|l'albergo": {
+      "file": "e58111ec60ba9289c49d208c.wav",
+      "text": "l'albergo",
+      "language": "it"
+    },
+    "it|l'albergo è vicino": {
+      "file": "50ea364799f3ea36f71a1c52.wav",
+      "text": "L'albergo è vicino.",
+      "language": "it"
+    },
+    "it|vicino": {
+      "file": "b2058b295a08e9b1009e50ce.wav",
+      "text": "vicino",
+      "language": "it"
+    },
+    "it|la camera": {
+      "file": "5c2a00d66d3e4006d721fa37.wav",
+      "text": "la camera",
+      "language": "it"
+    },
+    "it|la camera è piccola": {
+      "file": "dca4fd5522e4f866985068ef.wav",
+      "text": "La camera è piccola.",
+      "language": "it"
+    },
+    "it|il negozio": {
+      "file": "94934f8bf8b0ca7875c1236b.wav",
+      "text": "il negozio",
+      "language": "it"
+    },
+    "it|negozio": {
+      "file": "5942d41bc82e6dd23172bbbc.wav",
+      "text": "negozio",
+      "language": "it"
+    },
+    "it|il negozio è aperto": {
+      "file": "907455e2a11cb373772a1552.wav",
+      "text": "Il negozio è aperto.",
+      "language": "it"
+    },
+    "it|aperto": {
+      "file": "b421a29545dc09ff9da8f9ef.wav",
+      "text": "aperto",
+      "language": "it"
+    },
+    "it|la strada": {
+      "file": "b193d40270a42c9fbc51eb8b.wav",
+      "text": "la strada",
+      "language": "it"
+    },
+    "it|strada": {
+      "file": "865e236ae6ab049cb169bfcd.wav",
+      "text": "strada",
+      "language": "it"
+    },
+    "it|la strada è lunga": {
+      "file": "d1cec44443ca03844e38ac03.wav",
+      "text": "La strada è lunga.",
+      "language": "it"
+    },
+    "it|lunga": {
+      "file": "2c35f7a513bbe48481f9f0e8.wav",
+      "text": "lunga",
+      "language": "it"
+    },
+    "it|il tavolo": {
+      "file": "e00bfeb21b31f277623208e9.wav",
+      "text": "il tavolo",
+      "language": "it"
+    },
+    "it|il libro è sul tavolo": {
+      "file": "ec6dde30de98a5bd75837914.wav",
+      "text": "Il libro è sul tavolo.",
+      "language": "it"
+    },
+    "it|la sedia": {
+      "file": "1f0f6540402077a1651252b5.wav",
+      "text": "la sedia",
+      "language": "it"
+    },
+    "it|sedia": {
+      "file": "95b90e365396621aca4857db.wav",
+      "text": "sedia",
+      "language": "it"
+    },
+    "it|la sedia è blu": {
+      "file": "b5d4e76215079ea7acff72eb.wav",
+      "text": "La sedia è blu.",
+      "language": "it"
+    },
+    "it|il treno": {
+      "file": "8acfc163a5f88a84046be08f.wav",
+      "text": "il treno",
+      "language": "it"
+    },
+    "it|il treno arriva domani": {
+      "file": "f415d888eb5786c3f81c6161.wav",
+      "text": "Il treno arriva domani.",
+      "language": "it"
+    },
+    "it|l'aeroporto": {
+      "file": "6bcc7810a90bab35f27ba048.wav",
+      "text": "l'aeroporto",
+      "language": "it"
+    },
+    "it|l'aeroporto è lontano": {
+      "file": "c3d99ec80e08a6bfa025e139.wav",
+      "text": "L'aeroporto è lontano.",
+      "language": "it"
+    },
+    "it|lontano": {
+      "file": "963c0797899c31ccaea48713.wav",
+      "text": "lontano",
+      "language": "it"
+    },
     "it|buonasera. che cosa ha perso": {
       "file": "b5eddcede909596863dd409a.wav",
       "text": "Buonasera. Che cosa ha perso?",
@@ -11600,11 +13010,6 @@
     "it|nero": {
       "file": "3e92d573e0281465ec672f6b.wav",
       "text": "nero",
-      "language": "it"
-    },
-    "it|o": {
-      "file": "0bb4c0badc64953218085eec.wav",
-      "text": "o",
       "language": "it"
     },
     "it|verde": {
@@ -11925,11 +13330,6 @@
     "it|è vicino alla piazza": {
       "file": "1dea38e1071f5418458fef9f.wav",
       "text": "È vicino alla piazza?",
-      "language": "it"
-    },
-    "it|vicino": {
-      "file": "b2058b295a08e9b1009e50ce.wav",
-      "text": "vicino",
       "language": "it"
     },
     "it|sì, è accanto alla piazza": {
@@ -12487,6 +13887,111 @@
       "text": "Schule",
       "language": "de"
     },
+    "de|der mann": {
+      "file": "f38c0c801b995766bd308981.wav",
+      "text": "der Mann",
+      "language": "de"
+    },
+    "de|die frau": {
+      "file": "ddd170248361b74995cb9052.wav",
+      "text": "die Frau",
+      "language": "de"
+    },
+    "de|die": {
+      "file": "ce8de6e3ab027618c3114606.wav",
+      "text": "die",
+      "language": "de"
+    },
+    "de|das buch": {
+      "file": "e51d60f05760f756c03e3314.wav",
+      "text": "das Buch",
+      "language": "de"
+    },
+    "de|ich sehe den mann": {
+      "file": "78744709a53aeb1a65a18eda.wav",
+      "text": "Ich sehe den Mann.",
+      "language": "de"
+    },
+    "de|sehe": {
+      "file": "344656fdbc310ec6a36c8d2b.wav",
+      "text": "sehe",
+      "language": "de"
+    },
+    "de|den": {
+      "file": "166c18dde7a42452e606a51c.wav",
+      "text": "den",
+      "language": "de"
+    },
+    "de|ich spreche mit dem mann": {
+      "file": "6184b081eed7a1cb7e197a1d.wav",
+      "text": "Ich spreche mit dem Mann.",
+      "language": "de"
+    },
+    "de|spreche": {
+      "file": "aa3826bd653dcd10273a864b.wav",
+      "text": "spreche",
+      "language": "de"
+    },
+    "de|mit": {
+      "file": "d3466d1633b83821c6856205.wav",
+      "text": "mit",
+      "language": "de"
+    },
+    "de|dem": {
+      "file": "66c17b31fcaebb1d63779375.wav",
+      "text": "dem",
+      "language": "de"
+    },
+    "de|heute lerne ich deutsch": {
+      "file": "6d80030353ffcb1ef943d2d6.wav",
+      "text": "Heute lerne ich Deutsch.",
+      "language": "de"
+    },
+    "de|deutsch": {
+      "file": "c5fbc5d80de69048c445a2f7.wav",
+      "text": "Deutsch",
+      "language": "de"
+    },
+    "de|ü": {
+      "file": "52d11c9ed2ec8994a5d99ada.wav",
+      "text": "ü",
+      "language": "de"
+    },
+    "de|u": {
+      "file": "eac8ac81fceaf83336f552c1.wav",
+      "text": "u",
+      "language": "de"
+    },
+    "de|n": {
+      "file": "46fe30761470d58b70c33332.wav",
+      "text": "n",
+      "language": "de"
+    },
+    "de|mit dem mann": {
+      "file": "76b36285098f07f2b252bd6e.wav",
+      "text": "mit dem Mann",
+      "language": "de"
+    },
+    "de|mit den mann": {
+      "file": "beb4cb177c9b77b22276cedc.wav",
+      "text": "mit den Mann",
+      "language": "de"
+    },
+    "de|mit der mann": {
+      "file": "343bcd53fb35fea1699bb324.wav",
+      "text": "mit der Mann",
+      "language": "de"
+    },
+    "de|heute ich lerne deutsch": {
+      "file": "d8f2086d4b0c7defbe6d818c.wav",
+      "text": "Heute ich lerne Deutsch.",
+      "language": "de"
+    },
+    "de|heute ich deutsch lerne": {
+      "file": "0c0f1b8089a880222c2a875e.wav",
+      "text": "Heute ich Deutsch lerne.",
+      "language": "de"
+    },
     "de|bieg links ab": {
       "file": "e9c6602f10646e88f9a9cb44.wav",
       "text": "Bieg links ab.",
@@ -12587,11 +14092,6 @@
       "text": "Kann",
       "language": "de"
     },
-    "de|mit": {
-      "file": "d3466d1633b83821c6856205.wav",
-      "text": "mit",
-      "language": "de"
-    },
     "de|karte": {
       "file": "b4a889c2be481693cc0db6b5.wav",
       "text": "Karte",
@@ -12625,11 +14125,6 @@
     "de|die küche ist klein": {
       "file": "303bd94c92e1a9fb4c628031.wav",
       "text": "Die Küche ist klein.",
-      "language": "de"
-    },
-    "de|die": {
-      "file": "ce8de6e3ab027618c3114606.wav",
-      "text": "Die",
       "language": "de"
     },
     "de|küche": {
@@ -13552,11 +15047,6 @@
       "text": "Gestern habe ich den Zug verpasst, weil ich zu spät von zu Hause losgegangen bin.",
       "language": "de"
     },
-    "de|den": {
-      "file": "166c18dde7a42452e606a51c.wav",
-      "text": "den",
-      "language": "de"
-    },
     "de|verpasst": {
       "file": "68069bf675264964d42a57c5.wav",
       "text": "verpasst",
@@ -14007,11 +15497,6 @@
       "text": "Zeit",
       "language": "de"
     },
-    "de|dem": {
-      "file": "66c17b31fcaebb1d63779375.wav",
-      "text": "dem",
-      "language": "de"
-    },
     "de|weg": {
       "file": "c9f5e023bd220334d8c5334a.wav",
       "text": "Weg",
@@ -14305,6 +15790,166 @@
     "de|nass": {
       "file": "c7b604022460a40a8060a0c8.wav",
       "text": "nass",
+      "language": "de"
+    },
+    "de|das haus": {
+      "file": "c7a32ca75563c373a87c1d78.wav",
+      "text": "das Haus",
+      "language": "de"
+    },
+    "de|das haus ist weiß": {
+      "file": "3bac4e7800ce728646b05e9f.wav",
+      "text": "Das Haus ist weiß.",
+      "language": "de"
+    },
+    "de|die stadt": {
+      "file": "986e5a34645e4720bd5e1979.wav",
+      "text": "die Stadt",
+      "language": "de"
+    },
+    "de|stadt": {
+      "file": "b6482f99f1f929bc2dde39e8.wav",
+      "text": "Stadt",
+      "language": "de"
+    },
+    "de|die stadt ist groß": {
+      "file": "16ca9da51cb3c62ebcbb5521.wav",
+      "text": "Die Stadt ist groß.",
+      "language": "de"
+    },
+    "de|groß": {
+      "file": "57eeec25b46cb36bd75ffb0f.wav",
+      "text": "groß",
+      "language": "de"
+    },
+    "de|der bus": {
+      "file": "8d162898e9841af19632f932.wav",
+      "text": "der Bus",
+      "language": "de"
+    },
+    "de|der bus kommt heute": {
+      "file": "8358b133389b48d354d32ef7.wav",
+      "text": "Der Bus kommt heute.",
+      "language": "de"
+    },
+    "de|kommt": {
+      "file": "1eea856003ab0ad191061c67.wav",
+      "text": "kommt",
+      "language": "de"
+    },
+    "de|das hotel": {
+      "file": "1a7b92b9e09c036b753c1ecb.wav",
+      "text": "das Hotel",
+      "language": "de"
+    },
+    "de|das hotel ist in der nähe": {
+      "file": "31aeed0f9ca3202fd9754af4.wav",
+      "text": "Das Hotel ist in der Nähe.",
+      "language": "de"
+    },
+    "de|das zimmer": {
+      "file": "474170c92f640c52d882da96.wav",
+      "text": "das Zimmer",
+      "language": "de"
+    },
+    "de|das zimmer ist klein": {
+      "file": "f7c766e10dab1001b6dd6cd1.wav",
+      "text": "Das Zimmer ist klein.",
+      "language": "de"
+    },
+    "de|das geschäft": {
+      "file": "bbdf282f4e962bcf0049675a.wav",
+      "text": "das Geschäft",
+      "language": "de"
+    },
+    "de|geschäft": {
+      "file": "fac54bd9fcbc783b3ffcc031.wav",
+      "text": "Geschäft",
+      "language": "de"
+    },
+    "de|das geschäft ist geöffnet": {
+      "file": "8a5d054671438e38ab1e7e99.wav",
+      "text": "Das Geschäft ist geöffnet.",
+      "language": "de"
+    },
+    "de|geöffnet": {
+      "file": "37c745ce9f9fe3b395f5deba.wav",
+      "text": "geöffnet",
+      "language": "de"
+    },
+    "de|die straße": {
+      "file": "92089078870d2e00441c485d.wav",
+      "text": "die Straße",
+      "language": "de"
+    },
+    "de|straße": {
+      "file": "76be30152525fbad52556056.wav",
+      "text": "Straße",
+      "language": "de"
+    },
+    "de|die straße ist lang": {
+      "file": "c8c292ac333839fa423e6399.wav",
+      "text": "Die Straße ist lang.",
+      "language": "de"
+    },
+    "de|lang": {
+      "file": "863e35f6d8f1e5f45ff0e470.wav",
+      "text": "lang",
+      "language": "de"
+    },
+    "de|der tisch": {
+      "file": "63658996d491e21b9ff0a15c.wav",
+      "text": "der Tisch",
+      "language": "de"
+    },
+    "de|das buch liegt auf dem tisch": {
+      "file": "c9187303df79a06800f313f9.wav",
+      "text": "Das Buch liegt auf dem Tisch.",
+      "language": "de"
+    },
+    "de|der stuhl": {
+      "file": "6213d02389cb86c2b1c33251.wav",
+      "text": "der Stuhl",
+      "language": "de"
+    },
+    "de|stuhl": {
+      "file": "ddf9f8a7a5b5269dcb19412b.wav",
+      "text": "Stuhl",
+      "language": "de"
+    },
+    "de|der stuhl ist blau": {
+      "file": "02c3fd6b64581996719ce1af.wav",
+      "text": "Der Stuhl ist blau.",
+      "language": "de"
+    },
+    "de|der zug": {
+      "file": "38cdd91a323218a361d0771f.wav",
+      "text": "der Zug",
+      "language": "de"
+    },
+    "de|der zug kommt morgen": {
+      "file": "0cbccddb83956a83e9b0710a.wav",
+      "text": "Der Zug kommt morgen.",
+      "language": "de"
+    },
+    "de|der flughafen": {
+      "file": "f6af4957761688ed799cc376.wav",
+      "text": "der Flughafen",
+      "language": "de"
+    },
+    "de|flughafen": {
+      "file": "9c7bd8e8e9d0d5f0ada37abf.wav",
+      "text": "Flughafen",
+      "language": "de"
+    },
+    "de|der flughafen ist weit weg": {
+      "file": "517feafc786e555cea0b7afb.wav",
+      "text": "Der Flughafen ist weit weg.",
+      "language": "de"
+    },
+    "de|weit": {
+      "file": "f8219387e2fe8e75039d0d6c.wav",
+      "text": "weit",
       "language": "de"
     },
     "de|guten tag. was haben sie verloren": {
@@ -14730,11 +16375,6 @@
     "de|ist es weit": {
       "file": "153859e7d5796548bc98d3d3.wav",
       "text": "Ist es weit?",
-      "language": "de"
-    },
-    "de|weit": {
-      "file": "f8219387e2fe8e75039d0d6c.wav",
-      "text": "weit",
       "language": "de"
     },
     "de|nein, zu fuß sind es fünf minuten": {
@@ -15312,6 +16952,96 @@
       "text": "школе",
       "language": "ru"
     },
+    "ru|это книга": {
+      "file": "61eb65bdb0b06f6029eb23ab.wav",
+      "text": "Это книга.",
+      "language": "ru"
+    },
+    "ru|книга": {
+      "file": "7075cc5a8dd56cd51c6734af.wav",
+      "text": "книга",
+      "language": "ru"
+    },
+    "ru|у меня нет книги": {
+      "file": "b434ef9ebc23375028a6557a.wav",
+      "text": "У меня нет книги.",
+      "language": "ru"
+    },
+    "ru|нет": {
+      "file": "ca9c687f2a4fecea0b7a6074.wav",
+      "text": "нет",
+      "language": "ru"
+    },
+    "ru|я говорю о книге": {
+      "file": "b1cda88ef162b02dc10a3a74.wav",
+      "text": "Я говорю о книге.",
+      "language": "ru"
+    },
+    "ru|говорю": {
+      "file": "8b6c342ad38ae1fa7d2e72bb.wav",
+      "text": "говорю",
+      "language": "ru"
+    },
+    "ru|о": {
+      "file": "cf1696637a2d821d408a9889.wav",
+      "text": "о",
+      "language": "ru"
+    },
+    "ru|книге": {
+      "file": "10cf1dc69b9ab5e018fee2ab.wav",
+      "text": "книге",
+      "language": "ru"
+    },
+    "ru|я учу русский язык": {
+      "file": "cafe8108a82c636d95eabcec.wav",
+      "text": "Я учу русский язык.",
+      "language": "ru"
+    },
+    "ru|учу": {
+      "file": "2da16669ffd0f5bc405fde39.wav",
+      "text": "учу",
+      "language": "ru"
+    },
+    "ru|русский": {
+      "file": "b8d3f1b6ce7fb104d98d0127.wav",
+      "text": "русский",
+      "language": "ru"
+    },
+    "ru|язык": {
+      "file": "b8f0c415d9e0182e76874aea.wav",
+      "text": "язык",
+      "language": "ru"
+    },
+    "ru|это окно": {
+      "file": "e20eab97648d1b10cc16da7b.wav",
+      "text": "Это окно.",
+      "language": "ru"
+    },
+    "ru|окно": {
+      "file": "24c6c790127a64a6087fc68c.wav",
+      "text": "окно",
+      "language": "ru"
+    },
+    "ru|ё": {
+      "file": "20bcdd4316dfa22406180017.wav",
+      "text": "ё",
+      "language": "ru"
+    },
+    "ru|е": {
+      "file": "b59c400393b07c70ff55f1d8.wav",
+      "text": "е",
+      "language": "ru"
+    },
+    "ru|э": {
+      "file": "38a3f1d16a0d45df3f584bd7.wav",
+      "text": "э",
+      "language": "ru"
+    },
+    "ru|стол": {
+      "file": "b1a71edf6caaee7eaff5f526.wav",
+      "text": "стол",
+      "language": "ru"
+    },
     "ru|поверни налево": {
       "file": "9212f8f6e61037cd8cc55178.wav",
       "text": "Поверни налево.",
@@ -15465,11 +17195,6 @@
     "ru|окно закрыто": {
       "file": "7d75376b0cd62f018f52637d.wav",
       "text": "Окно закрыто.",
-      "language": "ru"
-    },
-    "ru|окно": {
-      "file": "24c6c790127a64a6087fc68c.wav",
-      "text": "Окно",
       "language": "ru"
     },
     "ru|закрыто": {
@@ -15717,11 +17442,6 @@
       "text": "этот",
       "language": "ru"
     },
-    "ru|язык": {
-      "file": "b8f0c415d9e0182e76874aea.wav",
-      "text": "язык",
-      "language": "ru"
-    },
     "ru|это трудно, но интересно": {
       "file": "83c9a455e77e588d194ca762.wav",
       "text": "Это трудно, но интересно.",
@@ -15880,11 +17600,6 @@
     "ru|стол белый": {
       "file": "ca67a10dd51a2988528c3946.wav",
       "text": "Стол белый.",
-      "language": "ru"
-    },
-    "ru|стол": {
-      "file": "b1a71edf6caaee7eaff5f526.wav",
-      "text": "Стол",
       "language": "ru"
     },
     "ru|белый": {
@@ -16135,11 +17850,6 @@
     "ru|эта книга интереснее": {
       "file": "7099630c98951d153b7b9a6e.wav",
       "text": "Эта книга интереснее.",
-      "language": "ru"
-    },
-    "ru|книга": {
-      "file": "7075cc5a8dd56cd51c6734af.wav",
-      "text": "книга",
       "language": "ru"
     },
     "ru|интереснее": {
@@ -16897,24 +18607,264 @@
       "text": "Т",
       "language": "ru"
     },
-    "ru|е": {
-      "file": "b59c400393b07c70ff55f1d8.wav",
-      "text": "Е",
+    "ru|б": {
+      "file": "97f150324faca46ab1c4ae61.wav",
+      "text": "б",
       "language": "ru"
     },
-    "ru|э": {
-      "file": "38a3f1d16a0d45df3f584bd7.wav",
-      "text": "Э",
+    "ru|з": {
+      "file": "55fe4f079aceea72aa847973.wav",
+      "text": "з",
       "language": "ru"
     },
-    "ru|о": {
-      "file": "cf1696637a2d821d408a9889.wav",
-      "text": "О",
+    "ru|п": {
+      "file": "0908db24a848317cb0901e57.wav",
+      "text": "п",
       "language": "ru"
     },
-    "ru|ё": {
-      "file": "20bcdd4316dfa22406180017.wav",
-      "text": "Ё",
+    "ru|р": {
+      "file": "94758de3b598dc4991b931bb.wav",
+      "text": "р",
+      "language": "ru"
+    },
+    "ru|г": {
+      "file": "41117d73d330f90115018c69.wav",
+      "text": "г",
+      "language": "ru"
+    },
+    "ru|й": {
+      "file": "eefac07cac93638f5822fd19.wav",
+      "text": "й",
+      "language": "ru"
+    },
+    "ru|д": {
+      "file": "2402d1a1b0a5f67fd64ff916.wav",
+      "text": "д",
+      "language": "ru"
+    },
+    "ru|л": {
+      "file": "1e2a47716fe8835b8e6e9542.wav",
+      "text": "л",
+      "language": "ru"
+    },
+    "ru|ф": {
+      "file": "da033418616012715cc6c909.wav",
+      "text": "ф",
+      "language": "ru"
+    },
+    "ru|ж": {
+      "file": "1fb3d217272d9f0d10ad0af8.wav",
+      "text": "ж",
+      "language": "ru"
+    },
+    "ru|х": {
+      "file": "bd835d319d8af7ecdfd5c3aa.wav",
+      "text": "х",
+      "language": "ru"
+    },
+    "ru|ц": {
+      "file": "9350c7bdbd3c90825fc40861.wav",
+      "text": "ц",
+      "language": "ru"
+    },
+    "ru|ч": {
+      "file": "4b8356210e0db5a9cd574372.wav",
+      "text": "ч",
+      "language": "ru"
+    },
+    "ru|ш": {
+      "file": "610c6a60228949de0fe785b2.wav",
+      "text": "ш",
+      "language": "ru"
+    },
+    "ru|щ": {
+      "file": "360575cc4ee621ef2670ba86.wav",
+      "text": "щ",
+      "language": "ru"
+    },
+    "ru|а а": {
+      "file": "a2ff419d1cecbcd0d3f71bed.wav",
+      "text": "А а",
+      "language": "ru"
+    },
+    "ru|б б": {
+      "file": "ef0634fc011fdf757fe86b1f.wav",
+      "text": "Б б",
+      "language": "ru"
+    },
+    "ru|в в": {
+      "file": "43af964be8c9959b225c48a7.wav",
+      "text": "В в",
+      "language": "ru"
+    },
+    "ru|г г": {
+      "file": "1c71670e6cfc75093eb99d22.wav",
+      "text": "Г г",
+      "language": "ru"
+    },
+    "ru|д д": {
+      "file": "9fc1daa523fe0f39888b5848.wav",
+      "text": "Д д",
+      "language": "ru"
+    },
+    "ru|е е": {
+      "file": "1a9152b805947f8894ccb5c6.wav",
+      "text": "Е е",
+      "language": "ru"
+    },
+    "ru|ё ё": {
+      "file": "83833023e669a432381684ca.wav",
+      "text": "Ё ё",
+      "language": "ru"
+    },
+    "ru|ж ж": {
+      "file": "5eda16c1a0eec110b8789441.wav",
+      "text": "Ж ж",
+      "language": "ru"
+    },
+    "ru|з з": {
+      "file": "4f0a2bffcee749d867b7ea10.wav",
+      "text": "З з",
+      "language": "ru"
+    },
+    "ru|и и": {
+      "file": "e222430cd8622450b00c887a.wav",
+      "text": "И и",
+      "language": "ru"
+    },
+    "ru|й й": {
+      "file": "7bb0688ac025888ea2f13b11.wav",
+      "text": "Й й",
+      "language": "ru"
+    },
+    "ru|ы": {
+      "file": "8a9776a55b6103bcb268cd8a.wav",
+      "text": "ы",
+      "language": "ru"
+    },
+    "ru|ю": {
+      "file": "24d74268b9a966df8cc5fe0d.wav",
+      "text": "ю",
+      "language": "ru"
+    },
+    "ru|к к": {
+      "file": "6783b0c97f4a8adcee0bfede.wav",
+      "text": "К к",
+      "language": "ru"
+    },
+    "ru|л л": {
+      "file": "4f0211a03d31c3c9fb5880b5.wav",
+      "text": "Л л",
+      "language": "ru"
+    },
+    "ru|м м": {
+      "file": "36ac40537e0ab4184a9e8fee.wav",
+      "text": "М м",
+      "language": "ru"
+    },
+    "ru|н н": {
+      "file": "8a667cca86ff4e0fe4ed5ccb.wav",
+      "text": "Н н",
+      "language": "ru"
+    },
+    "ru|о о": {
+      "file": "7d3fa28934341f122be81937.wav",
+      "text": "О о",
+      "language": "ru"
+    },
+    "ru|п п": {
+      "file": "ccd6045515a207a1f3df7784.wav",
+      "text": "П п",
+      "language": "ru"
+    },
+    "ru|р р": {
+      "file": "1c68353040d2354d910ff983.wav",
+      "text": "Р р",
+      "language": "ru"
+    },
+    "ru|с с": {
+      "file": "0005fb95a00c4173114280d6.wav",
+      "text": "С с",
+      "language": "ru"
+    },
+    "ru|т т": {
+      "file": "bec3da91c9eed3f150573f99.wav",
+      "text": "Т т",
+      "language": "ru"
+    },
+    "ru|у у": {
+      "file": "976f4aa033466c46edd9c997.wav",
+      "text": "У у",
+      "language": "ru"
+    },
+    "ru|ф ф": {
+      "file": "fd07b65b2c55277ff6ba0c92.wav",
+      "text": "Ф ф",
+      "language": "ru"
+    },
+    "ru|х х": {
+      "file": "bd3278b473824718acd2ce5e.wav",
+      "text": "Х х",
+      "language": "ru"
+    },
+    "ru|ц ц": {
+      "file": "dfe5beff2aac557f4b77152a.wav",
+      "text": "Ц ц",
+      "language": "ru"
+    },
+    "ru|ч ч": {
+      "file": "97b9469f92b6664d2d7e8141.wav",
+      "text": "Ч ч",
+      "language": "ru"
+    },
+    "ru|ш ш": {
+      "file": "7fe874377d68954b98d73ca3.wav",
+      "text": "Ш ш",
+      "language": "ru"
+    },
+    "ru|щ щ": {
+      "file": "7bdb9289134e7eb97790f67b.wav",
+      "text": "Щ щ",
+      "language": "ru"
+    },
+    "ru|ъ ъ": {
+      "file": "2506d098576ed3fea685305c.wav",
+      "text": "Ъ ъ",
+      "language": "ru"
+    },
+    "ru|ъ": {
+      "file": "a0d60e96e8ef0b0fac4bd435.wav",
+      "text": "Ъ",
+      "language": "ru"
+    },
+    "ru|ы ы": {
+      "file": "aab60063f131d65c77a485fc.wav",
+      "text": "Ы ы",
+      "language": "ru"
+    },
+    "ru|ь ь": {
+      "file": "d41afc3cc44b157f86667333.wav",
+      "text": "Ь ь",
+      "language": "ru"
+    },
+    "ru|ь": {
+      "file": "da6bf4e5570c9e816638b690.wav",
+      "text": "Ь",
+      "language": "ru"
+    },
+    "ru|э э": {
+      "file": "3d26a5950ad8bfddc9ac30b2.wav",
+      "text": "Э э",
+      "language": "ru"
+    },
+    "ru|ю ю": {
+      "file": "389b0f8b2476b273f8677b08.wav",
+      "text": "Ю ю",
+      "language": "ru"
+    },
+    "ru|я я": {
+      "file": "8ccd50aa78d4090043812b8a.wav",
+      "text": "Я я",
       "language": "ru"
     },
     "ru|привет, мир": {
@@ -17127,6 +19077,116 @@
       "text": "улице",
       "language": "ru"
     },
+    "ru|дом белый": {
+      "file": "712f64b34b5d54187812b7a6.wav",
+      "text": "Дом белый.",
+      "language": "ru"
+    },
+    "ru|город": {
+      "file": "31e005ff74f1253fbc629b14.wav",
+      "text": "город",
+      "language": "ru"
+    },
+    "ru|город большой": {
+      "file": "ddad60797f7533b681e477d4.wav",
+      "text": "Город большой.",
+      "language": "ru"
+    },
+    "ru|большой": {
+      "file": "926da08fef4d68b014cf927c.wav",
+      "text": "большой",
+      "language": "ru"
+    },
+    "ru|автобус приезжает сегодня": {
+      "file": "5e6a9a6d1c32a810a9bdb5f1.wav",
+      "text": "Автобус приезжает сегодня.",
+      "language": "ru"
+    },
+    "ru|приезжает": {
+      "file": "08f0a0207bd5db649841c469.wav",
+      "text": "приезжает",
+      "language": "ru"
+    },
+    "ru|гостиница рядом": {
+      "file": "78192d7108e31dd6a26f8567.wav",
+      "text": "Гостиница рядом.",
+      "language": "ru"
+    },
+    "ru|комната маленькая": {
+      "file": "5ab04d13bb60660a9f2ab515.wav",
+      "text": "Комната маленькая.",
+      "language": "ru"
+    },
+    "ru|магазин": {
+      "file": "bc79f57cb3d196fa4ca858fa.wav",
+      "text": "магазин",
+      "language": "ru"
+    },
+    "ru|магазин открыт": {
+      "file": "0556bc441bc549a748226c3c.wav",
+      "text": "Магазин открыт.",
+      "language": "ru"
+    },
+    "ru|открыт": {
+      "file": "34c860367deaa820e65a1f32.wav",
+      "text": "открыт",
+      "language": "ru"
+    },
+    "ru|улица": {
+      "file": "a90dcbfd04173c472bbe8329.wav",
+      "text": "улица",
+      "language": "ru"
+    },
+    "ru|улица длинная": {
+      "file": "3dd1308d8fb5932d856e5f68.wav",
+      "text": "Улица длинная.",
+      "language": "ru"
+    },
+    "ru|длинная": {
+      "file": "bf9036978430f08b0a959a0d.wav",
+      "text": "длинная",
+      "language": "ru"
+    },
+    "ru|книга на столе": {
+      "file": "29306bfe67fe2dcd1ef8d442.wav",
+      "text": "Книга на столе.",
+      "language": "ru"
+    },
+    "ru|стул": {
+      "file": "10a590f7b4310b308302e4ad.wav",
+      "text": "стул",
+      "language": "ru"
+    },
+    "ru|стул синий": {
+      "file": "904b928465c7aad84bc8e298.wav",
+      "text": "Стул синий.",
+      "language": "ru"
+    },
+    "ru|синий": {
+      "file": "e46df333430797fee3d0ebb0.wav",
+      "text": "синий",
+      "language": "ru"
+    },
+    "ru|поезд приезжает завтра": {
+      "file": "5b42a3bac532a5c26202ab0c.wav",
+      "text": "Поезд приезжает завтра.",
+      "language": "ru"
+    },
+    "ru|аэропорт": {
+      "file": "4024c37b993ba5a5c2f676fd.wav",
+      "text": "аэропорт",
+      "language": "ru"
+    },
+    "ru|аэропорт далеко": {
+      "file": "5fcf18c026c96a0546d6c282.wav",
+      "text": "Аэропорт далеко.",
+      "language": "ru"
+    },
+    "ru|далеко": {
+      "file": "74134d2cc174b5d18fca2e90.wav",
+      "text": "далеко",
+      "language": "ru"
+    },
     "ru|это буква а": {
       "file": "c4bdbc2a2e05c1fda7d50df9.wav",
       "text": "Это буква а.",
@@ -17175,11 +19235,6 @@
     "ru|гэ": {
       "file": "7dc821dd145bd327948db231.wav",
       "text": "гэ",
-      "language": "ru"
-    },
-    "ru|город": {
-      "file": "31e005ff74f1253fbc629b14.wav",
-      "text": "город",
       "language": "ru"
     },
     "ru|это буква дэ": {
@@ -17492,11 +19547,6 @@
       "text": "Это буква ы.",
       "language": "ru"
     },
-    "ru|ы": {
-      "file": "8a9776a55b6103bcb268cd8a.wav",
-      "text": "ы",
-      "language": "ru"
-    },
     "ru|сыр": {
       "file": "45309af97b3b1ca9c9c69443.wav",
       "text": "сыр",
@@ -17520,11 +19570,6 @@
     "ru|это буква ю": {
       "file": "af3a9aea8b11b1281d33977e.wav",
       "text": "Это буква ю.",
-      "language": "ru"
-    },
-    "ru|ю": {
-      "file": "24d74268b9a966df8cc5fe0d.wav",
-      "text": "ю",
       "language": "ru"
     },
     "ru|юг": {
@@ -17590,11 +19635,6 @@
     "ru|он синий": {
       "file": "a70dd66447005bdcf6524539.wav",
       "text": "Он синий.",
-      "language": "ru"
-    },
-    "ru|синий": {
-      "file": "e46df333430797fee3d0ebb0.wav",
-      "text": "синий",
       "language": "ru"
     },
     "ru|у нас есть синий рюкзак. это ваш": {
@@ -17817,11 +19857,6 @@
       "text": "Нет. У вас есть свободный номер?",
       "language": "ru"
     },
-    "ru|нет": {
-      "file": "ca9c687f2a4fecea0b7a6074.wav",
-      "text": "Нет",
-      "language": "ru"
-    },
     "ru|свободный": {
       "file": "c3da7c072b923a7370c51029.wav",
       "text": "свободный",
@@ -17980,11 +20015,6 @@
     "ru|это далеко": {
       "file": "5ff7b6c8ae5c6ac405ab9d6f.wav",
       "text": "Это далеко?",
-      "language": "ru"
-    },
-    "ru|далеко": {
-      "file": "74134d2cc174b5d18fca2e90.wav",
-      "text": "далеко",
       "language": "ru"
     },
     "ru|нет, пять минут пешком": {

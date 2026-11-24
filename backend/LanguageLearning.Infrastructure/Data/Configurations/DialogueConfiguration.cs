@@ -17,10 +17,13 @@ public sealed class DialogueConfiguration :
         builder.Property(item => item.Title).HasMaxLength(160);
         builder.Property(item => item.Scenario).HasMaxLength(40);
         builder.Property(item => item.Status).HasMaxLength(20);
+        builder.Property(item => item.ReviewComment).HasMaxLength(2000);
+        builder.HasOne<ApplicationUser>().WithMany().HasForeignKey(item => item.OwnerId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne<ApplicationUser>().WithMany().HasForeignKey(item => item.ReviewerId).OnDelete(DeleteBehavior.Restrict);
         builder.HasOne<Course>().WithMany().HasForeignKey(item => item.CourseId).OnDelete(DeleteBehavior.Restrict);
         builder.HasIndex(item => new { item.CourseId, item.Scenario, item.VersionNumber }).IsUnique();
         builder.ToTable("Dialogues", table => table.HasCheckConstraint("CK_Dialogues_VersionStatus",
-            """ "VersionNumber" > 0 AND "Status" IN ('Draft', 'Published', 'Archived') """));
+            """ "VersionNumber" > 0 AND "Status" IN ('Draft', 'Submitted', 'Approved', 'Published', 'Archived') """));
     }
 
     public void Configure(EntityTypeBuilder<DialogueNode> builder)

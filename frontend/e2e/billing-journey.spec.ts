@@ -12,7 +12,7 @@ test('a learner compares plans, buys Premium and downloads the receipt from thei
 }) => {
   test.skip(!inboxPort, 'Requires the disposable email service.');
   test.setTimeout(60_000);
-  await registerLearner(page, request, baseURL!, inboxPort!);
+  const { email } = await registerLearner(page, request, baseURL!, inboxPort!);
   await page.goto('/pricing');
   await expect(page.getByRole('heading', { name: 'Free', exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Premium', exact: true })).toBeVisible();
@@ -34,16 +34,45 @@ test('a learner compares plans, buys Premium and downloads the receipt from thei
   await page.getByRole('link', { name: /Your history/ }).click();
   await expect(page.getByRole('heading', { name: 'Monthly Premium' })).toBeVisible();
   await page.getByRole('link', { name: /Your transaction trail/ }).click();
-  await page.getByRole('link', { name: /^View test receipt/ }).click();
+  await page.getByRole('link', { name: /^View receipt/ }).click();
   await expect(page.getByRole('heading', { name: 'Succeeded' })).toBeVisible();
   await expect(page.getByText('Monthly', { exact: true })).toBeVisible();
 
   const receiptDownload = page.waitForEvent('download');
-  await page.getByRole('button', { name: /Download test receipt/ }).click();
+  await page.getByRole('button', { name: /Download receipt/ }).click();
   const receipt = await receiptDownload;
   expect(receipt.suggestedFilename()).toMatch(/\.txt$/);
   const text = await readFile(await receipt.path(), 'utf8');
-  expect(text).toContain('NO REAL PAYMENT');
+  expect(text).toContain('LEXIGO — PAYMENT RECEIPT');
   expect(text).toContain('Period: Monthly');
   expect(text).toContain('Amount: 9.99 GEL');
+
+  await page.goto('/account');
+  await page.reload();
+  await expect(page.getByRole('region', { name: 'Your current plan' })).toContainText(
+    'Premium access is saved to your account.',
+  );
+  await page.getByRole('link', { name: /Find a teacher/ }).click();
+  await expect(page).toHaveURL(/\/classes\/extra-study$/);
+  await page.getByRole('button', { name: 'Go back to the previous page' }).click();
+  await expect(page).toHaveURL(/\/account$/);
+
+  const inbox = `http://127.0.0.1:${inboxPort}/api/v1`;
+  await expect
+    .poll(
+      async () => {
+        const response = await request.get(`${inbox}/messages`);
+        expect(response.ok()).toBeTruthy();
+        const { messages } = (await response.json()) as {
+          messages: { Subject: string; To: { Address: string }[] }[];
+        };
+        return messages.some(
+          (message) =>
+            message.Subject === 'Your LexiGo Premium purchase is successful' &&
+            message.To.some((recipient) => recipient.Address === email),
+        );
+      },
+      { timeout: 35_000 },
+    )
+    .toBe(true);
 });

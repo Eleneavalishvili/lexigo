@@ -5,11 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LanguageLearning.Infrastructure.Classrooms;
 
-public sealed record SharedStudyLesson(Guid Id, string Title);
+public sealed record SharedStudyLesson(Guid Id, string Title, DateTimeOffset? ScheduledAt = null,
+    int? DurationMinutes = null, string Status = "NotStarted", int? BestScore = null, DateTimeOffset? CompletedAt = null);
 public sealed record ExtraStudySpaceView(
-    Guid CourseId, string CourseTitle, bool CanShare, SharedStudyLesson[] Lessons);
+    Guid CourseId, string CourseTitle, bool CanShare, SharedStudyLesson[] Lessons, string PartnerName = "");
 
-public sealed class ExtraStudySpace(
+public sealed partial class ExtraStudySpace(
     LexiGoDbContext database, ClassroomAccess access, SubscriptionQueries subscriptions, TimeProvider clock)
 {
     private const int LessonLimit = 100;
@@ -23,12 +24,18 @@ public sealed class ExtraStudySpace(
         var lessons = await (
             from shared in database.ExtraStudyLessons.AsNoTracking()
             join lesson in PublishedLessons(space.CourseId) on shared.LessonId equals lesson.Id
+            join progress in database.LessonProgress.Where(item => item.UserId == space.LearnerId)
+                on lesson.Id equals progress.LessonId into learnerProgress
+            from progress in learnerProgress.DefaultIfEmpty()
             where shared.RequestId == requestId
             orderby shared.SharedAt, shared.LessonId
-            select new SharedStudyLesson(lesson.Id, lesson.Title)
+            select new SharedStudyLesson(lesson.Id, lesson.Title, shared.ScheduledAt, shared.DurationMinutes,
+                progress == null ? "NotStarted" : progress.Status, progress == null ? null : progress.BestScore,
+                progress == null ? null : progress.CompletedAt)
         ).Take(LessonLimit).ToArrayAsync(cancellationToken);
 
-        return new(space.CourseId, space.CourseTitle, space.TeacherId == userId, lessons);
+        return new(space.CourseId, space.CourseTitle, space.TeacherId == userId, lessons,
+            space.TeacherId == userId ? space.LearnerName : space.TeacherName);
     }
 
     public async Task<ClassroomOutcome> ShareAsync(
@@ -78,7 +85,7 @@ public sealed class ExtraStudySpace(
                     join role in database.Roles on membership.RoleId equals role.Id
                     where membership.UserId == teacher.Id && role.Name == "Teacher"
                     select role.Id).Any()
-            select new SpaceAccess(course.Id, course.Title, teacher.Id, learner.Id)
+            select new SpaceAccess(course.Id, course.Title, teacher.Id, learner.Id, teacher.DisplayName, learner.DisplayName)
         ).SingleOrDefaultAsync(cancellationToken);
         return space is not null &&
             (await subscriptions.CurrentAsync(space.LearnerId, cancellationToken))?.PlanId == BillingCatalogSeed.Premium
@@ -93,7 +100,8 @@ public sealed class ExtraStudySpace(
             && version.Status == "Published" && version.LessonId == lesson.Id
         select new PublishedStudyLesson { Id = lesson.Id, Title = version.Title };
 
-    private sealed record SpaceAccess(Guid CourseId, string CourseTitle, Guid TeacherId, Guid LearnerId);
+    private sealed record SpaceAccess(Guid CourseId, string CourseTitle, Guid TeacherId, Guid LearnerId,
+        string TeacherName, string LearnerName);
 
     private sealed class PublishedStudyLesson
     {

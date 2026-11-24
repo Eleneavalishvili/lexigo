@@ -4,6 +4,7 @@
     ><a routerLink="/courses">Public catalog ↗</a><a routerLink="/manage/media">Audio library ↗</a
     ><a routerLink="/account">My account ↗</a>
     <a routerLink="/manage/vocabulary/revisions">Vocabulary drafts ↗</a>
+    <a routerLink="/manage/dialogues">Dialogue workshop ↗</a>
     @if (admin || auth.user()?.roles?.includes('ContentAuthor')) {
       <a routerLink="/manage/imports">Import a lesson CSV ↗</a>
     }
@@ -45,6 +46,9 @@
         }
       }
     </nav>
+    @if (admin) {
+      <app-course-creator (created)="load()" />
+    }
     @if (course(); as current) {
       <div class="workshop-grid">
         <aside>

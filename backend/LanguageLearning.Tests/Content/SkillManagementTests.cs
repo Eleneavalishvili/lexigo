@@ -5,6 +5,8 @@ using LanguageLearning.Core.Learning;
 using LanguageLearning.Infrastructure.Content;
 using LanguageLearning.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 
@@ -91,8 +93,13 @@ public sealed partial class PublishingTests
         using (var scope = fixture.Services.CreateScope())
         {
             var database = scope.ServiceProvider.GetRequiredService<LexiGoDbContext>();
-            database.SkillProgress.Add(new SkillProgress { UserId = administrator.Account.Id, SkillId = skill.Id,
-                CorrectCount = 1, LastPracticedAt = DateTimeOffset.UtcNow });
+            database.SkillProgress.Add(new SkillProgress
+            {
+                UserId = administrator.Account.Id,
+                SkillId = skill.Id,
+                CorrectCount = 1,
+                LastPracticedAt = DateTimeOffset.UtcNow
+            });
             await database.SaveChangesAsync();
             exerciseCount = await database.ExerciseSkills.CountAsync(item => item.SkillId == skill.Id);
         }
@@ -139,7 +146,9 @@ public sealed partial class PublishingTests
             int existing = await database.Skills.CountAsync(item => item.CourseId == German);
             database.Skills.AddRange(Enumerable.Range(existing, 499 - existing).Select(index => new Skill
             {
-                CourseId = German, Name = prefix + index, Category = "Topic"
+                CourseId = German,
+                Name = prefix + index,
+                Category = "Topic"
             }));
             await database.SaveChangesAsync();
         }
@@ -157,8 +166,12 @@ public sealed partial class PublishingTests
             new SkillArchiveRequest(created.Revision, "Preserve the history"), a.Token)).EnsureSuccessStatusCode();
         Assert.Equal(HttpStatusCode.Conflict, (await first.SendAsync(HttpMethod.Post, "/api/v1/manage/skills",
             new SkillInput(German, prefix + " third", "Topic"), a.Token)).StatusCode);
-        var rollback = await Assert.ThrowsAsync<PostgresException>(() => check.Database
-            .MigrateAsync("20261120083352_AllowDepartingStaffNoteErasure"));
+        var rollbackScript = check.GetService<IMigrator>().GenerateScript(
+            "20261120085844_AddSkillManagement", "20261120083352_AllowDepartingStaffNoteErasure",
+            MigrationsSqlGenerationOptions.NoTransactions);
+        await using var rollbackTransaction = await check.Database.BeginTransactionAsync();
+        var rollback = await Assert.ThrowsAsync<PostgresException>(() => check.Database.ExecuteSqlRawAsync(rollbackScript));
+        await rollbackTransaction.RollbackAsync();
         Assert.Contains("Retain skill archive and revision history", rollback.MessageText);
         Assert.Contains("20261120085844_AddSkillManagement", await check.Database.GetAppliedMigrationsAsync());
     }

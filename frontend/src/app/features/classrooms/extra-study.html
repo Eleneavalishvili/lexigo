@@ -19,7 +19,7 @@
         [value]="courseId()"
         (change)="showTeachers(course.value)"
       >
-        <option value="">Choose a course</option>
+        <option value="">All languages</option>
         @for (item of courses(); track item.id) {
           <option [value]="item.id">{{ item.title }}</option>
         }
@@ -37,10 +37,24 @@
           <button type="button" class="button" (click)="showTeachers(courseId())">Try again</button>
         }
         @case ('ready') {
-          <ul class="class-list">
+          <ul class="class-list tutor-directory">
             @for (teacher of teachers(); track teacher.id) {
-              <li>
-                <p>{{ teacher.displayName }}</p>
+              <li class="tutor-card">
+                <app-tutor-portrait
+                  [variant]="teacher.portraitKey ?? 'default'"
+                  [label]="teacher.displayName + ' illustration'"
+                />
+                <h3>{{ teacher.displayName }}</h3>
+                <p>{{ teacher.courseTitle }}</p>
+                <p>
+                  <strong>{{ teacher.levelFrom ?? 'A1' }}–{{ teacher.levelTo ?? 'B2' }}</strong> ·
+                  Teaching levels
+                </p>
+                <p>{{ teacher.biography }}</p>
+                <p>
+                  <strong>{{ teacher.pricePerLesson ?? 0 | currency: 'GEL' : 'code' }}</strong> /
+                  lesson
+                </p>
                 <button
                   type="button"
                   class="button button-outline"

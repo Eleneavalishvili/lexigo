@@ -67,6 +67,7 @@ export class PreferenceStore {
     );
   }
   async setStudyGoal(dailyGoalXp: number): Promise<void> {
+    if (this.value()?.dailyGoalXp === dailyGoalXp) return;
     const generation = ++this.generation;
     await firstValueFrom(this.http.put<void>('/api/v1/me/study-goal', { dailyGoalXp }));
     if (generation === this.generation) {

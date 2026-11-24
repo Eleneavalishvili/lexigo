@@ -19,7 +19,16 @@ test('password recovery keeps the old password until reset and rejects a reused 
   await signOut();
   await page.getByRole('link', { name: 'Forgot your password?' }).click();
   await page.getByLabel('Your email').fill(email);
+  const resetRequest = page.waitForResponse(
+    (response) =>
+      new URL(response.url()).pathname === '/api/v1/auth/forgot-password' &&
+      response.request().method() === 'POST',
+  );
   await page.getByRole('button', { name: /Send my reset link/ }).click();
+  const resetResponse = await resetRequest;
+  expect(resetResponse.status(), 'The reset request must be accepted before checking its UI').toBe(
+    202,
+  );
   await expect(page.getByRole('status')).toContainText('Your password hasn’t changed yet.');
 
   let resetLink = '';

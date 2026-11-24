@@ -2197,6 +2197,453 @@
       ]
     },
     {
+      "unitKey": "grammar-foundations",
+      "unitTitle": "How the language works",
+      "unitDescription": "Use articles, noun forms, sentence patterns and the language's special letters.",
+      "difficulty": "A1",
+      "contentVersion": 1,
+      "key": "grammar-forms",
+      "title": "Articles, word order and cases",
+      "objective": "Recognize and use the grammatical forms taught in these examples.",
+      "explanation": "New words and phrases\n\nder Mann — the man\ndie Frau — the woman\ndas Buch — the book\nIch sehe den Mann. — I see the man.\nIch spreche mit dem Mann. — I speak with the man.\nHeute lerne ich Deutsch. — Today I learn German.\n\nLearn nouns with their articles: der Mann, die Frau, das Buch. German nouns begin with a capital. In a statement the finite verb takes the second position: Heute lerne ich Deutsch. A direct masculine object changes der to den: Ich sehe den Mann. After mit use dative: mit dem Mann. Ä, ö and ü have umlauts; ß is a separate spelling character. Keyboard-friendly answers may accept plain Latin forms, but the written model remains standard German.",
+      "prerequisiteKeys": [
+        "greetings"
+      ],
+      "exercises": [
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"the man\".",
+          "answers": [
+            "der Mann"
+          ],
+          "options": [
+            "der Mann",
+            "die Frau",
+            "das Buch",
+            "Ich sehe den Mann.",
+            "Ich spreche mit dem Mann.",
+            "Heute lerne ich Deutsch."
+          ],
+          "explanation": "der Mann — the man",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: the man",
+          "answers": [
+            "der Mann"
+          ],
+          "options": [],
+          "explanation": "Use der Mann",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: der Mann",
+          "answers": [
+            "the man"
+          ],
+          "options": [],
+          "explanation": "der Mann — the man",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"the woman\".",
+          "answers": [
+            "die Frau"
+          ],
+          "options": [
+            "der Mann",
+            "die Frau",
+            "das Buch",
+            "Ich sehe den Mann.",
+            "Ich spreche mit dem Mann.",
+            "Heute lerne ich Deutsch."
+          ],
+          "explanation": "die Frau — the woman",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: the woman",
+          "answers": [
+            "die Frau"
+          ],
+          "options": [],
+          "explanation": "Use die Frau",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: die Frau",
+          "answers": [
+            "the woman"
+          ],
+          "options": [],
+          "explanation": "die Frau — the woman",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"the book\".",
+          "answers": [
+            "das Buch"
+          ],
+          "options": [
+            "der Mann",
+            "die Frau",
+            "das Buch",
+            "Ich sehe den Mann.",
+            "Ich spreche mit dem Mann.",
+            "Heute lerne ich Deutsch."
+          ],
+          "explanation": "das Buch — the book",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: the book",
+          "answers": [
+            "das Buch"
+          ],
+          "options": [],
+          "explanation": "Use das Buch",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: das Buch",
+          "answers": [
+            "the book"
+          ],
+          "options": [],
+          "explanation": "das Buch — the book",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"I see the man.\".",
+          "answers": [
+            "Ich sehe den Mann."
+          ],
+          "options": [
+            "der Mann",
+            "die Frau",
+            "das Buch",
+            "Ich sehe den Mann.",
+            "Ich spreche mit dem Mann.",
+            "Heute lerne ich Deutsch."
+          ],
+          "explanation": "Ich sehe den Mann. — I see the man.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I see the man.",
+          "answers": [
+            "Ich sehe den Mann."
+          ],
+          "options": [],
+          "explanation": "Use Ich sehe den Mann.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: Ich sehe den Mann.",
+          "answers": [
+            "I see the man."
+          ],
+          "options": [],
+          "explanation": "Ich sehe den Mann. — I see the man.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"I speak with the man.\".",
+          "answers": [
+            "Ich spreche mit dem Mann."
+          ],
+          "options": [
+            "der Mann",
+            "die Frau",
+            "das Buch",
+            "Ich sehe den Mann.",
+            "Ich spreche mit dem Mann.",
+            "Heute lerne ich Deutsch."
+          ],
+          "explanation": "Ich spreche mit dem Mann. — I speak with the man.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I speak with the man.",
+          "answers": [
+            "Ich spreche mit dem Mann."
+          ],
+          "options": [],
+          "explanation": "Use Ich spreche mit dem Mann.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: Ich spreche mit dem Mann.",
+          "answers": [
+            "I speak with the man."
+          ],
+          "options": [],
+          "explanation": "Ich spreche mit dem Mann. — I speak with the man.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"Today I learn German.\".",
+          "answers": [
+            "Heute lerne ich Deutsch."
+          ],
+          "options": [
+            "der Mann",
+            "die Frau",
+            "das Buch",
+            "Ich sehe den Mann.",
+            "Ich spreche mit dem Mann.",
+            "Heute lerne ich Deutsch."
+          ],
+          "explanation": "Heute lerne ich Deutsch. — Today I learn German.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: Today I learn German.",
+          "answers": [
+            "Heute lerne ich Deutsch."
+          ],
+          "options": [],
+          "explanation": "Use Heute lerne ich Deutsch.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: Heute lerne ich Deutsch.",
+          "answers": [
+            "Today I learn German."
+          ],
+          "options": [],
+          "explanation": "Heute lerne ich Deutsch. — Today I learn German.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which letter has an umlaut?",
+          "answers": [
+            "ü"
+          ],
+          "options": [
+            "ü",
+            "u",
+            "n"
+          ],
+          "explanation": "Learn nouns with their articles: der Mann, die Frau, das Buch. German nouns begin with a capital. In a statement the finite verb takes the second position: Heute lerne ich Deutsch. A direct masculine object changes der to den: Ich sehe den Mann. After mit use dative: mit dem Mann. Ä, ö and ü have umlauts; ß is a separate spelling character. Keyboard-friendly answers may accept plain Latin forms, but the written model remains standard German.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which article marks a masculine direct object?",
+          "answers": [
+            "den"
+          ],
+          "options": [
+            "den",
+            "der",
+            "dem"
+          ],
+          "explanation": "Learn nouns with their articles: der Mann, die Frau, das Buch. German nouns begin with a capital. In a statement the finite verb takes the second position: Heute lerne ich Deutsch. A direct masculine object changes der to den: Ich sehe den Mann. After mit use dative: mit dem Mann. Ä, ö and ü have umlauts; ß is a separate spelling character. Keyboard-friendly answers may accept plain Latin forms, but the written model remains standard German.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which phrase uses dative after mit?",
+          "answers": [
+            "mit dem Mann"
+          ],
+          "options": [
+            "mit dem Mann",
+            "mit den Mann",
+            "mit der Mann"
+          ],
+          "explanation": "Learn nouns with their articles: der Mann, die Frau, das Buch. German nouns begin with a capital. In a statement the finite verb takes the second position: Heute lerne ich Deutsch. A direct masculine object changes der to den: Ich sehe den Mann. After mit use dative: mit dem Mann. Ä, ö and ü have umlauts; ß is a separate spelling character. Keyboard-friendly answers may accept plain Latin forms, but the written model remains standard German.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which sentence has the verb in second position?",
+          "answers": [
+            "Heute lerne ich Deutsch."
+          ],
+          "options": [
+            "Heute lerne ich Deutsch.",
+            "Heute ich lerne Deutsch.",
+            "Heute ich Deutsch lerne."
+          ],
+          "explanation": "Learn nouns with their articles: der Mann, die Frau, das Buch. German nouns begin with a capital. In a statement the finite verb takes the second position: Heute lerne ich Deutsch. A direct masculine object changes der to den: Ich sehe den Mann. After mit use dative: mit dem Mann. Ä, ö and ü have umlauts; ß is a separate spelling character. Keyboard-friendly answers may accept plain Latin forms, but the written model remains standard German.",
+          "contextText": null
+        }
+      ]
+    },
+    {
+      "unitKey": "grammar-foundations",
+      "unitTitle": "How the language works",
+      "unitDescription": "Use articles, noun forms, sentence patterns and the language's special letters.",
+      "difficulty": "A1",
+      "contentVersion": 1,
+      "key": "check-grammar-foundations",
+      "title": "Unit check · Language foundations",
+      "objective": "Apply the grammar and spelling distinctions from this unit.",
+      "explanation": "Review the teaching lesson before taking this check.",
+      "prerequisiteKeys": [
+        "grammar-forms"
+      ],
+      "isCheckpoint": true,
+      "exercises": [
+        {
+          "type": "Translation",
+          "prompt": "Translate: the man",
+          "answers": [
+            "der Mann"
+          ],
+          "options": [],
+          "explanation": "Use der Mann",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: the woman",
+          "answers": [
+            "die Frau"
+          ],
+          "options": [],
+          "explanation": "Use die Frau",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: the book",
+          "answers": [
+            "das Buch"
+          ],
+          "options": [],
+          "explanation": "Use das Buch",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I see the man.",
+          "answers": [
+            "Ich sehe den Mann."
+          ],
+          "options": [],
+          "explanation": "Use Ich sehe den Mann.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I speak with the man.",
+          "answers": [
+            "Ich spreche mit dem Mann."
+          ],
+          "options": [],
+          "explanation": "Use Ich spreche mit dem Mann.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: Today I learn German.",
+          "answers": [
+            "Heute lerne ich Deutsch."
+          ],
+          "options": [],
+          "explanation": "Use Heute lerne ich Deutsch.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which letter has an umlaut?",
+          "answers": [
+            "ü"
+          ],
+          "options": [
+            "ü",
+            "u",
+            "n"
+          ],
+          "explanation": "Learn nouns with their articles: der Mann, die Frau, das Buch. German nouns begin with a capital. In a statement the finite verb takes the second position: Heute lerne ich Deutsch. A direct masculine object changes der to den: Ich sehe den Mann. After mit use dative: mit dem Mann. Ä, ö and ü have umlauts; ß is a separate spelling character. Keyboard-friendly answers may accept plain Latin forms, but the written model remains standard German.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which article marks a masculine direct object?",
+          "answers": [
+            "den"
+          ],
+          "options": [
+            "den",
+            "der",
+            "dem"
+          ],
+          "explanation": "Learn nouns with their articles: der Mann, die Frau, das Buch. German nouns begin with a capital. In a statement the finite verb takes the second position: Heute lerne ich Deutsch. A direct masculine object changes der to den: Ich sehe den Mann. After mit use dative: mit dem Mann. Ä, ö and ü have umlauts; ß is a separate spelling character. Keyboard-friendly answers may accept plain Latin forms, but the written model remains standard German.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which phrase uses dative after mit?",
+          "answers": [
+            "mit dem Mann"
+          ],
+          "options": [
+            "mit dem Mann",
+            "mit den Mann",
+            "mit der Mann"
+          ],
+          "explanation": "Learn nouns with their articles: der Mann, die Frau, das Buch. German nouns begin with a capital. In a statement the finite verb takes the second position: Heute lerne ich Deutsch. A direct masculine object changes der to den: Ich sehe den Mann. After mit use dative: mit dem Mann. Ä, ö and ü have umlauts; ß is a separate spelling character. Keyboard-friendly answers may accept plain Latin forms, but the written model remains standard German.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which sentence has the verb in second position?",
+          "answers": [
+            "Heute lerne ich Deutsch."
+          ],
+          "options": [
+            "Heute lerne ich Deutsch.",
+            "Heute ich lerne Deutsch.",
+            "Heute ich Deutsch lerne."
+          ],
+          "explanation": "Learn nouns with their articles: der Mann, die Frau, das Buch. German nouns begin with a capital. In a statement the finite verb takes the second position: Heute lerne ich Deutsch. A direct masculine object changes der to den: Ich sehe den Mann. After mit use dative: mit dem Mann. Ä, ö and ü have umlauts; ß is a separate spelling character. Keyboard-friendly answers may accept plain Latin forms, but the written model remains standard German.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: der Mann",
+          "answers": [
+            "the man"
+          ],
+          "options": [],
+          "explanation": "der Mann — the man",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: die Frau",
+          "answers": [
+            "the woman"
+          ],
+          "options": [],
+          "explanation": "die Frau — the woman",
+          "contextText": null
+        }
+      ]
+    },
+    {
       "key": "directions",
       "title": "Finding your way",
       "objective": "Understand and use expressions for finding your way.",

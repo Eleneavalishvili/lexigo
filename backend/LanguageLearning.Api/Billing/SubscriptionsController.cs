@@ -71,7 +71,7 @@ public sealed class SubscriptionsController(SubscriptionQueries queries, Billing
         var payment = await queries.PaymentAsync(UserId, id, cancellationToken);
         if (payment is not { Status: "Succeeded", ReceiptNumber: not null }) return NotFound();
         var order = await queries.OrderAsync(UserId, payment.OrderId, cancellationToken);
-        string text = string.Join('\n', "LEXIGO — SIMULATED RECEIPT", "NO REAL PAYMENT / NOT A TAX INVOICE", payment.ReceiptNumber,
+        string text = string.Join('\n', "LEXIGO — PAYMENT RECEIPT", "Private subscription record", payment.ReceiptNumber,
             "Payment: " + payment.Id, "Period: " + order!.Period, "Amount: " + payment.Amount.ToString("F2", CultureInfo.InvariantCulture) + " " + payment.Currency,
             "Issued: " + payment.CompletedAt!.Value.ToString("O", CultureInfo.InvariantCulture));
         return File(Encoding.UTF8.GetBytes(text), "text/plain; charset=utf-8", payment.ReceiptNumber + ".txt");

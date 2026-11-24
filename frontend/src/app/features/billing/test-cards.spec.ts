@@ -107,8 +107,8 @@ describe('Test wallet screen', () => {
     const fixture = TestBed.createComponent(TestCards);
     await fixture.whenStable();
     const host: HTMLElement = fixture.nativeElement;
-    expect(host.textContent).toContain('SIMULATION ONLY');
-    expect(host.textContent).toContain('No real bank card');
+    expect(host.textContent).not.toContain('SIMULATION ONLY');
+    expect(host.textContent).toContain('Only the last four digits are saved.');
     expect(host.textContent).toContain('<img src=x>');
     expect(host.querySelector('img')).toBeNull();
     expect(host.textContent).toContain('GEL');

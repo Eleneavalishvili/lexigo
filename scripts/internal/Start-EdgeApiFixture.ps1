@@ -26,12 +26,27 @@ function Start-EdgeApiFixture {
         }
         if (!$ready) { throw 'Disposable PostgreSQL did not become ready.' }
 
+        docker run --rm --network $Network --workdir /tmp --entrypoint dotnet `
+            -e ASPNETCORE_ENVIRONMENT=Production -e ConnectionStrings__DefaultConnection `
+            -e Authentication__SigningPrivateKeyPem -e Smtp__DeliveryEnabled=false `
+            $Image /app/LanguageLearning.Api.dll --install-bundled-content *> $null
+        if ($LASTEXITCODE -eq 0) { throw 'Content maintenance must refuse an unmigrated database.' }
+
         foreach ($operation in @('--initialize-database', '--install-starter-lessons')) {
             docker run --rm --network $Network --workdir /tmp --entrypoint dotnet `
                 -e ASPNETCORE_ENVIRONMENT=Development -e ConnectionStrings__DefaultConnection `
                 -e Smtp__DeliveryEnabled=false -e Logging__LogLevel__Default=Warning `
                 $Image /app/LanguageLearning.Api.dll $operation
             if ($LASTEXITCODE) { throw "Database fixture operation $operation failed." }
+        }
+
+        foreach ($attempt in 1..2) {
+            docker run --rm --network $Network --workdir /tmp --entrypoint dotnet `
+                -e ASPNETCORE_ENVIRONMENT=Production -e ConnectionStrings__DefaultConnection `
+                -e Authentication__SigningPrivateKeyPem -e Smtp__DeliveryEnabled=false `
+                -e Logging__LogLevel__Default=Warning `
+                $Image /app/LanguageLearning.Api.dll --install-bundled-content
+            if ($LASTEXITCODE) { throw "Production content maintenance attempt $attempt failed." }
         }
 
         $apiLimits = if ($SmallServer) { @('--memory=384m', '--memory-swap=384m', '--cpus=1') } else { @() }

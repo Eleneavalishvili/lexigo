@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LanguageLearning.Infrastructure.Accounts;
 
-public sealed class LoginService(LexiGoDbContext database, UserManager<ApplicationUser> users, SessionService sessions, IAccessTokenIssuer tokens, MfaCodeVerifier codes, AccountQueryService accounts)
+public sealed partial class LoginService(LexiGoDbContext database, UserManager<ApplicationUser> users, SessionService sessions, IAccessTokenIssuer tokens, MfaCodeVerifier codes, AccountQueryService accounts, TeacherAccessHasher teacherAccess)
 {
     public async Task<LoginResult> SignInAsync(string email, string password, string? code, string? recoveryCode, string device, CancellationToken cancellationToken)
     {

@@ -1,0 +1,50 @@
+<section aria-label="Create a course">
+  @if (error()) {
+    <p role="alert">{{ error() }}</p>
+  }
+  @if (!opened()) {
+    <button type="button" class="button button-outline" (click)="open()" [disabled]="busy()">
+      {{ busy() ? 'Loading languages…' : 'Create a course' }}
+    </button>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="save()" [attr.aria-busy]="busy()">
+      <h2>A new course</h2>
+      <p>
+        Each language pair has one course. Existing pairs must be edited or restored. New courses
+        stay unpublished until reviewed lessons are published.
+      </p>
+      <label for="new-course-source">Teaching language</label>
+      <select id="new-course-source" formControlName="sourceLanguageId">
+        @for (language of languages(); track language.id) {
+          <option [ngValue]="language.id">{{ language.englishName }}</option>
+        }
+      </select>
+      <label for="new-course-target">Language to learn</label>
+      <select id="new-course-target" formControlName="targetLanguageId">
+        <option [ngValue]="0">Choose a language</option>
+        @for (language of languages(); track language.id) {
+          <option [ngValue]="language.id">{{ language.englishName }}</option>
+        }
+      </select>
+      <label for="new-course-title">New course title</label>
+      <input id="new-course-title" formControlName="title" maxlength="120" />
+      <label for="new-course-description">New course description</label>
+      <textarea
+        id="new-course-description"
+        formControlName="description"
+        maxlength="1000"
+      ></textarea>
+      <button type="submit" class="button button-ink" [disabled]="busy() || form.invalid">
+        Create unpublished course
+      </button>
+      <button
+        type="button"
+        class="button button-outline"
+        (click)="opened.set(false)"
+        [disabled]="busy()"
+      >
+        Cancel
+      </button>
+    </form>
+  }
+</section>

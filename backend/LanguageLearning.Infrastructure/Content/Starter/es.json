@@ -2197,6 +2197,453 @@
       ]
     },
     {
+      "unitKey": "grammar-foundations",
+      "unitTitle": "How the language works",
+      "unitDescription": "Use articles, noun forms, sentence patterns and the language's special letters.",
+      "difficulty": "A1",
+      "contentVersion": 1,
+      "key": "grammar-forms",
+      "title": "Articles, identity and location",
+      "objective": "Recognize and use the grammatical forms taught in these examples.",
+      "explanation": "New words and phrases\n\nel libro — the book\nla casa — the house\nSoy estudiante. — I am a student.\nEstoy en casa. — I am at home.\nHablo español. — I speak Spanish.\nLa casa es blanca. — The house is white.\n\nEl and la mark singular noun gender: el libro, la casa. Soy is the yo form of ser for identity; estoy is the yo form of estar for location. Hablo is the yo present form of hablar. Adjectives may agree in gender: la casa blanca. Spanish ñ is a separate letter, and ¿ opens a question. Missing accents may be accepted when typing, but read and learn the written accents shown in the examples.",
+      "prerequisiteKeys": [
+        "greetings"
+      ],
+      "exercises": [
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"the book\".",
+          "answers": [
+            "el libro"
+          ],
+          "options": [
+            "el libro",
+            "la casa",
+            "Soy estudiante.",
+            "Estoy en casa.",
+            "Hablo español.",
+            "La casa es blanca."
+          ],
+          "explanation": "el libro — the book",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: the book",
+          "answers": [
+            "el libro"
+          ],
+          "options": [],
+          "explanation": "Use el libro",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: el libro",
+          "answers": [
+            "the book"
+          ],
+          "options": [],
+          "explanation": "el libro — the book",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"the house\".",
+          "answers": [
+            "la casa"
+          ],
+          "options": [
+            "el libro",
+            "la casa",
+            "Soy estudiante.",
+            "Estoy en casa.",
+            "Hablo español.",
+            "La casa es blanca."
+          ],
+          "explanation": "la casa — the house",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: the house",
+          "answers": [
+            "la casa"
+          ],
+          "options": [],
+          "explanation": "Use la casa",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: la casa",
+          "answers": [
+            "the house"
+          ],
+          "options": [],
+          "explanation": "la casa — the house",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"I am a student.\".",
+          "answers": [
+            "Soy estudiante."
+          ],
+          "options": [
+            "el libro",
+            "la casa",
+            "Soy estudiante.",
+            "Estoy en casa.",
+            "Hablo español.",
+            "La casa es blanca."
+          ],
+          "explanation": "Soy estudiante. — I am a student.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I am a student.",
+          "answers": [
+            "Soy estudiante."
+          ],
+          "options": [],
+          "explanation": "Use Soy estudiante.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: Soy estudiante.",
+          "answers": [
+            "I am a student."
+          ],
+          "options": [],
+          "explanation": "Soy estudiante. — I am a student.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"I am at home.\".",
+          "answers": [
+            "Estoy en casa."
+          ],
+          "options": [
+            "el libro",
+            "la casa",
+            "Soy estudiante.",
+            "Estoy en casa.",
+            "Hablo español.",
+            "La casa es blanca."
+          ],
+          "explanation": "Estoy en casa. — I am at home.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I am at home.",
+          "answers": [
+            "Estoy en casa."
+          ],
+          "options": [],
+          "explanation": "Use Estoy en casa.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: Estoy en casa.",
+          "answers": [
+            "I am at home."
+          ],
+          "options": [],
+          "explanation": "Estoy en casa. — I am at home.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"I speak Spanish.\".",
+          "answers": [
+            "Hablo español."
+          ],
+          "options": [
+            "el libro",
+            "la casa",
+            "Soy estudiante.",
+            "Estoy en casa.",
+            "Hablo español.",
+            "La casa es blanca."
+          ],
+          "explanation": "Hablo español. — I speak Spanish.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I speak Spanish.",
+          "answers": [
+            "Hablo español."
+          ],
+          "options": [],
+          "explanation": "Use Hablo español.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: Hablo español.",
+          "answers": [
+            "I speak Spanish."
+          ],
+          "options": [],
+          "explanation": "Hablo español. — I speak Spanish.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Choose the expression for \"The house is white.\".",
+          "answers": [
+            "La casa es blanca."
+          ],
+          "options": [
+            "el libro",
+            "la casa",
+            "Soy estudiante.",
+            "Estoy en casa.",
+            "Hablo español.",
+            "La casa es blanca."
+          ],
+          "explanation": "La casa es blanca. — The house is white.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: The house is white.",
+          "answers": [
+            "La casa es blanca."
+          ],
+          "options": [],
+          "explanation": "Use La casa es blanca.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: La casa es blanca.",
+          "answers": [
+            "The house is white."
+          ],
+          "options": [],
+          "explanation": "La casa es blanca. — The house is white.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which letter is a separate Spanish letter?",
+          "answers": [
+            "ñ"
+          ],
+          "options": [
+            "ñ",
+            "n",
+            "u"
+          ],
+          "explanation": "El and la mark singular noun gender: el libro, la casa. Soy is the yo form of ser for identity; estoy is the yo form of estar for location. Hablo is the yo present form of hablar. Adjectives may agree in gender: la casa blanca. Spanish ñ is a separate letter, and ¿ opens a question. Missing accents may be accepted when typing, but read and learn the written accents shown in the examples.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which mark opens a Spanish question?",
+          "answers": [
+            "¿"
+          ],
+          "options": [
+            "¿",
+            "¡",
+            "."
+          ],
+          "explanation": "El and la mark singular noun gender: el libro, la casa. Soy is the yo form of ser for identity; estoy is the yo form of estar for location. Hablo is the yo present form of hablar. Adjectives may agree in gender: la casa blanca. Spanish ñ is a separate letter, and ¿ opens a question. Missing accents may be accepted when typing, but read and learn the written accents shown in the examples.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which article accompanies casa?",
+          "answers": [
+            "la"
+          ],
+          "options": [
+            "la",
+            "el",
+            "los"
+          ],
+          "explanation": "El and la mark singular noun gender: el libro, la casa. Soy is the yo form of ser for identity; estoy is the yo form of estar for location. Hablo is the yo present form of hablar. Adjectives may agree in gender: la casa blanca. Spanish ñ is a separate letter, and ¿ opens a question. Missing accents may be accepted when typing, but read and learn the written accents shown in the examples.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which form describes my current location?",
+          "answers": [
+            "Estoy en casa."
+          ],
+          "options": [
+            "Estoy en casa.",
+            "Soy estudiante.",
+            "Hablo español."
+          ],
+          "explanation": "El and la mark singular noun gender: el libro, la casa. Soy is the yo form of ser for identity; estoy is the yo form of estar for location. Hablo is the yo present form of hablar. Adjectives may agree in gender: la casa blanca. Spanish ñ is a separate letter, and ¿ opens a question. Missing accents may be accepted when typing, but read and learn the written accents shown in the examples.",
+          "contextText": null
+        }
+      ]
+    },
+    {
+      "unitKey": "grammar-foundations",
+      "unitTitle": "How the language works",
+      "unitDescription": "Use articles, noun forms, sentence patterns and the language's special letters.",
+      "difficulty": "A1",
+      "contentVersion": 1,
+      "key": "check-grammar-foundations",
+      "title": "Unit check · Language foundations",
+      "objective": "Apply the grammar and spelling distinctions from this unit.",
+      "explanation": "Review the teaching lesson before taking this check.",
+      "prerequisiteKeys": [
+        "grammar-forms"
+      ],
+      "isCheckpoint": true,
+      "exercises": [
+        {
+          "type": "Translation",
+          "prompt": "Translate: the book",
+          "answers": [
+            "el libro"
+          ],
+          "options": [],
+          "explanation": "Use el libro",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: the house",
+          "answers": [
+            "la casa"
+          ],
+          "options": [],
+          "explanation": "Use la casa",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I am a student.",
+          "answers": [
+            "Soy estudiante."
+          ],
+          "options": [],
+          "explanation": "Use Soy estudiante.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I am at home.",
+          "answers": [
+            "Estoy en casa."
+          ],
+          "options": [],
+          "explanation": "Use Estoy en casa.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: I speak Spanish.",
+          "answers": [
+            "Hablo español."
+          ],
+          "options": [],
+          "explanation": "Use Hablo español.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate: The house is white.",
+          "answers": [
+            "La casa es blanca."
+          ],
+          "options": [],
+          "explanation": "Use La casa es blanca.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which letter is a separate Spanish letter?",
+          "answers": [
+            "ñ"
+          ],
+          "options": [
+            "ñ",
+            "n",
+            "u"
+          ],
+          "explanation": "El and la mark singular noun gender: el libro, la casa. Soy is the yo form of ser for identity; estoy is the yo form of estar for location. Hablo is the yo present form of hablar. Adjectives may agree in gender: la casa blanca. Spanish ñ is a separate letter, and ¿ opens a question. Missing accents may be accepted when typing, but read and learn the written accents shown in the examples.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which mark opens a Spanish question?",
+          "answers": [
+            "¿"
+          ],
+          "options": [
+            "¿",
+            "¡",
+            "."
+          ],
+          "explanation": "El and la mark singular noun gender: el libro, la casa. Soy is the yo form of ser for identity; estoy is the yo form of estar for location. Hablo is the yo present form of hablar. Adjectives may agree in gender: la casa blanca. Spanish ñ is a separate letter, and ¿ opens a question. Missing accents may be accepted when typing, but read and learn the written accents shown in the examples.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which article accompanies casa?",
+          "answers": [
+            "la"
+          ],
+          "options": [
+            "la",
+            "el",
+            "los"
+          ],
+          "explanation": "El and la mark singular noun gender: el libro, la casa. Soy is the yo form of ser for identity; estoy is the yo form of estar for location. Hablo is the yo present form of hablar. Adjectives may agree in gender: la casa blanca. Spanish ñ is a separate letter, and ¿ opens a question. Missing accents may be accepted when typing, but read and learn the written accents shown in the examples.",
+          "contextText": null
+        },
+        {
+          "type": "MultipleChoice",
+          "prompt": "Which form describes my current location?",
+          "answers": [
+            "Estoy en casa."
+          ],
+          "options": [
+            "Estoy en casa.",
+            "Soy estudiante.",
+            "Hablo español."
+          ],
+          "explanation": "El and la mark singular noun gender: el libro, la casa. Soy is the yo form of ser for identity; estoy is the yo form of estar for location. Hablo is the yo present form of hablar. Adjectives may agree in gender: la casa blanca. Spanish ñ is a separate letter, and ¿ opens a question. Missing accents may be accepted when typing, but read and learn the written accents shown in the examples.",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: el libro",
+          "answers": [
+            "the book"
+          ],
+          "options": [],
+          "explanation": "el libro — the book",
+          "contextText": null
+        },
+        {
+          "type": "Translation",
+          "prompt": "Translate into English: la casa",
+          "answers": [
+            "the house"
+          ],
+          "options": [],
+          "explanation": "la casa — the house",
+          "contextText": null
+        }
+      ]
+    },
+    {
       "key": "directions",
       "title": "Finding your way",
       "objective": "Understand and use expressions for finding your way.",

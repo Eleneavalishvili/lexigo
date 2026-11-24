@@ -70,33 +70,64 @@
   {
     "name": "ExtraStudyOffer",
     "scope": "Per-course teacher opt-in for the Premium extra-study directory",
-    "fields": "id, teacherId, courseId, enabled",
-    "key": ["id"],
+    "fields": "id, teacherId, courseId, enabled, pricePerLesson: decimal(10,2), levelFrom, levelTo, biography, portraitKey",
+    "key": [
+      "id"
+    ],
     "status": "implemented_verified",
-    "evidence": ["AddExtraStudyOffers enforces unique teacher/course pairs. PostgreSQL verified persistence through opt-in and opt-out."]
+    "evidence": [
+      "AddExtraStudyOffers enforces unique teacher/course pairs. PostgreSQL verified persistence through opt-in and opt-out.",
+      "2026-11-25: presentation-current-full.trx 706 backend tests passed; tutor-messages-final.trx 25 final classroom/export/code-login tests passed; frontend394 passed; desktop/phone extra-study browser2 passed. Actual public walkthrough verified all8 protected teacher logins, directory portraits/levels/rates, persisted Premium, learner request/teacher notification, acceptance, shared lesson,45-minute appointment and two-way private messages. TUTOR_STUDY_FLOW.md."
+    ]
   },
   {
     "name": "ExtraStudyRequest",
     "scope": "Private learner request and teacher decision",
     "fields": "id, offerId, learnerId, status, createdAt",
-    "key": ["id"],
+    "key": [
+      "id"
+    ],
     "status": "implemented_verified",
-    "evidence": ["AddExtraStudyRequests enforces one request per learner and offer. PostgreSQL verified concurrent retry and accepted status persistence."]
+    "evidence": [
+      "AddExtraStudyRequests enforces one request per learner and offer. PostgreSQL verified concurrent retry and accepted status persistence."
+    ]
   },
   {
     "name": "ExtraStudyLesson",
     "scope": "Teacher-shared lesson in an accepted extra-study space",
-    "fields": "requestId, lessonId, sharedAt",
-    "key": ["requestId", "lessonId"],
+    "fields": "requestId, lessonId, sharedAt, scheduledAt: datetime? UTC, durationMinutes: int? paired with scheduledAt",
+    "key": [
+      "requestId",
+      "lessonId"
+    ],
     "status": "implemented_verified",
-    "evidence": ["AddExtraStudyLessons and PostgreSQL integration verified that concurrent sharing returns one lesson to the learner."]
+    "evidence": [
+      "AddExtraStudyLessons and PostgreSQL integration verified that concurrent sharing returns one lesson to the learner.",
+      "2026-11-25: presentation-current-full.trx 706 backend tests passed; tutor-messages-final.trx 25 final classroom/export/code-login tests passed; frontend394 passed; desktop/phone extra-study browser2 passed. Actual public walkthrough verified all8 protected teacher logins, directory portraits/levels/rates, persisted Premium, learner request/teacher notification, acceptance, shared lesson,45-minute appointment and two-way private messages. TUTOR_STUDY_FLOW.md."
+    ]
   },
   {
     "name": "VocabularyRevision",
     "scope": "Staff word draft, independent review and publication history",
     "fields": "id, revisionToken, courseId, wordId, authorId, reviewerId, publisherId, word, englishTranslation, example, partOfSpeech, topic, status, reviewComment, createdAt, reviewedAt, publishedAt",
-    "key": ["id"],
+    "key": [
+      "id"
+    ],
     "status": "implemented_verified",
-    "evidence": ["AddVocabularyRevisions and AllowVocabularyWithdrawal enforce one open revision per existing word, excluding terminal published/withdrawn history. VocabularyRevisionTests verified privacy, stale-token rejection, publication/withdrawal concurrency and stable public word identity."]
+    "evidence": [
+      "AddVocabularyRevisions and AllowVocabularyWithdrawal enforce one open revision per existing word, excluding terminal published/withdrawn history. VocabularyRevisionTests verified privacy, stale-token rejection, publication/withdrawal concurrency and stable public word identity."
+    ]
+  },
+  {
+    "name": "ExtraStudyMessage",
+    "scope": "Private accepted teacher-learner conversation",
+    "fields": "id: uuid client retry identity, requestId -> ExtraStudyRequest, senderId -> User, body: string(2000), createdAt: datetime UTC",
+    "key": [
+      "id"
+    ],
+    "status": "implemented_verified",
+    "evidence": [
+      "2026-11-25: presentation-current-full.trx 706 backend tests passed; tutor-messages-final.trx 25 final classroom/export/code-login tests passed; frontend394 passed; desktop/phone extra-study browser2 passed. Actual public walkthrough verified all8 protected teacher logins, directory portraits/levels/rates, persisted Premium, learner request/teacher notification, acceptance, shared lesson,45-minute appointment and two-way private messages. TUTOR_STUDY_FLOW.md."
+    ]
   }
 ]

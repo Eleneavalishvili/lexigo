@@ -24,7 +24,7 @@ public sealed class TestCardsController(TestCardService cards, TestCardQueries q
     [HttpPost("test-cards")]
     [ProducesResponseType<CardChange>(200)]
     public async Task<IActionResult> Create(CreateTestCard request, CancellationToken cancellationToken) =>
-        Result(await cards.CreateAsync(UserId, FamilyId, request.Nickname, request.Currency, request.IdempotencyKey, cancellationToken));
+        Result(await cards.CreateAsync(UserId, FamilyId, request.Nickname, request.Currency, request.IdempotencyKey, cancellationToken, request.DisplayLastFour));
 
     [HttpPatch("test-cards/{id:guid}")]
     [ProducesResponseType<CardChange>(200)]
@@ -70,7 +70,8 @@ public sealed class TestCardsController(TestCardService cards, TestCardQueries q
 
 public sealed record TestCardRequest(Guid IdempotencyKey);
 public sealed record CreateTestCard([Required, StringLength(40, MinimumLength = 1)] string Nickname,
-    [Required, RegularExpression("^(GEL|USD|EUR)$")] string Currency, Guid IdempotencyKey);
+    [Required, RegularExpression("^(GEL|USD|EUR)$")] string Currency, Guid IdempotencyKey,
+    [RegularExpression("^[0-9]{4}$")] string? DisplayLastFour = null);
 public sealed record EditTestCard([Required, StringLength(40, MinimumLength = 1)] string Nickname, bool MakeDefault, Guid IdempotencyKey);
 public sealed record TopUpTestCard(decimal Amount, Guid IdempotencyKey);
 public sealed class CardHistoryFilters

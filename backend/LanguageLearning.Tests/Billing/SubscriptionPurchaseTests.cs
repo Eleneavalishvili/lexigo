@@ -17,7 +17,7 @@ using Npgsql;
 
 namespace LanguageLearning.Tests.Billing;
 
-public sealed class SubscriptionPurchaseTests(RegistrationFixture fixture) : IClassFixture<RegistrationFixture>
+public sealed partial class SubscriptionPurchaseTests(RegistrationFixture fixture) : IClassFixture<RegistrationFixture>
 {
     [Fact]
     public async Task RetiringPremiumBlocksNewQuotesButHonorsSavedQuotesAndPaidAccess()
@@ -37,8 +37,13 @@ public sealed class SubscriptionPurchaseTests(RegistrationFixture fixture) : ICl
         var route = $"/api/v1/admin/plans/{BillingCatalogSeed.Premium}";
         var retire = new
         {
-            name = "Premium", expectedName = "Premium", isActive = false, expectedIsActive = true,
-            reason = "Pause simulated sales", currentPassword = SecurityTestAccount.Password, idempotencyKey = Guid.NewGuid()
+            name = "Premium",
+            expectedName = "Premium",
+            isActive = false,
+            expectedIsActive = true,
+            reason = "Pause simulated sales",
+            currentPassword = SecurityTestAccount.Password,
+            idempotencyKey = Guid.NewGuid()
         };
         var retired = await Read<BillingPlanSummary>(await admin.SendAsync(HttpMethod.Put, route, retire, token));
         Assert.False(retired.IsActive);
@@ -218,7 +223,10 @@ public sealed class SubscriptionPurchaseTests(RegistrationFixture fixture) : ICl
         var free = new Dialogue { CourseId = courseId, Title = "Café", Scenario = "cafe", Status = "Published" };
         var premium = new Dialogue
         {
-            CourseId = courseId, Title = "Lost and found", Scenario = "lost-and-found", Status = "Published",
+            CourseId = courseId,
+            Title = "Lost and found",
+            Scenario = "lost-and-found",
+            Status = "Published",
             RequiresPremium = true
         };
         db.AddRange(free, premium);
@@ -273,8 +281,12 @@ public sealed class SubscriptionPurchaseTests(RegistrationFixture fixture) : ICl
             var ending = new DialogueNode { DialogueId = dialogue.Id, Text = "Of course.", IsTerminal = true };
             db.AddRange(opening, ending, new DialogueChoice
             {
-                DialogueId = dialogue.Id, NodeId = opening.Id, NextNodeId = ending.Id,
-                Text = answer, Feedback = "Clear response.", IsCorrect = true
+                DialogueId = dialogue.Id,
+                NodeId = opening.Id,
+                NextNodeId = ending.Id,
+                Text = answer,
+                Feedback = "Clear response.",
+                IsCorrect = true
             });
         }
     }
@@ -345,8 +357,10 @@ public sealed class SubscriptionPurchaseTests(RegistrationFixture fixture) : ICl
         Assert.Equal(HttpStatusCode.Forbidden,
             (await browser.SendAsync(HttpMethod.Post, focusedRoute + "/answers", new
             {
-                sessionExerciseId = repeated.CurrentExercise!.Id, answerText = "Hola",
-                selectedOptionIds = Array.Empty<Guid>(), idempotencyKey = Guid.NewGuid()
+                sessionExerciseId = repeated.CurrentExercise!.Id,
+                answerText = "Hola",
+                selectedOptionIds = Array.Empty<Guid>(),
+                idempotencyKey = Guid.NewGuid()
             }, state.Token)).StatusCode);
         Assert.Equal(HttpStatusCode.Forbidden,
             (await browser.SendAsync(HttpMethod.Post, focusedRoute + "/complete", bearer: state.Token)).StatusCode);
@@ -395,7 +409,7 @@ public sealed class SubscriptionPurchaseTests(RegistrationFixture fixture) : ICl
         Assert.Equal("PREMIUM", subscription.PlanCode); Assert.Equal(period, subscription.Period); Assert.False(subscription.AutoRenew);
         Assert.Equal(annual ? subscription.CurrentPeriodStart!.Value.AddYears(1) : subscription.CurrentPeriodStart!.Value.AddMonths(1), subscription.CurrentPeriodEnd);
         var receipt = await browser.SendAsync(HttpMethod.Get, $"/api/v1/me/payments/{paid.Id}/receipt", bearer: state.Token);
-        receipt.EnsureSuccessStatusCode(); Assert.Contains("NO REAL PAYMENT", await receipt.Content.ReadAsStringAsync());
+        receipt.EnsureSuccessStatusCode(); Assert.Contains("LEXIGO — PAYMENT RECEIPT", await receipt.Content.ReadAsStringAsync());
         using var scope = fixture.Services.CreateScope(); var db = scope.ServiceProvider.GetRequiredService<LexiGoDbContext>();
         Assert.Equal(100 - amount, (await db.TestCards.SingleAsync(item => item.Id == state.CardId)).Balance);
         Assert.Equal(1, await db.CardTransactions.CountAsync(item => item.PaymentId == paid.Id));
