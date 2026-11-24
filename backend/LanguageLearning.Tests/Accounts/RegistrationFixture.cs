@@ -127,7 +127,9 @@ public sealed class RegistrationFixture : IAsyncLifetime
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseContentRoot(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "LanguageLearning.Api")));
+            var contentRoot = Environment.GetEnvironmentVariable("LEXIGO_TEST_API_ROOT")
+                ?? Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "LanguageLearning.Api");
+            builder.UseContentRoot(Path.GetFullPath(contentRoot));
             builder.UseEnvironment("Development");
             builder.ConfigureAppConfiguration((_, configuration) => configuration.AddInMemoryCollection(
                 new Dictionary<string, string?>

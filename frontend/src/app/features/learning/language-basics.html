@@ -1,0 +1,48 @@
+<main class="basics-wrap">
+  <header>
+    <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a>
+    <a routerLink="/courses">All courses ↗</a>
+  </header>
+  @if (guide(); as guide) {
+    <p class="eyebrow">A LITTLE FOUNDATION GOES A LONG WAY</p>
+    <h1>
+      Your <em>{{ guide.name }} basics.</em>
+    </h1>
+    <p>
+      Keep this guide beside your lessons. Learn the pattern, read the examples, then try it
+      yourself.
+    </p>
+    <nav aria-label="Basics topics">
+      @for (section of guide.sections; track section.title; let index = $index) {
+        <a [routerLink]="['/basics', code()]" [fragment]="'basics-' + index">{{ section.title }}</a>
+      }
+    </nav>
+    @for (section of guide.sections; track section.title; let index = $index) {
+      <section [id]="'basics-' + index" [attr.aria-labelledby]="'heading-' + index">
+        <h2 [id]="'heading-' + index">{{ section.title }}</h2>
+        <p>{{ section.explanation }}</p>
+        <dl>
+          @for (example of section.examples; track example[0]) {
+            <div>
+              <dt [attr.lang]="code()">{{ example[0] }}</dt>
+              <dd>{{ example[1] }}</dd>
+            </div>
+          }
+        </dl>
+      </section>
+    }
+    @if (code() === 'ru') {
+      <p><a routerLink="/alphabet/russian">Explore all 33 Russian letters and their audio ↗</a></p>
+    }
+    <p>Reference study uses no hearts and awards no XP. Your lesson progress stays unchanged.</p>
+    <a class="button button-red" [routerLink]="['/learn', guide.courseId]"
+      >Go to {{ guide.name }} lessons ↗</a
+    >
+  } @else {
+    <h1>Choose a language.</h1>
+    <p>
+      This guide is not available. Choose Spanish, Italian, German or Russian from the courses page.
+    </p>
+    <a class="button button-ink" routerLink="/courses">Find your course ↗</a>
+  }
+</main>

@@ -263,6 +263,12 @@ export const routes: Routes = [
     title: 'Meet the Russian alphabet — LexiGo',
   },
   {
+    path: 'basics/:code',
+    loadComponent: () =>
+      import('./features/learning/language-basics').then((module) => module.LanguageBasics),
+    title: 'Your language basics — LexiGo',
+  },
+  {
     path: 'learn/start/:courseId',
     canActivate: [authGuard],
     loadComponent: () =>

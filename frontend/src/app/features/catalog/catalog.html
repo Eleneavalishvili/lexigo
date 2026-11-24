@@ -48,6 +48,11 @@
       <section class="course-detail" aria-labelledby="course-title">
         <p class="eyebrow">YOUR NEXT CHAPTER</p>
         <h2 id="course-title">{{ course.title }}</h2>
+        <p>
+          <a [routerLink]="['/basics', course.languageCode]"
+            >Read the {{ course.title }} basics ↗</a
+          >
+        </p>
         @if (course.languageCode === 'ru') {
           <p><a routerLink="/alphabet/russian">Meet all 33 Russian letters ↗</a></p>
         }

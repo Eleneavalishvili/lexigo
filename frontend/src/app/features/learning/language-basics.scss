@@ -1,0 +1,53 @@
+.basics-wrap {
+  max-width: 960px;
+  margin: auto;
+  padding: 2rem clamp(1rem, 4vw, 3rem) 4rem;
+  overflow-wrap: anywhere;
+}
+header,
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+header {
+  justify-content: space-between;
+  margin-bottom: 3rem;
+}
+h1 {
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+}
+h2 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+}
+p {
+  line-height: 1.8;
+}
+nav {
+  margin-block: 2rem;
+}
+section {
+  margin-block: 1.5rem;
+  padding: clamp(1rem, 4vw, 2rem);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--gold);
+  border-radius: var(--control-radius);
+  background: var(--surface);
+  scroll-margin-top: 1rem;
+}
+dl {
+  margin-bottom: 0;
+}
+dl div {
+  padding-block: 0.8rem;
+  border-top: 1px solid var(--line);
+}
+dt {
+  font-weight: 600;
+  line-height: 1.7;
+}
+dd {
+  margin: 0.3rem 0 0;
+  line-height: 1.7;
+}

@@ -53,3 +53,7 @@ Automated checks cover the listed views and states, not every possible user
 journey or all accessibility requirements. Physical phone browsers, screen-reader
 operation, device microphones and curriculum-wide pronunciation review remain
 separate checks. Passing axe is not a claim of full WCAG certification.
+
+## Release recheck — 2026-11-24
+
+All six public, learner and staff journeys passed again at the four documented widths. Evidence: work/deployment/accessibility-release-20261124.log. Four new language-guide browser checks also passed in isolation and on public HTTPS, including fragment refresh and invalid routes; see CONTENT_REVIEW.md. Physical phones and screen-reader review remain separate.

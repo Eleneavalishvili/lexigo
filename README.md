@@ -191,3 +191,5 @@ Repeatable free local [security checks](docs/SECURITY_CHECKS.md) cover dependenc
 Beginner setup and illustrated lessons: [flow, original art and verification](docs/PICTURE_FIRST_LESSONS.md). Home language cards open daily-goal/starting-point setup. New first-word units show native labels with pictures, then word-bank/typed recall. Existing sessions retain their saved content; choose the new first unit to see the new flow. Current curriculum remains partial; no claim of full A1–C2 or Duolingo parity. New human character concept is saved for visual review and is not yet animated or installed.
 
 
+
+The public course details link to language-specific foundation guides at `/basics/es`, `/basics/it`, `/basics/de` and `/basics/ru`. These explain articles, gender, verbs, cases, word order and special letters without changing learning progress. See [content review](docs/CONTENT_REVIEW.md).
