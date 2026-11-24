@@ -41,11 +41,6 @@ jobs:
         run: |
           dotnet tool restore
           dotnet ef migrations has-pending-model-changes --no-build --configuration Release --project backend/LanguageLearning.Infrastructure --startup-project backend/LanguageLearning.Api
-      - name: Test backend
-        run: dotnet test backend/LanguageLearning.Tests --configuration Release --no-build --no-restore
-      - name: Verify database recovery
-        shell: pwsh
-        run: ./scripts/Verify-DatabaseRestore.ps1
       - name: Install locked frontend dependencies
         working-directory: frontend
         run: |
@@ -68,6 +63,11 @@ jobs:
         run: |
           docker build --file config/deployment/Nginx.Dockerfile --tag lexigo-nginx:patched .
           ./scripts/Verify-NginxEdge.ps1
+      - name: Test backend
+        run: dotnet test backend/LanguageLearning.Tests --configuration Release --no-build --no-restore
+      - name: Verify database recovery
+        shell: pwsh
+        run: ./scripts/Verify-DatabaseRestore.ps1
       - name: Build the supporting release images
         run: |
           docker build --file config/deployment/Postgres.Dockerfile --tag lexigo-postgres:patched .

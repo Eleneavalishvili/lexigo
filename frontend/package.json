@@ -8,9 +8,10 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:e2e": "playwright test",
-    "lint": "eslint src e2e playwright.config.ts --max-warnings=0",
+    "lint": "eslint src e2e playwright.config.ts playwright.webkit.config.ts --max-warnings=0",
     "format": "prettier --write \"src/**/*.{ts,html,scss}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,html,scss}\" \"e2e/**/*.ts\" playwright.config.ts"
+    "format:check": "prettier --check \"src/**/*.{ts,html,scss}\" \"e2e/**/*.ts\" playwright.config.ts playwright.webkit.config.ts",
+    "test:e2e:webkit": "playwright test --config=playwright.webkit.config.ts"
   },
   "private": true,
   "packageManager": "npm@11.6.2",

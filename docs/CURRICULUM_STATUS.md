@@ -1,10 +1,10 @@
-# Curriculum status — updated 2026-11-23
+# Curriculum status — updated 2026-11-24
 
 The current completion target is the original Georgian PDF's page 5 topics and language-specific basics in Spanish, Italian, German and Russian. On 2026-11-23 the user prioritized only that PDF scope. Earlier A1–C2/Duolingo-parity ambitions are historical additions, not the basis of the PDF completion count. Topic labels alone do not establish teaching or exercise coverage.
 
-Current inventory: 161 steps (129 teaching lessons and 32 unit checks), 2,148 questions and 33 units. Spanish, Italian and German each have 40 steps; Russian has 41 including Cyrillic basics. Earlier checkpoints below record how that inventory developed. Independent language/audio review and remaining baseline coverage stay open.
+Current inventory: 161 steps (129 teaching lessons and 32 unit checks), 2,148 questions and 33 units. The four public language-specific reference guides now supplement the graded courses; see CONTENT_REVIEW.md. Audio integrity review found 3,614 valid reference WAVs and the live manifest matches source exactly. This is not pronunciation-quality approval. Spanish, Italian and German each have 40 steps; Russian has 41 including Cyrillic basics. Earlier checkpoints below record how that inventory developed. Independent language/audio review and remaining baseline coverage stay open.
 
-The 2026-11-23 calendar/work/study slice adds two teaching lessons and one check per language. Nine complete-course/session/installation tests passed, including grading all questions in all four packs; 12 placement regressions passed. Five final installation/English-alternative cases passed after adding natural translations. Eight desktop/phone checks passed in an isolated environment and eight passed against the actual normal website. Source and live catalog counts agree. See BASELINE_TOPICS.md and TEST_REPORT_KA.md. There are 3,339 indexed local pronunciation clips; their availability is not a claim of independent pronunciation-quality approval.
+The 2026-11-23 calendar/work/study slice adds two teaching lessons and one check per language. Nine complete-course/session/installation tests passed, including grading all questions in all four packs; 12 placement regressions passed. Five final installation/English-alternative cases passed after adding natural translations. Eight desktop/phone checks passed in an isolated environment and eight passed against the actual normal website. Source and live catalog counts agree. See BASELINE_TOPICS.md and TEST_REPORT_KA.md. That slice had 3,339 indexed clips; the current 2026-11-24 inventory is 3,614. Availability is not independent pronunciation-quality approval.
 
 On 2026-11-20 a read-only reconciliation compared the running public catalog
 and unit endpoints against all four embedded source packs. Spanish, Italian
@@ -40,7 +40,9 @@ The installer uses stable IDs, an advisory lock and a transaction. It skips exis
 - `work/curriculum-ui-tests.log`: 215 tests in 60 files pass.
 - `work/curriculum-ui-build.log`: production build passes.
 
-## Still required
+## Earlier expansion plan (historical, outside the current PDF completion count)
+
+The following paragraph records the earlier ambition, not the current Georgian-baseline acceptance target. Current unfinished baseline work is in REQUIREMENTS.md and CONTENT_REVIEW.md.
 
 Complete A1 and A2 breadth, then substantial B1/B2/C1/C2 material in each language. Advanced topics need original extended reading/dialogue, grammar and productive tasks, not beginner phrases relabelled. Proper placement with a starting-unit recommendation and no skipped XP, unit assessments, cumulative review, curriculum listening/speaking media and independent linguistic validation remain open. The current starting-level selection saves self-report only; it does not assess or unlock advanced units.
 

@@ -57,3 +57,21 @@ separate checks. Passing axe is not a claim of full WCAG certification.
 ## Release recheck — 2026-11-24
 
 All six public, learner and staff journeys passed again at the four documented widths. Evidence: work/deployment/accessibility-release-20261124.log. Four new language-guide browser checks also passed in isolation and on public HTTPS, including fragment refresh and invalid routes; see CONTENT_REVIEW.md. Physical phones and screen-reader review remain separate.
+
+## WebKit and iPhone-size follow-up
+
+`frontend/playwright.webkit.config.ts` reuses the existing desktop/phone projects
+with WebKit, Desktop Safari and iPhone 13 device settings. It does not simulate
+an App Store installation or establish physical Safari/device compatibility.
+Install the free test engine with `npx playwright install webkit` in `frontend`.
+For public-only checks, set `LEXIGO_E2E_URL` to the live URL and run
+`npm run test:e2e:webkit -- accessibility.spec.ts --grep "public screens" --workers=1`.
+Do not run account-creation journeys against production without their own scope.
+
+All four live guide checks passed under WebKit. The initial broader public run
+passed phone but found the rotated Contact postcard extending beyond 768px.
+The Contact stacking breakpoint was increased from 760px to 860px, preserving
+the visual identity. The local desktop/phone public rerun passed both cases;
+the initial failed run is not a pass. Published rerun evidence is recorded in
+the release report when complete. Physical audio/microphone and screen-reader
+checks remain separate.
