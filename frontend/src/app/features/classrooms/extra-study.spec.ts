@@ -7,9 +7,18 @@ import { CatalogApi } from '../../core/content/catalog-api';
 import { ExtraStudy } from './extra-study';
 
 describe('Teacher request cancellation', () => {
-  const api = { teachers: vi.fn(), requests: vi.fn(), close: vi.fn(), request: vi.fn() };
+  const user = signal({ id: 'learner', roles: ['Learner'] });
+  const api = {
+    teachers: vi.fn(),
+    requests: vi.fn(),
+    close: vi.fn(),
+    request: vi.fn(),
+    availability: vi.fn(),
+  };
   beforeEach(() => {
     vi.resetAllMocks();
+    user.set({ id: 'learner', roles: ['Learner'] });
+    api.availability.mockResolvedValue([]);
     api.teachers.mockResolvedValue([{ id: 'offer', displayName: 'Tutor', courseTitle: 'Spanish' }]);
     api.close.mockResolvedValue({});
     api.request.mockResolvedValue({});
@@ -17,11 +26,23 @@ describe('Teacher request cancellation', () => {
       imports: [ExtraStudy],
       providers: [
         provideRouter([]),
-        { provide: AuthStore, useValue: { user: signal({ id: 'learner', roles: ['Learner'] }) } },
+        { provide: AuthStore, useValue: { user } },
         { provide: CatalogApi, useValue: { courses: async () => [] } },
         { provide: ExtraStudyApi, useValue: api },
       ],
     });
+  });
+  it('opens teaching requests directly and keeps the learner directory optional for teachers', async () => {
+    user.set({ id: 'teacher', roles: ['Teacher', 'Learner'] });
+    api.requests.mockResolvedValue([]);
+    const fixture = TestBed.createComponent(ExtraStudy);
+    await fixture.whenStable();
+    const host: HTMLElement = fixture.nativeElement;
+    expect(host.querySelector('h1')?.textContent).toBe('Your teaching requests');
+    expect(host.querySelector<HTMLDetailsElement>('.directory-details')!.open).toBe(false);
+    expect(host.querySelector('#requests-title')).not.toBeNull();
+    expect(host.textContent).toContain('Your teaching availability');
+    expect(api.availability).toHaveBeenCalledOnce();
   });
   it('unlocks the teacher card after withdrawal and keeps the closed history', async () => {
     const request = {
@@ -58,5 +79,26 @@ describe('Teacher request cancellation', () => {
     await fixture.whenStable();
     expect(api.request).toHaveBeenCalledExactlyOnceWith('offer');
     expect(card.disabled).toBe(true);
+  });
+  it('places an accepted learner conversation before the teacher directory', async () => {
+    api.requests.mockResolvedValue([
+      {
+        id: 'accepted',
+        status: 'Accepted',
+        incoming: false,
+        displayName: 'Sofia',
+        courseTitle: 'Italian',
+      },
+    ]);
+    const fixture = TestBed.createComponent(ExtraStudy);
+    await fixture.whenStable();
+    const host: HTMLElement = fixture.nativeElement;
+    const requests = host.querySelector('[aria-labelledby="requests-title"]')!;
+    const directory = host.querySelector('.directory-details')!;
+    expect(
+      requests.compareDocumentPosition(directory) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(requests.querySelector('a')?.getAttribute('href')).toBe('/classes/extra-study/accepted');
+    expect(requests.textContent).toContain('lessons and chat');
   });
 });

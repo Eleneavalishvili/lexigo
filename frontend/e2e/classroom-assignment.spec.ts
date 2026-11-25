@@ -54,7 +54,8 @@ test('a teacher invites a learner and assigns a published lesson', async ({
     expect(await created.headerValue('location')).toMatch(/\/api\/v1\/assignments\/[a-f0-9-]{36}$/);
     await expect(teacher.getByRole('button', { name: 'First drinks review' })).toBeVisible();
 
-    await page.getByRole('button', { name: 'View assignments' }).click();
+    await expect(page.getByRole('button', { name: 'Hide assignments' })).toBeVisible();
+    await page.getByRole('button', { name: /Refresh assignments/ }).click();
     await page.getByRole('button', { name: 'First drinks review' }).click();
     await expect(page.getByText(/Minimum score 85%/).first()).toBeVisible();
     await expect(page.getByText('Your first drinks', { exact: false }).first()).toBeVisible();

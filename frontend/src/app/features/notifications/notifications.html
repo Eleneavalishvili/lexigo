@@ -7,6 +7,12 @@
     <p class="eyebrow">POSTCARDS FROM LEXIGO</p>
     <h1>A little<br /><em>heads-up.</em></h1>
     <p>Your account updates, payments and study messages stay here.</p>
+    <p>
+      <a class="button button-ink" routerLink="/classes/extra-study"
+        >Open teacher lessons and chat ↗</a
+      >
+    </p>
+    <p><a routerLink="/classes">Open class homework and assignments ↗</a></p>
     <a routerLink="/billing/subscription">Open your subscription ↗</a>
     <a routerLink="/reports">Open your content reports ↗</a>
     <button
@@ -32,6 +38,15 @@
           <p class="eyebrow">{{ item.readAt ? 'READ' : 'NEW POSTCARD' }}</p>
           <h2>{{ item.title }}</h2>
           <p>{{ item.body }}</p>
+          @if (
+            item.type === 'ExtraStudyMessage' ||
+            item.type === 'ExtraStudyRequested' ||
+            item.type === 'ExtraStudySchedule'
+          ) {
+            <a class="button button-ink" routerLink="/classes/extra-study"
+              >Open teacher lessons and chat ↗</a
+            >
+          }
           @if (item.type === 'Achievement') {
             <a routerLink="/achievements">Open your badge collection ↗</a>
           }

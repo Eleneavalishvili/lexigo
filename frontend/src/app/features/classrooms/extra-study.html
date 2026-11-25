@@ -1,83 +1,21 @@
 <div class="classes-wrap">
   <header><a routerLink="/classes">↖ Your classes</a></header>
   <main>
-    <p class="eyebrow">PREMIUM LEARNING</p>
-    <h1>Extra study</h1>
-    <p>Browse teachers who have opted in for a course.</p>
+    @if (canTeach()) {
+      <p class="eyebrow">YOUR TEACHING SPACE</p>
+      <h1>Your teaching requests</h1>
+      <p>Accept learner requests, open private messages and manage your teaching availability.</p>
+    } @else {
+      <p class="eyebrow">PREMIUM LEARNING</p>
+      <h1>Extra study</h1>
+      <p>Browse teachers who have opted in for a course.</p>
+    }
     @if (error()) {
       <p role="alert">{{ error() }}</p>
     }
     @if (notice()) {
       <p role="status">{{ notice() }}</p>
     }
-    <section class="panel" aria-labelledby="directory-title">
-      <h2 id="directory-title">Find a teacher</h2>
-      <label for="extra-study-course">Course</label>
-      <select
-        id="extra-study-course"
-        #course
-        [value]="courseId()"
-        (change)="showTeachers(course.value)"
-      >
-        <option value="">All languages</option>
-        @for (item of courses(); track item.id) {
-          <option [value]="item.id">{{ item.title }}</option>
-        }
-      </select>
-      @switch (directoryState()) {
-        @case ('loading') {
-          <p role="status">Looking for teachers…</p>
-        }
-        @case ('denied') {
-          <p>Teacher listings are available to learners with active Premium.</p>
-          <a routerLink="/pricing">View plans ↗</a>
-        }
-        @case ('error') {
-          <p role="alert">The teacher list could not load.</p>
-          <button type="button" class="button" (click)="showTeachers(courseId())">Try again</button>
-        }
-        @case ('ready') {
-          <ul class="class-list tutor-directory">
-            @for (teacher of teachers(); track teacher.id) {
-              <li class="tutor-card">
-                <app-tutor-portrait
-                  [variant]="teacher.portraitKey ?? 'default'"
-                  [label]="teacher.displayName + ' illustration'"
-                />
-                <h3>{{ teacher.displayName }}</h3>
-                <p>{{ teacher.courseTitle }}</p>
-                <p>
-                  <strong>{{ teacher.levelFrom ?? 'A1' }}–{{ teacher.levelTo ?? 'B2' }}</strong> ·
-                  Teaching levels
-                </p>
-                <p>{{ teacher.biography }}</p>
-                <p>
-                  <strong>{{ teacher.pricePerLesson ?? 0 | currency: 'GEL' : 'code' }}</strong> /
-                  lesson
-                </p>
-                <button
-                  type="button"
-                  class="button button-outline"
-                  [disabled]="saving() || requestedOffers().has(teacher.id)"
-                  (click)="requestTeacher(teacher.id)"
-                >
-                  {{
-                    requestedOffers().has(teacher.id) ? 'Request recorded' : 'Request extra study'
-                  }}
-                </button>
-              </li>
-            } @empty {
-              <li>No teachers are listed for this course yet.</li>
-            }
-          </ul>
-          @if (cursor(); as next) {
-            <button type="button" class="button" (click)="showTeachers(courseId(), next)">
-              More teachers
-            </button>
-          }
-        }
-      }
-    </section>
     <section class="panel" aria-labelledby="requests-title">
       <h2 id="requests-title">Study requests</h2>
       <button
@@ -99,7 +37,9 @@
             </p>
             <p>{{ request.incoming ? 'From' : 'To' }} {{ request.displayName }}</p>
             @if (request.status === 'Accepted') {
-              <a [routerLink]="['/classes/extra-study', request.id]">Open study space ↗</a>
+              <a class="button button-ink" [routerLink]="['/classes/extra-study', request.id]"
+                >Open study space · lessons and chat ↗</a
+              >
             }
             @if (request.incoming && request.status === 'Pending') {
               <div class="actions">
@@ -166,6 +106,86 @@
         </button>
       }
     </section>
+    <details class="directory-details" [open]="!canTeach()">
+      <summary>
+        {{ canTeach() ? 'Find a teacher for your own studies' : 'Browse the teacher directory' }}
+      </summary>
+      <section class="panel" aria-labelledby="directory-title">
+        <h2 id="directory-title">Find a teacher</h2>
+        <label for="extra-study-course">Course</label>
+        <select
+          id="extra-study-course"
+          #course
+          [value]="courseId()"
+          (change)="showTeachers(course.value)"
+        >
+          <option value="">All languages</option>
+          @for (item of courses(); track item.id) {
+            <option [value]="item.id">{{ item.title }}</option>
+          }
+        </select>
+        @switch (directoryState()) {
+          @case ('loading') {
+            <p role="status">Looking for teachers…</p>
+          }
+          @case ('denied') {
+            <p>Teacher listings are available to learners with active Premium.</p>
+            <p>
+              Your account currently uses Free. Activate Premium, then return here to choose a
+              teacher.
+            </p>
+            <a class="button button-ink" routerLink="/billing/subscribe">Activate Premium ↗</a>
+            <a routerLink="/pricing">Compare plans ↗</a>
+          }
+          @case ('error') {
+            <p role="alert">The teacher list could not load.</p>
+            <button type="button" class="button" (click)="showTeachers(courseId())">
+              Try again
+            </button>
+          }
+          @case ('ready') {
+            <ul class="class-list tutor-directory">
+              @for (teacher of teachers(); track teacher.id) {
+                <li class="tutor-card">
+                  <app-tutor-portrait
+                    [variant]="teacher.portraitKey ?? 'default'"
+                    [label]="teacher.displayName + ' illustration'"
+                  />
+                  <h3>{{ teacher.displayName }}</h3>
+                  <p>{{ teacher.courseTitle }}</p>
+                  <p>
+                    <strong>{{ teacher.levelFrom ?? 'A1' }}–{{ teacher.levelTo ?? 'B2' }}</strong> ·
+                    Teaching levels
+                  </p>
+                  <p>{{ teacher.biography }}</p>
+                  <p>
+                    <strong>{{ teacher.pricePerLesson ?? 0 | currency: 'GEL' : 'code' }}</strong> /
+                    lesson
+                  </p>
+                  <button
+                    type="button"
+                    class="button button-outline"
+                    [disabled]="saving() || requestedOffers().has(teacher.id)"
+                    (click)="requestTeacher(teacher.id)"
+                  >
+                    {{
+                      requestedOffers().has(teacher.id) ? 'Request recorded' : 'Request extra study'
+                    }}
+                  </button>
+                </li>
+              } @empty {
+                <li>No teachers are listed for this course yet.</li>
+              }
+            </ul>
+            @if (cursor(); as next) {
+              <button type="button" class="button" (click)="showTeachers(courseId(), next)">
+                More teachers
+              </button>
+            }
+          }
+        }
+      </section>
+    </details>
     @if (canTeach()) {
       <section class="panel" aria-labelledby="availability-title">
         <h2 id="availability-title">Your teaching availability</h2>

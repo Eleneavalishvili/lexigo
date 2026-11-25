@@ -94,6 +94,14 @@ describe('Private classroom list', () => {
     const fixture = TestBed.createComponent(Classrooms);
     await ready(fixture);
     const host: HTMLElement = fixture.nativeElement;
+    expect(host.querySelector('h1')?.textContent).toContain('Your teacher desk.');
+    expect(
+      host.querySelector('nav[aria-label="Teacher tools"] a[href="/classes/extra-study"]'),
+    ).not.toBeNull();
+    expect(
+      host.querySelector('nav[aria-label="Teacher tools"] a[href="/notifications"]'),
+    ).not.toBeNull();
+    expect(host.querySelector('details')?.open).toBe(false);
     expect(host.querySelector<HTMLSelectElement>('#class-course')!.value).toBe('');
     fill(host, '#class-course', 'course');
     fill(host, '#class-name', 'Our class');

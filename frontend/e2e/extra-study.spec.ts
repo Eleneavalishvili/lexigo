@@ -90,7 +90,18 @@ test('a Premium learner opens a lesson shared by their chosen teacher', async ({
     await expect(teacher.getByRole('list', { name: 'Study conversation' })).toContainText(
       'Yes! We will practise a café conversation.',
     );
-    await page.getByRole('button', { name: 'Refresh messages', exact: true }).click();
+    await expect(page.getByRole('list', { name: 'Study conversation' })).toContainText(
+      'Yes! We will practise a café conversation.',
+      { timeout: 15_000 },
+    );
+    await page.goto('/notifications');
+    const messageNotice = page
+      .getByRole('listitem')
+      .filter({ has: page.getByRole('heading', { name: 'New study message', exact: true }) });
+    await messageNotice
+      .getByRole('link', { name: 'Open teacher lessons and chat ↗', exact: true })
+      .click();
+    await page.getByRole('link', { name: /Open study space/ }).click();
     await expect(page.getByRole('list', { name: 'Study conversation' })).toContainText(
       'Yes! We will practise a café conversation.',
     );

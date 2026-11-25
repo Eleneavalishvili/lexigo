@@ -13,6 +13,10 @@ import { AccountShell } from '../../shared/account-shell/account-shell';
     <p class="eyebrow">THE TEACHER’S DESK</p>
     <h1>Hello, <em>teacher.</em></h1>
     <p>Use your private six-digit access code and the current code from your authenticator.</p>
+    <p>
+      Both codes must belong to the same teacher. Authenticator codes change every 30 seconds and
+      can only be used once; wait for the next code if you have already used it.
+    </p>
     <form [formGroup]="form" (ngSubmit)="submit()" [attr.aria-busy]="working()">
       <div class="field">
         <label for="teacher-access">Teacher access code</label>
@@ -77,7 +81,7 @@ export class TeacherLogin {
       this.error.set(
         error instanceof HttpErrorResponse && error.status === 429
           ? 'Too many attempts. Please wait before trying again.'
-          : 'Unable to sign in. Check both codes and try again.',
+          : 'Teacher sign-in was not accepted. Use the access code and the latest authenticator code from the same teacher.',
       );
     } finally {
       this.working.set(false);

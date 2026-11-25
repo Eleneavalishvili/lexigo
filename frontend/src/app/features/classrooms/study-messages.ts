@@ -1,4 +1,5 @@
 import { DatePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, DestroyRef, effect, inject, input, signal, untracked } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AuthStore } from '../../core/accounts/auth-store';
@@ -10,6 +11,7 @@ import { ExtraStudyApi, StudyMessage } from '../../core/classrooms/extra-study-a
   template: `<section class="panel" aria-labelledby="study-chat-title">
     <h2 id="study-chat-title">Private messages</h2>
     <p>Only you and your accepted teacher or learner can read this conversation.</p>
+    <p>New replies appear automatically while this page is visible.</p>
     <button type="button" [disabled]="loading() || sending()" (click)="load()">
       Refresh messages
     </button>
@@ -42,9 +44,13 @@ import { ExtraStudyApi, StudyMessage } from '../../core/classrooms/extra-study-a
         [formControl]="draft"
         maxlength="2000"
         rows="3"
-        [readOnly]="!!pending()"
+        [readOnly]="!!pending() || !available()"
       ></textarea>
-      <button class="button button-ink" type="submit" [disabled]="sending() || loading()">
+      <button
+        class="button button-ink"
+        type="submit"
+        [disabled]="sending() || loading() || !available()"
+      >
         {{ sending() ? 'Sending…' : pending() ? 'Retry sending the same message' : 'Send message' }}
       </button>
     </form>
@@ -100,7 +106,13 @@ export class StudyMessages {
   protected readonly sending = signal(false);
   protected readonly error = signal('');
   protected readonly pending = signal<{ id: string; body: string } | null>(null);
+  protected readonly available = signal(true);
   constructor() {
+    const refresh = window.setInterval(() => {
+      if (!document.hidden && this.auth.user() && this.available() && !this.pending())
+        void this.load(undefined, true);
+    }, 10_000);
+    this.lifetime.onDestroy(() => window.clearInterval(refresh));
     effect(() => {
       const owner = this.auth.user()?.id;
       const request = this.requestId();
@@ -113,30 +125,38 @@ export class StudyMessages {
         this.sending.set(false);
         this.loading.set(false);
         this.error.set('');
+        this.available.set(true);
         if (owner && request) void this.load();
       });
     });
   }
-  protected async load(before?: string): Promise<void> {
+  protected async load(before?: string, background = false): Promise<void> {
     if (this.loading() || this.sending()) return;
     const generation = this.generation;
     this.loading.set(true);
-    this.error.set('');
+    if (!background) this.error.set('');
     try {
       const page = await this.api.messages(this.requestId(), before);
       if (!this.current(generation)) return;
-      const combined = before ? [...page.items, ...this.messages()] : page.items;
+      const combined = before
+        ? [...page.items, ...this.messages()]
+        : background
+          ? [...this.messages(), ...page.items]
+          : page.items;
       this.messages.set([...new Map(combined.map((message) => [message.id, message])).values()]);
-      this.nextBefore.set(page.nextBefore);
-    } catch {
-      if (this.current(generation))
+      if (!background || this.messages().length === page.items.length)
+        this.nextBefore.set(page.nextBefore);
+      this.available.set(true);
+    } catch (error) {
+      if (this.current(generation) && this.accessLost(error)) this.clearPrivateConversation();
+      else if (this.current(generation) && !background)
         this.error.set('Messages could not load. Refresh to try again.');
     } finally {
       if (this.current(generation)) this.loading.set(false);
     }
   }
   protected async send(): Promise<void> {
-    if (this.sending() || this.loading()) return;
+    if (this.sending() || this.loading() || !this.available()) return;
     const body = this.draft.value.trim();
     if (!this.pending() && (!body || body.length > 2000)) {
       this.error.set('Write a message of 1–2000 characters.');
@@ -154,8 +174,9 @@ export class StudyMessages {
       this.draft.reset();
       this.sending.set(false);
       await this.load();
-    } catch {
-      if (this.current(generation))
+    } catch (error) {
+      if (this.current(generation) && this.accessLost(error)) this.clearPrivateConversation();
+      else if (this.current(generation))
         this.error.set(
           'Sending was not confirmed. Retry to check the same message without duplicating it.',
         );
@@ -165,5 +186,18 @@ export class StudyMessages {
   }
   private current(generation: number): boolean {
     return !this.lifetime.destroyed && generation === this.generation;
+  }
+  private accessLost(error: unknown): boolean {
+    return error instanceof HttpErrorResponse && [401, 403, 404].includes(error.status);
+  }
+  private clearPrivateConversation(): void {
+    this.messages.set([]);
+    this.nextBefore.set(null);
+    this.pending.set(null);
+    this.draft.reset();
+    this.available.set(false);
+    this.error.set(
+      'This conversation is no longer available. Check your study request and Premium access.',
+    );
   }
 }

@@ -1242,7 +1242,8 @@
     "status": "implemented_verified",
     "permissions": "Private six-digit code plus replay-protected authenticator; active confirmed MFA Teacher only.",
     "evidence": [
-      "2026-11-25: presentation-current-full.trx 706 backend tests passed; tutor-messages-final.trx 25 final classroom/export/code-login tests passed; frontend394 passed; desktop/phone extra-study browser2 passed. Actual public walkthrough verified all8 protected teacher logins, directory portraits/levels/rates, persisted Premium, learner request/teacher notification, acceptance, shared lesson,45-minute appointment and two-way private messages. TUTOR_STUDY_FLOW.md."
+      "2026-11-25: presentation-current-full.trx 706 backend tests passed; tutor-messages-final.trx 25 final classroom/export/code-login tests passed; frontend394 passed; desktop/phone extra-study browser2 passed. Actual public walkthrough verified all8 protected teacher logins, directory portraits/levels/rates, persisted Premium, learner request/teacher notification, acceptance, shared lesson,45-minute appointment and two-way private messages. TUTOR_STUDY_FLOW.md.",
+      "2026-11-25 urgent public follow-up: all8 teacher code+MFA sign-ins and classroom HTTP200; local viewer TOTP independently matched. A rapid batch rate limit was retained and later retry passed. Actual Opera teacher desk and accepted Italian request observed."
     ]
   },
   {
@@ -1272,7 +1273,8 @@
     "status": "implemented_verified",
     "permissions": "Only accepted request participants with active access; bounded private paging.",
     "evidence": [
-      "2026-11-25: presentation-current-full.trx 706 backend tests passed; tutor-messages-final.trx 25 final classroom/export/code-login tests passed; frontend394 passed; desktop/phone extra-study browser2 passed. Actual public walkthrough verified all8 protected teacher logins, directory portraits/levels/rates, persisted Premium, learner request/teacher notification, acceptance, shared lesson,45-minute appointment and two-way private messages. TUTOR_STUDY_FLOW.md."
+      "2026-11-25: presentation-current-full.trx 706 backend tests passed; tutor-messages-final.trx 25 final classroom/export/code-login tests passed; frontend394 passed; desktop/phone extra-study browser2 passed. Actual public walkthrough verified all8 protected teacher logins, directory portraits/levels/rates, persisted Premium, learner request/teacher notification, acceptance, shared lesson,45-minute appointment and two-way private messages. TUTOR_STUDY_FLOW.md.",
+      "2026-11-25:20focused frontend checks and4desktop/phone browser journeys passed for inbox-to-chat, two-way messaging, automatic reply reception and classroom homework. Public frontend index83f226efbbaf26223f3366849daf93659a55606f495aac764d76a5e8f347524f. Existing server permissions unchanged."
     ]
   },
   {
@@ -1282,7 +1284,8 @@
     "status": "implemented_verified",
     "permissions": "Only accepted request participants; stable retry reference, quota and send rate limit.",
     "evidence": [
-      "2026-11-25: presentation-current-full.trx 706 backend tests passed; tutor-messages-final.trx 25 final classroom/export/code-login tests passed; frontend394 passed; desktop/phone extra-study browser2 passed. Actual public walkthrough verified all8 protected teacher logins, directory portraits/levels/rates, persisted Premium, learner request/teacher notification, acceptance, shared lesson,45-minute appointment and two-way private messages. TUTOR_STUDY_FLOW.md."
+      "2026-11-25: presentation-current-full.trx 706 backend tests passed; tutor-messages-final.trx 25 final classroom/export/code-login tests passed; frontend394 passed; desktop/phone extra-study browser2 passed. Actual public walkthrough verified all8 protected teacher logins, directory portraits/levels/rates, persisted Premium, learner request/teacher notification, acceptance, shared lesson,45-minute appointment and two-way private messages. TUTOR_STUDY_FLOW.md.",
+      "2026-11-25:20focused frontend checks and4desktop/phone browser journeys passed for inbox-to-chat, two-way messaging, automatic reply reception and classroom homework. Public frontend index83f226efbbaf26223f3366849daf93659a55606f495aac764d76a5e8f347524f. Existing server permissions unchanged."
     ]
   }
 ]

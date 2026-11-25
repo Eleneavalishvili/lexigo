@@ -17,7 +17,10 @@ test('withdrawing a teacher request enables the card and permits a fresh request
   const name = `Cancellation Tutor ${testInfo.project.name}`;
   try {
     await signInStaff(teacher, request, baseURL!, inbox!, database!, ['Teacher'], name);
-    await teacher.goto('/classes/extra-study');
+    await teacher.goto('/classes');
+    await expect(teacher.getByRole('heading', { name: 'Your teacher desk.' })).toBeVisible();
+    await expect(teacher.getByRole('heading', { name: 'Create a class', exact: true })).toBeVisible();
+    await teacher.getByRole('link', { name: 'Study requests and messages ↗', exact: true }).click();
     await teacher.getByRole('button', { name: 'Spanish · Hidden', exact: true }).click();
     await expect(
       teacher.getByRole('button', { name: 'Spanish · Listed', exact: true }),

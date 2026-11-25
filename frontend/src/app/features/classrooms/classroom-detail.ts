@@ -84,6 +84,7 @@ export class ClassroomDetailPage {
       const detail = await this.api.detail(this.id(), this.memberPage());
       if (!this.current(generation, owner)) return;
       this.value.set(detail);
+      this.showAssignments.set(!detail.classroom.isTeacher);
       this.editForm.reset({
         name: detail.classroom.name,
         description: detail.classroom.description,

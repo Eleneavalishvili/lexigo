@@ -1,13 +1,38 @@
 <div class="classes-wrap">
   <header>
     <a routerLink="/" aria-label="LexiGo home"><app-brand-logo /></a
-    ><a routerLink="/learn">↖ Back to learning</a>
+    ><a [routerLink]="teacher() ? '/account' : '/learn'">{{
+      teacher() ? '↖ Your account' : '↖ Back to learning'
+    }}</a>
   </header>
   <main>
-    <p class="eyebrow">GOOD WORDS, GOOD COMPANY</p>
-    <h1>A little language.<br /><em>A shared journey.</em></h1>
-    <p>Your classes stay private. Join with an invitation from your teacher.</p>
-    <p><a routerLink="/classes/extra-study">Explore Premium extra study ↗</a></p>
+    @if (teacher()) {
+      <p class="eyebrow">TEACHING AT LEXIGO</p>
+      <h1>Your teacher <em>desk.</em></h1>
+      <p>
+        Manage your classes, learners and assignments. Open a class to create homework or review
+        results.
+      </p>
+      <nav class="actions" aria-label="Teacher tools">
+        <a class="button button-ink" routerLink="/classes/extra-study"
+          >Study requests and messages ↗</a
+        >
+        <a class="button button-outline" routerLink="/notifications">Teaching notifications ↗</a>
+      </nav>
+    } @else {
+      <p class="eyebrow">GOOD WORDS, GOOD COMPANY</p>
+      <h1>A little language.<br /><em>A shared journey.</em></h1>
+      <p>Your classes stay private. Join with an invitation from your teacher.</p>
+      <p>
+        <a class="button button-ink" routerLink="/classes/extra-study"
+          >My teachers, shared lessons and chat ↗</a
+        >
+      </p>
+      <p>
+        Open an accepted teacher request to read messages and shared lessons. Class homework appears
+        inside a class after you join with its invitation code.
+      </p>
+    }
     @if (error()) {
       <p role="alert">{{ error() }}</p>
     }
@@ -33,7 +58,13 @@
             </li>
           } @empty {
             @if (!loading() && value()) {
-              <li>No classes yet. Your teacher’s invitation is your way in.</li>
+              <li>
+                {{
+                  teacher()
+                    ? 'No classes yet. Create your first class to invite learners and send assignments.'
+                    : 'No classes yet. Your teacher’s invitation is your way in.'
+                }}
+              </li>
             }
           }
         </ul>
@@ -59,30 +90,35 @@
         }
       </section>
       <section>
-        <form [formGroup]="joinForm" (ngSubmit)="join()" class="panel">
-          <h2>Join your class</h2>
-          <label for="join-code">Invitation code</label
-          ><input
-            id="join-code"
-            formControlName="code"
-            aria-describedby="join-code-help"
-            maxlength="64"
-            autocomplete="off"
-            autocapitalize="off"
-            spellcheck="false"
-          />
-          <p id="join-code-help">
-            Paste the invitation code your teacher shared with you. If you don’t have one, ask your
-            teacher for a code.
-          </p>
-          <button
-            class="button button-ink"
-            type="submit"
-            [disabled]="joinForm.invalid || working() || loading()"
-          >
-            Join class ↗
-          </button>
-        </form>
+        <details [open]="!teacher()">
+          <summary>
+            {{ teacher() ? 'Join another class as a learner' : 'Join with an invitation' }}
+          </summary>
+          <form [formGroup]="joinForm" (ngSubmit)="join()" class="panel">
+            <h2>Join your class</h2>
+            <label for="join-code">Invitation code</label
+            ><input
+              id="join-code"
+              formControlName="code"
+              aria-describedby="join-code-help"
+              maxlength="64"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+            />
+            <p id="join-code-help">
+              Paste the invitation code your teacher shared with you. If you don’t have one, ask
+              your teacher for a code.
+            </p>
+            <button
+              class="button button-ink"
+              type="submit"
+              [disabled]="joinForm.invalid || working() || loading()"
+            >
+              Join class ↗
+            </button>
+          </form>
+        </details>
         @if (teacher()) {
           <form [formGroup]="createForm" (ngSubmit)="create()" class="panel">
             <h2>Create a class</h2>

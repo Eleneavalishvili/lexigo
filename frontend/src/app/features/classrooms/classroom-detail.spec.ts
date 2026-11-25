@@ -5,6 +5,8 @@ import { BehaviorSubject } from 'rxjs';
 import { AuthStore } from '../../core/accounts/auth-store';
 import { ClassroomApi, ClassroomDetail } from '../../core/classrooms/classroom-api';
 import { ClassroomDetailPage } from './classroom-detail';
+import { AssignmentApi } from '../../core/classrooms/assignment-api';
+import { LearningApi } from '../../core/learning/learning-api';
 
 function value(teacher = true): ClassroomDetail {
   return {
@@ -47,11 +49,13 @@ describe('Classroom detail privacy and actions', () => {
     remove: vi.fn(),
     restore: vi.fn(),
   };
+  const assignments = { list: vi.fn() };
   beforeEach(() => {
     vi.clearAllMocks();
     user.set({ id: 'teacher', roles: ['Teacher'] });
     params.next(convertToParamMap({ classId: 'room' }));
     api.detail.mockResolvedValue(value());
+    assignments.list.mockResolvedValue({ items: [], page: 1, pageSize: 20, totalCount: 0 });
     api.invite.mockResolvedValue({
       code: 'invitation-for-unit-test',
       expiresAt: '2026-11-10T10:00:00Z',
@@ -66,6 +70,8 @@ describe('Classroom detail privacy and actions', () => {
         { provide: ActivatedRoute, useValue: { paramMap: params } },
         { provide: AuthStore, useValue: { user } },
         { provide: ClassroomApi, useValue: api },
+        { provide: AssignmentApi, useValue: assignments },
+        { provide: LearningApi, useValue: {} },
       ],
     });
   });
@@ -78,6 +84,9 @@ describe('Classroom detail privacy and actions', () => {
     expect(text).not.toContain('Members');
     expect(text).not.toContain('<img src=x>');
     expect(text).toContain('Leave class');
+    expect(text).toContain('Hide assignments');
+    expect(text).toContain('Assignments');
+    expect(assignments.list).toHaveBeenCalledExactlyOnceWith('room', 1);
     expect(api.invite).not.toHaveBeenCalled();
   });
   it('generates a code only on click and removes it on refresh', async () => {
