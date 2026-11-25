@@ -158,6 +158,17 @@
           @if (payment.receiptNumber) {
             <a [routerLink]="['/billing/receipt', payment.id]">View your receipt ↗</a>
           }
+          @if (payment.status === 'Succeeded') {
+            <p>
+              Your receipt is available above. Email delivery can take a few minutes; check your
+              Spam and Promotions folders too.
+            </p>
+            <p>
+              <a class="button button-ink" routerLink="/classes/extra-study"
+                >Choose your teacher ↗</a
+              >
+            </p>
+          }
         </div>
       </section>
     }
@@ -194,7 +205,7 @@
         </button>
       </section>
     }
-    @if (store.order(); as order) {
+    @if (!store.subscription()?.id && store.order(); as order) {
       <section class="panel" aria-labelledby="quote-title">
         <p class="eyebrow">2 · CONFIRM YOUR PAYMENT</p>
         <h2 id="quote-title">{{ order.period }} Premium.</h2>
@@ -202,7 +213,13 @@
           {{ order.amount | currency: order.currency : 'code'
           }}<small>saved price · {{ order.status }}</small>
         </p>
-        <p>Quote expires {{ order.expiresAt | date: 'medium' }}.</p>
+        @if (order.status === 'Created') {
+          <p>Confirm this checkout price by {{ order.expiresAt | date: 'medium' }}.</p>
+          <p>
+            This is the checkout deadline, not your subscription end date. Your subscription starts
+            after successful payment.
+          </p>
+        }
         @if (order.status === 'Created' && !store.subscription()?.id) {
           <label for="subscription-card">Your {{ order.currency }} card</label
           ><select

@@ -1,5 +1,26 @@
 # Receipt recovery and unknown addresses
 
+## Checkout deadline clarification — November 25
+
+The checkout price is held for 30 minutes before payment. This deadline is
+distinct from the purchased monthly or annual subscription period. Checkout
+now explains that distinction and removes the old order panel once an active
+subscription is returned. The current subscription's actual period end remains
+visible. Successful checkout retains the receipt link and explains where to
+look if email arrival is delayed.
+
+Five checkout component cases passed, including successful payment followed by
+the actual subscription period, hidden checkout deadline, plan comparison,
+renewal dates and explicit price review. The isolated release was built from
+the previously published source plus the checkout change, so unfinished staff
+pagination changes were not included. Production frontend publication was
+verified by matching its index SHA-256 to that build.
+
+Email outbox `SentAt` records successful handoff to the SMTP service. It does
+not prove placement in the recipient's inbox. Provider delivery, bounce and
+spam placement remain separate signals; do not report SMTP acceptance as
+confirmed inbox delivery.
+
 The receipt page distinguishes a temporary read failure from a missing/foreign
 payment. Temporary failures offer a read retry. Pending payments have an explicit
 status refresh; neither operation submits a charge. Failed payments explain that

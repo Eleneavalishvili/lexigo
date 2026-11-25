@@ -144,5 +144,51 @@ describe('Plan comparison and subscription confirmation', () => {
     expect(host.textContent).toContain('Confirm payment');
     expect(host.textContent).toContain('<img src=x>');
     expect(host.querySelector('img')).toBeNull();
+    expect(host.textContent).toContain(
+      'This is the checkout deadline, not your subscription end date.',
+    );
+    expect(host.textContent).not.toContain('Quote expires');
+  });
+  it('removes the checkout deadline after a successful purchase and shows the real period end', async () => {
+    const fixture = TestBed.createComponent(SubscriptionCheckout);
+    await fixture.whenStable();
+    const host: HTMLElement = fixture.nativeElement;
+    Array.from(host.querySelectorAll<HTMLButtonElement>('button'))
+      .find((button) => button.textContent?.includes('Review order'))!
+      .click();
+    await fixture.whenStable();
+    api.subscription.mockResolvedValue({
+      id: 'subscription',
+      planCode: 'PREMIUM',
+      status: 'Active',
+      period: 'Monthly',
+      currentPeriodStart: '2026-11-25T09:00:00Z',
+      currentPeriodEnd: '2026-12-25T09:00:00Z',
+      autoRenew: false,
+    });
+    api.pay.mockResolvedValue({
+      id: 'payment',
+      orderId: 'order',
+      status: 'Succeeded',
+      amount: 9.99,
+      currency: 'GEL',
+      receiptNumber: 'LXG-reference',
+      subscriptionId: 'subscription',
+    });
+    const card = host.querySelector<HTMLSelectElement>('#subscription-card')!;
+    card.value = 'card';
+    card.dispatchEvent(new Event('change'));
+    await fixture.whenStable();
+    Array.from(host.querySelectorAll<HTMLButtonElement>('button'))
+      .find((button) => button.textContent?.includes('Confirm payment'))!
+      .click();
+    await fixture.whenStable();
+    expect(host.textContent).toContain('Purchase successful. Premium is active.');
+    expect(host.querySelector('#quote-title')).toBeNull();
+    const end = [...host.querySelectorAll('dt')].find((row) => row.textContent?.trim() === 'Ends');
+    expect(end?.nextElementSibling?.textContent).toContain(
+      formatDate('2026-12-25T09:00:00Z', 'medium', 'en-US'),
+    );
+    expect(host.textContent).toContain('Spam and Promotions');
   });
 });
