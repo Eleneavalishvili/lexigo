@@ -1,5 +1,30 @@
 # Deployment and HTTPS verification
 
+## Public submission references — 2026-11-25
+
+At the user's explicit request, public static Swagger UI documentation is now
+available at https://206.189.25.5/api-docs/index.html. Its same-origin OpenAPI
+snapshot documents213paths. It uses the installed Swashbuckle Swagger UI assets
+and their Apache license; external validation and persistent authorization are
+disabled. Production API authentication, CSRF, rate limits, private storage,
+database ports and the existing /swagger404 restriction are unchanged. No
+Development environment or new paid service was enabled. Swagger documentation
+does not grant access to protected API operations.
+
+Public presentation downloads are under /presentation/: the original45slide
+PDF, Georgian speaker script DOCX, reviewed11page C4 architecture PDF and
+combined56page presentation/C4 PDF. Copies of the final C4 and combined PDF
+are in docs/presentation for GitHub submission. The architecture PDF includes
+the four C4 levels, actual class/dependency diagrams, deployment, authorization,
+Signals/audio/recording/globe explanations, SQL/migrations and a code-showing map.
+All11pages were rendered and inspected; overlap and unsupported arrow glyphs
+were corrected before publication. These references do not mark remaining
+baseline requirements complete.
+
+These server-hosted links share the existing scheduled server-deletion date
+below. GitHub copies remain independently available. No hosting purchase or
+extension of the expiry schedule was made.
+
 ## Live presentation deployment — 2026-11-24
 
 Public URL: **https://206.189.25.5/**. This is the existing Angular/.NET
