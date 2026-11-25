@@ -1498,7 +1498,8 @@ namespace LanguageLearning.Infrastructure.Data.Migrations
                     b.HasIndex("LearnerId", "Id");
 
                     b.HasIndex("OfferId", "LearnerId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("\"Status\" IN ('Pending', 'Accepted')");
 
                     b.ToTable("ExtraStudyRequests", null, t =>
                         {

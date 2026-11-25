@@ -57,7 +57,8 @@ public sealed class ExtraStudyRequests(
         var selectedOffer = await LockOfferAsync(offerId, cancellationToken);
         if (selectedOffer is null) return new(Missing: true);
         var existing = await database.ExtraStudyRequests.AsNoTracking().SingleOrDefaultAsync(
-            item => item.OfferId == offerId && item.LearnerId == learnerId, cancellationToken);
+            item => item.OfferId == offerId && item.LearnerId == learnerId
+                && (item.Status == "Pending" || item.Status == "Accepted"), cancellationToken);
         if (existing is not null) return new(existing.Id);
         if (!await directory.VisibleOffers(learnerId).AnyAsync(offer => offer.Id == offerId, cancellationToken))
             return new(Missing: true);

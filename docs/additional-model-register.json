@@ -89,7 +89,8 @@
     ],
     "status": "implemented_verified",
     "evidence": [
-      "AddExtraStudyRequests enforces one request per learner and offer. PostgreSQL verified concurrent retry and accepted status persistence."
+      "Original AddExtraStudyRequests enforced one request per learner and offer. AllowRepeatedExtraStudyRequests now enforces one Pending/Accepted request per pair while retaining Closed/Declined history.",
+      "2026-11-25: request-cycle-classrooms.trx passed24 PostgreSQL class, scheduling, message and request cases. A closed request stays inaccessible; concurrent fresh requests return one new ID; a stale cancellation cannot close the new ID; PostgreSQL rejects a second active pair."
     ]
   },
   {

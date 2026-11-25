@@ -720,7 +720,8 @@
     "status": "implemented_verified",
     "permissions": "Active Premium learner and an available teacher offer",
     "evidence": [
-      "PostgreSQL verified simultaneous retries return the same request."
+      "PostgreSQL verified simultaneous retries return the same active request.",
+      "2026-11-25: after cancellation, POST creates one fresh Pending request ID under concurrent retries, preserving old history and denying access to the old private space. request-cycle-classrooms.trx24pass and desktop/phone cancellation journeys2pass."
     ]
   },
   {

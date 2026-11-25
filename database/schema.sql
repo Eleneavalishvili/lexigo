@@ -5494,3 +5494,28 @@ BEGIN
 END $EF$;
 COMMIT;
 
+START TRANSACTION;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261125090930_AllowRepeatedExtraStudyRequests') THEN
+    DROP INDEX "IX_ExtraStudyRequests_OfferId_LearnerId";
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261125090930_AllowRepeatedExtraStudyRequests') THEN
+    CREATE UNIQUE INDEX "IX_ExtraStudyRequests_OfferId_LearnerId" ON "ExtraStudyRequests" ("OfferId", "LearnerId") WHERE "Status" IN ('Pending', 'Accepted');
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20261125090930_AllowRepeatedExtraStudyRequests') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20261125090930_AllowRepeatedExtraStudyRequests', '10.0.14');
+    END IF;
+END $EF$;
+COMMIT;
+

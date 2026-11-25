@@ -1,5 +1,22 @@
 # Teacher profiles and private study
 
+## Cancellation and fresh requests — November 25
+
+Cancelled or declined requests no longer disable the teacher card. A fresh
+request has a new ID; the previous request remains in history and its private
+space and messages remain closed. Concurrent clicks return the same currently
+Pending/Accepted request rather than notifying the teacher twice. PostgreSQL's
+partial unique index enforces one active request per learner and offer.
+
+The new migration preserves all rows. Its downgrade refuses to collapse
+multiple historical requests into the old all-status unique index. Retain a
+compatible application when rolling back after new request history exists.
+
+Verification:24 class/request/schedule/message PostgreSQL cases passed;
+the teacher-card component case and desktop/phone cancellation/reload/re-request
+journeys passed. Published with an encrypted pre-update SQL backup, original
+asset retention, index-hash verification and the existing server expiry timer.
+
 Approved additions, 2026-11-25. These extend the original Georgian specification; they do not replace its classroom, assignment, identity or privacy requirements.
 
 The presentation directory contains eight fictional tutor profiles: Ava and Leo (Spanish), Sofia and Luca (Italian), Nina and Noah (German), Maya and Alex (Russian). Portraits are original SVG illustrations. Cards show the language, teaching levels, biography and GEL rate per lesson. A study request does not itself deduct that displayed rate; the existing subscription and wallet remain the only implemented payment checkout.

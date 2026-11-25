@@ -45,7 +45,7 @@ export class ExtraStudy {
     () =>
       new Set(
         this.requests()
-          .filter((item) => !item.incoming)
+          .filter((item) => !item.incoming && ['Pending', 'Accepted'].includes(item.status))
           .map((item) => item.offerId),
       ),
   );

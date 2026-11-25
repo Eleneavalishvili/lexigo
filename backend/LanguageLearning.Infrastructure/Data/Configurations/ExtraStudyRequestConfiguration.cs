@@ -9,7 +9,8 @@ public sealed class ExtraStudyRequestConfiguration : IEntityTypeConfiguration<Ex
 {
     public void Configure(EntityTypeBuilder<ExtraStudyRequest> builder)
     {
-        builder.HasIndex(item => new { item.OfferId, item.LearnerId }).IsUnique();
+        builder.HasIndex(item => new { item.OfferId, item.LearnerId }).IsUnique()
+            .HasFilter("\"Status\" IN ('Pending', 'Accepted')");
         builder.HasIndex(item => new { item.LearnerId, item.Id });
         builder.Property(item => item.Status).HasMaxLength(12);
         builder.HasOne<ExtraStudyOffer>().WithMany().HasForeignKey(item => item.OfferId);
